@@ -1,0 +1,12 @@
+#main{
+    background-color: "#000000";
+    float: left;
+}
+#canv{
+    height: 300px;
+    width: 300px;
+    float: left;
+}
+#message{
+    float: left;
+}
