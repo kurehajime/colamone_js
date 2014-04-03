@@ -107,8 +107,13 @@ $(function(){
     turn_player=1;
 
     //イベントを設定
-    ctx.canvas.onmousemove=ev_mouseMove;
-    ctx.canvas.onmousedown=ev_mouseClick;
+    if('ontouchstart' in window){
+        $("#canv").bind('touchstart',ev_mouseClick)
+    }else{
+        $("#canv").bind('mousemove ',ev_mouseMove)
+        $("#canv").bind('mouseup',ev_mouseClick);
+    }
+
 
     
     //描画
@@ -145,13 +150,19 @@ function ev_mouseClick(e){
             hover_piece=null;
         }        
     }
+    drawFocus();
     flush();
     updateMessage();
 }
 
 // マウス位置取得  
 function getMousePosition(e) {  
-    var rect = e.target.getBoundingClientRect();  
+	if(!e.clientX){//SmartPhone
+        if(e.touches){
+            e = e.touches[0];            
+        }
+    }
+    var rect = e.target.getBoundingClientRect();
     mouse_x = e.clientX - rect.left;  
     mouse_y = e.clientY - rect.top;  
 }  
