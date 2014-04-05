@@ -10,3 +10,8 @@
 #message{
     float: left;
 }
+#win{
+    float: left;
+    color: "#00CC00";
+    font-size: 36px;
+}
