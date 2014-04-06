@@ -205,6 +205,8 @@ function getMousePosition(e) {
 	if(!e.clientX){//SmartPhone
         if(e.touches){
             e = e.touches[0];            
+        }else{
+            e = event.touches[0];            
         }
     }
     var rect = e.target.getBoundingClientRect();
