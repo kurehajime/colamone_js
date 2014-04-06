@@ -64,32 +64,35 @@ var POSI_BONUS= {1:[0,50,100,150,300,1000],
                 7:[0,110,220,1050,2100,7000],
                 8:[0,120,240,1200,1400,10000]
                  }
-var PIECE_POINT={1:1500,
-                 2:1500,
-                 3:1500,
-                 4:1500,
-                 5:1500,
-                 6:1500,
-                 7:1500,
-                 8:1500
+var PIECE_POINT={1:1800,
+                 2:1800,
+                 3:1800,
+                 4:1800,
+                 5:1800,
+                 6:1800,
+                 7:1800,
+                 8:1800
                 }
-var ZOC_POINTS=[80,80,80,80,80,80];
-
+var ZOC_POINTS=[80,80,80,80,80,160];
+var EFF_POINTS=[80,80,80,80,80,160];
+var score=0;
 //終局判定。Return:Bool
 function isEnd(turn_player,wkMap){
     var sum=0;
     if(turn_player>0){       
-        sum+=wkMap["00"][0]+wkMap["10"][0]+wkMap["20"][0]
-            +wkMap["30"][0]+wkMap["40"][0]+wkMap["50"][0];
+        sum+=wkMap[0][0]+wkMap[10][0]+wkMap[20][0]
+            +wkMap[30][0]+wkMap[40][0]+wkMap[50][0];
+        if(sum>=8){
+            return true;
+        }
     }else if(turn_player<0){
-        sum+=wkMap["05"][0]+wkMap["15"][0]+wkMap["25"][0]
-            +wkMap["35"][0]+wkMap["45"][0]+wkMap["55"][0];
+        sum+=wkMap[5][0]+wkMap[15][0]+wkMap[25][0]
+            +wkMap[35][0]+wkMap[45][0]+wkMap[55][0];
+        if(sum<=-8){
+            return true;
+        }
     }
-    if(sum>=8||sum<=-8){
-        return true;
-    }else{
-        return false;   
-    }
+    return false;
 }
 
 //動かせるマスを返す。Return:[NN,NN,NN...]
@@ -151,6 +154,9 @@ function getNodeMap(queue,wkMap,turn_player){
     return nodeList;
 }
 
+
+
+
 //ZOCを返す。 Return:Map{NN:[Blue,Red]}
 function getZOC(wkMap){
     var zocMap=$.extend(true, {}, whiteMap);
@@ -172,9 +178,9 @@ function evalMap(wkMap,turn_player){
     var zocMap;
     //終局判定
     if(turn_player>0 && isEnd(+1,wkMap)){
-        return +10000;
+        return +99999;
     }else if(turn_player< 0 && isEnd(-1,wkMap)){
-        return -10000;
+        return -99999;
     }
     
     //ZOC取得
@@ -184,7 +190,12 @@ function evalMap(wkMap,turn_player){
     for(var panel_num in wkMap){
         var cell_p=0;
         var p=wkMap[panel_num][0];
-        var z=zocMap[panel_num][0]-zocMap[panel_num][1];
+        var z;
+        if(turn_player==1){
+            z=zocMap[panel_num][0]-zocMap[panel_num][1]*1.1;            
+        }else{
+            z=zocMap[panel_num][0]*1.1-zocMap[panel_num][1];
+        }
         var line;
         
         //コマの評価値を加算
@@ -193,28 +204,32 @@ function evalMap(wkMap,turn_player){
             cell_p+=PIECE_POINT[Math.abs(p)];//コマの標準評価値
             cell_p+=POSI_BONUS[p][line];//ポジションボーナス
             if(z<0){
-                 cell_p=cell_p*0.1;//ZOCでせり負けたら無価値。
+                 cell_p=cell_p*0.01;//ZOCでせり負けたら無価値。
             }
+            line=5-(panel_num % 10)
+            cell_p+=EFF_POINTS[line]*z;//協力ボーナス
         }else if(p<0){
             line=(panel_num % 10)
             cell_p+=PIECE_POINT[Math.abs(p)] *-1;
             cell_p+=POSI_BONUS[Math.abs(p)][line]*-1;
             if(z>0){
-                 cell_p=cell_p*0.1;  
+                 cell_p=cell_p*0.01;
             }
+            line=(panel_num % 10)
+            cell_p+=EFF_POINTS[line]*z;            
         }
-        //ZOCボーナス
-        if(z>0){
+        //空き地ZOCボーナス
+        if(z>0.5){
             line=5-(panel_num % 10)
             cell_p+=ZOC_POINTS[line]*z;
-        }else if(z<0){
+        }else if(z<-0.5){
             line=(panel_num % 10)
             cell_p+=ZOC_POINTS[line]*z;            
         }
         //評価値に加算。
         ev+=cell_p;
     }
-    return ev;
+    return parseInt(ev);
 }
 
 //考える。
@@ -238,11 +253,86 @@ function think(wkMap,turn_player){
             best_ev=ev;
         }
     }
+    score=best_ev;
     return best_hand;
 }
+//よく考える。 node=[q,map0]
+function deepThink(player,turn_player,node_with_ev,depth,a,b){
+    var nodeList;
+    var bestNode=node_with_ev[0];
+    var nowev=evalMap(node_with_ev[0][1],turn_player)
+    if(depth<=0){
+        return [node_with_ev[0],nowev];
+    }
+    nodeList= getNodeMap(new Array,node_with_ev[0][1],turn_player);
+    
+    //自分の番のとき
+    if(player*turn_player>0){
+        var max_ev=-99999*player;
+        for(i in nodeList){
+            var n=nodeList[i].concat();
+            var nwe=[nodeList[i],node_with_ev[1]];
+            var map=nodeList[i][1];
+            var next_node_with_ev= deepThink(player,turn_player*-1,nwe,depth-1,a,b);
+            var next_map=next_node_with_ev[0][1];
+            var next_ev=next_node_with_ev[1];
+            if(player==1){
+                if(b<next_ev){
+                    return [node_with_ev[0],nowev];
+                }
+                if(max_ev<next_ev){
+                    max_ev=next_ev;
+                    a=Math.max(a,next_ev)
+                    bestNode=n
+                }
+            }else{
+                if(b>next_ev){
+                    return [node_with_ev[0],nowev];;
+                }
+                if(max_ev>next_ev){
+                    max_ev=next_ev;
+                    a=Math.min(a,next_ev)
+                    bestNode=n
+                }       
+            }
+        }
+        bestNode[0]=node_with_ev[0][0].concat(bestNode[0])
+        return [bestNode,max_ev]
+        
+    }else{
+        for(i in nodeList){
+            var n=nodeList[i].concat();
+            var nwe=[nodeList[i],node_with_ev[1]];
+            var min_ev=99999*player;
+            var map=nodeList[i][1];
+            var next_node_with_ev= deepThink(player,turn_player*-1,nwe,depth-1,a,b);
+            var next_map=next_node_with_ev[0][1];
+            var next_ev=next_node_with_ev[1];
+            if(player==1){
+                if(a>next_ev){
+                    return [node_with_ev[0],nowev];;
+                }
+                if(min_ev>next_ev){
+                    min_ev=next_ev;
+                    b=Math.min(b,next_ev)
+                    bestNode=n
+                }
+            }else{
+                if(a<next_ev){
+                    return [node_with_ev[0],nowev];;
+                }
+                if(min_ev<next_ev){
+                    min_ev=next_ev;
+                    b=Math.max(b,next_ev)
+                    bestNode=n
+                }       
+            }
+        }
+        bestNode[0]=node_with_ev[0][0].concat(bestNode[0])
+        return [bestNode,min_ev]
+    }
 
-
-
+}
 
 
 

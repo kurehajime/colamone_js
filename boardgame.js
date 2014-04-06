@@ -158,7 +158,9 @@ function ev_mouseClick(e){
             drawFocus();
             flush();
             updateMessage();
-            ai();
+            window.setTimeout(function(){
+                ai();                
+            },50);
         }        
     }
     drawFocus();
@@ -167,7 +169,11 @@ function ev_mouseClick(e){
 }
 //AIに考えてもらう。
 function ai(){
-    var hand=think(thisMap,turn_player);
+   var hand=think(thisMap,turn_player);
+//    var hand=deepThink(-1,-1,
+//                       [[new Array(),thisMap],0]
+//                       ,3,99999,-99999)[0][0][0];
+    
     if(hand){
         thisMap[hand[1]]=thisMap[hand[0]];
         thisMap[hand[0]]=[0,0];           
@@ -447,13 +453,16 @@ function updateMessage(){
     }
     $("#blue")[0].innerHTML=blueScore;                  
     $("#red")[0].innerHTML=redScore;
+    $("#score")[0].innerHTML=score;
     if(winner==1){
         $("#win")[0].innerHTML="Blue Win!";                  
     }else if(winner==-1){
         $("#win")[0].innerHTML="Red Win!";                  
     }else{
-        $("#win")[0].innerHTML="";                  
+        $("#win")[0].innerHTML="";    
     }
+    
+    
    
 }
 function calcScore(){
