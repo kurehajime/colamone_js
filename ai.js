@@ -158,10 +158,15 @@ function getNodeMap(queue,wkMap,turn_player){
 
 
 //ZOCを返す。 Return:Map{NN:[Blue,Red]}
-function getZOC(wkMap){
+function getZOC(wkMap,turn_player){
     var zocMap=$.extend(true, {}, whiteMap);
     for(var panel_num in wkMap){
-        var canMove=getCanMovePanelX(panel_num,wkMap,true)
+        var canMove;
+        if(wkMap[panel_num][0]*turn_player>0){
+            canMove=getCanMovePanelX(panel_num,wkMap,false)
+        }else{
+            canMove=getCanMovePanelX(panel_num,wkMap,true)            
+        }
         for(var num in canMove){
             if(wkMap[panel_num][0]>0){
                 zocMap[canMove[num]][0]+=1;
@@ -176,20 +181,33 @@ function getZOC(wkMap){
 function evalMap(wkMap,turn_player){
     var ev=0;
     var zocMap;
+    var evMap=$.extend(true, {}, wkMap);
     //終局判定
-    if(turn_player>0 && isEnd(+1,wkMap)){
+    if(turn_player>0 && isEnd(+1,evMap)){
         return +99999;
-    }else if(turn_player< 0 && isEnd(-1,wkMap)){
+    }else if(turn_player< 0 && isEnd(-1,evMap)){
         return -99999;
     }
+
+    //ZOC計算
+    zocMap=getZOC(evMap,turn_player);
     
-    //ZOC取得
-    zocMap=getZOC(wkMap);
+
+    //次にすぐに取られる運命のコマは死んだあつかい。
+    for(var panel_num in evMap){
+        z=zocMap[panel_num][0]-zocMap[panel_num][1];            
+        if(turn_player*z<0 &&turn_player*evMap[panel_num][0]>0){
+            evMap[panel_num]=[0,0];
+        }
+    }
+    zocMap=getZOC(evMap);
+
+
     
     //評価
-    for(var panel_num in wkMap){
+    for(var panel_num in evMap){
         var cell_p=0;
-        var p=wkMap[panel_num][0];
+        var p=evMap[panel_num][0];
         var z;
         if(turn_player==1){
             z=zocMap[panel_num][0]-zocMap[panel_num][1]*1.1;            
@@ -239,7 +257,7 @@ function think(wkMap,turn_player){
     var best_hand=null;
     for(var i =0;i<=nodeList.length-1;i++){
         var hand=nodeList[i][0];
-        var ev =evalMap(nodeList[i][1]);
+        var ev =evalMap(nodeList[i][1],turn_player);
         if(best_ev==null){
             best_hand=hand[0];
             best_ev=ev;
@@ -297,6 +315,7 @@ function deepThink(player,turn_player,node_with_ev,depth,a,b){
             }
         }
         bestNode[0]=node_with_ev[0][0].concat(bestNode[0])
+        score=max_ev;
         return [bestNode,max_ev]
         
     }else{

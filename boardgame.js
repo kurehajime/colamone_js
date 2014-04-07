@@ -169,7 +169,7 @@ function ev_mouseClick(e){
 }
 //AIに考えてもらう。
 function ai(){
-   var hand=think(thisMap,turn_player);
+  var hand=think(thisMap,turn_player);
 //    var hand=deepThink(-1,-1,
 //                       [[new Array(),thisMap],0]
 //                       ,3,99999,-99999)[0][0][0];
