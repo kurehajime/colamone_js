@@ -5,6 +5,7 @@
 
 var ctx=null;
 var canv_board=null;
+var canv_board2=null;
 var canv_focus=null;
 var canv_pieces=null;
 var canv_hover_piece=null;
@@ -18,8 +19,9 @@ var COLOR_LINE="#333333";
 var COLOR_PANEL_1="#f087b3";
 var COLOR_PANEL_2="#87b0f0";
 var COLOR_PANEL_3="#FFFFFF";
-var COLOR_PANEL_4="#444444";
+var COLOR_PANEL_4="#111111";
 var COLOR_PANEL_5="#444444";
+var COLOR_PANEL_6="#888888";
 
 var COLOR_SELECT="#88FF88";
 var COLOR_RED="#FF0000";
@@ -96,6 +98,11 @@ $(function(){
     canv_board =document.createElement("canvas");
     canv_board.width=ctx.canvas.width;
     canv_board.height=ctx.canvas.height;
+
+    canv_board2 =document.createElement("canvas");
+    canv_board2.width=ctx.canvas.width;
+    canv_board2.height=ctx.canvas.height;
+
     
     canv_focus =document.createElement("canvas");
     canv_focus.width=ctx.canvas.width;
@@ -229,6 +236,9 @@ function flush(){
     //盤面を描画
     ctx.drawImage(drawBoard(), 0, 0, ctx.canvas.width, ctx.canvas.height);
     
+    //テカリを描画
+    ctx.drawImage(drawBoard2(), 0, 0, ctx.canvas.width, ctx.canvas.height);
+    
     //選択したコマを除外
     if(hover_piece!=null){
         wkMap[hover_piece]=[0,0];
@@ -282,8 +292,8 @@ function drawBoard(){
     ctx_board.clearRect(0,0,ctx.canvas.width,ctx.canvas.width);
 
     var grad  = ctx_board.createLinearGradient(0,0,ctx.canvas.width,ctx.canvas.width);
-    grad.addColorStop(0,'rgb(255, 255, 255)');    
-    grad.addColorStop(0.4,COLOR_PANEL_5); 
+    grad.addColorStop(0,COLOR_PANEL_6);    
+    grad.addColorStop(0.3,COLOR_PANEL_5); 
     grad.addColorStop(1,COLOR_PANEL_4);                  
 
     
@@ -298,17 +308,27 @@ function drawBoard(){
             }else if((x+y) % 2 ==0){
                 ctx_board.fillStyle=COLOR_PANEL_3;
             }else{
-                
                 ctx_board.fillStyle=COLOR_PANEL_4;
                 ctx_board.fillStyle   = grad
-
             }
             ctx_board.beginPath();
             ctx_board.fillRect(x*cellSize, y*cellSize, cellSize, cellSize);
             ctx_board.strokeRect(x*cellSize, y*cellSize, cellSize, cellSize);
         }
     }
+    
     return canv_board;
+}
+function drawBoard2(){
+    var ctx_board2=canv_board2.getContext('2d');
+    ctx_board2.clearRect(0,0,ctx.canvas.width,ctx.canvas.width);
+    ctx_board2.globalAlpha = 0.07;
+    ctx_board2.fillStyle = COLOR_WHITE;
+    ctx_board2.beginPath();
+    ctx_board2.arc(50, -150, 350, 0, Math.PI*2, false);
+    ctx_board2.fill();
+
+    return canv_board2;
 }
 //浮遊しているコマを描画する。
 function drawHoverPiece(){
