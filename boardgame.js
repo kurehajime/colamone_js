@@ -18,7 +18,9 @@ var COLOR_LINE="#333333";
 var COLOR_PANEL_1="#f087b3";
 var COLOR_PANEL_2="#87b0f0";
 var COLOR_PANEL_3="#FFFFFF";
-var COLOR_PANEL_4="#888888";
+var COLOR_PANEL_4="#444444";
+var COLOR_PANEL_5="#444444";
+
 var COLOR_SELECT="#88FF88";
 var COLOR_RED="#FF0000";
 var COLOR_BLUE="#0000FF";
@@ -278,6 +280,13 @@ function drawFocus(){
 function drawBoard(){
     var ctx_board=canv_board.getContext('2d');
     ctx_board.clearRect(0,0,ctx.canvas.width,ctx.canvas.width);
+
+    var grad  = ctx_board.createLinearGradient(0,0,ctx.canvas.width,ctx.canvas.width);
+    grad.addColorStop(0,'rgb(255, 255, 255)');    
+    grad.addColorStop(0.4,COLOR_PANEL_5); 
+    grad.addColorStop(1,COLOR_PANEL_4);                  
+
+    
     for(x=0;x<6;x++){
         for(y=0;y<6;y++){
             //パネル描画
@@ -289,7 +298,10 @@ function drawBoard(){
             }else if((x+y) % 2 ==0){
                 ctx_board.fillStyle=COLOR_PANEL_3;
             }else{
+                
                 ctx_board.fillStyle=COLOR_PANEL_4;
+                ctx_board.fillStyle   = grad
+
             }
             ctx_board.beginPath();
             ctx_board.fillRect(x*cellSize, y*cellSize, cellSize, cellSize);
@@ -322,7 +334,14 @@ function drawPiece(wkCtx,x,y,number,viewflg,goal){
     }else{
         wkColor=COLOR_RED;           
     }
-    wkCtx.fillStyle = wkColor;
+    //wkCtx.fillStyle = wkColor;
+    var grad  = ctx.createLinearGradient(x,y, x+cellSize,y+cellSize);
+    grad.addColorStop(0,'rgb(255, 255, 255)');    
+    grad.addColorStop(0.4,wkColor); 
+    grad.addColorStop(1,wkColor);  
+    wkCtx.fillStyle   = grad;
+    
+    
     wkCtx.beginPath();
     wkCtx.fillRect(x+5,y+5,cellSize-10,cellSize-10);
     
@@ -331,7 +350,11 @@ function drawPiece(wkCtx,x,y,number,viewflg,goal){
         wkCtx.fillStyle   = COLOR_GOLD;                
     }else{
         wkCtx.fillStyle   = COLOR_WHITE;        
-    }
+    };        
+    
+    
+    
+    
     wkCtx.textBaseline ="middle";
     wkCtx.textAlign="center";
     wkCtx.beginPath();
