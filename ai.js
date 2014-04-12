@@ -64,18 +64,28 @@ var POSI_BONUS= {1:[0,50,100,150,300,1000],
                 7:[0,110,220,1050,2100,7000],
                 8:[0,120,240,1200,1400,10000]
                  }
-var PIECE_POINT={1:1800,
-                 2:1800,
-                 3:1800,
-                 4:1800,
-                 5:1800,
-                 6:1800,
-                 7:1800,
-                 8:1800
+var PIECE_POINT={1:2300,
+                 2:2300,
+                 3:2300,
+                 4:2300,
+                 5:2300,
+                 6:2300,
+                 7:2300,
+                 8:2300
                 }
 var ZOC_POINTS=[80,80,80,80,80,160];
 var EFF_POINTS=[80,80,80,80,80,160];
 var score=0;
+
+function copyMap(wkMap){
+    var rtnMap=new Object();
+    for(var num in wkMap){
+        rtnMap[num]=[wkMap[num][0],wkMap[num][1]];
+    }
+    return rtnMap;
+}
+
+
 //終局判定。Return:Bool
 function isEnd(turn_player,wkMap){
     var sum=0;
@@ -100,14 +110,14 @@ function getCanMovePanelX(panel_num,wkMap,ownflag){
     var number = wkMap[panel_num][0];
     var x = Math.floor(panel_num / 10);
     var y = Math.floor(panel_num % 10);
-    var canMove=new Array;
+    var canMove=[];
     if(number==0){
         return canMove;   
     }
     //アガリのコマは動かしたらダメ。
-    if(number>0 & y==0){
+    if(number>0 && y==0){
         return canMove;   
-    }else if(number<0 &y==5){
+    }else if(number<0 && y==5){
         return canMove;   
     }
     
@@ -117,17 +127,17 @@ function getCanMovePanelX(panel_num,wkMap,ownflag){
         if(PIECES[number][i]==0){
             continue;
         }
-        if(target_x<0 || target_y<0|target_x>5|target_y>5 ){
+        if(target_x<0 || target_y<0||target_x>5||target_y>5 ){
             continue;
         }
         var target_number=wkMap[target_x*10+target_y][0];
-        if(target_number*number>0 & ownflag==false){
+        if(target_number*number>0 && ownflag==false){
             continue;   
         }
         //アガリのコマはとったらダメ。
-        if(target_number>0 & target_y==0){
+        if(target_number>0 && target_y==0){
             continue;   
-        }else if(target_number<0 &target_y==5){
+        }else if(target_number<0 &&target_y==5){
             continue;
         }
         canMove.push(target_x*10+target_y);
@@ -143,7 +153,7 @@ function getNodeMap(queue,wkMap,turn_player){
         }
         var canMove=getCanMovePanelX(panel_num,wkMap,false);
         for(var num in canMove){
-            var nodeMap=$.extend(true, {}, wkMap);
+            var nodeMap=copyMap(wkMap);
             var q=queue.concat();
             q.push([panel_num,canMove[num]])
             nodeMap[canMove[num]]=nodeMap[panel_num];
@@ -159,12 +169,12 @@ function getNodeMap(queue,wkMap,turn_player){
 
 //ZOCを返す。 Return:Map{NN:[Blue,Red]}
 function getZOC(wkMap,turn_player){
-    var zocMap=$.extend(true, {}, whiteMap);
+    var zocMap=copyMap(whiteMap);
+    var canMove;
     for(var panel_num in wkMap){
-        var canMove;
         if(wkMap[panel_num][0]*turn_player>0){
             canMove=getCanMovePanelX(panel_num,wkMap,false)
-        }else{
+        }else if (wkMap[panel_num][0]*turn_player<0){
             canMove=getCanMovePanelX(panel_num,wkMap,true)            
         }
         for(var num in canMove){
@@ -181,11 +191,11 @@ function getZOC(wkMap,turn_player){
 function evalMap(wkMap,turn_player){
     var ev=0;
     var zocMap;
-    var evMap=$.extend(true, {}, wkMap);
+    var evMap=copyMap(wkMap);
     //終局判定
-    if(turn_player>0 && isEnd(+1,evMap)){
+    if(isEnd(+1,evMap)){
         return +99999;
-    }else if(turn_player< 0 && isEnd(-1,evMap)){
+    }else if(isEnd(-1,evMap)){
         return -99999;
     }
 
@@ -197,10 +207,16 @@ function evalMap(wkMap,turn_player){
     for(var panel_num in evMap){
         z=zocMap[panel_num][0]-zocMap[panel_num][1];            
         if(turn_player*z<0 &&turn_player*evMap[panel_num][0]>0){
+            if(evMap[panel_num][0]>0){
+                ev+=PIECE_POINT[Math.abs(evMap[panel_num][0])]*0.5;
+            }else if(evMap[panel_num][0]<0){
+                ev+=PIECE_POINT[Math.abs(evMap[panel_num][0])]*-1*0.5;
+            }
+            
             evMap[panel_num]=[0,0];
         }
     }
-    zocMap=getZOC(evMap);
+    zocMap=getZOC(evMap,turn_player);
 
 
     
@@ -274,85 +290,50 @@ function think(wkMap,turn_player){
     score=best_ev;
     return best_hand;
 }
+
 //よく考える。 node=[q,map0]
-function deepThink(player,turn_player,node_with_ev,depth,a,b){
-    var nodeList;
-    var bestNode=node_with_ev[0];
-    var nowev=evalMap(node_with_ev[0][1],turn_player)
-    if(depth<=0){
-        return [node_with_ev[0],nowev];
-    }
-    nodeList= getNodeMap(new Array,node_with_ev[0][1],turn_player);
+function deepThinkAll(map,turn_player,depth){
+	var best_score=turn_player*9999999*-1;
+	var besthand;
+	if(depth==0){
+		best_score=evalMap(map,turn_player);
+		return [besthand,best_score]
+	}
     
-    //自分の番のとき
-    if(player*turn_player>0){
-        var max_ev=-99999*player;
-        for(i in nodeList){
-            var n=nodeList[i].concat();
-            var nwe=[nodeList[i],node_with_ev[1]];
-            var map=nodeList[i][1];
-            var next_node_with_ev= deepThink(player,turn_player*-1,nwe,depth-1,a,b);
-            var next_map=next_node_with_ev[0][1];
-            var next_ev=next_node_with_ev[1];
-            if(player==1){
-                if(b<next_ev){
-                    return [node_with_ev[0],next_ev];
-                }
-                if(max_ev<next_ev){
-                    max_ev=next_ev;
-                    a=Math.max(a,next_ev)
-                    bestNode=n
-                }
-            }else{
-                if(b>next_ev){
-                    return [node_with_ev[0],next_ev];;
-                }
-                if(max_ev>next_ev){
-                    max_ev=next_ev;
-                    a=Math.min(a,next_ev)
-                    bestNode=n
-                }       
-            }
-        }
-        bestNode[0]=node_with_ev[0][0].concat(bestNode[0])
-        score=max_ev;
-        return [bestNode,max_ev]
+    var nodeList= getNodeMap(new Array,map,turn_player);
+	for(i in nodeList){
+        var hand=nodeList[i][0];
+		var map=nodeList[i][1];
         
-    }else{
-        for(i in nodeList){
-            var n=nodeList[i].concat();
-            var nwe=[nodeList[i],node_with_ev[1]];
-            var min_ev=99999*player;
-            var map=nodeList[i][1];
-            var next_node_with_ev= deepThink(player,turn_player*-1,nwe,depth-1,a,b);
-            var next_map=next_node_with_ev[0][1];
-            var next_ev=next_node_with_ev[1];
-            if(player==1){
-                if(a>next_ev){
-                    return [node_with_ev[0],next_ev];;
-                }
-                if(min_ev>next_ev){
-                    min_ev=next_ev;
-                    b=Math.min(b,next_ev)
-                    bestNode=n
-                }
-            }else{
-                if(a<next_ev){
-                    return [node_with_ev[0],next_ev];;
-                }
-                if(min_ev<next_ev){
-                    min_ev=next_ev;
-                    b=Math.max(b,next_ev)
-                    bestNode=n
-                }       
-            }
+        //必勝
+        if(isEnd(turn_player,map)){
+            return [hand,99999*turn_player];
         }
-        bestNode[0]=node_with_ev[0][0].concat(bestNode[0])
-        return [bestNode,min_ev]
-    }
-
+        //必敗
+        if(isEnd(turn_player*-1,map)){
+            if(besthand==undefined){
+                best_score=99999*turn_player*-1;
+                besthand=hand;
+            }
+            continue;
+        }
+		var sc  =deepThinkAll(map,turn_player*-1,depth-1)[1]
+        
+        
+		if(besthand==undefined){
+			best_score=sc;
+			besthand=hand;
+		}
+		if(turn_player==1 &&sc>best_score){
+			best_score=sc;
+			besthand=hand;
+		}else if(turn_player==-1&&sc<best_score){
+			best_score=sc;
+			besthand=hand;
+		}
+	}
+	return [besthand,best_score]
 }
-
 
 
 

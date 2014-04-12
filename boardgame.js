@@ -9,12 +9,14 @@ var canv_board2=null;
 var canv_focus=null;
 var canv_pieces=null;
 var canv_hover_piece=null;
+var canv_overlay=null;
 var hover_piece=null;
 var cellSize=null;
 var turn_player=null;
 var blueScore=0;
 var redScore=0;
 var winner=0;
+var message="";
 var COLOR_LINE="#333333";
 var COLOR_PANEL_1="#550025";
 var COLOR_PANEL_2="#003856";
@@ -90,6 +92,8 @@ var thisMap={00:[-1,1],10:[-2,1],20:[-3,1],30:[-4,1],40:[-5,1],50:[-6,1],
 var mouse_x =0;
 var mouse_y =0;
 
+
+
 //init
 $(function(){
     //初期化
@@ -115,6 +119,11 @@ $(function(){
     canv_hover_piece =document.createElement("canvas");
     canv_hover_piece.width=ctx.canvas.width;
     canv_hover_piece.height=ctx.canvas.height;
+    
+    canv_overlay =document.createElement("canvas");
+    canv_overlay.width=ctx.canvas.width;
+    canv_overlay.height=ctx.canvas.height;
+    
     
     cellSize=ctx.canvas.width/6;
     turn_player=1;
@@ -146,6 +155,9 @@ function ev_mouseClick(e){
     getMousePosition(e);
     var target=Math.floor(mouse_x/cellSize)*10
                 +Math.floor(mouse_y/cellSize)
+    if(winner!=""){
+        return true;
+    }
     if(hover_piece==null){
         if(thisMap[target][0]*turn_player>0){
             hover_piece=target;
@@ -153,6 +165,7 @@ function ev_mouseClick(e){
     }else{
         if(target==hover_piece){
             hover_piece=null;
+            updateMessage();
             flush();
             return;
         }
@@ -165,31 +178,41 @@ function ev_mouseClick(e){
             
             //AIが考える。
             drawFocus();
+            message="thinking..."
             flush();
             updateMessage();
             window.setTimeout(function(){
-                ai();                
+                ai();   
+                message=""
+                updateMessage();
+                flush();
             },50);
         }        
     }
     drawFocus();
-    flush();
     updateMessage();
+    flush();
 }
 //AIに考えてもらう。
 function ai(){
-  var hand=think(thisMap,turn_player);
+//  var hand=think(thisMap,turn_player);
+
 //    var hand=deepThink(-1,-1,
 //                       [[new Array(),thisMap],0]
 //                       ,3,99999,-99999)[0][0][0];
+    var hand;
+    if($("#fast:checked").val()){
+        hand=think(thisMap,turn_player);
+    }else{
+        hand=deepThinkAll(thisMap,turn_player,3)[0][0];        
+    }
     
     if(hand){
         thisMap[hand[1]]=thisMap[hand[0]];
-        thisMap[hand[0]]=[0,0];           
+        thisMap[hand[0]]=[0,0];
+        score=evalMap(thisMap,turn_player);
     }
     turn_player=turn_player*-1;
-    flush();
-    updateMessage();
 }
 //盤面をシャッフル
 function shuffleBoard(){
@@ -248,10 +271,15 @@ function flush(){
     
     //選択したコマを表示
     ctx.drawImage(drawHoverPiece(), 0, 0, ctx.canvas.width, ctx.canvas.height);
-
     
     //フォーカスを描画
     ctx.drawImage(drawFocus(), 0, 0, ctx.canvas.width, ctx.canvas.height);
+    
+    //メッセージを描画
+    ctx.drawImage(drawOverlay(), 0, 0, ctx.canvas.width, ctx.canvas.height);
+    
+    
+    
 }
 //フォーカスを描画
 function drawFocus(){
@@ -441,6 +469,37 @@ function drawPieceAll(wkMap){
     }
     return canv_pieces;
 }
+
+//メッセージを描画
+function drawOverlay(){
+    var ctx_overlay=canv_overlay.getContext('2d');
+    var x = cellSize*1.5
+    var y = cellSize*2.5
+    
+    ctx_overlay.clearRect(0,0,ctx.canvas.width,ctx.canvas.width);
+
+    if(message==""){
+        return canv_overlay;
+    }
+    ctx_overlay.globalAlpha = 0.8;
+    ctx_overlay.fillStyle = COLOR_WHITE;
+    ctx_overlay.beginPath();
+    ctx_overlay.fillRect(x,y,cellSize*3,cellSize*1);
+    ctx_overlay.fill();
+    
+    
+    ctx_overlay.font = "bold 20px sans-serif";
+    ctx_overlay.globalAlpha = 1;
+    ctx_overlay.fillStyle = COLOR_LINE;
+    ctx_overlay.textBaseline ="middle";
+    ctx_overlay.textAlign="center";
+    ctx_overlay.beginPath();
+    ctx_overlay.fillText(message, cellSize*3, cellSize*3);
+    
+    return canv_overlay;
+}
+
+
 //動かせるマスを返す。Return:[NN,NN,NN]
 function getCanMovePanel(panel_num){
     var number = thisMap[panel_num][0];
@@ -498,11 +557,9 @@ function updateMessage(){
     $("#red")[0].innerHTML=redScore;
     $("#score")[0].innerHTML=score;
     if(winner==1){
-        $("#win")[0].innerHTML="Blue Win!";                  
+        message="You Win!"
     }else if(winner==-1){
-        $("#win")[0].innerHTML="Red Win!";                  
-    }else{
-        $("#win")[0].innerHTML="";    
+        message="You Lose..."
     }
     
     
