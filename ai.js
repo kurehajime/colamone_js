@@ -296,7 +296,7 @@ function deepThink(player,turn_player,node_with_ev,depth,a,b){
             var next_ev=next_node_with_ev[1];
             if(player==1){
                 if(b<next_ev){
-                    return [node_with_ev[0],nowev];
+                    return [node_with_ev[0],next_ev];
                 }
                 if(max_ev<next_ev){
                     max_ev=next_ev;
@@ -305,7 +305,7 @@ function deepThink(player,turn_player,node_with_ev,depth,a,b){
                 }
             }else{
                 if(b>next_ev){
-                    return [node_with_ev[0],nowev];;
+                    return [node_with_ev[0],next_ev];;
                 }
                 if(max_ev>next_ev){
                     max_ev=next_ev;
@@ -329,7 +329,7 @@ function deepThink(player,turn_player,node_with_ev,depth,a,b){
             var next_ev=next_node_with_ev[1];
             if(player==1){
                 if(a>next_ev){
-                    return [node_with_ev[0],nowev];;
+                    return [node_with_ev[0],next_ev];;
                 }
                 if(min_ev>next_ev){
                     min_ev=next_ev;
@@ -338,7 +338,7 @@ function deepThink(player,turn_player,node_with_ev,depth,a,b){
                 }
             }else{
                 if(a<next_ev){
-                    return [node_with_ev[0],nowev];;
+                    return [node_with_ev[0],next_ev];;
                 }
                 if(min_ev<next_ev){
                     min_ev=next_ev;
