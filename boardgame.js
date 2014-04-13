@@ -568,15 +568,59 @@ function updateMessage(){
 function calcScore(){
     var wkBlueScore=0;
     var wkRedScore=0;
+    var wkBlueCanMove=0;
+    var wkRedSCanMove=0;
+    var wkBlueLivePoint=0;
+    var wkRedSLivePoint=0;
+    
     var wkWinner="";
     for(var num in thisMap){
+        //アガリ判定
         var y = Math.floor(num % 10);
         if(y==0&thisMap[num][0]>0){
             wkBlueScore+= Math.abs(thisMap[num][0]);
         }else if(y==5&thisMap[num][0]<0){
             wkRedScore+=Math.abs(thisMap[num][0]);
-        }  
+        }else{
+            //現在生きているコマ
+            if(thisMap[num][0]>0){
+                wkBlueLivePoint+=thisMap[num][0]
+            }else if(thisMap[num][0]>0){
+                wkRedLivePoint+=thisMap[num][0]
+            }
+        }
+        
+        //動かせるか。
+        if(wkBlueCanMove==0 || wkRedSCanMove==0){
+            if(getCanMovePanel(num).length!=0){
+                if(thisMap[num][0]>0){
+                    wkBlueCanMove+=1;
+                }else if(thisMap[num][0]<0){
+                    wkRedSCanMove+=1;
+                }                
+            }
+        }
     }
+    
+    //動かせなくなったら負け
+    if(wkRedSCanMove==0 && turn_player==-1){
+        wkWinner=1;
+    }else if(wkBlueCanMove==0 && turn_player==1){
+        wkWinner=-1;
+    }
+    if(wkBlueLivePoint+wkBlueScore<8 &&wkRedLivePoint+wkRedScore<8){
+        if(wkBlueScore<wkRedScore){
+            wkWinner=1;
+        }else if(wkBlueScore>wkRedScore){
+            wkWinner=-1;
+        }else if(wkBlueLivePoint<wkRedLivePoint){
+            wkWinner=1;
+        }else if(wkBlueLivePoint>wkRedLivePoint){
+            wkWinner=-1;
+        }
+    }
+    
+    //点数で勝利
     if(wkBlueScore>=8){
         wkWinner=1;
     }else if(wkRedScore>=8){
