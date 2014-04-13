@@ -319,7 +319,6 @@ function deepThinkAll(map,turn_player,depth){
         }
 		var sc  =deepThinkAll(map,turn_player*-1,depth-1)[1]
         
-        
 		if(besthand==undefined){
 			best_score=sc;
 			besthand=hand;
@@ -332,6 +331,59 @@ function deepThinkAll(map,turn_player,depth){
 			besthand=hand;
 		}
 	}
+	return [besthand,best_score]
+}
+//よく考える。 node=[q,map0]
+function deepThinkAllAB(map,turn_player,depth,a,b){
+	var best_score=turn_player*9999999*-1;
+	var besthand;
+	if(depth==0){
+		best_score=evalMap(map,turn_player);
+		return [besthand,best_score]
+	}
+    if(a==undefined||b==undefined){
+        a=9999999*turn_player*-1
+        b=9999999*turn_player
+    }
+    
+    var nodeList= getNodeMap(new Array,map,turn_player);
+	for(i in nodeList){
+        var hand=nodeList[i][0];
+		var map=nodeList[i][1];
+        
+        //必勝
+        if(isEnd(turn_player,map)){
+            return [hand,99999*turn_player];
+        }
+        //必敗
+        if(isEnd(turn_player*-1,map)){
+            if(besthand==undefined){
+                best_score=99999*turn_player*-1;
+                besthand=hand;
+            }
+            continue;
+        }
+		var sc  =deepThinkAllAB(map,turn_player*-1,depth-1,b,a)[1]
+		if(besthand==undefined){
+			best_score=sc;
+			besthand=hand;
+		}        
+		if(turn_player==1 &&sc>best_score){
+			best_score=sc;
+			besthand=hand;
+		}else if(turn_player==-1&&sc<best_score){
+			best_score=sc;
+			besthand=hand;
+		}
+        if(turn_player==1&&a<best_score||turn_player==-1&&a>best_score){
+            a= best_score;
+        }
+        if(turn_player==1&&b<=best_score||turn_player==-1&&b>=best_score){
+            break;
+        }
+        
+
+    }
 	return [besthand,best_score]
 }
 

@@ -15,3 +15,12 @@
     color: "#00CC00";
     font-size: 36px;
 }
+#gamename{
+    font-size: 45px;
+}
+#manual{
+    font-size: 10px;
+}
+#newgame{
+    text-align: right;
+}

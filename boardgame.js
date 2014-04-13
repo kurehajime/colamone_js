@@ -181,12 +181,14 @@ function ev_mouseClick(e){
             message="thinking..."
             flush();
             updateMessage();
-            window.setTimeout(function(){
-                ai();   
-                message=""
-                updateMessage();
-                flush();
-            },50);
+            if(winner==""){
+                window.setTimeout(function(){
+                    ai();   
+                    message=""
+                    updateMessage();
+                    flush();
+                },50);
+            }
         }        
     }
     drawFocus();
@@ -201,10 +203,12 @@ function ai(){
 //                       [[new Array(),thisMap],0]
 //                       ,3,99999,-99999)[0][0][0];
     var hand;
-    if($("#fast:checked").val()){
+    if($("input[name='level']:checked").val()==1){
         hand=think(thisMap,turn_player);
+    }else if($("input[name='level']:checked").val()==2){
+        hand=deepThinkAllAB(thisMap,turn_player,3)[0][0];        
     }else{
-        hand=deepThinkAll(thisMap,turn_player,3)[0][0];        
+        hand=deepThinkAllAB(thisMap,turn_player,4)[0][0];        
     }
     
     if(hand){
@@ -571,7 +575,7 @@ function calcScore(){
     var wkBlueCanMove=0;
     var wkRedSCanMove=0;
     var wkBlueLivePoint=0;
-    var wkRedSLivePoint=0;
+    var wkRedLivePoint=0;
     
     var wkWinner="";
     for(var num in thisMap){
