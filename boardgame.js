@@ -4,6 +4,7 @@
 //
 
 var ctx=null;
+var isTouch=true;
 var canv_board=null;
 var canv_board2=null;
 var canv_focus=null;
@@ -128,8 +129,13 @@ $(function(){
     cellSize=ctx.canvas.width/6;
     turn_player=1;
 
-    //イベントを設定
     if('ontouchstart' in window){
+        isTouch=true;
+    }else{
+        isTouch=false;        
+    }
+    //イベントを設定
+    if(isTouch){
         $("#canv").bind('touchstart',ev_mouseClick)
     }else{
         $("#canv").bind('mousemove ',ev_mouseMove)
@@ -297,6 +303,10 @@ function drawFocus(){
     ctx_focus.lineWidth =1;
     ctx_focus.beginPath();
     ctx_focus.fillRect(x, y, cellSize, cellSize);
+    
+    if(isTouch==true &&hover_piece==null){
+        return canv_focus;
+    }
 
     //移動可能マスを強調
     var target=(x/cellSize)*10+(y/cellSize);
