@@ -81,12 +81,12 @@ var PIECES={"1":[1,1,1,
                   0,1,0]
            }
 
-var thisMap={00:[-1,1],10:[-2,1],20:[-3,1],30:[-4,1],40:[-5,1],50:[-6,1],
-               01:[+0,1],11:[+0,1],21:[-8,1],31:[-7,1],41:[+0,1],51:[+0,1],
-               02:[+0,1],12:[+0,1],22:[+0,1],32:[+0,1],42:[+0,1],52:[+0,1],
-               03:[+0,1],13:[+0,1],23:[+0,1],33:[+0,1],43:[+0,1],53:[+0,1],
-               04:[+0,1],14:[+0,1],24:[+7,1],34:[+8,1],44:[+0,1],54:[+0,1],
-               05:[+6,1],15:[+5,1],25:[+4,1],35:[+3,1],45:[+2,1],55:[+1,1]
+var thisMap={  00:-1,10:-2,20:-3,30:-4,40:-5,50:-6,
+               01: 0,11: 0,21:-8,31:-7,41: 0,51: 0,
+               02: 0,12: 0,22: 0,32: 0,42: 0,52: 0,
+               03: 0,13: 0,23: 0,33: 0,43: 0,53: 0,
+               04: 0,14: 0,24: 7,34: 8,44: 0,54: 0,
+               05: 6,15: 5,25: 4,35: 3,45: 2,55: 1,
               }
 
 
@@ -165,7 +165,7 @@ function ev_mouseClick(e){
         return true;
     }
     if(hover_piece==null){
-        if(thisMap[target][0]*turn_player>0){
+        if(thisMap[target]*turn_player>0){
             hover_piece=target;
         }
     }else{
@@ -178,7 +178,7 @@ function ev_mouseClick(e){
         var canm=getCanMovePanel(hover_piece);
         if(canm.indexOf (target)>=0){
             thisMap[target]=thisMap[hover_piece];
-            thisMap[hover_piece]=[0,0];
+            thisMap[hover_piece]=0;
             turn_player=turn_player*-1;
             hover_piece=null;
             
@@ -211,12 +211,12 @@ function ai(){
         var zan=0;
         var p=0;
         for(var i in thisMap){
-            var number=thisMap[i][0];
+            var number=thisMap[i];
             var x = Math.floor(i / 10);
             var y = Math.floor(i % 10);
             if((number>0 && y==0)||(number<0 && y==5)){
                 continue;   
-            }else if(thisMap[i][0]!=0){
+            }else if(thisMap[i]!=0){
                 zan+=1;
             }
         }
@@ -231,7 +231,7 @@ function ai(){
     
     if(hand){
         thisMap[hand[1]]=thisMap[hand[0]];
-        thisMap[hand[0]]=[0,0];
+        thisMap[hand[0]]=0;
         score=evalMap(thisMap,turn_player);
     }
     turn_player=turn_player*-1;
@@ -240,7 +240,7 @@ function ai(){
 function shuffleBoard(){
     //クリア
     for(var num in thisMap){
-        thisMap[num]=[0,1];   
+        thisMap[num]=0;   
     }
     var arr=[1,2,3,4,5,6,7,8];
     var red_num=[0,10,20,30,40,50,21,31];
@@ -252,10 +252,10 @@ function shuffleBoard(){
     }
     
     for(var num in blue_num){
-        thisMap[blue_num[num]]=[arr[num],1];   
+        thisMap[blue_num[num]]=arr[num];   
     }
     for(var num in red_num){
-        thisMap[red_num[num]]=[-1*arr[num],1];   
+        thisMap[red_num[num]]=-1*arr[num];   
     }
 }
 
@@ -286,7 +286,7 @@ function flush(){
     
     //選択したコマを除外
     if(hover_piece!=null){
-        wkMap[hover_piece]=[0,0];
+        wkMap[hover_piece]=0;
     }
     //コマを表示
     ctx.drawImage(drawPieceAll(wkMap), 0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -322,7 +322,7 @@ function drawFocus(){
 
     //移動可能マスを強調
     var target=(x/cellSize)*10+(y/cellSize);
-    if(thisMap[target][0]*turn_player>0){
+    if(thisMap[target]*turn_player>0){
         var canm = getCanMovePanel(target)
         for(var i=0;i<=canm.length-1;i++){
             x=Math.floor(canm[i]/10);
@@ -391,13 +391,13 @@ function drawHoverPiece(){
     var x = mouse_x-(cellSize/2)
     var y = mouse_y-(cellSize/2)
     if(hover_piece!=null){
-        drawPiece(ctx_hover,x,y,thisMap[hover_piece][0]
-                  ,thisMap[hover_piece][1],false)
+        drawPiece(ctx_hover,x,y,thisMap[hover_piece]
+                  ,false)
     }
     return canv_hover_piece;
 }
 //コマを描画する。
-function drawPiece(wkCtx,x,y,number,viewflg,goal){
+function drawPiece(wkCtx,x,y,number,goal){
     var wkColor;
     
     //外枠を描画
@@ -432,43 +432,26 @@ function drawPiece(wkCtx,x,y,number,viewflg,goal){
     wkCtx.textBaseline ="middle";
     wkCtx.textAlign="center";
     wkCtx.beginPath();
-    if(viewflg==1){
-        wkCtx.fillText(Math.abs(number), x+(cellSize/2), y+(cellSize/2));
-    }else{
-        wkCtx.fillText(Math.abs(0), x+(cellSize/2), y+(cellSize/2));
-    }
+    //数字を印字
+    wkCtx.fillText(Math.abs(number), x+(cellSize/2), y+(cellSize/2));
+
     
     //点を描画
-    if(viewflg==1){
-        for(var i =0;i<= PIECES[number].length-1;i++){
-            if(PIECES[number][i]==0){
-                continue;   
-            }
-            var x_dot = x+12+( Math.floor (cellSize-10)/3)*Math.floor (i % 3.0);
-            var y_dot = y+12+( Math.floor (cellSize-10)/3)*Math.floor (i / 3.0);
-
-            if(goal){
-                wkCtx.fillStyle   = COLOR_GOLD;                
-            }else{
-                wkCtx.fillStyle   = COLOR_WHITE;        
-            }
-            wkCtx.beginPath();
-            wkCtx.arc(x_dot, y_dot, 3, 0, Math.PI*2, false);
-            wkCtx.fill();
+    for(var i =0;i<= PIECES[number].length-1;i++){
+        if(PIECES[number][i]==0){
+            continue;   
         }
-    }else{
-            if(number>0){
-                i=1;   
-            }else{
-                i=7;
-            }
-            var x_dot = x+12+( Math.floor (cellSize-10)/3)*Math.floor (i % 3.0);
-            var y_dot = y+12+( Math.floor (cellSize-10)/3)*Math.floor (i / 3.0);
+        var x_dot = x+12+( Math.floor (cellSize-10)/3)*Math.floor (i % 3.0);
+        var y_dot = y+12+( Math.floor (cellSize-10)/3)*Math.floor (i / 3.0);
 
-            wkCtx.fillStyle = COLOR_WHITE;
-            wkCtx.beginPath();
-            wkCtx.arc(x_dot, y_dot, 3, 0, Math.PI*2, false);
-            wkCtx.fill();
+        if(goal){
+            wkCtx.fillStyle   = COLOR_GOLD;                
+        }else{
+            wkCtx.fillStyle   = COLOR_WHITE;        
+        }
+        wkCtx.beginPath();
+        wkCtx.arc(x_dot, y_dot, 3, 0, Math.PI*2, false);
+        wkCtx.fill();
     }
     
     
@@ -483,13 +466,13 @@ function drawPieceAll(wkMap){
         for(y=0;y<6;y++){
             if(wkMap[x*10+y]!=0){
                 var goal=false;
-                if(y*cellSize,wkMap[x*10+y][0]>0 & y==0){
+                if(y*cellSize,wkMap[x*10+y]>0 & y==0){
                     goal=true;
-                }else if(y*cellSize,wkMap[x*10+y][0]<0 & y==5){
+                }else if(y*cellSize,wkMap[x*10+y]<0 & y==5){
                     goal=true;
                 }
                 ctx_pieces=drawPiece(ctx_pieces,x*cellSize
-                                        ,y*cellSize,wkMap[x*10+y][0],wkMap[x*10+y][1],goal);
+                                        ,y*cellSize,wkMap[x*10+y],goal);
             }
         }
     }
@@ -528,7 +511,7 @@ function drawOverlay(){
 
 //動かせるマスを返す。Return:[NN,NN,NN]
 function getCanMovePanel(panel_num){
-    var number = thisMap[panel_num][0];
+    var number = thisMap[panel_num];
     var x = Math.floor(panel_num / 10);
     var y = Math.floor(panel_num % 10);
     var canMove=new Array;
@@ -552,7 +535,7 @@ function getCanMovePanel(panel_num){
         if(target_x<0 || target_y<0|target_x>5|target_y>5 ){
             continue;
         }
-        var target_number=thisMap[target_x*10+target_y][0];
+        var target_number=thisMap[target_x*10+target_y];
         if(target_number*number>0){
             continue;   
         }
@@ -603,25 +586,25 @@ function calcScore(){
     for(var num in thisMap){
         //アガリ判定
         var y = Math.floor(num % 10);
-        if(y==0&thisMap[num][0]>0){
-            wkBlueScore+= Math.abs(thisMap[num][0]);
-        }else if(y==5&thisMap[num][0]<0){
-            wkRedScore+=Math.abs(thisMap[num][0]);
+        if(y==0&thisMap[num]>0){
+            wkBlueScore+= Math.abs(thisMap[num]);
+        }else if(y==5&thisMap[num]<0){
+            wkRedScore+=Math.abs(thisMap[num]);
         }else{
             //現在生きているコマ
             if(thisMap[num][0]>0){
-                wkBlueLivePoint+=thisMap[num][0]
-            }else if(thisMap[num][0]>0){
-                wkRedLivePoint+=thisMap[num][0]
+                wkBlueLivePoint+=thisMap[num]
+            }else if(thisMap[num]>0){
+                wkRedLivePoint+=thisMap[num]
             }
         }
         
         //動かせるか。
         if(wkBlueCanMove==0 || wkRedSCanMove==0){
             if(getCanMovePanel(num).length!=0){
-                if(thisMap[num][0]>0){
+                if(thisMap[num]>0){
                     wkBlueCanMove+=1;
-                }else if(thisMap[num][0]<0){
+                }else if(thisMap[num]<0){
                     wkRedSCanMove+=1;
                 }                
             }

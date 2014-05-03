@@ -47,12 +47,12 @@ var PIECES={"1":[1,1,1,
                   0,0,0,
                   0,1,0]
            }
-var whiteMap={00:[+0,0],10:[+0,0],20:[+0,0],30:[+0,0],40:[+0,0],50:[+0,0],
-               01:[+0,0],11:[+0,0],21:[+0,0],31:[+0,0],41:[+0,0],51:[+0,0],
-               02:[+0,0],12:[+0,0],22:[+0,0],32:[+0,0],42:[+0,0],52:[+0,0],
-               03:[+0,0],13:[+0,0],23:[+0,0],33:[+0,0],43:[+0,0],53:[+0,0],
-               04:[+0,0],14:[+0,0],24:[+0,0],34:[+0,0],44:[+0,0],54:[+0,0],
-               05:[+0,0],15:[+0,0],25:[+0,0],35:[+0,0],45:[+0,0],55:[+0,0]
+var whiteMap={00:0,10:0,20:0,30:0,40:0,50:0,
+               01:0,11:0,21:0,31:0,41:0,51:0,
+               02:0,12:0,22:0,32:0,42:0,52:0,
+               03:0,13:0,23:0,33:0,43:0,53:0,
+               04:0,14:0,24:0,34:0,44:0,54:0,
+               05:0,15:0,25:0,35:0,45:0,55:0
               }
 
 var POSI_BONUS= {1:[0,50,100,150,300,1000],
@@ -80,7 +80,7 @@ var score=0;
 function copyMap(wkMap){
     var rtnMap=new Object();
     for(var num in wkMap){
-        rtnMap[num]=[wkMap[num][0],wkMap[num][1]];
+        rtnMap[num]=wkMap[num];
     }
     return rtnMap;
 }
@@ -90,14 +90,14 @@ function copyMap(wkMap){
 function isEnd(turn_player,wkMap){
     var sum=0;
     if(turn_player>0){       
-        sum+=wkMap[0][0]+wkMap[10][0]+wkMap[20][0]
-            +wkMap[30][0]+wkMap[40][0]+wkMap[50][0];
+        sum+=wkMap[0]+wkMap[10]+wkMap[20]
+            +wkMap[30]+wkMap[40]+wkMap[50];
         if(sum>=8){
             return true;
         }
     }else if(turn_player<0){
-        sum+=wkMap[5][0]+wkMap[15][0]+wkMap[25][0]
-            +wkMap[35][0]+wkMap[45][0]+wkMap[55][0];
+        sum+=wkMap[5]+wkMap[15]+wkMap[25]
+            +wkMap[35]+wkMap[45]+wkMap[55];
         if(sum<=-8){
             return true;
         }
@@ -107,10 +107,10 @@ function isEnd(turn_player,wkMap){
 
 //動かせるマスを返す。Return:[NN,NN,NN...]
 function getCanMovePanelX(panel_num,wkMap,ownflag){
-    var number = wkMap[panel_num][0];
+    var number = wkMap[panel_num];
     var x = Math.floor(panel_num / 10);
     var y = Math.floor(panel_num % 10);
-    var canMove=[];
+    var canMove=new Array;
     if(number==0){
         return canMove;   
     }
@@ -130,7 +130,7 @@ function getCanMovePanelX(panel_num,wkMap,ownflag){
         if(target_x<0 || target_y<0||target_x>5||target_y>5 ){
             continue;
         }
-        var target_number=wkMap[target_x*10+target_y][0];
+        var target_number=wkMap[target_x*10+target_y];
         if(target_number*number>0 && ownflag==false){
             continue;   
         }
@@ -148,7 +148,7 @@ function getCanMovePanelX(panel_num,wkMap,ownflag){
 function getNodeMap(queue,wkMap,turn_player){
     var nodeList=new Array;
     for(var panel_num in wkMap){
-        if(wkMap[panel_num][0]*turn_player<=0){
+        if(wkMap[panel_num]*turn_player<=0){
             continue;
         }
         var canMove=getCanMovePanelX(panel_num,wkMap,false);
@@ -157,7 +157,7 @@ function getNodeMap(queue,wkMap,turn_player){
             var q=queue.concat();
             q.push([panel_num,canMove[num]])
             nodeMap[canMove[num]]=nodeMap[panel_num];
-            nodeMap[panel_num]=[0,0];
+            nodeMap[panel_num]=0;
             nodeList.push([q,nodeMap]);
         }
     }
@@ -169,18 +169,21 @@ function getNodeMap(queue,wkMap,turn_player){
 
 //ZOCを返す。 Return:Map{NN:[Blue,Red]}
 function getZOC(wkMap,turn_player){
-    var zocMap=copyMap(whiteMap);
+    var zocMap=new Object();
+    for(i in whiteMap){
+        zocMap[i]=[0,0];
+    }
     var canMove;
     for(var panel_num in wkMap){
-        if(wkMap[panel_num][0]*turn_player>0){
+        if(wkMap[panel_num]*turn_player>0){
             canMove=getCanMovePanelX(panel_num,wkMap,false)
-        }else if (wkMap[panel_num][0]*turn_player<0){
+        }else if (wkMap[panel_num]*turn_player<0){
             canMove=getCanMovePanelX(panel_num,wkMap,true)            
         }
         for(var num in canMove){
-            if(wkMap[panel_num][0]>0){
+            if(wkMap[panel_num]>0){
                 zocMap[canMove[num]][0]+=1;
-            }else if(wkMap[panel_num][0]<0){
+            }else if(wkMap[panel_num]<0){
                 zocMap[canMove[num]][1]+=1;
             }
         }
@@ -206,14 +209,14 @@ function evalMap(wkMap,turn_player){
     //次にすぐに取られる運命のコマは死んだあつかい。
     for(var panel_num in evMap){
         z=zocMap[panel_num][0]-zocMap[panel_num][1];            
-        if(turn_player*z<0 &&turn_player*evMap[panel_num][0]>0){
-            if(evMap[panel_num][0]>0){
-                ev+=PIECE_POINT[Math.abs(evMap[panel_num][0])]*0.5;
-            }else if(evMap[panel_num][0]<0){
-                ev+=PIECE_POINT[Math.abs(evMap[panel_num][0])]*-1*0.5;
+        if(turn_player*z<0 &&turn_player*evMap[panel_num]>0){
+            if(evMap[panel_num]>0){
+                ev+=PIECE_POINT[Math.abs(evMap[panel_num])]*0.5;
+            }else if(evMap[panel_num]<0){
+                ev+=PIECE_POINT[Math.abs(evMap[panel_num])]*-1*0.5;
             }
             
-            evMap[panel_num]=[0,0];
+            evMap[panel_num]=0;
         }
     }
     zocMap=getZOC(evMap,turn_player);
@@ -223,7 +226,7 @@ function evalMap(wkMap,turn_player){
     //評価
     for(var panel_num in evMap){
         var cell_p=0;
-        var p=evMap[panel_num][0];
+        var p=evMap[panel_num];
         var z;
         if(turn_player==1){
             z=zocMap[panel_num][0]-zocMap[panel_num][1]*1.1;            
