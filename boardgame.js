@@ -203,16 +203,28 @@ function ev_mouseClick(e){
 }
 //AIに考えてもらう。
 function ai(){
-//  var hand=think(thisMap,turn_player);
-
-//    var hand=deepThink(-1,-1,
-//                       [[new Array(),thisMap],0]
-//                       ,3,99999,-99999)[0][0][0];
     var hand;
     if($("input[name='level']:checked").val()==1){
         hand=think(thisMap,turn_player);
     }else if($("input[name='level']:checked").val()==2){
-        hand=deepThinkAllAB(thisMap,turn_player,3)[0][0];        
+        //終盤になったら長考してみる。
+        var zan=0;
+        var p=0;
+        for(var i in thisMap){
+            var number=thisMap[i][0];
+            var x = Math.floor(i / 10);
+            var y = Math.floor(i % 10);
+            if((number>0 && y==0)||(number<0 && y==5)){
+                continue;   
+            }else if(thisMap[i][0]!=0){
+                zan+=1;
+            }
+        }
+        if(zan<7){
+            p+=1;
+        }
+        
+        hand=deepThinkAllAB(thisMap,turn_player,3+p)[0][0];        
     }else{
         hand=deepThinkAllAB(thisMap,turn_player,4)[0][0];        
     }
