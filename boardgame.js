@@ -595,7 +595,7 @@ function calcScore(){
             if(thisMap[num][0]>0){
                 wkBlueLivePoint+=thisMap[num]
             }else if(thisMap[num]>0){
-                wkRedLivePoint+=thisMap[num]
+                wkRedLivePoint+=Math.abs(thisMap[num])
             }
         }
         
