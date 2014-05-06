@@ -592,9 +592,9 @@ function calcScore(){
             wkRedScore+=Math.abs(thisMap[num]);
         }else{
             //現在生きているコマ
-            if(thisMap[num][0]>0){
-                wkBlueLivePoint+=thisMap[num]
-            }else if(thisMap[num]>0){
+            if(thisMap[num]>0){
+                wkBlueLivePoint+=Math.abs(thisMap[num])
+            }else if(thisMap[num]<0){
                 wkRedLivePoint+=Math.abs(thisMap[num])
             }
         }
