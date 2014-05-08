@@ -18,6 +18,7 @@ var blueScore=0;
 var redScore=0;
 var winner=0;
 var message="";
+var thinktime=0.0;
 var COLOR_LINE="#333333";
 var COLOR_PANEL_1="#550025";
 var COLOR_PANEL_2="#003856";
@@ -204,6 +205,9 @@ function ev_mouseClick(e){
 //AIに考えてもらう。
 function ai(){
     var hand;
+    var startTime = new Date();
+    var endTime;
+    
     if($("input[name='level']:checked").val()==1){
         hand=think(thisMap,turn_player);
     }else if($("input[name='level']:checked").val()==2){
@@ -235,6 +239,9 @@ function ai(){
         score=evalMap(thisMap,turn_player);
     }
     turn_player=turn_player*-1;
+    endTime=new Date();
+    thinktime=(endTime-startTime)/1000;
+    
 }
 //盤面をシャッフル
 function shuffleBoard(){
@@ -565,6 +572,10 @@ function updateMessage(){
     $("#blue")[0].innerHTML=blueScore;                  
     $("#red")[0].innerHTML=redScore;
     $("#score")[0].innerHTML=score;
+    
+    $("#time")[0].innerHTML="("+(thinktime)+"sec)";
+
+    
     if(winner==1){
         message="You Win!"
     }else if(winner==-1){

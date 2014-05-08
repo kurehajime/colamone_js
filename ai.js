@@ -47,12 +47,12 @@ var PIECES={"1":[1,1,1,
                   0,0,0,
                   0,1,0]
            }
-var whiteMap={00:0,10:0,20:0,30:0,40:0,50:0,
-               01:0,11:0,21:0,31:0,41:0,51:0,
-               02:0,12:0,22:0,32:0,42:0,52:0,
-               03:0,13:0,23:0,33:0,43:0,53:0,
-               04:0,14:0,24:0,34:0,44:0,54:0,
-               05:0,15:0,25:0,35:0,45:0,55:0
+var whiteMap={0:0,10:0,20:0,30:0,40:0,50:0,
+               1:0,11:0,21:0,31:0,41:0,51:0,
+               2:0,12:0,22:0,32:0,42:0,52:0,
+               3:0,13:0,23:0,33:0,43:0,53:0,
+               4:0,14:0,24:0,34:0,44:0,54:0,
+               5:0,15:0,25:0,35:0,45:0,55:0
               }
 
 var POSI_BONUS= {1:[0,50,100,150,300,1000],
@@ -207,6 +207,7 @@ function evalMap(wkMap,turn_player){
     
 
     //次にすぐに取られる運命のコマは死んだあつかい。
+    var deathflag=0;
     for(var panel_num in evMap){
         z=zocMap[panel_num][0]-zocMap[panel_num][1];            
         if(turn_player*z<0 &&turn_player*evMap[panel_num]>0){
@@ -215,12 +216,14 @@ function evalMap(wkMap,turn_player){
             }else if(evMap[panel_num]<0){
                 ev+=PIECE_POINT[Math.abs(evMap[panel_num])]*-1*0.5;
             }
-            
             evMap[panel_num]=0;
+            deathflag=1;
         }
     }
-    zocMap=getZOC(evMap,turn_player);
-
+    if(deathflag==1){
+        zocMap=getZOC(evMap,turn_player);    
+    }
+    
 
     
     //評価
