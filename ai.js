@@ -64,17 +64,17 @@ var POSI_BONUS= {1:[0,50,100,150,300,1000],
                 7:[0,110,220,1050,2100,7000],
                 8:[0,120,240,1200,3100,10000]
                  }
-var PIECE_POINT={1:3500,
-                 2:3500,
-                 3:2800,
-                 4:2800,
-                 5:2600,
-                 6:2600,
-                 7:2400,
-                 8:2400
+var PIECE_POINT={1:3600,
+                 2:3600,
+                 3:2900,
+                 4:2900,
+                 5:2700,
+                 6:2700,
+                 7:2500,
+                 8:2500
                 }
 var ZOC_POINTS=[80,80,80,80,80,160];
-var EFF_POINTS=[100,100,100,100,100,160];
+var EFF_POINTS=[250,250,250,250,250,250];
 var score=0;
 var NEARWIN_POINT=6000;
 
@@ -284,7 +284,7 @@ function getZOC(wkMap,turn_player){
             continue;   
         }
         if(wkMap[panel_num]*turn_player>0){
-            canMove=getCanMovePanelX(panel_num,wkMap,false)
+            canMove=getCanMovePanelX(panel_num,wkMap,true)
         }else if (wkMap[panel_num]*turn_player<0){
             canMove=getCanMovePanelX(panel_num,wkMap,true)            
         }

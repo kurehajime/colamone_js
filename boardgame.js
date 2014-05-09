@@ -227,8 +227,17 @@ function ai(){
         if(zan<7){
             p+=1;
         }
+        hand=deepThinkAllAB(thisMap,turn_player,3+p)[0][0];  
         
-        hand=deepThinkAllAB(thisMap,turn_player,3+p)[0][0];        
+        //合議制で却下
+        var h0=think(thisMap,turn_player,1); 
+        var h1=deepThinkAllAB(thisMap,turn_player,1)[0][0]; 
+        var h2=deepThinkAllAB(thisMap,turn_player,2)[0][0]; 
+        if(h0.toString()==h1.toString()&&h1.toString()==h2.toString()){
+            hand=h0;
+        }
+        
+        
     }else{
         hand=deepThinkAllAB(thisMap,turn_player,4)[0][0];        
     }
