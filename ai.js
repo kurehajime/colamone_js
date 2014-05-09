@@ -1,3 +1,4 @@
+"use strict"
 var PIECES={"1":[1,1,1,
                  1,0,1,
                  1,1,1],
@@ -141,7 +142,7 @@ function isEnd(turn_player,wkMap){
     //全滅勝利
     sum=0;
     if(turn_player>0){
-        for(num in wkMap){
+        for(var num in wkMap){
             if(wkMap[num]<0){
                 sum+=Math.abs(wkMap[num]);   
             }
@@ -163,13 +164,13 @@ function isEnd(turn_player,wkMap){
 function isEndNear(turn_player,wkMap){
     var sum=0;
     if(turn_player>0){
-        for(num in wkMap){
+        for(var num in wkMap){
             if(wkMap[num]<0){
                 sum+=Math.abs(wkMap[num]);   
             }
         }
     }else if(turn_player<0){
-        for(num in wkMap){
+        for(var num in wkMap){
             if(wkMap[num]>0){
                 sum+=Math.abs(wkMap[num]);   
             }
@@ -284,7 +285,7 @@ function getZOC(wkMap,turn_player){
             continue;   
         }
         if(wkMap[panel_num]*turn_player>0){
-            canMove=getCanMovePanelX(panel_num,wkMap,true)
+            canMove=getCanMovePanelX(panel_num,wkMap,true)//最後の引数をfalseにすると保守的になる。
         }else if (wkMap[panel_num]*turn_player<0){
             canMove=getCanMovePanelX(panel_num,wkMap,true)            
         }
@@ -466,7 +467,7 @@ function deepThinkAllAB(map,turn_player,depth,a,b){
     }
     
     var nodeList= getNodeMap(new Array,map,turn_player);
-	for(i in nodeList){
+	for(var i in nodeList){
         var hand=nodeList[i][0];
 		var map=nodeList[i][1];
         
