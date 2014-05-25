@@ -346,32 +346,27 @@ function evalMap(wkMap,turn_player){
         var p=evMap[panel_num];
         var z;
         var line;
-        if(turn_player===1){
-            z=zocMap[panel_num][0]-zocMap[panel_num][1]*1.1;            
-        }else{
-            z=zocMap[panel_num][0]*1.1-zocMap[panel_num][1];
-        }
+        z=zocMap[panel_num][0]-zocMap[panel_num][1];
+
         
         //コマの評価値を加算
         if(p>0){
             line=5-(panel_num % 10)
             cell_p+=PIECE_POINT[Math.abs(p)];//コマの標準評価値
             cell_p+=POSI_BONUS[p][line];//ポジションボーナス
-            if(z<0){
-                 cell_p=cell_p*0.01;//ZOCでせり負けたら無価値。
-            }
             line=5-(panel_num % 10)
-            cell_p+=EFF_POINTS[line]*z;//協力ボーナス
         }else if(p<0){
             line=(panel_num % 10)
             cell_p+=PIECE_POINT[Math.abs(p)] *-1;
             cell_p+=POSI_BONUS[Math.abs(p)][line]*-1;
-            if(z>0){
-                 cell_p=cell_p*0.01;
-            }
             line=(panel_num % 10)
-            cell_p+=EFF_POINTS[line]*z;            
         }
+        //ZOC連携ボーナス
+        if (p * z > 0) {
+            cell_p+=EFF_POINTS[line]*z;//協力ボーナス
+        }
+        
+
         //空き地ZOCボーナス
         if(z>0.5){
             line=5-(panel_num % 10)
