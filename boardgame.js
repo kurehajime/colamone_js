@@ -587,67 +587,60 @@ function updateMessage(){
    
 }
 function calcScore(){
-    var wkBlueScore=0;
-    var wkRedScore=0;
-    var wkBlueCanMove=0;
-    var wkRedSCanMove=0;
-    var wkBlueLivePoint=0;
-    var wkRedLivePoint=0;
-    
-    var wkWinner="";
-    for(var num in thisMap){
-        //アガリ判定
-        var y = Math.floor(num % 10);
-        if(y==0&thisMap[num]>0){
-            wkBlueScore+= Math.abs(thisMap[num]);
-        }else if(y==5&thisMap[num]<0){
-            wkRedScore+=Math.abs(thisMap[num]);
-        }else{
-            //現在生きているコマ
-            if(thisMap[num]>0){
-                wkBlueLivePoint+=Math.abs(thisMap[num])
-            }else if(thisMap[num]<0){
-                wkRedLivePoint+=Math.abs(thisMap[num])
+    var sum1=0;
+    var sum2=0;
+    var GoalTop=[0,10,20,30,40,50];
+    var GoalBottom=[5,15,25,35,45,55]; 
+    //点数勝利        
+    for(var i in GoalTop){
+        if(thisMap[GoalTop[i]]*1>0){
+            sum1+=thisMap[GoalTop[i]];
+        }
+    }
+    for(var i in GoalBottom){
+        if(thisMap[GoalBottom[i]]*-1>0){
+            sum2+=thisMap[GoalBottom[i]];
+        }
+    }
+    if(sum1>=8){
+        winner= 1;
+    }else if(sum2<=-8){
+        winner= -1;
+    }
+
+    //手詰まりは判定
+    if(isNoneNode(thisMap)){
+        if(Math.abs(sum1)>Math.abs(sum2)){
+            winner= 1;
+        }else{//引き分けは後攻勝利
+            winner= -1;
+        }
+    }
+    blueScore=Math.abs(sum1);
+    redScore=Math.abs(sum2);
+}
+function isEnd(wkMap){
+ 
+}
+//手詰まり判定
+function isNoneNode(wkMap){
+    var flag1=false;
+    var flag2=false;
+    for(var panel_num in wkMap){
+        if(wkMap[panel_num]==0){
+            continue;
+        }
+        var canMove=getCanMovePanelX(panel_num,wkMap,false);
+        if(canMove.length!=0){
+            if(wkMap[panel_num]>0){
+                flag1=true;
+            }else if(wkMap[panel_num]<0){
+                flag2=true;
             }
         }
-        
-        //動かせるか。
-        if(wkBlueCanMove==0 || wkRedSCanMove==0){
-            if(getCanMovePanel(num).length!=0){
-                if(thisMap[num]>0){
-                    wkBlueCanMove+=1;
-                }else if(thisMap[num]<0){
-                    wkRedSCanMove+=1;
-                }                
-            }
+        if(flag1&&flag2){
+            return false;
         }
     }
-    
-    //動かせなくなったら負け
-    if(wkRedSCanMove==0 && turn_player==-1){
-        wkWinner=1;
-    }else if(wkBlueCanMove==0 && turn_player==1){
-        wkWinner=-1;
-    }
-    if(wkBlueLivePoint+wkBlueScore<8 &&wkRedLivePoint+wkRedScore<8){
-        if(wkBlueScore<wkRedScore){
-            wkWinner=1;
-        }else if(wkBlueScore>wkRedScore){
-            wkWinner=-1;
-        }else if(wkBlueLivePoint<wkRedLivePoint){
-            wkWinner=1;
-        }else if(wkBlueLivePoint>wkRedLivePoint){
-            wkWinner=-1;
-        }
-    }
-    
-    //点数で勝利
-    if(wkBlueScore>=8){
-        wkWinner=1;
-    }else if(wkRedScore>=8){
-        wkWinner=-1;
-    }
-    blueScore=wkBlueScore;
-    redScore=wkRedScore;
-    winner=wkWinner;
+    return true;
 }

@@ -74,10 +74,9 @@ var PIECE_POINT={1:3600,
                  7:2500,
                  8:2500
                 }
-var ZOC_POINTS=[80,80,80,80,80,160];
-var EFF_POINTS=[250,250,250,250,250,250];
+var ZOC_POINTS=80;
+var EFF_POINTS=250;
 var score=0;
-var NEARWIN_POINT=6000;
 
 function copyMap(wkMap){
     var rtnMap=new Object();
@@ -122,66 +121,78 @@ function copyMap(wkMap){
 }
 
 
-//終局判定。Return:Bool
-function isEnd(turn_player,wkMap){
-    var sum=0;
-    //点数勝利
-    if(turn_player>0){       
-        sum+=wkMap[0]+wkMap[10]+wkMap[20]
-            +wkMap[30]+wkMap[40]+wkMap[50];
-        if(sum>=8){
-            return true;
-        }
-    }else if(turn_player<0){
-        sum+=wkMap[5]+wkMap[15]+wkMap[25]
-            +wkMap[35]+wkMap[45]+wkMap[55];
-        if(sum<=-8){
-            return true;
-        }
-    }
-    //全滅勝利
-    sum=0;
-    if(turn_player>0){
-        for(var num in wkMap){
-            if(wkMap[num]<0){
-                sum+=Math.abs(wkMap[num]);   
-            }
-        }
-    }else if(turn_player<0){
-        for(num in wkMap){
-            if(wkMap[num]>0){
-                sum+=Math.abs(wkMap[num]);   
-            }
-        }
-    }
-    if(sum===0){
-        return true;
-    }
-    return false;        
 
-}
-//ほぼ勝ち判定。Return:Bool
-function isEndNear(turn_player,wkMap){
-    var sum=0;
-    if(turn_player>0){
-        for(var num in wkMap){
-            if(wkMap[num]<0){
-                sum+=Math.abs(wkMap[num]);   
-            }
-        }
-    }else if(turn_player<0){
-        for(var num in wkMap){
-            if(wkMap[num]>0){
-                sum+=Math.abs(wkMap[num]);   
-            }
+function isEndX(wkMap){
+    var sum1=0;
+    var sum2=0;
+    var GoalTop=[0,10,20,30,40,50];
+    var GoalBottom=[5,15,25,35,45,55]; 
+    //点数勝利        
+    for(var i in GoalTop){
+        if(wkMap[GoalTop[i]]*1>0){
+            sum1+=wkMap[GoalTop[i]];
         }
     }
-    if(sum<8){
-        return true;
-    }else{
-        return false;        
+    for(var i in GoalBottom){
+        if(wkMap[GoalBottom[i]]*-1>0){
+            sum2+=wkMap[GoalBottom[i]];
+        }
     }
+    if(sum1>=8){
+        return 1;
+    }else if(sum2<=-8){
+        return -1;
+    }
+
+    //手詰まりは判定
+    if(isNoneNode(wkMap)){
+        if(Math.abs(sum1)>Math.abs(sum2)){
+            return 1;
+        }else{//引き分けは後攻勝利
+            return -1;
+        }
+    }
+    //実質的判定勝利勝利
+    var live1=0;
+    var live2=0; 
+    for(var num in wkMap){
+        if(wkMap[num]>0){
+            live1+=Math.abs(wkMap[num]);
+        }else if(wkMap[num]<0){
+            live2+=Math.abs(wkMap[num]);
+        }
+    }
+    if(sum1>live2){
+        return 1;
+    }else if(sum2<=-1*live1){
+        return -1;
+    }
+    
+    return 0;   
 }
+//手詰まり判定
+function isNoneNode(wkMap){
+    var flag1=false;
+    var flag2=false;
+    for(var panel_num in wkMap){
+        if(wkMap[panel_num]==0){
+            continue;
+        }
+        var canMove=getCanMovePanelX(panel_num,wkMap,false);
+        if(canMove.length!=0){
+            if(wkMap[panel_num]>0){
+                flag1=true;
+            }else if(wkMap[panel_num]<0){
+                flag2=true;
+            }
+        }
+        if(flag1&&flag2){
+            return false;
+        }
+    }
+    return true;
+}
+
 //動かせるマスを返す。Return:[NN,NN,NN...]
 function getCanMovePanelX(panel_num,wkMap,ownflag){
     var number = wkMap[panel_num];
@@ -305,16 +316,11 @@ function evalMap(wkMap,turn_player){
     var zocMap;
     var evMap=copyMap(wkMap);
     //終局判定
-    if(isEnd(+1,evMap)){
+    var end=isEndX(evMap);
+    if(end==1){
         return +999999;
-    }else if(isEnd(-1,evMap)){
+    }else if(end==-1){
         return -999999;
-    }
-    if(isEndNear(+1,evMap)){
-        ev=NEARWIN_POINT;
-    }
-    if(isEndNear(-1,evMap)){
-        ev=NEARWIN_POINT*-1;
     }
     //ZOC計算
     zocMap=getZOC(evMap,turn_player);
@@ -325,11 +331,6 @@ function evalMap(wkMap,turn_player){
     for(var panel_num in evMap){
         z=zocMap[panel_num][0]-zocMap[panel_num][1];            
         if(turn_player*z<0 &&turn_player*evMap[panel_num]>0){
-            if(evMap[panel_num]>0){
-                ev+=PIECE_POINT[Math.abs(evMap[panel_num])]*0.5;
-            }else if(evMap[panel_num]<0){
-                ev+=PIECE_POINT[Math.abs(evMap[panel_num])]*-1*0.5;
-            }
             evMap[panel_num]=0;
             deathflag=true;
         }
@@ -363,17 +364,17 @@ function evalMap(wkMap,turn_player){
         }
         //ZOC連携ボーナス
         if (p * z > 0) {
-            cell_p+=EFF_POINTS[line]*z;//協力ボーナス
+            cell_p+=EFF_POINTS*z;//協力ボーナス
         }
         
 
         //空き地ZOCボーナス
         if(z>0.5){
             line=5-(panel_num % 10)
-            cell_p+=ZOC_POINTS[line]*z;
+            cell_p+=ZOC_POINTS*z;
         }else if(z<-0.5){
             line=(panel_num % 10)
-            cell_p+=ZOC_POINTS[line]*z;            
+            cell_p+=ZOC_POINTS*z;            
         }
         //評価値に加算。
         ev+=cell_p;
@@ -421,11 +422,11 @@ function deepThinkAll(map,turn_player,depth){
 		var map=nodeList[i][1];
         
         //必勝
-        if(isEnd(turn_player,map)){
+        if(isEndX(map)==turn_player){
             return [hand,99999*turn_player];
         }
         //必敗
-        if(isEnd(turn_player*-1,map)){
+        if(isEndX(map)==turn_player*-1){
             if(besthand===undefined){
                 best_score=99999*turn_player*-1;
                 besthand=hand;
@@ -467,11 +468,12 @@ function deepThinkAllAB(map,turn_player,depth,a,b){
 		var map=nodeList[i][1];
         
         //必勝
-        if(isEnd(turn_player,map)){
+        var end=isEndX(map);
+        if(end==turn_player){
             return [hand,999999*turn_player];
         }
         //必敗
-        if(isEnd(turn_player*-1,map)){
+        if(end==turn_player*-1){
             if(besthand==undefined){
                 best_score=999999*turn_player*-1;
                 besthand=hand;
