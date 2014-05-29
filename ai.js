@@ -74,8 +74,6 @@ var PIECE_POINT={1:3600,
                  7:2500,
                  8:2500
                 }
-var ZOC_POINTS=80;
-var EFF_POINTS=250;
 var score=0;
 
 function copyMap(wkMap){
@@ -120,8 +118,7 @@ function copyMap(wkMap){
     return rtnMap;
 }
 
-
-
+//終了判定
 function isEndX(wkMap){
     var sum1=0;
     var sum2=0;
@@ -129,7 +126,7 @@ function isEndX(wkMap){
     var GoalBottom=[5,15,25,35,45,55]; 
     //点数勝利        
     for(var i in GoalTop){
-        if(wkMap[GoalTop[i]]*1>0){
+        if(wkMap[GoalTop[i]]>0){
             sum1+=wkMap[GoalTop[i]];
         }
     }
@@ -146,7 +143,7 @@ function isEndX(wkMap){
 
     //手詰まりは判定
     if(isNoneNode(wkMap)){
-        if(Math.abs(sum1)>Math.abs(sum2)){
+        if(sum1>(-1*sum2)){
             return 1;
         }else{//引き分けは後攻勝利
             return -1;
@@ -157,14 +154,14 @@ function isEndX(wkMap){
     var live2=0; 
     for(var num in wkMap){
         if(wkMap[num]>0){
-            live1+=Math.abs(wkMap[num]);
+            live1+=wkMap[num];
         }else if(wkMap[num]<0){
-            live2+=Math.abs(wkMap[num]);
+            live2+=wkMap[num];
         }
     }
-    if(sum1>live2){
+    if(sum1>(-1*live2)){
         return 1;
-    }else if(sum2<=-1*live1){
+    }else if(-1*sum2>=live1){
         return -1;
     }
     
@@ -178,7 +175,7 @@ function isNoneNode(wkMap){
         if(wkMap[panel_num]==0){
             continue;
         }
-        var canMove=getCanMovePanelX(panel_num,wkMap,false);
+        var canMove=getCanMovePanelX(panel_num,wkMap);
         if(canMove.length!=0){
             if(wkMap[panel_num]>0){
                 flag1=true;
@@ -194,7 +191,7 @@ function isNoneNode(wkMap){
 }
 
 //動かせるマスを返す。Return:[NN,NN,NN...]
-function getCanMovePanelX(panel_num,wkMap,ownflag){
+function getCanMovePanelX(panel_num,wkMap){
     var number = wkMap[panel_num];
     var x = Math.floor(panel_num / 10);
     var y = Math.floor(panel_num % 10);
@@ -214,16 +211,14 @@ function getCanMovePanelX(panel_num,wkMap,ownflag){
         }
         var target_x= x + Math.floor(i%3)-1;
         var target_y= y + Math.floor(i/3)-1;
-        if(target_x<0 || target_y<0||target_x>5||target_y>5 ){
+        if(target_y<0 || target_y>5 || target_x>5 || target_x<0 ){
             continue;
         }
         var idx=target_x*10+target_y;
         var target_number=wkMap[idx];
-        if(ownflag===false&&target_number*number>0){
-            continue;   
-        }
-        //アガリのコマはとったらダメ。
-        if((target_number>0 && target_y===0)||(target_number<0 &&target_y===5)){
+
+        //自コマとアガリのコマはとったらダメ。
+        if((target_number*number>0)||(target_number>0 && target_y===0)||(target_number<0 &&target_y===5)){
             continue;   
         }
         canMove.push(idx);
@@ -231,13 +226,14 @@ function getCanMovePanelX(panel_num,wkMap,ownflag){
     return canMove;
 }
 //起こりうる次の一手を返す。Return:[[q,map0],[qmap1],[q,map2]...] //q=[prev,next]
-function getNodeMap(queue,wkMap,turn_player){
+function getNodeMap(wkMap,turn_player){
     var nodeList=new Array;
+    var queue=new Array();
     for(var panel_num in wkMap){
         if(wkMap[panel_num]*turn_player<=0){
             continue;
         }
-        var canMove=getCanMovePanelX(panel_num,wkMap,false);
+        var canMove=getCanMovePanelX(panel_num,wkMap);
         for(var num in canMove){
             var nodeMap=copyMap(wkMap);
             var q=queue.concat();
@@ -250,66 +246,6 @@ function getNodeMap(queue,wkMap,turn_player){
     return nodeList;
 }
 
-//ZOCを返す。 Return:Map{NN:[Blue,Red]}
-function getZOC(wkMap,turn_player){
-    var zocMap=new Object();
-    //不格好だがループするより高速。
-    zocMap[0]=[0,0];
-    zocMap[10]=[0,0];
-    zocMap[20]=[0,0];
-    zocMap[30]=[0,0];
-    zocMap[40]=[0,0];
-    zocMap[50]=[0,0];
-    zocMap[1]=[0,0];
-    zocMap[11]=[0,0];
-    zocMap[21]=[0,0];
-    zocMap[31]=[0,0];
-    zocMap[41]=[0,0];
-    zocMap[51]=[0,0];
-    zocMap[2]=[0,0];
-    zocMap[12]=[0,0];
-    zocMap[22]=[0,0];
-    zocMap[32]=[0,0];
-    zocMap[42]=[0,0];
-    zocMap[52]=[0,0];
-    zocMap[3]=[0,0];
-    zocMap[13]=[0,0];
-    zocMap[23]=[0,0];
-    zocMap[33]=[0,0];
-    zocMap[43]=[0,0];
-    zocMap[53]=[0,0];
-    zocMap[4]=[0,0];
-    zocMap[14]=[0,0];
-    zocMap[24]=[0,0];
-    zocMap[34]=[0,0];
-    zocMap[44]=[0,0];
-    zocMap[54]=[0,0];
-    zocMap[5]=[0,0];
-    zocMap[15]=[0,0];
-    zocMap[25]=[0,0];
-    zocMap[35]=[0,0];
-    zocMap[45]=[0,0];
-    zocMap[55]=[0,0];
-    var canMove;
-    for(var panel_num in wkMap){
-        if(wkMap[panel_num]===0){
-            continue;   
-        }
-        if(wkMap[panel_num]*turn_player>0){
-            canMove=getCanMovePanelX(panel_num,wkMap,true)//最後の引数をfalseにすると保守的になる。
-        }else if (wkMap[panel_num]*turn_player<0){
-            canMove=getCanMovePanelX(panel_num,wkMap,true)            
-        }
-        for(var num in canMove){
-            if(wkMap[panel_num]>0){
-                zocMap[canMove[num]][0]+=1;
-            }else if(wkMap[panel_num]<0){
-                zocMap[canMove[num]][1]+=1;
-            }
-        }
-    }
-    return zocMap;
-}
 //盤面を評価して-10000〜+10000で採点数する。
 function evalMap(wkMap,turn_player){
     var ev=0;
@@ -322,60 +258,22 @@ function evalMap(wkMap,turn_player){
     }else if(end==-1){
         return -999999;
     }
-    //ZOC計算
-    zocMap=getZOC(evMap,turn_player);
-    
-
-    //次にすぐに取られる運命のコマは死んだあつかい。
-    var deathflag=false;
-    for(var panel_num in evMap){
-        z=zocMap[panel_num][0]-zocMap[panel_num][1];            
-        if(turn_player*z<0 &&turn_player*evMap[panel_num]>0){
-            evMap[panel_num]=0;
-            deathflag=true;
-        }
-    }
-    if(deathflag===true){
-        zocMap=getZOC(evMap,turn_player);    
-    }
-    
-
-    
     //評価
     for(var panel_num in evMap){
         var cell_p=0;
         var p=evMap[panel_num];
-        var z;
         var line;
-        z=zocMap[panel_num][0]-zocMap[panel_num][1];
-
-        
         //コマの評価値を加算
         if(p>0){
             line=5-(panel_num % 10)
             cell_p+=PIECE_POINT[Math.abs(p)];//コマの標準評価値
             cell_p+=POSI_BONUS[p][line];//ポジションボーナス
-            line=5-(panel_num % 10)
         }else if(p<0){
             line=(panel_num % 10)
             cell_p+=PIECE_POINT[Math.abs(p)] *-1;
             cell_p+=POSI_BONUS[Math.abs(p)][line]*-1;
-            line=(panel_num % 10)
         }
-        //ZOC連携ボーナス
-        if (p * z > 0) {
-            cell_p+=EFF_POINTS*z;//協力ボーナス
-        }
-        
 
-        //空き地ZOCボーナス
-        if(z>0.5){
-            line=5-(panel_num % 10)
-            cell_p+=ZOC_POINTS*z;
-        }else if(z<-0.5){
-            line=(panel_num % 10)
-            cell_p+=ZOC_POINTS*z;            
-        }
         //評価値に加算。
         ev+=cell_p;
     }
@@ -384,7 +282,7 @@ function evalMap(wkMap,turn_player){
 
 //考える。
 function think(wkMap,turn_player){
-    var nodeList= getNodeMap(new Array,wkMap,turn_player);
+    var nodeList= getNodeMap(wkMap,turn_player);
     var best_ev=null;
     var best_hand=null;
     for(var i =0;i<=nodeList.length-1;i++){
@@ -416,7 +314,7 @@ function deepThinkAll(map,turn_player,depth){
 		return [besthand,best_score]
 	}
     
-    var nodeList= getNodeMap(new Array,map,turn_player);
+    var nodeList= getNodeMap(map,turn_player);
 	for(i in nodeList){
         var hand=nodeList[i][0];
 		var map=nodeList[i][1];
@@ -462,7 +360,7 @@ function deepThinkAllAB(map,turn_player,depth,a,b){
         b=9999999*turn_player
     }
     
-    var nodeList= getNodeMap(new Array,map,turn_player);
+    var nodeList= getNodeMap(map,turn_player);
 	for(var i in nodeList){
         var hand=nodeList[i][0];
 		var map=nodeList[i][1];
