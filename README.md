@@ -2,8 +2,7 @@
 ===========
 
 ここで遊べます。    
-http://xiidec.appspot.com/myboardgame/boardgame.html  
-
+http://xiidec.appspot.com/colamone/colamone.html
 
 ルールについてはこちら。  
 
