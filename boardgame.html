@@ -8,30 +8,50 @@
         <script src="jquery.js"></script>
         <script type="text/javascript" src="boardgame.js"></script>
         <script type="text/javascript" src="ai.js"></script>
+        <script type="text/javascript">
+            function get_lang() {
+                return (navigator.browserLanguage || navigator.language || navigator.userLanguage).substr(0,2).toLowerCase();
+            }
+            function set_manual(){
+                if(get_lang()==="ja"){
+                    var manual=document.getElementById("manual");
+                    manual.innerHTML="【ルール】\n\
+・各コマは、丸が付いている方向に進めます。\n\
+・一番奥の陣地まで進めると、コマに書かれている数字が得点になります。\n\
+・得点が8点以上になれば勝利です。\n\
+・片方の動かせるコマが無くなった時はその時点で点数の高い方が勝利です。\n\
+・ただし同点の場合は後手勝利になります。";
+                }else{
+                    manual.innerHTML="# Rule\n\
+* Colamone is a board game similar to chess.\n\
+* Players will be able to advance in the direction of the point of each piece.\n\
+* The number of a piece will be scoring if it advances to the position of the other side most. \n\
+* It is a victory of the player score became 8 or more points.\n\
+* When the movable piece of one is lost, the player high score is winning at that point.\n\
+* However, it will be the victory of the red player in the case of a tie.";
+                }
+                    
+            }
+        </script>
     </HEAD>
-    <BODY onLoad="">
+    <BODY onLoad="set_manual()">
         <div id="main">
-            <canvas id="canv" width="300px" height="300px"></canvas>
+            <canvas id="canv" width="500px" height="500px"></canvas>
             <div id="message">
                 <span id="gamename">colamone</span><br/>
-                Turn:<span id="turn"></span><br/>
-                Score:<span id="score"></span><br/>
-                Blue:<span id="blue"></span><br/>
-                Red:<span id="red"></span><br/>
+                Turn:<span id="turn"></span>(
+                Blue: <span id="blue"></span> / Red: <span id="red"></span> )<br/>
                 Level:<input id="level1" type="radio" name="level" value="1"><label>1</label>
                 <input id="level2" type="radio" name="level" value="2" checked><label>2</label>
                 <input id="level3" type="radio" name="level" value="3"><label>3</label>
-                <span id="time"></span>
-<pre id="manual">
-【ルール】
-・各コマは、丸が付いている方向に進めます。
-・一番奥の陣地まで進めると、コマに書かれている数字が得点になります。
-・得点が8点以上になれば勝利です。
-・どちらか片方の動かせるコマがなくなった場合
-　その時点で点数の高い方が勝利です。
-・ただし同点の場合は後手勝利になります。
-</pre>
-                <div align="right"><button type="button" id="newgame" onclick="location.reload()" align="right">New game</button></div> 
+                <span id="time"></span><button type="button" id="newgame" onclick="location.reload()" align="right">New game</button>
+                <pre id="manual"># Rule
+* Colamone is a board game similar to chess.
+* Players will be able to advance in the direction of the point of each piece.
+* The number of a piece will be scoring if it advances to the position of the other side most. 
+* It is a victory of the player score became 8 or more points.
+* When the movable piece of one is lost, the player high score is winning at that point.
+* However, it will be the victory of the red player in the case of a tie.</pre>
             </div>
         </div>
     </BODY>

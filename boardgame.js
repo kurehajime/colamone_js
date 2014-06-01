@@ -127,7 +127,7 @@ $(function(){
     canv_overlay.height=ctx.canvas.height;
     
     
-    cellSize=ctx.canvas.width/6;
+    cellSize=ctx.canvas.width /6;
     turn_player=1;
 
     if('ontouchstart' in window){
@@ -207,26 +207,25 @@ function ai(){
     var hand;
     var startTime = new Date();
     var endTime;
-    
+   //終盤になったら長考してみる。
+    var zan=0;
+    var p=0;
+    for(var i in thisMap){
+        var number=thisMap[i];
+        var x = Math.floor(i / 10);
+        var y = Math.floor(i % 10);
+        if((number>0 && y==0)||(number<0 && y==5)){
+            continue;   
+        }else if(thisMap[i]!=0){
+            zan+=1;
+        }
+    }
+    if(zan<8){
+        p+=1;
+    }
     if($("input[name='level']:checked").val()==1){
-        hand=think(thisMap,turn_player);
+        hand=deepThinkAllAB(thisMap,turn_player,2+p)[0][0];  
     }else if($("input[name='level']:checked").val()==2){
-        //終盤になったら長考してみる。
-        var zan=0;
-        var p=0;
-        for(var i in thisMap){
-            var number=thisMap[i];
-            var x = Math.floor(i / 10);
-            var y = Math.floor(i % 10);
-            if((number>0 && y==0)||(number<0 && y==5)){
-                continue;   
-            }else if(thisMap[i]!=0){
-                zan+=1;
-            }
-        }
-        if(zan<10){
-            p+=1;
-        }
         hand=deepThinkAllAB(thisMap,turn_player,3+p)[0][0];  
         
         
@@ -387,7 +386,7 @@ function drawBoard2(){
     ctx_board2.globalAlpha = 0.07;
     ctx_board2.fillStyle = COLOR_WHITE;
     ctx_board2.beginPath();
-    ctx_board2.arc(50, -150, 350, 0, Math.PI*2, false);
+    ctx_board2.arc(cellSize*1, -3*cellSize, 7*cellSize, 0, Math.PI*2, false);
     ctx_board2.fill();
 
     return canv_board2;
@@ -425,7 +424,7 @@ function drawPiece(wkCtx,x,y,number,goal){
     
     
     wkCtx.beginPath();
-    wkCtx.fillRect(x+5,y+5,cellSize-10,cellSize-10);
+    wkCtx.fillRect(x+cellSize/10,y+cellSize/10,cellSize-1*cellSize/5,cellSize-1*cellSize/5);
     
     //文字を描画。
     if(goal){
@@ -436,10 +435,12 @@ function drawPiece(wkCtx,x,y,number,goal){
     
     
     
-    
+    var fontsize=Math.round(cellSize*0.18);
     wkCtx.textBaseline ="middle";
     wkCtx.textAlign="center";
+    wkCtx.font = fontsize+"pt Arial";
     wkCtx.beginPath();
+    
     //数字を印字
     wkCtx.fillText(Math.abs(number), x+(cellSize/2), y+(cellSize/2));
 
@@ -449,8 +450,8 @@ function drawPiece(wkCtx,x,y,number,goal){
         if(PIECES[number][i]==0){
             continue;   
         }
-        var x_dot = x+12+( Math.floor (cellSize-10)/3)*Math.floor (i % 3.0);
-        var y_dot = y+12+( Math.floor (cellSize-10)/3)*Math.floor (i / 3.0);
+        var x_dot = x+cellSize/4.16+( Math.floor (cellSize-1*cellSize/5)/3)*Math.floor (i % 3.0);
+        var y_dot = y+cellSize/4.16+( Math.floor (cellSize-1*cellSize/5)/3)*Math.floor (i / 3.0);
 
         if(goal){
             wkCtx.fillStyle   = COLOR_GOLD;                
@@ -458,7 +459,7 @@ function drawPiece(wkCtx,x,y,number,goal){
             wkCtx.fillStyle   = COLOR_WHITE;        
         }
         wkCtx.beginPath();
-        wkCtx.arc(x_dot, y_dot, 3, 0, Math.PI*2, false);
+        wkCtx.arc(x_dot, y_dot, cellSize*0.06, 0, Math.PI*2, false);
         wkCtx.fill();
     }
     
@@ -504,8 +505,8 @@ function drawOverlay(){
     ctx_overlay.fillRect(x,y,cellSize*3,cellSize*1);
     ctx_overlay.fill();
     
-    
-    ctx_overlay.font = "bold 20px sans-serif";
+    var fontsize=Math.round(cellSize*0.36);    
+    ctx_overlay.font = "bold "+fontsize+"px sans-serif";
     ctx_overlay.globalAlpha = 1;
     ctx_overlay.fillStyle = COLOR_LINE;
     ctx_overlay.textBaseline ="middle";
@@ -572,7 +573,7 @@ function updateMessage(){
     }
     $("#blue")[0].innerHTML=blueScore;                  
     $("#red")[0].innerHTML=redScore;
-    $("#score")[0].innerHTML=score;
+    //$("#score")[0].innerHTML=score;
     
     $("#time")[0].innerHTML="("+(thinktime)+"sec)";
 
