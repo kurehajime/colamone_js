@@ -93,6 +93,7 @@ var thisMap={  00:-1,10:-2,20:-3,30:-4,40:-5,50:-6,
 
 var mouse_x =0;
 var mouse_y =0;
+var storage = localStorage;
 
 
 
@@ -142,10 +143,26 @@ $(function(){
         $("#canv").bind('mousemove ',ev_mouseMove)
         $("#canv").bind('mouseup',ev_mouseClick);
     }
-    shuffleBoard();
-
-
+    $("input[name='level']").bind('click',ev_radioChange);
     
+    shuffleBoard();
+    
+    //連勝記録初期化
+    if(!storage.getItem('level_1')){
+        storage.setItem('level_1',0);
+    }
+    if(!storage.getItem('level_2')){
+        storage.setItem('level_2',0);
+    }
+    if(!storage.getItem('level_3')){
+        storage.setItem('level_3',0);
+    }
+    //レベル記憶
+    if(storage.getItem('level_save')){
+         $('input[name=level]').val([ parseInt(storage.getItem('level_save')) ]); 
+    }else{
+        storage.setItem('level_save',$("input[name='level']:checked").val());
+    }
     //描画
     flush();
     updateMessage();
@@ -199,9 +216,19 @@ function ev_mouseClick(e){
         }        
     }
     drawFocus();
-    updateMessage();
+//    updateMessage();
     flush();
 }
+function ev_radioChange(){
+    var num = $("input[name='level']:checked").val();
+    storage.setItem('level_save',num);
+    if(storage.getItem('level_'+num)>0){
+        $("#wins")[0].innerHTML=storage.getItem('level_'+num)+" win!";
+    }else{
+        $("#wins")[0].innerHTML="";
+    }
+}
+
 //AIに考えてもらう。
 function ai(){
     var hand;
@@ -577,12 +604,20 @@ function updateMessage(){
     
     $("#time")[0].innerHTML="("+(thinktime)+"sec)";
 
-    
     if(winner==1){
         message="You Win!"
+        storage.setItem('level_'+$("input[name='level']:checked").val(),
+                       parseInt(storage.getItem('level_'+$("input[name='level']:checked").val()))+1);
     }else if(winner==-1){
         message="You Lose..."
+        storage.setItem('level_'+$("input[name='level']:checked").val(),0);
     }
+    if(storage.getItem('level_'+$("input[name='level']:checked").val())>0){
+        $("#wins")[0].innerHTML=storage.getItem('level_'+$("input[name='level']:checked").val())+" win!";
+    }else{
+        $("#wins")[0].innerHTML="";   
+    }
+ 
     
     
    

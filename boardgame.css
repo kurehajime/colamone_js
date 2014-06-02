@@ -20,10 +20,8 @@ html {
     background-color: "#FFFFFF";
     font-size: 14px;
 }
-#win{
-    float: left;
-    color: "#00CC00";
-    font-size: 36px;
+#wins{
+color: #16b1db;
 }
 #gamename{
     font-size: 40px;
