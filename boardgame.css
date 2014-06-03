@@ -32,3 +32,7 @@ color: #16b1db;
 #newgame{
     text-align: right;
 }
+div#message input:checked + label {
+    background:rgb(247, 225, 225);
+    font-weight:bold;
+}

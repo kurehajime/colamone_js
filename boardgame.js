@@ -180,6 +180,7 @@ function ev_mouseClick(e){
     var target=Math.floor(mouse_x/cellSize)*10
                 +Math.floor(mouse_y/cellSize)
     if(winner!=""){
+        location.reload();
         return true;
     }
     if(hover_piece==null){
