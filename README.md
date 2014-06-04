@@ -1,20 +1,33 @@
 オリジナルのボードゲームを作ってみる。
 ===========
 
-ここで遊べます。    
+Colamoneはチェスや将棋に似たオリジナルのボードゲームです。  
+(Colamone is a board game similar to chess.)
+
+ここで遊べます。  
+(You can play here now.)  
 http://xiidec.appspot.com/colamone/colamone.html
 
-ルールについてはこちら。  
+
+### 【ルール】
+* 各コマは、丸が付いている方向に進めます。
+* 一番奥の陣地まで進めると、コマに書かれている数字が得点になります。
+* 得点が8点以上になれば勝利です。
+* 片方の動かせるコマが無くなった時はその時点で点数の高い方が勝利です。
+* ただし同点の場合は後手勝利になります。
+
+### How to play Colamone
+* Colamone is a board game similar to chess.
+* Players will be able to advance in the direction of the point of each piece.
+* The number of a piece will be scoring if it advances to the position of the other side most. 
+* It is a victory of the player score became 8 or more points.
+* When the movable piece of one is lost, the player high score is winning at that point.
+* However, it will be the victory of the red player in the case of a tie.
+
+### 関連記事
 
 オリジナルのボードゲームを試案してみる①  
 http://chmodarwx.hatenablog.com/entry/2014/04/02/011842  
 オリジナルのボードゲームを試案してみる②  
 http://chmodarwx.hatenablog.com/entry/2014/04/03/231923  
 
-#Ver0.1の目標
-* とりあえず遊べるレベルのものを作る。
-
-#Ver0.2の目標
-* ゲーム性にちょっとしたスパイスを加える。
-* 手応えのあるAIにする。
-* 画面周りを充実させる。
