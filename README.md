@@ -1,5 +1,6 @@
-オリジナルのボードゲームを作ってみる。
+Colamone - A two-player strategy board game
 ===========
+
 
 Colamoneはチェスや将棋に似たオリジナルのボードゲームです。  
 (Colamone is a board game similar to chess.)
@@ -8,6 +9,7 @@ Colamoneはチェスや将棋に似たオリジナルのボードゲームです
 (You can play here now.)  
 http://xiidec.appspot.com/colamone/colamone.html
 
+![Colamone](https://cloud.githubusercontent.com/assets/4569916/3172841/e0afb63e-ebdb-11e3-9168-e0a421457a2a.png)
 
 ### 【ルール】
 * 各コマは、丸が付いている方向に進めます。
