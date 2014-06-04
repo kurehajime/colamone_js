@@ -1,8 +1,4 @@
-//メモ
-//　盤面の表し方。。
-//  wkMap[02]=[-3,0]  : X=0,Y=2,赤の3番,隠し。
-//
-
+//"use strict"
 var ctx=null;
 var isTouch=true;
 var canv_board=null;
@@ -82,18 +78,19 @@ var PIECES={"1":[1,1,1,
                   0,1,0]
            }
 
-var thisMap={  00:-1,10:-2,20:-3,30:-4,40:-5,50:-6,
-               01: 0,11:-8,21: 0,31: 0,41:-7,51: 0,
-               02: 0,12: 0,22: 0,32: 0,42: 0,52: 0,
-               03: 0,13: 0,23: 0,33: 0,43: 0,53: 0,
-               04: 0,14: 7,24: 0,34: 0,44: 8,54: 0,
-               05: 6,15: 5,25: 4,35: 3,45: 2,55: 1,
+var thisMap={  0:-1,10:-2,20:-3,30:-4,40:-5,50:-6,
+               1: 0,11:-8,21: 0,31: 0,41:-7,51: 0,
+               2: 0,12: 0,22: 0,32: 0,42: 0,52: 0,
+               3: 0,13: 0,23: 0,33: 0,43: 0,53: 0,
+               4: 0,14: 7,24: 0,34: 0,44: 8,54: 0,
+               5: 6,15: 5,25: 4,35: 3,45: 2,55: 1,
               }
 
 
 var mouse_x =0;
 var mouse_y =0;
 var storage = localStorage;
+var startMap;
 
 
 
@@ -163,6 +160,22 @@ $(function(){
     }else{
         storage.setItem('level_save',$("input[name='level']:checked").val());
     }
+    
+    
+    //パラメータを取得
+    var paramObj=getParam();
+    //盤面を初期化
+    if(paramObj["init"]){
+        startMap= getMapByParam(paramObj["init"]);
+        thisMap=startMap;
+    }else{
+        startMap=thisMap;
+    }
+    //ログをデコード
+    if(paramObj["log"]){
+        logArray=decodeLog(paramObj["log"],startMap);
+    }
+    
     //描画
     flush();
     updateMessage();
@@ -386,8 +399,8 @@ function drawBoard(){
     grad.addColorStop(1,COLOR_PANEL_4);                  
 
     
-    for(x=0;x<6;x++){
-        for(y=0;y<6;y++){
+    for(var x=0;x<6;x++){
+        for(var y=0;y<6;y++){
             //パネル描画
             ctx_board.strokeStyle = COLOR_LINE;
             if(y==0){
@@ -499,8 +512,8 @@ function drawPiece(wkCtx,x,y,number,goal){
 function drawPieceAll(wkMap){
     var ctx_pieces=canv_pieces.getContext('2d');
     ctx_pieces.clearRect(0,0,ctx.canvas.width,ctx.canvas.width);
-    for(x=0;x<6;x++){
-        for(y=0;y<6;y++){
+    for(var x=0;x<6;x++){
+        for(var y=0;y<6;y++){
             if(wkMap[x*10+y]!=0){
                 var goal=false;
                 if(y*cellSize,wkMap[x*10+y]>0 & y==0){
@@ -680,4 +693,118 @@ function isNoneNode(wkMap){
         }
     }
     return true;
+}
+
+//パラメータ取得
+function getParam(){
+    var obj = new Object();
+    if (1 < document.location.search.length) {
+        var paramstr = document.location.search.substring(1).split('&');
+        for (var i = 0; i < paramstr.length; i++) {
+            var entry = paramstr[i].split('=');
+            var key = decodeURIComponent(entry[0]);
+            var value = decodeURIComponent(entry[1]);
+            obj[key] = decodeURIComponent(value);
+        }
+    }
+    return obj;
+}
+function getMapByParam(initString){
+    var wkMap=copyMap(thisMap);
+    //クリア
+    for(var num in wkMap){
+        wkMap[num]=0;   
+    }
+    var arr=initString.split(',');
+    if(arr.length<8){
+        arr=[1,2,3,4,5,6,7,8];
+    }
+    var red_num=[0,10,20,30,40,50,11,41];
+    var blue_num=[55,45,35,25,15,5,44,14];
+    
+    
+    for(var num in blue_num){
+        wkMap[blue_num[num]]=parseInt(arr[num]);   
+    }
+    for(var num in red_num){
+        wkMap[red_num[num]]=-1*parseInt(arr[num]);   
+    }
+    return wkMap;
+}
+//ログをデコードする。
+function decodeLog(logstr,wkInitMap){
+    var wklogArray=new Array();
+    var wkMap=copyMap(wkInitMap);
+    var arrow={ "q":0,"w":1,"e":2,
+                "a":3,"s":4,"d":5,
+                "z":6,"x":7,"c":8};
+    logstr=logstr.replace(/q/g,'q,').replace(/w/g,'w,').replace(/e/g,'e,');
+    logstr=logstr.replace(/a/g,'a,').replace(/s/g,'s,').replace(/d/g,'d,');
+    logstr=logstr.replace(/z/g,'z,').replace(/x/g,'x,').replace(/c/g,'c,');
+    var logArr=logstr.split(",");
+    
+    wklogArray.push(wkMap);
+    for(var i=0;i<logArr.length;i++){
+        if(logArr[i]===""){continue;}
+        var arw=arrow[logArr[i].match(/[qweasdzxc]/)[0]];
+        var from=parseInt(logArr[i].match(/\d*/)[0]);
+        var to= (Math.floor(from / 10) + Math.floor(arw%3)-1)*10
+                +(Math.floor(from % 10) + Math.floor(arw/3)-1);
+        wkMap=copyMap(wkMap);
+        wkMap[to]=parseInt(wkMap[from]);
+        wkMap[from]=0;
+        wklogArray.push(wkMap);
+    }
+    return wklogArray;
+}
+function encodeLog(wklogArray){
+    var logstr="";
+    var arrow=[ "q","w","e",
+                "a","s","d",
+                "z","x","c"];
+    for(var i in wklogArray){
+        var from=wklogArray[i][0];
+        var to=wklogArray[i][1];
+        var x_vec=(Math.floor(from / 10)-(Math.floor(to / 10)));
+        var y_vec=(Math.floor(from % 10)-(Math.floor(to % 10)));
+        var arw="";
+        if(x_vec==-1 && y_vec==-1){arw="q"}
+        if(x_vec== 0 && y_vec==-1){arw="w"}
+        if(x_vec== 1 && y_vec==-1){arw="e"}
+        if(x_vec==-1 && y_vec== 0){arw="a"}
+        if(x_vec== 0 && y_vec== 0){arw="s"}
+        if(x_vec== 1 && y_vec== 0){arw="d"}
+        if(x_vec==-1 && y_vec== 1){arw="z"}
+        if(x_vec== 0 && y_vec== 1){arw="x"}
+        if(x_vec== 1 && y_vec== 1){arw="c"}
+        logstr+=from+arw;
+    }
+    return logstr;
+}
+
+function move_start(){
+    logPointer=0;
+    thisMap=copyMap(logArray[logPointer]);
+    flush();
+    updateMessage();
+}
+function move_prev(){
+    if(logPointer<=0){return;}
+    logPointer-=1;
+    thisMap=copyMap(logArray[logPointer]);
+    flush();
+    updateMessage();
+}
+function move_next(){
+    if(logPointer+1>logArray.length-1){return;}
+    logPointer+=1;
+    thisMap=copyMap(logArray[logPointer]);
+    flush();
+    updateMessage();
+}
+function move_end(){
+    logPointer=logArray.length-1;
+    thisMap=copyMap(logArray[logPointer]);
+    flush();
+    updateMessage();
 }
