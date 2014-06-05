@@ -165,10 +165,11 @@ $(function(){
         storage.setItem('level_3',0);
     }
     //レベル記憶
-    if(storage.getItem('level_save')){
+    if(storage.getItem('level_save')!=undefined && storage.getItem('level_save')!="undefined"){
          $('input[name=level]').val([ parseInt(storage.getItem('level_save')) ]); 
     }else{
-        storage.setItem('level_save',$("input[name='level']:checked").val());
+        storage.setItem('level_save',2);
+         $('input[name=level]').val([2]); 
     }
     
     
@@ -187,6 +188,7 @@ $(function(){
     }
     
     if(logArray.length!=0){
+        $("#log").show();
         $("#prevprev").show();
         $("#prev").show();
         $("#next").show();
@@ -194,6 +196,7 @@ $(function(){
         $("#tweet").hide();
         $("#replay").hide();
     }else{
+        $("#log").hide();
         $("#prevprev").hide();
         $("#prev").hide();
         $("#next").hide();
