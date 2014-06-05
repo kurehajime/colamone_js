@@ -29,10 +29,17 @@ color: #16b1db;
 #manual{
     font-size: 12px;
 }
-#newgame{
-    text-align: right;
-}
 div#message input:checked + label {
     background:rgb(247, 225, 225);
     font-weight:bold;
+}
+#prevprev,#prev,#next,#nextnext{
+    width: 100px;
+    height: 50px;
+    font-size: 30px;
+}
+#replay,#newgame{
+    width: 400px;
+    height: 50px;
+    font-size: 30px;
 }

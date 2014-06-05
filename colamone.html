@@ -45,7 +45,7 @@
                 <b>Level : </b><input id="level1" type="radio" name="level" value="1"><label for="level1">1</label>
                 <input id="level2" type="radio" name="level" value="2"><label for="level2" checked>2</label>
                 <input id="level3" type="radio" name="level" value="3"><label for="level3">3</label>
-                <span id="time"></span><button type="button" id="newgame" onclick="location.reload()" align="right">New game</button><span id="wins"></span>
+                <span id="time"></span><span id="wins"></span>
                 <pre id="manual"># How to play Colamone
 * Colamone is a board game similar to chess.
 * Players will be able to advance in the direction of the point of each piece.
@@ -53,6 +53,11 @@
 * It is a victory of the player score became 8 or more points.
 * When the movable piece of one is lost, the player high score is winning at that point.
 * However, it will be the victory of the red player in the case of a tie.</pre>
+                <div id="kento">
+                    <button type="button" id="newgame" onclick="location.reload()">New game</button><br/>
+                    <button type="button" id="prevprev" onclick="" align="right"> &lt;&lt; </button><button type="button" id="prev" onclick="" align="right"> &lt; </button><button type="button" id="next" onclick="" align="right"> &gt; </button><button type="button" id="nextnext" onclick="" align="right"> &gt;&gt; </button>
+                    <br/><button type="button" id="replay" onclick="" > replay </button><button type="button" id="tweet" onclick="" > tweet </button>
+                </div>
             </div>
         </div>
     </BODY>

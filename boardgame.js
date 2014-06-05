@@ -91,7 +91,9 @@ var mouse_x =0;
 var mouse_y =0;
 var storage = localStorage;
 var startMap;
-
+var logPointer=0;
+var logArray=new Array();
+var logArray2=new Array();
 
 
 //init
@@ -141,6 +143,14 @@ $(function(){
         $("#canv").bind('mouseup',ev_mouseClick);
     }
     $("input[name='level']").bind('click',ev_radioChange);
+    $("#prevprev").bind('click',move_start);
+    $("#prev").bind('click',move_prev);
+    $("#next").bind('click',move_next);
+    $("#nextnext").bind('click',move_end);
+    $("#replay").bind('click',jumpkento);
+    $("#tweet").bind('click',tweet);
+    $("#newgame").bind('click',reloadnew);
+
     
     shuffleBoard();
     
@@ -167,13 +177,29 @@ $(function(){
     //盤面を初期化
     if(paramObj["init"]){
         startMap= getMapByParam(paramObj["init"]);
-        thisMap=startMap;
+        thisMap=copyMap(startMap);
     }else{
-        startMap=thisMap;
+        startMap=copyMap(thisMap);
     }
     //ログをデコード
     if(paramObj["log"]){
         logArray=decodeLog(paramObj["log"],startMap);
+    }
+    
+    if(logArray.length!=0){
+        $("#prevprev").show();
+        $("#prev").show();
+        $("#next").show();
+        $("#nextnext").show();
+        $("#tweet").hide();
+        $("#replay").hide();
+    }else{
+        $("#prevprev").hide();
+        $("#prev").hide();
+        $("#next").hide();
+        $("#nextnext").hide();
+        $("#tweet").hide();
+        $("#replay").hide();
     }
     
     //描画
@@ -192,8 +218,8 @@ function ev_mouseClick(e){
     getMousePosition(e);
     var target=Math.floor(mouse_x/cellSize)*10
                 +Math.floor(mouse_y/cellSize)
-    if(winner!=""){
-        location.reload();
+    if(winner!="" ||logArray.length!=0){
+        reloadnew();
         return true;
     }
     if(hover_piece==null){
@@ -212,8 +238,9 @@ function ev_mouseClick(e){
             thisMap[target]=thisMap[hover_piece];
             thisMap[hover_piece]=0;
             turn_player=turn_player*-1;
+            logArray2.push([hover_piece,target]);
             hover_piece=null;
-            
+
             //AIが考える。
             drawFocus();
             message="thinking..."
@@ -278,11 +305,12 @@ function ai(){
         thisMap[hand[1]]=thisMap[hand[0]];
         thisMap[hand[0]]=0;
         score=evalMap(thisMap,turn_player);
+        logArray2.push([hand[0],hand[1]]);
     }
     turn_player=turn_player*-1;
     endTime=new Date();
     thinktime=(endTime-startTime)/1000;
-    
+
 }
 //盤面をシャッフル
 function shuffleBoard(){
@@ -622,20 +650,26 @@ function updateMessage(){
         message="You Win!"
         storage.setItem('level_'+$("input[name='level']:checked").val(),
                        parseInt(storage.getItem('level_'+$("input[name='level']:checked").val()))+1);
+        endgame();
     }else if(winner==-1){
         message="You Lose..."
         storage.setItem('level_'+$("input[name='level']:checked").val(),0);
+        endgame();
     }
     if(storage.getItem('level_'+$("input[name='level']:checked").val())>0){
         $("#wins")[0].innerHTML=storage.getItem('level_'+$("input[name='level']:checked").val())+" win!";
     }else{
         $("#wins")[0].innerHTML="";   
     }
- 
-    
-    
    
 }
+function endgame(){
+    if(logArray.length==0){
+        //$("#tweet").show();
+        $("#replay").show();   
+    }
+}
+
 function calcScore(){
     var sum1=0;
     var sum2=0;
@@ -710,25 +744,28 @@ function getParam(){
     return obj;
 }
 function getMapByParam(initString){
-    var wkMap=copyMap(thisMap);
-    //クリア
-    for(var num in wkMap){
-        wkMap[num]=0;   
+    if(initString){
+        var wkMap=copyMap(thisMap);
+        //クリア
+        for(var num in wkMap){
+            wkMap[num]=0;   
+        }
+        var arr=initString.split(',');
+        if(arr.length<8){
+            arr=[1,2,3,4,5,6,7,8];
+        }
+        var red_num=[0,10,20,30,40,50,11,41];
+        var blue_num=[55,45,35,25,15,5,44,14];
+
+
+        for(var num in blue_num){
+            wkMap[blue_num[num]]=parseInt(arr[num]);   
+        }
+        for(var num in red_num){
+            wkMap[red_num[num]]=-1*parseInt(arr[num]);   
+        }
     }
-    var arr=initString.split(',');
-    if(arr.length<8){
-        arr=[1,2,3,4,5,6,7,8];
-    }
-    var red_num=[0,10,20,30,40,50,11,41];
-    var blue_num=[55,45,35,25,15,5,44,14];
-    
-    
-    for(var num in blue_num){
-        wkMap[blue_num[num]]=parseInt(arr[num]);   
-    }
-    for(var num in red_num){
-        wkMap[red_num[num]]=-1*parseInt(arr[num]);   
-    }
+
     return wkMap;
 }
 //ログをデコードする。
@@ -765,8 +802,8 @@ function encodeLog(wklogArray){
     for(var i in wklogArray){
         var from=wklogArray[i][0];
         var to=wklogArray[i][1];
-        var x_vec=(Math.floor(from / 10)-(Math.floor(to / 10)));
-        var y_vec=(Math.floor(from % 10)-(Math.floor(to % 10)));
+        var x_vec=((Math.floor(to / 10))-Math.floor(from / 10));
+        var y_vec=((Math.floor(to % 10))-Math.floor(from % 10));
         var arw="";
         if(x_vec==-1 && y_vec==-1){arw="q"}
         if(x_vec== 0 && y_vec==-1){arw="w"}
@@ -807,4 +844,34 @@ function move_end(){
     thisMap=copyMap(logArray[logPointer]);
     flush();
     updateMessage();
+}
+function reloadnew(){
+    location.href =document.location.href.split("?")[0];
+}
+function jumpkento(){
+    var url=document.location.href.split("?")[0];
+    var init="?init="+startMap[55]+","
+                    +startMap[45]+","
+                    +startMap[35]+","
+                    +startMap[25]+","
+                    +startMap[15]+","
+                    +startMap[5]+","
+                    +startMap[44]+","
+                    +startMap[14];
+    var log="&log="+encodeLog(logArray2);
+    location.href =url+init+log;
+}
+function tweet(){
+    var url=document.location.href.split("?")[0];
+    var init="?init="+startMap[55]+","
+                    +startMap[45]+","
+                    +startMap[35]+","
+                    +startMap[25]+","
+                    +startMap[15]+","
+                    +startMap[5]+","
+                    +startMap[44]+","
+                    +startMap[14];
+    var log="%26log="+encodeLog(logArray2);
+    var link="http://twitter.com/share?text="+"%23colamone&url="+url+init+log
+    window.open(link, "tweet", 'width=500, height=500,personalbar=0,toolbar=0,scrollbars=1,resizable=1');   
 }
