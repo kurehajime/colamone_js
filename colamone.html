@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width,user-scalable=no">
         <link rel="author" href="https://plus.google.com/105626742774793809251" />
         <link rel="stylesheet" type="text/css" href="boardgame.css">
-        <script src="jquery.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <script type="text/javascript" src="boardgame.js"></script>
         <script type="text/javascript" src="ai.js"></script>
         <script type="text/javascript">
@@ -19,9 +19,9 @@
                     manual.innerHTML="【ルール】\n\
 ・各コマは、丸が付いている方向に進めます。\n\
 ・一番奥の陣地まで進めると、コマに書かれている数字が得点になります。\n\
+・得点になったコマは動かすことができません。\n\
 ・得点が8点以上になれば勝利です。\n\
-・片方の動かせるコマが無くなった時はその時点で点数の高い方が勝利です。\n\
-・ただし同点の場合は後手勝利になります。";
+・片方の動かせるコマが無くなった時はその時点で点数の高い方が勝利です。";
                 }else{
                     manual.innerHTML="# How to play Colamone\n\
 * Colamone is a board game similar to chess.\n\
@@ -33,9 +33,12 @@
                 }
                     
             }
+            function setTweet(){
+!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.async=true;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
+            }
         </script>
     </HEAD>
-    <BODY onLoad="set_manual()">
+    <BODY onLoad="set_manual();setTweet();">
         <div id="main">
             <canvas id="canv" width="500px" height="500px"></canvas>
             <div id="message">
@@ -49,16 +52,14 @@
 <span id="log"><br/><button type="button" id="prevprev" onclick="" align="right"> &lt;&lt; </button><button type="button" id="prev" onclick="" align="right"> &lt; </button><button type="button" id="next" onclick="" align="right"> &gt; </button><button type="button" id="nextnext" onclick="" align="right"> &gt;&gt; </button></span>
 <br/><button type="button" id="newgame" onclick="location.reload()">New game</button>
 <br/><button type="button" id="replay" onclick="" > replay </button><br/>
-<button type="button" id="tweet" onclick="" > tweet </button>
-                <pre id="manual"># How to play Colamone
+<pre id="manual"># How to play Colamone
 * Colamone is a board game similar to chess.
 * Players will be able to advance in the direction of the point of each piece.
 * The number of a piece will be scoring if it advances to the position of the other side most. 
 * It is a victory of the player score became 8 or more points.
 * When the movable piece of one is lost, the player high score is winning at that point.
 * However, it will be the victory of the red player in the case of a tie.</pre>
-                <div id="kento">
-                </div>
+<span id="sns"><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://xiidec.appspot.com/colamone/colamone.html" data-hashtags="colamone" data-lang="ja"></a></span>
             </div>
         </div>
     </BODY>

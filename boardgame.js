@@ -12,7 +12,8 @@ var cellSize=null;
 var turn_player=null;
 var blueScore=0;
 var redScore=0;
-var winner=0;
+var winner=null;
+var isDraw=false;
 var message="";
 var thinktime=0.0;
 var COLOR_LINE="#333333";
@@ -148,7 +149,6 @@ $(function(){
     $("#next").bind('click',move_next);
     $("#nextnext").bind('click',move_end);
     $("#replay").bind('click',jumpkento);
-    $("#tweet").bind('click',tweet);
     $("#newgame").bind('click',reloadnew);
 
     
@@ -193,7 +193,6 @@ $(function(){
         $("#prev").show();
         $("#next").show();
         $("#nextnext").show();
-        $("#tweet").hide();
         $("#replay").hide();
     }else{
         $("#log").hide();
@@ -201,7 +200,6 @@ $(function(){
         $("#prev").hide();
         $("#next").hide();
         $("#nextnext").hide();
-        $("#tweet").hide();
         $("#replay").hide();
     }
     
@@ -221,7 +219,7 @@ function ev_mouseClick(e){
     getMousePosition(e);
     var target=Math.floor(mouse_x/cellSize)*10
                 +Math.floor(mouse_y/cellSize)
-    if(winner!="" ||logArray.length!=0){
+    if(winner!=null ||logArray.length!=0){
         reloadnew();
         return true;
     }
@@ -249,7 +247,7 @@ function ev_mouseClick(e){
             message="thinking..."
             flush();
             updateMessage();
-            if(winner==""){
+            if(winner==null){
                 window.setTimeout(function(){
                     ai();   
                     message=""
@@ -295,13 +293,13 @@ function ai(){
         p+=1;
     }
     if($("input[name='level']:checked").val()==1){
-        hand=deepThinkAllAB(thisMap,turn_player,2+p)[0][0];  
+        hand=thinkAI(thisMap,turn_player,2+p)[0][0];  
     }else if($("input[name='level']:checked").val()==2){
-        hand=deepThinkAllAB(thisMap,turn_player,3+p)[0][0];  
+        hand=thinkAI(thisMap,turn_player,3+p)[0][0];  
         
         
     }else{
-        hand=deepThinkAllAB(thisMap,turn_player,4)[0][0];        
+        hand=thinkAI(thisMap,turn_player,4)[0][0];        
     }
     
     if(hand){
@@ -648,17 +646,22 @@ function updateMessage(){
     //$("#score")[0].innerHTML=score;
     
     $("#time")[0].innerHTML="("+(thinktime)+"sec)";
-
-    if(winner==1){
-        message="You Win!"
-        storage.setItem('level_'+$("input[name='level']:checked").val(),
-                       parseInt(storage.getItem('level_'+$("input[name='level']:checked").val()))+1);
-        endgame();
-    }else if(winner==-1){
-        message="You Lose..."
-        storage.setItem('level_'+$("input[name='level']:checked").val(),0);
-        endgame();
+    if(logArray.length==0){
+        if(winner==1){
+            message="You Win!"
+            storage.setItem('level_'+$("input[name='level']:checked").val(),
+                           parseInt(storage.getItem('level_'+$("input[name='level']:checked").val()))+1);
+            endgame();
+        }else if(winner==-1){
+            message="You Lose..."
+            storage.setItem('level_'+$("input[name='level']:checked").val(),0);
+            endgame();
+        }else if(winner==0){
+            message="-- Draw --"
+            endgame();
+        }
     }
+
     if(storage.getItem('level_'+$("input[name='level']:checked").val())>0){
         $("#wins")[0].innerHTML=storage.getItem('level_'+$("input[name='level']:checked").val())+" win!";
     }else{
@@ -699,8 +702,10 @@ function calcScore(){
     if(isNoneNode(thisMap)){
         if(Math.abs(sum1)>Math.abs(sum2)){
             winner= 1;
-        }else{//引き分けは後攻勝利
+        }else if(Math.abs(sum1)<Math.abs(sum2)){//引き分けは後攻勝利
             winner= -1;
+        }else if(Math.abs(sum1)==Math.abs(sum2)){
+            winner=0;
         }
     }
     blueScore=Math.abs(sum1);
@@ -863,18 +868,4 @@ function jumpkento(){
                     +startMap[14];
     var log="&log="+encodeLog(logArray2);
     location.href =url+init+log;
-}
-function tweet(){
-    var url=document.location.href.split("?")[0];
-    var init="?init="+startMap[55]+","
-                    +startMap[45]+","
-                    +startMap[35]+","
-                    +startMap[25]+","
-                    +startMap[15]+","
-                    +startMap[5]+","
-                    +startMap[44]+","
-                    +startMap[14];
-    var log="%26log="+encodeLog(logArray2);
-    var link="http://twitter.com/share?text="+"%23colamone&url="+url+init+log
-    window.open(link, "tweet", 'width=500, height=500,personalbar=0,toolbar=0,scrollbars=1,resizable=1');   
 }

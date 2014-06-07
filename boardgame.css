@@ -19,6 +19,7 @@ html {
     float: left;
     background-color: "#FFFFFF";
     font-size: 14px;
+    margin-left: 5px;
 }
 #wins{
 color: #16b1db;
@@ -42,4 +43,7 @@ div#message input:checked + label {
     width: 400px;
     height: 50px;
     font-size: 30px;
+}
+#sns{
+    margin-left: 5px;
 }

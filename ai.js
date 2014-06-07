@@ -75,6 +75,7 @@ var PIECE_POINT={1:1800,
                  8:1250
                 }
 var score=0;
+var nearwin=false;
 
 function copyMap(wkMap){
     var rtnMap=new Object();
@@ -118,7 +119,7 @@ function copyMap(wkMap){
     return rtnMap;
 }
 
-//終了判定
+//終了判定(実質的勝利含む)
 function isEndX(wkMap){
     var sum1=0;
     var sum2=0;
@@ -145,28 +146,33 @@ function isEndX(wkMap){
     if(isNoneNode(wkMap)){
         if(sum1>(-1*sum2)){
             return 1;
-        }else{//引き分けは後攻勝利
+        }else if(sum1<(-1*sum2)){//引き分けは後攻勝利←やっぱやめた。
             return -1;
         }
     }
     //実質的判定勝利勝利
-    var live1=0;
-    var live2=0; 
-    for(var num in wkMap){
-        if(wkMap[num]>0){
-            live1+=wkMap[num];
-        }else if(wkMap[num]<0){
-            live2+=wkMap[num];
+    if(nearwin==false){
+        var live1=0;
+        var live2=0; 
+        for(var num in wkMap){
+            if(wkMap[num]>0){
+                live1+=wkMap[num];
+            }else if(wkMap[num]<0){
+                live2+=wkMap[num];
+            }
+        }
+        if(sum1>(-1*live2)){
+            return 1;
+        }else if(-1*sum2>live1){
+          return -1;
         }
     }
-    if(sum1>(-1*live2)){
-        return 1;
-    }else if(-1*sum2>=live1){
-        return -1;
-    }
+
     
     return 0;   
 }
+
+
 //手詰まり判定
 function isNoneNode(wkMap){
     var flag1=false;
@@ -254,9 +260,13 @@ function evalMap(wkMap,turn_player){
     //終局判定
     var end=isEndX(evMap);
     if(end==1){
-        return +999999;
+        return +9999999;
     }else if(end==-1){
-        return -999999;
+        return -9999999;
+    }else if(end==0.5){
+        ev= +4999999;
+    }else if(end==-0.5){
+        ev= -4999999;
     }
     //評価
     for(var panel_num in evMap){
@@ -397,10 +407,14 @@ function deepThinkAllAB(map,turn_player,depth,a,b){
             break;
         }
         
-
     }
 	return [besthand,best_score]
 }
 
-
+function thinkAI(map,turn_player,depth,a,b){
+    if(isEndX(map)!=0){
+        nearwin=true;
+    }
+    return deepThinkAllAB(map,turn_player,depth,a,b)
+}
 
