@@ -150,7 +150,7 @@ function isEndX(wkMap){
             return -1;
         }
     }
-    //実質的判定勝利勝利
+    //実質的判定勝利
     if(nearwin==false){
         var live1=0;
         var live2=0; 
@@ -170,6 +170,32 @@ function isEndX(wkMap){
 
     
     return 0;   
+}
+//最後の一個を取るかどうかの判断
+function isDraw(wkMap){
+    if(!isNoneNode(wkMap)){
+        return false;
+    }
+    var sum1=0;
+    var sum2=0;
+    var GoalTop=[0,10,20,30,40,50];
+    var GoalBottom=[5,15,25,35,45,55]; 
+    //点数勝利        
+    for(var i in GoalTop){
+        if(wkMap[GoalTop[i]]>0){
+            sum1+=wkMap[GoalTop[i]];
+        }
+    }
+    for(var i in GoalBottom){
+        if(wkMap[GoalBottom[i]]*-1>0){
+            sum2+=wkMap[GoalBottom[i]];
+        }
+    }
+    if(sum1==sum2){
+        return true  ;
+    }else{
+        return false;   
+    }
 }
 
 
@@ -257,16 +283,16 @@ function evalMap(wkMap,turn_player){
     var ev=0;
     var zocMap;
     var evMap=copyMap(wkMap);
+    //引き分け判定
+    if(isDraw(wkMap)){
+        return 0;
+    }
     //終局判定
     var end=isEndX(evMap);
     if(end==1){
         return +9999999;
     }else if(end==-1){
         return -9999999;
-    }else if(end==0.5){
-        ev= +4999999;
-    }else if(end==-0.5){
-        ev= -4999999;
     }
     //評価
     for(var panel_num in evMap){
