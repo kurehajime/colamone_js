@@ -6,6 +6,7 @@
         <meta name="viewport" content="width=device-width,user-scalable=no">
         <link rel="author" href="https://plus.google.com/105626742774793809251" />
         <link rel="stylesheet" type="text/css" href="boardgame.css">
+        <script src="https://skyway.io/dist/0.3/peer.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
         <script type="text/javascript" src="boardgame.js"></script>
         <script type="text/javascript" src="ai.js"></script>
@@ -36,6 +37,23 @@
             function setTweet(){
 !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.async=true;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
             }
+            
+            
+$(function(){
+              var peer = new Peer({
+                key   : '6165842a-5c0d-11e3-b514-75d3313b9d05',
+                debug : 3
+              });
+              peer.on('open', function(id){
+                    $('#peer-id').text(id);
+              });
+            peer.on('error', function(e){
+              console.log(e.message);
+            });
+});
+            
+            
+            
         </script>
     </HEAD>
     <BODY onLoad="set_manual();setTweet();">
@@ -49,6 +67,8 @@
                 <input id="level2" type="radio" name="level" value="2"><label for="level2" checked>2</label>
                 <input id="level3" type="radio" name="level" value="3"><label for="level3">3</label>
                 <span id="time"></span><span id="wins"></span>
+                <br/>Peer ID:<span id="pid"></span>
+
 <span id="log"><br/><button type="button" id="prevprev" onclick="" align="right"> &lt;&lt; </button><button type="button" id="prev" onclick="" align="right"> &lt; </button><button type="button" id="next" onclick="" align="right"> &gt; </button><button type="button" id="nextnext" onclick="" align="right"> &gt;&gt; </button></span>
 <br/><button type="button" id="newgame" onclick="location.reload()">New game</button>
 <br/><button type="button" id="replay" onclick="" > replay </button><br/>
