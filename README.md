@@ -26,10 +26,4 @@ http://xiidec.appspot.com/colamone/colamone.html
 * When the movable piece of one is lost, the player high score is winning at that point.
 * However, it will be the victory of the red player in the case of a tie.
 
-### 関連記事
-
-オリジナルのボードゲームを試案してみる①  
-http://chmodarwx.hatenablog.com/entry/2014/04/02/011842  
-オリジナルのボードゲームを試案してみる②  
-http://chmodarwx.hatenablog.com/entry/2014/04/03/231923  
 
