@@ -341,9 +341,11 @@ function shuffleBoard(){
 function getMousePosition(e) {  
 	if(!e.clientX){//SmartPhone
         if(e.touches){
-            e = e.touches[0];            
+            e = e.originalEvent.touches[0];            
+        }else if(e.originalEvent.touches){
+            e = e.originalEvent.touches[0];
         }else{
-            e = event.touches[0];            
+            e = event.touches[0];
         }
     }
     var rect = e.target.getBoundingClientRect();
