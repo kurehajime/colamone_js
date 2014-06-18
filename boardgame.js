@@ -90,7 +90,15 @@ var thisMap={  0:-1,10:-2,20:-3,30:-4,40:-5,50:-6,
 
 var mouse_x =0;
 var mouse_y =0;
-var storage = localStorage;
+var storage;
+if(window==parent){
+    storage= localStorage;
+}else{
+    //iframe呼び出しの場合
+    storage = new Object();//ダミー
+    storage["getItem"]=function(){return undefined;};
+    storage["setItem"]=function(){return undefined;};
+}
 var startMap;
 var logPointer=0;
 var logArray=new Array();
