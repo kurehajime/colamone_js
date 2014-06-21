@@ -43,14 +43,14 @@ div#message input:checked + label {
     font-weight:bold;
 }
 #prevprev,#prev,#next,#nextnext{
-    width: 100px;
-    height: 50px;
-    font-size: 30px;
+    width: 90px;
+    height: 30px;
+    font-size: 20px;
 }
 #replay,#newgame{
-    width: 400px;
-    height: 50px;
-    font-size: 30px;
+    width: 360px;
+    height: 30px;
+    font-size: 20px;
 }
 #sns{
     margin-left: 5px;

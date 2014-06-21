@@ -6,8 +6,8 @@
         <meta name="viewport" content="width=device-width,user-scalable=no">
         <link rel="author" href="https://plus.google.com/105626742774793809251" />
         <link rel="stylesheet" type="text/css" href="boardgame.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-        <script type="text/javascript" src="boardgame.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js?2014062101"></script>
+        <script type="text/javascript" src="boardgame.js?2014062103"></script>
         <script type="text/javascript" src="ai.js"></script>
         <script type="text/javascript">
             function get_lang() {
@@ -18,10 +18,15 @@
                     var manual=document.getElementById("manual");
                     manual.innerHTML="【ルール】\n\
 ・各コマは、丸が付いている方向に進めます。\n\
-・一番奥の陣地まで進めると、コマに書かれている数字が得点になります。\n\
+・一番奥の陣地まで進めると、コマの数字が得点になります。\n\
 ・得点になったコマは動かすことができません。\n\
 ・得点が8点以上になれば勝利です。\n\
-・片方の動かせるコマが無くなった時はその時点で点数の高い方が勝利です。";
+・片方の動かせるコマが無くなった時は\n\
+　その時点で点数の高い方が勝利です。";
+                    var canvas= document.getElementById("canv");
+                    if (!canvas || !canvas.getContext) { 
+                        alert("申し訳ございません。お使いのブラウザは対応していません。"); 
+                    }
                 }else{
                     manual.innerHTML="# How to play Colamone\n\
 * Colamone is a board game similar to chess.\n\
@@ -30,6 +35,10 @@
 * It is a victory of the player score became 8 or more points.\n\
 * Piece won the scoring can not be moved, it will be invincible.\n\
 * When the movable piece of one is lost, the player high score is winning at that point.";
+                }
+                var canvas= document.getElementById("canv");
+                if (!canvas || !canvas.getContext) { 
+                    alert("Sorry. Your browser does not support."); 
                 }
                     
             }

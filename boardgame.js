@@ -90,15 +90,35 @@ var thisMap={  0:-1,10:-2,20:-3,30:-4,40:-5,50:-6,
 
 var mouse_x =0;
 var mouse_y =0;
-var storage;
-if(window==parent){
-    storage= localStorage;
-}else{
-    //iframe呼び出しの場合
-    storage = new Object();//ダミー
-    storage["getItem"]=function(){return undefined;};
-    storage["setItem"]=function(){return undefined;};
+var storage=null;
+try{
+    if(window==parent && ('localStorage' in window) && window['localStorage'] !== null){
+        storage= localStorage;
+    }
+}catch( e ){
+    
 }
+if(storage==null){
+        //localStorageが使えない場合
+        storage = new Object();//ダミー
+        storage["getItem"]=function(){return undefined;};
+        storage["setItem"]=function(){return undefined;};
+
+        if (navigator.cookieEnabled){
+            storage["hasItem "]=function (sKey) {
+                return (new RegExp("(?:^|;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie);
+            }
+            storage["getItem"]=function (sKey) {
+                if (!sKey || !(new RegExp("(?:^|;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie)) { return null; }
+                return unescape(document.cookie.replace(new RegExp("(?:^|.*;\\s*)" + escape(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*((?:[^;](?!;))*[^;]?).*"), "$1"));
+            }
+            storage["setItem"]=function (sKey, sValue) {
+                if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) { return; }
+                document.cookie = escape(sKey) + "=" + escape(sValue);
+            }
+        }
+}
+
 var startMap;
 var logPointer=0;
 var logArray=new Array();
@@ -212,7 +232,7 @@ $(function(){
     }
     
     //描画
-    flush();
+    flush(true);
     updateMessage();
 
 });
@@ -220,7 +240,7 @@ $(function(){
 //マウス移動時処理
 function ev_mouseMove(e){
     getMousePosition(e);
-    flush();
+    flush(false);
 }
 //マウスクリック時処理
 function ev_mouseClick(e){
@@ -239,7 +259,7 @@ function ev_mouseClick(e){
         if(target==hover_piece){
             hover_piece=null;
             updateMessage();
-            flush();
+            flush(false);
             return;
         }
         var canm=getCanMovePanel(hover_piece);
@@ -253,21 +273,21 @@ function ev_mouseClick(e){
             //AIが考える。
             drawFocus();
             message="thinking..."
-            flush();
+            flush(false);
             updateMessage();
             if(winner==null){
                 window.setTimeout(function(){
                     ai();   
                     message=""
                     updateMessage();
-                    flush();
+                    flush(false);
                 },50);
             }
         }        
     }
     drawFocus();
 //    updateMessage();
-    flush();
+    flush(false);
 }
 function ev_radioChange(){
     var num = $("input[name='level']:checked").val();
@@ -361,15 +381,15 @@ function getMousePosition(e) {
     mouse_y = e.clientY - rect.top;  
 }  
 //画面描画
-function flush(){
+function flush(initflg){
     var wkMap=$.extend(true,{},thisMap)
     ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.width);
 
     //盤面を描画
-    ctx.drawImage(drawBoard(), 0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.drawImage(drawBoard(initflg), 0, 0, ctx.canvas.width, ctx.canvas.height);
     
     //テカリを描画
-    ctx.drawImage(drawBoard2(), 0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.drawImage(drawBoard2(initflg), 0, 0, ctx.canvas.width, ctx.canvas.height);
     
     //選択したコマを除外
     if(hover_piece!=null){
@@ -428,7 +448,10 @@ function drawFocus(){
 
 
 //盤面を描画してCANVASオブジェクトを返す。
-function drawBoard(){
+function drawBoard(initflg){
+    if(initflg==false){
+        return canv_board;
+    }
     var ctx_board=canv_board.getContext('2d');
     ctx_board.clearRect(0,0,ctx.canvas.width,ctx.canvas.width);
 
@@ -460,7 +483,10 @@ function drawBoard(){
     
     return canv_board;
 }
-function drawBoard2(){
+function drawBoard2(initflg){
+    if(initflg==false){
+        return canv_board2;
+    }
     var ctx_board2=canv_board2.getContext('2d');
     ctx_board2.clearRect(0,0,ctx.canvas.width,ctx.canvas.width);
     ctx_board2.globalAlpha = 0.07;
@@ -840,27 +866,27 @@ function encodeLog(wklogArray){
 function move_start(){
     logPointer=0;
     thisMap=copyMap(logArray[logPointer]);
-    flush();
+    flush(false);
     updateMessage();
 }
 function move_prev(){
     if(logPointer<=0){return;}
     logPointer-=1;
     thisMap=copyMap(logArray[logPointer]);
-    flush();
+    flush(false);
     updateMessage();
 }
 function move_next(){
     if(logPointer+1>logArray.length-1){return;}
     logPointer+=1;
     thisMap=copyMap(logArray[logPointer]);
-    flush();
+    flush(false);
     updateMessage();
 }
 function move_end(){
     logPointer=logArray.length-1;
     thisMap=copyMap(logArray[logPointer]);
-    flush();
+    flush(false);
     updateMessage();
 }
 function reloadnew(){

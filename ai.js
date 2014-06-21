@@ -137,12 +137,12 @@ function isEndX(wkMap){
     if(isNoneNode(wkMap)){
         if(sum1>(-1*sum2)){
             return 1;
-        }else if(sum1<(-1*sum2)){//引き分けは後攻勝利←やっぱやめた。
+        }else if(sum1<(-1*sum2)){
             return -1;
         }
     }
     //実質的判定勝利
-    if(nearwin==false){
+    if(nearwin===false){
         var live1=0;
         var live2=0; 
         for(var num in wkMap){
@@ -155,7 +155,7 @@ function isEndX(wkMap){
         if(sum1>(-1*live2)){
             return 1;
         }else if(-1*sum2>live1){
-          return -1;
+            return -1;
         }
     }
 
