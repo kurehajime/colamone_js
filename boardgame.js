@@ -90,6 +90,10 @@ var thisMap={  0:-1,10:-2,20:-3,30:-4,40:-5,50:-6,
 
 var mouse_x =0;
 var mouse_y =0;
+var startMap;
+var logPointer=0;
+var logArray=new Array();
+var logArray2=new Array();
 var storage=null;
 try{
     if(window==parent && ('localStorage' in window) && window['localStorage'] !== null){
@@ -118,13 +122,6 @@ if(storage==null){
             }
         }
 }
-
-var startMap;
-var logPointer=0;
-var logArray=new Array();
-var logArray2=new Array();
-
-
 //init
 $(function(){
     //初期化
@@ -317,7 +314,13 @@ function ai(){
             zan+=1;
         }
     }
-    if(zan<8){
+    if(zan<8&&$("input[name='level']:checked").val()!=3){
+        p+=1;
+    }
+    if(zan<5){
+        p+=1;
+    }
+    if(zan<4){
         p+=1;
     }
     if($("input[name='level']:checked").val()==1){

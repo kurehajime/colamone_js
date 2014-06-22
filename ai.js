@@ -69,7 +69,7 @@ var score=0;
 var nearwin=false;
 
 function copyMap(wkMap){
-    var rtnMap=new Object();
+    var rtnMap={};
     //不格好だがループするより高速。
     rtnMap[0]=wkMap[0];
     rtnMap[10]=wkMap[10];
@@ -218,7 +218,7 @@ function getCanMovePanelX(panel_num,wkMap){
     var number = wkMap[panel_num];
     var x = Math.floor(panel_num / 10);
     var y = Math.floor(panel_num % 10);
-    var canMove=new Array;
+    var canMove=[];
     if(number===0){
         return canMove;   
     }
@@ -250,8 +250,8 @@ function getCanMovePanelX(panel_num,wkMap){
 }
 //起こりうる次の一手を返す。Return:[[q,map0],[qmap1],[q,map2]...] //q=[prev,next]
 function getNodeMap(wkMap,turn_player){
-    var nodeList=new Array;
-    var queue=new Array();
+    var nodeList=[];
+    var queue=[];
     for(var panel_num in wkMap){
         if(wkMap[panel_num]*turn_player<=0){
             continue;
@@ -272,7 +272,6 @@ function getNodeMap(wkMap,turn_player){
 //盤面を評価して-10000〜+10000で採点数する。
 function evalMap(wkMap,turn_player){
     var ev=0;
-    var zocMap;
     var evMap=copyMap(wkMap);
     //引き分け判定
     if(isDraw(wkMap)){
@@ -298,7 +297,6 @@ function evalMap(wkMap,turn_player){
             line=(panel_num % 10)
             cell_p+=POSI_BONUS[Math.abs(p)][line]*-1;
         }
-
         //評価値に加算。
         ev+=cell_p;
     }
