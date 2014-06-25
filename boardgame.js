@@ -98,9 +98,10 @@ var storage=null;
 try{
     if(window==parent && ('localStorage' in window) && window['localStorage'] !== null){
         storage= localStorage;
+        storage.setItem('test',0);//Safariのプライベートモードは、できないのにできるって言うからかまをかけてみる。
     }
 }catch( e ){
-    
+    storage=null;
 }
 if(storage==null){
         //localStorageが使えない場合
