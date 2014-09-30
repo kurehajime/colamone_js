@@ -18,23 +18,26 @@
                     var manual=document.getElementById("manual");
                     manual.innerHTML="【ルール】\n\
 ・各コマは、丸が付いている方向に進めます。\n\
+・取られたコマは盤上から除かれます。再利用はできません。\n\
 ・一番奥の陣地まで進めると、コマの数字が得点になります。\n\
 ・得点になったコマは動かすことができません。\n\
 ・得点が8点以上になれば勝利です。\n\
 ・片方の動かせるコマが無くなった時は\n\
-　その時点で点数の高い方が勝利です。";
+　その時点で点数の高い方が勝利です。 ";
                     var canvas= document.getElementById("canv");
                     if (!canvas || !canvas.getContext) { 
                         alert("申し訳ございません。お使いのブラウザは対応していません。"); 
                     }
                 }else{
+                    var manual=document.getElementById("manual");
+                    //Translator:Extractum11
                     manual.innerHTML="# How to play Colamone\n\
-* Colamone is a board game similar to chess.\n\
-* Players will be able to advance in the direction of the point of each piece.\n\
-* The number of a piece will be scoring if it advances to the position of the other side most. \n\
-* It is a victory of the player score became 8 or more points.\n\
-* Piece won the scoring can not be moved, it will be invincible.\n\
-* When the movable piece of one is lost, the player high score is winning at that point.";
+* Colamone is kinda like chess. Only some loose similarities \n\
+* Each piece can move 1 tile in the direction of any of it's dots. \n\
+* If a piece gets to the other side, you get how many ever points it's worth. \n\
+* If you get 8 points, you win.\n\
+* When a piece gets to the other side, you can no longer move it and the enemy cannot take it. \n\
+* When a player can't make any more moves, whoever has the highest score wins.";
                 }
                 var canvas= document.getElementById("canv");
                 if (!canvas || !canvas.getContext) { 
@@ -59,7 +62,7 @@
                 <input id="level3" type="radio" name="level" value="3"><label for="level3">3</label>
                 <span id="time"></span><span id="wins"></span>
 <span id="log"><br/><button type="button" id="prevprev" onclick="" align="right"> &lt;&lt; </button><button type="button" id="prev" onclick="" align="right"> &lt; </button><button type="button" id="next" onclick="" align="right"> &gt; </button><button type="button" id="nextnext" onclick="" align="right"> &gt;&gt; </button></span>
-<br/><button type="button" id="newgame" onclick="location.reload()">New game</button>
+<br/><button type="button" id="newgame"  onclick="location.reload()">New game</button>
 <br/><button type="button" id="replay" onclick="" > view log </button><br/>
 <pre id="manual"># How to play Colamone
 * Colamone is a board game similar to chess.
