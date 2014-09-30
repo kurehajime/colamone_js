@@ -47,7 +47,7 @@ div#message input:checked + label {
     height: 30px;
     font-size: 20px;
 }
-#replay,#newgame{
+#replay,#newgame,#tweetlog{
     width: 360px;
     height: 30px;
     font-size: 20px;

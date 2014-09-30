@@ -175,6 +175,7 @@ $(function(){
     $("#next").bind('click',move_next);
     $("#nextnext").bind('click',move_end);
     $("#replay").bind('click',jumpkento);
+    $("#tweetlog").bind('click',tweetlog);
     $("#newgame").bind('click',reloadnew);
 
     
@@ -220,6 +221,7 @@ $(function(){
         $("#next").show();
         $("#nextnext").show();
         $("#replay").hide();
+        $("#tweetlog").hide();
     }else{
         $("#log").hide();
         $("#prevprev").hide();
@@ -227,6 +229,7 @@ $(function(){
         $("#next").hide();
         $("#nextnext").hide();
         $("#replay").hide();
+        $("#tweetlog").hide();
     }
     
     //描画
@@ -712,7 +715,8 @@ function updateMessage(){
 function endgame(){
     if(logArray.length==0){
         //$("#tweet").show();
-        $("#replay").show();   
+        $("#replay").show(); 
+        $("#tweetlog").show();   
     }
 }
 
@@ -908,4 +912,17 @@ function jumpkento(){
                     +startMap[14];
     var log="&log="+encodeLog(logArray2);
     location.href =url+init+log;
+}
+function tweetlog(){
+    var url=document.location.href.split("?")[0];
+    var init="?init="+startMap[55]+","
+                    +startMap[45]+","
+                    +startMap[35]+","
+                    +startMap[25]+","
+                    +startMap[15]+","
+                    +startMap[5]+","
+                    +startMap[44]+","
+                    +startMap[14];
+    var log="%26log="+encodeLog(logArray2);
+    window.open("https://twitter.com/intent/tweet?text="+url+init+log+"%20%23colamone");
 }
