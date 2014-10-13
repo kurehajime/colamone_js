@@ -191,6 +191,9 @@ $(function(){
     if(!storage.getItem('level_3')){
         storage.setItem('level_3',0);
     }
+    if(!storage.getItem('level_4')){
+        storage.setItem('level_4',0);
+    }
     //レベル記憶
     if(storage.getItem('level_save')!=undefined && storage.getItem('level_save')!="undefined"){
          $('input[name=level]').val([ parseInt(storage.getItem('level_save')) ]); 
@@ -331,10 +334,10 @@ function ai(){
         hand=thinkAI(thisMap,turn_player,2+p)[0][0];  
     }else if($("input[name='level']:checked").val()==2){
         hand=thinkAI(thisMap,turn_player,3+p)[0][0];  
-        
-        
-    }else{
+    }else if($("input[name='level']:checked").val()==3){
         hand=thinkAI(thisMap,turn_player,4)[0][0];        
+    }else{
+        hand=thinkAI(thisMap,turn_player,5)[0][0];        
     }
     
     if(hand){
@@ -846,6 +849,7 @@ function decodeLog(logstr,wkInitMap){
     }
     return wklogArray;
 }
+//ログをエンコードする。
 function encodeLog(wklogArray){
     var logstr="";
     var arrow=[ "q","w","e",
@@ -900,6 +904,7 @@ function move_end(){
 function reloadnew(){
     location.href =document.location.href.split("?")[0];
 }
+//検討画面に飛ぶ
 function jumpkento(){
     var url=document.location.href.split("?")[0];
     var init="?init="+startMap[55]+","
@@ -913,6 +918,7 @@ function jumpkento(){
     var log="&log="+encodeLog(logArray2);
     location.href =url+init+log;
 }
+//Tweet
 function tweetlog(){
     var url=document.location.href.split("?")[0];
     var init="?init="+startMap[55]+","
