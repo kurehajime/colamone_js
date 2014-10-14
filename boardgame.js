@@ -349,7 +349,6 @@ function ai(){
     turn_player=turn_player*-1;
     endTime=new Date();
     thinktime=(endTime-startTime)/1000;
-
 }
 //盤面をシャッフル
 function shuffleBoard(){

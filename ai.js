@@ -48,26 +48,8 @@ var PIECES={"1":[1,1,1,
                   0,0,0,
                   0,1,0]
            }
-var whiteMap={0:0,10:0,20:0,30:0,40:0,50:0,
-               1:0,11:0,21:0,31:0,41:0,51:0,
-               2:0,12:0,22:0,32:0,42:0,52:0,
-               3:0,13:0,23:0,33:0,43:0,53:0,
-               4:0,14:0,24:0,34:0,44:0,54:0,
-               5:0,15:0,25:0,35:0,45:0,55:0
-              }
-
-var POSI_BONUS= {1:[1800,1850,1900,1950,2100,2800],
-                2:[1800,1860,1920,2100,2400,3800],
-                3:[1450,1520,1590,1900,2350,4450],
-                4:[1450,1530,1610,2050,2650,5450],
-                5:[1350,1440,1530,2100,2850,6350],
-                6:[1350,1450,1550,2250,3150,7350],
-                7:[1250,1360,1470,2300,3350,8250],
-                8:[1250,1370,1490,2450,4350,11250]
-                 }
 var score=0;
 var nearwin=false;
-
 function copyMap(wkMap){
     var rtnMap={};
     //不格好だがループするより高速。
@@ -114,19 +96,20 @@ function copyMap(wkMap){
 function isEndX(wkMap){
     var sum1=0;
     var sum2=0;
-    var GoalTop=[0,10,20,30,40,50];
-    var GoalBottom=[5,15,25,35,45,55]; 
-    //点数勝利        
-    for(var i in GoalTop){
-        if(wkMap[GoalTop[i]]>0){
-            sum1+=wkMap[GoalTop[i]];
-        }
-    }
-    for(var i in GoalBottom){
-        if(wkMap[GoalBottom[i]]*-1>0){
-            sum2+=wkMap[GoalBottom[i]];
-        }
-    }
+    //ループだと遅いので展開
+    if(wkMap[0]>0){sum1+=wkMap[0];}
+    if(wkMap[10]>0){sum1+=wkMap[10];}
+    if(wkMap[20]>0){sum1+=wkMap[20];}
+    if(wkMap[30]>0){sum1+=wkMap[30];}
+    if(wkMap[40]>0){sum1+=wkMap[40];}
+    if(wkMap[50]>0){sum1+=wkMap[50];}
+    if(wkMap[5]*-1>0){sum2+=wkMap[5];}
+    if(wkMap[15]*-1>0){sum2+=wkMap[15];}
+    if(wkMap[25]*-1>0){sum2+=wkMap[25];}
+    if(wkMap[35]*-1>0){sum2+=wkMap[35];}
+    if(wkMap[45]*-1>0){sum2+=wkMap[45];}
+    if(wkMap[55]*-1>0){sum2+=wkMap[55];}
+    
     if(sum1>=8){
         return 1;
     }else if(sum2<=-8){
@@ -171,17 +154,19 @@ function isDraw(wkMap){
     var sum2=0;
     var GoalTop=[0,10,20,30,40,50];
     var GoalBottom=[5,15,25,35,45,55]; 
-    //点数勝利        
-    for(var i in GoalTop){
-        if(wkMap[GoalTop[i]]>0){
-            sum1+=wkMap[GoalTop[i]];
-        }
-    }
-    for(var i in GoalBottom){
-        if(wkMap[GoalBottom[i]]*-1>0){
-            sum2+=wkMap[GoalBottom[i]];
-        }
-    }
+    //ループだと遅いので展開
+    if(wkMap[0]>0){sum1+=wkMap[0];}
+    if(wkMap[10]>0){sum1+=wkMap[10];}
+    if(wkMap[20]>0){sum1+=wkMap[20];}
+    if(wkMap[30]>0){sum1+=wkMap[30];}
+    if(wkMap[40]>0){sum1+=wkMap[40];}
+    if(wkMap[50]>0){sum1+=wkMap[50];}
+    if(wkMap[5]*-1>0){sum2+=wkMap[5];}
+    if(wkMap[15]*-1>0){sum2+=wkMap[15];}
+    if(wkMap[25]*-1>0){sum2+=wkMap[25];}
+    if(wkMap[35]*-1>0){sum2+=wkMap[35];}
+    if(wkMap[45]*-1>0){sum2+=wkMap[45];}
+    if(wkMap[55]*-1>0){sum2+=wkMap[55];}
     if(sum1==sum2){
         return true  ;
     }else{
@@ -223,12 +208,10 @@ function getCanMovePanelX(panel_num,wkMap){
         return canMove;   
     }
     //アガリのコマは動かしたらダメ。
-    if(number>0 && y===0){
-        return canMove;   
-    }else if(number<0 && y===5){
+    if((number>0 && y===0)||(number<0 && y===5)){
         return canMove;   
     }
-    for(var i=0;i<PIECES[number].length;i++){
+    for(var i=0;i<9;i++){
         if(PIECES[number][i]===0){
             continue;
         }
@@ -251,7 +234,6 @@ function getCanMovePanelX(panel_num,wkMap){
 //起こりうる次の一手を返す。Return:[[q,map0],[qmap1],[q,map2]...] //q=[prev,next]
 function getNodeMap(wkMap,turn_player){
     var nodeList=[];
-    var queue=[];
     for(var panel_num in wkMap){
         if(wkMap[panel_num]*turn_player<=0){
             continue;
@@ -259,7 +241,7 @@ function getNodeMap(wkMap,turn_player){
         var canMove=getCanMovePanelX(panel_num,wkMap);
         for(var num in canMove){
             var nodeMap=copyMap(wkMap);
-            var q=queue.concat();
+            var q=[];
             q.push([panel_num,canMove[num]])
             nodeMap[canMove[num]]=nodeMap[panel_num];
             nodeMap[panel_num]=0;
@@ -273,6 +255,15 @@ function getNodeMap(wkMap,turn_player){
 function evalMap(wkMap,turn_player){
     var ev=0;
     var evMap=copyMap(wkMap);
+    var POSI_BONUS= {1:[1800,1850,1900,1950,2100,2800],
+                    2:[1800,1860,1920,2100,2400,3800],
+                    3:[1450,1520,1590,1900,2350,4450],
+                    4:[1450,1530,1610,2050,2650,5450],
+                    5:[1350,1440,1530,2100,2850,6350],
+                    6:[1350,1450,1550,2250,3150,7350],
+                    7:[1250,1360,1470,2300,3350,8250],
+                    8:[1250,1370,1490,2450,4350,11250]
+                     }
     //引き分け判定
     if(isDraw(wkMap)){
         return 0;
@@ -301,74 +292,6 @@ function evalMap(wkMap,turn_player){
         ev+=cell_p;
     }
     return parseInt(ev);
-}
-
-//考える。
-function think(wkMap,turn_player){
-    var nodeList= getNodeMap(wkMap,turn_player);
-    var best_ev=null;
-    var best_hand=null;
-    for(var i =0;i<=nodeList.length-1;i++){
-        var hand=nodeList[i][0];
-        var ev =evalMap(nodeList[i][1],turn_player);
-        if(best_ev===null){
-            best_hand=hand[0];
-            best_ev=ev;
-        }
-        if(turn_player>0 & best_ev < ev){
-            best_hand=hand[0];
-            best_ev=ev;
-        }
-        if(turn_player<0 & best_ev > ev){
-            best_hand=hand[0];
-            best_ev=ev;
-        }
-    }
-    score=best_ev;
-    return best_hand;
-}
-
-//よく考える。 node=[q,map0]
-function deepThinkAll(map,turn_player,depth){
-	var best_score=turn_player*9999999*-1;
-	var besthand;
-	if(depth===0){
-		best_score=evalMap(map,turn_player);
-		return [besthand,best_score]
-	}
-    
-    var nodeList= getNodeMap(map,turn_player);
-	for(i in nodeList){
-        var hand=nodeList[i][0];
-		var map=nodeList[i][1];
-        
-        //必勝
-        if(isEndX(map)==turn_player){
-            return [hand,99999*turn_player];
-        }
-        //必敗
-        if(isEndX(map)==turn_player*-1){
-            if(besthand===undefined){
-                best_score=99999*turn_player*-1;
-                besthand=hand;
-            }
-            continue;
-        }
-		var sc  =deepThinkAll(map,turn_player*-1,depth-1)[1]
-        
-		if(besthand===undefined){
-			best_score=sc;
-			besthand=hand;
-		}
-		if(turn_player==1 &&sc>best_score){
-			best_score=sc;
-			besthand=hand;
-		}else if(turn_player==-1&&sc<best_score){
-			best_score=sc;
-			besthand=hand;
-		}
-	}
-	return [besthand,best_score]
 }
 //よく考える。 node=[q,map0]
 function deepThinkAllAB(map,turn_player,depth,a,b){
@@ -430,4 +353,3 @@ function thinkAI(map,turn_player,depth,a,b){
     }
     return deepThinkAllAB(map,turn_player,depth,a,b)
 }
-
