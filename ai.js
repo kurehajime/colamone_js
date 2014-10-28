@@ -48,8 +48,6 @@ var PIECES={"1":[1,1,1,
                   0,0,0,
                   0,1,0]
            }
-var score=0;
-var nearwin=false;
 function copyMap(wkMap){
     var rtnMap={};
     //不格好だがループするより高速。
@@ -93,7 +91,7 @@ function copyMap(wkMap){
 }
 
 //終了判定(実質的勝利含む)
-function isEndX(wkMap){
+function isEndX(wkMap,nearwin){
     var sum1=0;
     var sum2=0;
     //ループだと遅いので展開
@@ -252,7 +250,7 @@ function getNodeMap(wkMap,turn_player){
 }
 
 //盤面を評価して-10000〜+10000で採点数する。
-function evalMap(wkMap,turn_player){
+function evalMap(wkMap,turn_player,nearwin){
     var ev=0;
     var evMap=copyMap(wkMap);
     var POSI_BONUS= {1:[1800,1850,1900,1950,2100,2800],
@@ -269,7 +267,7 @@ function evalMap(wkMap,turn_player){
         return 0;
     }
     //終局判定
-    var end=isEndX(evMap);
+    var end=isEndX(evMap,nearwin);
     if(end==1){
         return +9999999;
     }else if(end==-1){
@@ -294,11 +292,11 @@ function evalMap(wkMap,turn_player){
     return parseInt(ev);
 }
 //よく考える。 node=[q,map0]
-function deepThinkAllAB(map,turn_player,depth,a,b){
+function deepThinkAllAB(map,turn_player,depth,a,b,nearwin){
 	var best_score=turn_player*9999999*-1;
 	var besthand;
 	if(depth==0){
-		best_score=evalMap(map,turn_player);
+		best_score=evalMap(map,turn_player,nearwin);
 		return [besthand,best_score]
 	}
     if(a==undefined||b==undefined){
@@ -312,7 +310,7 @@ function deepThinkAllAB(map,turn_player,depth,a,b){
 		var map=nodeList[i][1];
         
         //必勝
-        var end=isEndX(map);
+        var end=isEndX(map,nearwin);
         if(end==turn_player){
             return [hand,999999*turn_player];
         }
@@ -324,7 +322,7 @@ function deepThinkAllAB(map,turn_player,depth,a,b){
             }
             continue;
         }
-		var sc  =deepThinkAllAB(map,turn_player*-1,depth-1,b,a)[1]
+		var sc  =deepThinkAllAB(map,turn_player*-1,depth-1,b,a,nearwin)[1]
 		if(besthand==undefined){
 			best_score=sc;
 			besthand=hand;
@@ -348,8 +346,9 @@ function deepThinkAllAB(map,turn_player,depth,a,b){
 }
 
 function thinkAI(map,turn_player,depth,a,b){
-    if(isEndX(map)!=0){
+    var nearwin;
+    if(isEndX(map,false)!=0){
         nearwin=true;
     }
-    return deepThinkAllAB(map,turn_player,depth,a,b)
+    return deepThinkAllAB(map,turn_player,depth,a,b,nearwin)
 }
