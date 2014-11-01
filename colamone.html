@@ -8,7 +8,7 @@
         <link rel="stylesheet" type="text/css" href="boardgame.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js?2014062101"></script>
         <script type="text/javascript" src="boardgame.js?2014101301"></script>
-        <script type="text/javascript" src="ai.js?2014102801"></script>
+        <script type="text/javascript" src="ai.js?2014102804"></script>
         <script type="text/javascript">
             function get_lang() {
                 return (navigator.browserLanguage || navigator.language || navigator.userLanguage).substr(0,2).toLowerCase();
@@ -17,13 +17,13 @@
                 if(get_lang()==="ja"){
                     var manual=document.getElementById("manual");
                     manual.innerHTML="【ルール】\n\
-・各コマは、丸が付いている方向に進めます。\n\
-・取られたコマは盤上から除かれます。再利用はできません。\n\
-・一番奥の陣地まで進めると、コマの数字が得点になります。\n\
-・得点になったコマは動かすことができません。\n\
-・得点が8点以上になれば勝利です。\n\
-・片方の動かせるコマが無くなった時は\n\
-　その時点で点数の高い方が勝利です。 ";
+1.各コマは、丸が付いている方向に進めます。\n\
+2.取られたコマは盤上から除かれます。再利用はできません。\n\
+3.一番奥の陣地まで進めると、コマの数字が得点になります。\n\
+4.得点になったコマは動くことも取ることもできません。\n\
+5.先に得点が8点以上になったプレーヤーの勝利です。\n\
+6.ただし何れかプレーヤーの動かせるコマが無くなった時は\n\
+　その時点で点数の高いプレーヤーの勝利です。 ";
                     var canvas= document.getElementById("canv");
                     if (!canvas || !canvas.getContext) { 
                         alert("申し訳ございません。お使いのブラウザは対応していません。"); 
