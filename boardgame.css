@@ -55,4 +55,8 @@ div#message input:checked + label {
 #sns{
     margin-left: 5px;
 }
+img.preload{
+	display:none;
+}
+ 
 
