@@ -9,7 +9,7 @@ Colamoneはチェスや将棋に似たオリジナルのボードゲームです
 (You can play here now.)  
 http://xiidec.appspot.com/colamone/colamone.html
 
-![Colamone](https://cloud.githubusercontent.com/assets/4569916/3172841/e0afb63e-ebdb-11e3-9168-e0a421457a2a.png)
+![Colamone](https://cloud.githubusercontent.com/assets/4569916/5524973/18afacd0-8a22-11e4-81f1-f6d1f7c468a7.jpg)
 
 ### 【ルール】
 * 各コマは、丸が付いている方向に進めます。
