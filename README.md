@@ -1,5 +1,5 @@
 Colamone - A two-player strategy board game
-===========
+============
 
 
 Colamoneはチェスや将棋に似たオリジナルのボードゲームです。  
