@@ -48,9 +48,15 @@
             function setTweet(){
 !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.async=true;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
             }
+            function zoom(){
+                if(screen.width<500){
+                    var viewport = document.querySelector("meta[name=viewport]");
+    viewport.setAttribute('content', 'width=520,user-scalable=no');
+                }
+            }
         </script>
     </HEAD>
-    <BODY onLoad="set_manual();setTweet();">
+    <BODY onLoad="set_manual();setTweet();zoom();">
         <div id="main">
             <canvas id="canv" width="500px" height="500px"></canvas>
             <div id="message">
