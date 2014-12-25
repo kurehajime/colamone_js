@@ -37,6 +37,7 @@ color: #16b1db;
 }
 #manual{
     font-size: 12px;
+    word-wrap:normal;
 }
 div#message input:checked + label {
     background:rgb(247, 225, 225);
@@ -58,5 +59,7 @@ div#message input:checked + label {
 img.preload{
 	display:none;
 }
- 
+ body {
+  -webkit-text-size-adjust: 100%;
+}
 

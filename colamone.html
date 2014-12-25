@@ -5,7 +5,7 @@
         <meta content="text/html" charset="UTF-8">
         <meta name="viewport" content="width=device-width,user-scalable=no">
         <link rel="author" href="https://plus.google.com/105626742774793809251" />
-        <link rel="stylesheet" type="text/css" href="boardgame.css">
+        <link rel="stylesheet" type="text/css" href="boardgame.css?2014122501">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js?2014062101"></script>
         <script type="text/javascript" src="boardgame.js?2014122202"></script>
         <script type="text/javascript" src="ai.js?2014111108"></script>
@@ -52,6 +52,10 @@
                 if(screen.width<500){
                     var viewport = document.querySelector("meta[name=viewport]");
     viewport.setAttribute('content', 'width=520,user-scalable=no');
+                }
+                if(screen.height<500){
+                    var viewport = document.querySelector("meta[name=viewport]");
+    viewport.setAttribute('content', 'height=520,user-scalable=no');
                 }
             }
         </script>
