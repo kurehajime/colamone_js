@@ -363,13 +363,13 @@ function ai(){
         p+=1;
     }
     if($("input[name='level']:checked").val()==1){
-        hand=thinkAI(thisMap,turn_player,2+p)[0][0];  
+        hand=thinkAI(thisMap,turn_player,2+p)[0];  
     }else if($("input[name='level']:checked").val()==2){
-        hand=thinkAI(thisMap,turn_player,3+p)[0][0];  
+        hand=thinkAI(thisMap,turn_player,3+p)[0];  
     }else if($("input[name='level']:checked").val()==3){
-        hand=thinkAI(thisMap,turn_player,4)[0][0];        
+        hand=thinkAI(thisMap,turn_player,4)[0];        
     }else{
-        hand=thinkAI(thisMap,turn_player,5)[0][0];        
+        hand=thinkAI(thisMap,turn_player,5)[0];        
     }
     
     if(hand){
