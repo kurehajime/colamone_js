@@ -206,15 +206,12 @@ function isNoneNode(wkMap){
 //動かせるマスを返す。Return:[NN,NN,NN...]
 function getCanMovePanelX(panel_num,wkMap){
     var number = wkMap[panel_num];
-    if(number===0){
-        return [];   
-    }
     var x = Math.floor(panel_num / 10);
     var y = Math.floor(panel_num % 10);
     var canMove=[];
 
-    //アガリのコマは動かしたらダメ。
-    if((number>0 && y===0)||(number<0 && y===5)){
+    //アガリのコマは動かしたらダメ。何も無いマスも動かしようがない。
+    if((number>0 && y===0)||(number<0 && y===5)||number===0){
         return canMove;   
     }
     for(var i=0;i<9;i++){
@@ -241,11 +238,11 @@ function getCanMovePanelX(panel_num,wkMap){
 function getNodeMap(wkMap,turn_player){
     var nodeList=[];
     for(var panel_num in wkMap){
-        if(wkMap[panel_num]*turn_player<=0){
+        if(wkMap[panel_num]*turn_player<=0||wkMap[panel_num]===0){
             continue;
         }
         var canMove=getCanMovePanelX(panel_num,wkMap);
-        for(var num in canMove){
+        for(var num =0;num<canMove.length;num++){
             var nodeMap=copyMap(wkMap);
             nodeMap[canMove[num]]=nodeMap[panel_num];
             nodeMap[panel_num]=0;
@@ -303,7 +300,7 @@ function deepThinkAllAB(map,turn_player,depth,a,b,nearwin,evalparam){
     }
     
     var nodeList= getNodeMap(map,turn_player);
-	for(var i in nodeList){
+	for(var i =0;i<nodeList.length;i++){
         var hand=nodeList[i][0];
 		var map=nodeList[i][1];
         
