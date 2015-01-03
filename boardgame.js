@@ -375,7 +375,6 @@ function ai(){
     if(hand){
         thisMap[hand[1]]=thisMap[hand[0]];
         thisMap[hand[0]]=0;
-        score=evalMap(thisMap,turn_player);
         logArray2.push([hand[0],hand[1]]);
     }
     turn_player=turn_player*-1;
