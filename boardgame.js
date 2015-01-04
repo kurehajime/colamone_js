@@ -1,4 +1,3 @@
-//"use strict"
 var ctx=null;
 var isTouch=true;
 var canv_board=null;
@@ -223,9 +222,9 @@ $(function(){
     //盤面を初期化
     if(paramObj["init"]){
         startMap= getMapByParam(paramObj["init"]);
-        thisMap=copyMap(startMap);
+        thisMap=Aijs.copyMap(startMap);
     }else{
-        startMap=copyMap(thisMap);
+        startMap=Aijs.copyMap(thisMap);
     }
     //ログをデコード
     if(paramObj["log"]){
@@ -363,13 +362,13 @@ function ai(){
         p+=1;
     }
     if($("input[name='level']:checked").val()==1){
-        hand=thinkAI(thisMap,turn_player,2+p)[0];  
+        hand=Aijs.thinkAI(thisMap,turn_player,2+p)[0];  
     }else if($("input[name='level']:checked").val()==2){
-        hand=thinkAI(thisMap,turn_player,3+p)[0];  
+        hand=Aijs.thinkAI(thisMap,turn_player,3+p)[0];  
     }else if($("input[name='level']:checked").val()==3){
-        hand=thinkAI(thisMap,turn_player,4)[0];        
+        hand=Aijs.thinkAI(thisMap,turn_player,4)[0];        
     }else{
-        hand=thinkAI(thisMap,turn_player,5)[0];        
+        hand=Aijs.thinkAI(thisMap,turn_player,5)[0];        
     }
     
     if(hand){
@@ -820,9 +819,7 @@ function calcScore(){
     blueScore=Math.abs(sum1);
     redScore=Math.abs(sum2);
 }
-function isEnd(wkMap){
- 
-}
+
 //手詰まり判定
 function isNoneNode(wkMap){
     var flag1=false;
@@ -831,7 +828,7 @@ function isNoneNode(wkMap){
         if(wkMap[panel_num]==0){
             continue;
         }
-        var canMove=getCanMovePanelX(panel_num,wkMap,false);
+        var canMove=Aijs.getCanMovePanelX(panel_num,wkMap,false);
         if(canMove.length!=0){
             if(wkMap[panel_num]>0){
                 flag1=true;
@@ -862,7 +859,7 @@ function getParam(){
 }
 function getMapByParam(initString){
     if(initString){
-        var wkMap=copyMap(thisMap);
+        var wkMap=Aijs.copyMap(thisMap);
         //クリア
         for(var num in wkMap){
             wkMap[num]=0;   
@@ -888,7 +885,7 @@ function getMapByParam(initString){
 //ログをデコードする。
 function decodeLog(logstr,wkInitMap){
     var wklogArray=new Array();
-    var wkMap=copyMap(wkInitMap);
+    var wkMap=Aijs.copyMap(wkInitMap);
     var arrow={ "q":0,"w":1,"e":2,
                 "a":3,"s":4,"d":5,
                 "z":6,"x":7,"c":8};
@@ -904,7 +901,7 @@ function decodeLog(logstr,wkInitMap){
         var from=parseInt(logArr[i].match(/\d*/)[0]);
         var to= (Math.floor(from / 10) + Math.floor(arw%3)-1)*10
                 +(Math.floor(from % 10) + Math.floor(arw/3)-1);
-        wkMap=copyMap(wkMap);
+        wkMap=Aijs.copyMap(wkMap);
         wkMap[to]=parseInt(wkMap[from]);
         wkMap[from]=0;
         wklogArray.push(wkMap);
@@ -939,27 +936,27 @@ function encodeLog(wklogArray){
 
 function move_start(){
     logPointer=0;
-    thisMap=copyMap(logArray[logPointer]);
+    thisMap=Aijs.copyMap(logArray[logPointer]);
     flush(false,false);
     updateMessage();
 }
 function move_prev(){
     if(logPointer<=0){return;}
     logPointer-=1;
-    thisMap=copyMap(logArray[logPointer]);
+    thisMap=Aijs.copyMap(logArray[logPointer]);
     flush(false,false);
     updateMessage();
 }
 function move_next(){
     if(logPointer+1>logArray.length-1){return;}
     logPointer+=1;
-    thisMap=copyMap(logArray[logPointer]);
+    thisMap=Aijs.copyMap(logArray[logPointer]);
     flush(false,false);
     updateMessage();
 }
 function move_end(){
     logPointer=logArray.length-1;
-    thisMap=copyMap(logArray[logPointer]);
+    thisMap=Aijs.copyMap(logArray[logPointer]);
     flush(false,false);
     updateMessage();
 }
