@@ -9,8 +9,11 @@
     global["Aijs"]["copyMap"] = copyMap;
     global["Aijs"]["thinkAI"] = thinkAI;
     global["Aijs"]["getCanMovePanelX"] = getCanMovePanelX;
+    global["Aijs"]["isEndX"] = isEndX ;
+    global["Aijs"]["isDraw"] = isDraw ;
+
+    // Body ---------------------------------------
     
-    // Implementation ---------------------------------------
     var PIECES={"1":[1,1,1,
                      1,0,1,
                      1,1,1],
