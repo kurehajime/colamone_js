@@ -17,7 +17,6 @@ var turn_player=null;
 var blueScore=0;
 var redScore=0;
 var winner=null;
-var isDraw=false;
 var message="";
 var thinktime=0.0;
 var COLOR_LINE="#333333";
