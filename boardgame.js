@@ -182,7 +182,7 @@ $(function(){
         $("#canv").bind('mousemove ',ev_mouseMove)
         $("#canv").bind('mouseup',ev_mouseClick);
     }
-    $("input[name='level']").bind('click',ev_radioChange);
+    $("#level").bind('change ',ev_radioChange);
     $("#prevprev").bind('click',move_start);
     $("#prev").bind('click',move_prev);
     $("#next").bind('click',move_next);
@@ -190,7 +190,6 @@ $(function(){
     $("#replay").bind('click',jumpkento);
     $("#tweetlog").bind('click',tweetlog);
     $("#newgame").bind('click',reloadnew);
-
     
     shuffleBoard();
     
@@ -209,10 +208,11 @@ $(function(){
     }
     //レベル記憶
     if(storage.getItem('level_save')!=undefined && storage.getItem('level_save')!="undefined"){
-         $('input[name=level]').val([ parseInt(storage.getItem('level_save')) ]); 
+         $('#level').val([ parseInt(storage.getItem('level_save')) ]); 
+        $('#level').selectmenu('refresh',true);
     }else{
         storage.setItem('level_save',2);
-         $('input[name=level]').val([2]); 
+        $('#level').val([2]); 
     }
     
     
@@ -236,16 +236,16 @@ $(function(){
         $("#prev").show();
         $("#next").show();
         $("#nextnext").show();
-        $("#replay").hide();
-        $("#tweetlog").hide();
+        $("#span_replay").hide();
+        $("#span_tweetlog").hide();
     }else{
         $("#log").hide();
         $("#prevprev").hide();
         $("#prev").hide();
         $("#next").hide();
         $("#nextnext").hide();
-        $("#replay").hide();
-        $("#tweetlog").hide();
+        $("#span_replay").hide();
+        $("#span_tweetlog").hide();
     }
     
     //画像読み込み成功時
@@ -324,7 +324,7 @@ function ev_mouseClick(e){
     flush(false,false);
 }
 function ev_radioChange(){
-    var num = $("input[name='level']:checked").val();
+    var num = $("#level option:selected").val();
     storage.setItem('level_save',num);
     if(storage.getItem('level_'+num)>0){
         $("#wins")[0].innerHTML=storage.getItem('level_'+num)+" win!";
@@ -351,7 +351,7 @@ function ai(){
             zan+=1;
         }
     }
-    if(zan<8&&$("input[name='level']:checked").val()!=3){
+    if(zan<8&&$("#level option:selected").val()!=3){
         p+=1;
     }
     if(zan<5){
@@ -360,11 +360,11 @@ function ai(){
     if(zan<4){
         p+=1;
     }
-    if($("input[name='level']:checked").val()==1){
+    if($("#level option:selected").val()==1){
         hand=Aijs.thinkAI(thisMap,turn_player,2+p)[0];  
-    }else if($("input[name='level']:checked").val()==2){
+    }else if($("#level option:selected").val()==2){
         hand=Aijs.thinkAI(thisMap,turn_player,3+p)[0];  
-    }else if($("input[name='level']:checked").val()==3){
+    }else if($("#level option:selected").val()==3){
         hand=Aijs.thinkAI(thisMap,turn_player,4)[0];        
     }else{
         hand=Aijs.thinkAI(thisMap,turn_player,5)[0];        
@@ -755,12 +755,12 @@ function updateMessage(){
     if(logArray.length==0){
         if(winner==1){
             message="You Win!"
-            storage.setItem('level_'+$("input[name='level']:checked").val(),
-                           parseInt(storage.getItem('level_'+$("input[name='level']:checked").val()))+1);
+            storage.setItem('level_'+$("#level option:selected").val(),
+                           parseInt(storage.getItem('level_'+$("#level option:selected").val()))+1);
             endgame();
         }else if(winner==-1){
             message="You Lose..."
-            storage.setItem('level_'+$("input[name='level']:checked").val(),0);
+            storage.setItem('level_'+$("#level option:selected").val(),0);
             endgame();
         }else if(winner==0){
             message="-- Draw --"
@@ -768,8 +768,8 @@ function updateMessage(){
         }
     }
 
-    if(storage.getItem('level_'+$("input[name='level']:checked").val())>0){
-        $("#wins")[0].innerHTML=storage.getItem('level_'+$("input[name='level']:checked").val())+" win!";
+    if(storage.getItem('level_'+$("#level option:selected").val())>0){
+        $("#wins")[0].innerHTML=storage.getItem('level_'+$("#level option:selected").val())+" win!";
     }else{
         $("#wins")[0].innerHTML="";   
     }
@@ -778,8 +778,8 @@ function updateMessage(){
 function endgame(){
     if(logArray.length==0){
         //$("#tweet").show();
-        $("#replay").show(); 
-        $("#tweetlog").show();   
+        $("#span_replay").show(); 
+        $("#span_tweetlog").show();   
     }
 }
 

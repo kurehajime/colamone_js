@@ -3,20 +3,11 @@ html {
 	margin: 0 auto;
 	padding: 0;
 	display: table;
-    
-    background: #FFFFFF;/*Old Browsers*/
-    background: url(data:image/svg+xml;base64,...);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #CCCCCC), color-stop(100%, #FFFFFF));
-    background: -webkit-linear-gradient(top, #CCCCCC, #FFFFFF);
-    background:    -moz-linear-gradient(top, #CCCCCC, #FFFFFF);
-    background:         linear-gradient(to bottom, #CCCCCC, #FFFFFF);
 }
 #main{
-    background-color: "#000000";
     display: table-cell; 
     vertical-align: middle;
-    text-align:middle;
-
+    padding: 10px 0px;
 }
 #canv{
     height: 500px;
@@ -25,34 +16,46 @@ html {
 }
 #message{
     float: left;
-    background-color: "#FFFFFF";
     font-size: 14px;
     margin-left: 5px;
+    max-width: 500px;
 }
 #wins{
-color: #16b1db;
+    color: #16b1db;
 }
 #gamename{
     font-size: 40px;
 }
 #manual{
     font-size: 12px;
-    word-wrap:normal;
-}
-div#message input:checked + label {
-    background:rgb(247, 225, 225);
-    font-weight:bold;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow: auto;   
+    max-width: 340px;
 }
 #prevprev,#prev,#next,#nextnext{
-    width: 90px;
-    height: 30px;
-    font-size: 20px;
+    width: 78px;
+    font-size: 16px;
 }
-#replay,#newgame,#tweetlog{
-    width: 360px;
-    height: 30px;
-    font-size: 20px;
+#replay,#tweetlog,.howtoplay{
+    width: 340px;
+    font-size: 16px;
+    margin-bottom: 5px;
 }
+.howtoplay a{
+    text-align: center !important;
+    padding-right: 2.5em !important;
+}
+#newgame{
+    width: 160px;
+}
+#lvs{
+    margin: 0px !important;   
+}
+.lv{
+    width: 110px;   
+}
+
 #sns{
     margin-left: 5px;
 }
@@ -63,3 +66,37 @@ img.preload{
   -webkit-text-size-adjust: 100%;
 }
 
+#collapsible{
+    width: 340px;   
+}
+@media (orientation: landscape) {
+    #main{
+        display: table-cell; 
+        vertical-align: middle;
+        padding: 10px 10px;
+    }
+}
+@media (orientation: portrait) {
+    #replay,#tweetlog,.howtoplay,#collapsible,#lvs{
+        width: 500px !important;
+    }
+    #prevprev,#prev,#next,#nextnext{
+        width: 115px;
+    }
+    #message{
+        width: 500px !important;
+        font-size: 20px !important;
+    }
+    .lv{
+        width: 200px !important;
+    }
+    #newgame{
+        width: 212px !important;
+
+    }
+    
+    #manual{
+        font-size: 20px !important;
+        max-width: 500px;
+    }
+}

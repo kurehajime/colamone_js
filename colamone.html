@@ -14,10 +14,57 @@
         <meta name="twitter:site" content="@kurehajime" />
         <meta name="twitter:creator" content="@kurehajime" />
         <link rel="author" href="https://plus.google.com/105626742774793809251" />
-        <link rel="stylesheet" type="text/css" href="boardgame.css?2014122501">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js?2014062101"></script>
-        <script type="text/javascript" src="boardgame.js?2015010501"></script>
-        <script type="text/javascript" src="ai.js?2015010501"></script>
+    </HEAD>
+    <BODY onLoad="set_manual();setTweet();zoom();">
+<div data-role="page" data-title="Colamone">
+
+        <div id="main" role="main" class="ui-content">
+            <canvas id="canv" width="500px" height="500px"></canvas>
+            <div id="message">
+                <span id="gamename">colamone</span> by <A Href="https://twitter.com/kurehajime">@kurehajime</A><br/>
+                <b>Turn : </b><span id="turn"></span>(
+                Blue: <span id="blue"></span> / Red: <span id="red"></span> ):<span id="time"></span><span id="wins"></span>
+                <div class="ui-field-contain " id="lvs">
+                    <select id="level"  data-inline="true" >
+                        <option value="1" class="lv">Lv.1</option>
+                        <option value="2"  class="lv" selected="selected">Lv.2</option>
+                        <option value="3" class="lv">Lv.3</option>
+                        <option value="4"  class="lv">Lv.4</option>
+                    </select>
+                    <button type="button" id="newgame"  onclick="location.reload()"   class="ui-btn ui-btn-inline ui-corner-all ui-shadow" >[Reset Game]</button>
+                </div>
+
+<span id="log"><button type="button" id="prevprev" onclick="" align="right" class="ui-btn ui-btn-inline  ui-corner-all ui-shadow"> &lt;&lt; </button><button type="button" id="prev" onclick="" align="right" class="ui-btn ui-btn-inline  ui-corner-all ui-shadow"> &lt; </button><button type="button" id="next" onclick="" align="right" class="ui-btn ui-btn-inline  ui-corner-all ui-shadow"> &gt; </button><button type="button" id="nextnext" onclick="" align="right" class="ui-btn ui-btn-inline  ui-corner-all ui-shadow"> &gt;&gt; </button></span>
+<span id="span_replay"><button type="button" id="replay" onclick="" > view log </button></span>
+<span id="span_tweetlog"><button type="button" id="tweetlog" onclick="" > tweet result </button></span>
+<div data-role="collapsible" id="collapsible" class="ui-shadow">
+    <h5 class="howtoplay"><span id="htp">How to play Colamone</span></h5>
+<p id="manual">
+* Colamone is kinda like chess. 
+   Only some loose similarities 
+* Each piece can move 1 tile in the direction 
+   of any of it's dots.
+* If a piece gets to the other side, 
+   you get how many ever points it's worth. 
+* If you get 8 points, you win.
+* When a piece gets to the other side,
+   you can no longer move it and the enemy cannot take it. 
+* When a player can't make any more moves, 
+   whoever has the highest score wins.</p>
+                </div>
+
+<span id="sns"><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://xiidec.appspot.com/colamone/colamone.html" data-hashtags="colamone" data-lang="en"  data-size="large"></a></span>
+                </div>
+        </div>
+    <IMG src="bk.gif" class="preload"></IMG>
+</div>
+
+        <link rel="stylesheet" type="text/css" href="boardgame.css?2015020102">
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.3/jquery.mobile.min.css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.3/jquery.mobile.min.js"></script>
+        <script type="text/javascript" src="ai.js?2015020102"></script>
+        <script type="text/javascript" src="boardgame.js?2015020102"></script>
         <script type="text/javascript">
             function get_lang() {
                 return (navigator.browserLanguage || navigator.language || navigator.userLanguage).substr(0,2).toLowerCase();
@@ -37,21 +84,36 @@
                     if (!canvas || !canvas.getContext) { 
                         alert("申し訳ございません。お使いのブラウザは対応していません。"); 
                     }
+                    $('#htp').text("Colamoneのルール");
                 }else{
                     var manual=document.getElementById("manual");
                     //Translator:Extractum11
                     manual.innerHTML="# How to play Colamone\n\
-* Colamone is kinda like chess. Only some loose similarities \n\
-* Each piece can move 1 tile in the direction of any of it's dots. \n\
-* If a piece gets to the other side, you get how many ever points it's worth. \n\
+* Colamone is kinda like chess. \n\
+   Only some loose similarities. \n\
+* Each piece can move 1 tile in the direction \n\
+   of any of it's dots. \n\
+* If a piece gets to the other side, \n\
+   you get how many ever points it's worth. \n\
 * If you get 8 points, you win.\n\
-* When a piece gets to the other side, you can no longer move it and the enemy cannot take it. \n\
-* When a player can't make any more moves, whoever has the highest score wins.";
+* When a piece gets to the other side, you can \n\
+  no longer move it and the enemy cannot take it. \n\
+* When a player can't make any more moves, \n\
+   whoever has the highest score wins.";
+                    $('#htp').text("How to play Colamone");
+                    var canvas= document.getElementById("canv");
+                    if (!canvas || !canvas.getContext) { 
+                        alert("Sorry. Your browser does not support."); 
+                    }
                 }
-                var canvas= document.getElementById("canv");
-                if (!canvas || !canvas.getContext) { 
-                    alert("Sorry. Your browser does not support."); 
-                }
+                if (window.innerHeight > window.innerWidth) {
+
+                } else {
+                  $("#collapsible").collapsible({
+                      collapsed: false
+                    });
+                };
+ 
                     
             }
             function setTweet(){
@@ -60,41 +122,14 @@
             function zoom(){
                 if(screen.width<500){
                     var viewport = document.querySelector("meta[name=viewport]");
-    viewport.setAttribute('content', 'width=520,user-scalable=no');
+    viewport.setAttribute('content', 'width=500,user-scalable=no');
                 }
                 if(screen.height<500){
                     var viewport = document.querySelector("meta[name=viewport]");
-    viewport.setAttribute('content', 'height=520,user-scalable=no');
+    viewport.setAttribute('content', 'height=500,user-scalable=no');
                 }
+                
             }
         </script>
-    </HEAD>
-    <BODY onLoad="set_manual();setTweet();zoom();">
-        <div id="main">
-            <canvas id="canv" width="500px" height="500px"></canvas>
-            <div id="message">
-                <span id="gamename">colamone</span> by <A Href="https://twitter.com/kurehajime">@kurehajime</A><br/>
-                <b>Turn : </b><span id="turn"></span>(
-                Blue: <span id="blue"></span> / Red: <span id="red"></span> )<br/>
-                <b>Level : </b><input id="level1" type="radio" name="level" value="1"><label for="level1">1</label>
-                <input id="level2" type="radio" name="level" value="2"><label for="level2" checked>2</label>
-                <input id="level3" type="radio" name="level" value="3"><label for="level3">3</label>
-                <input id="level4" type="radio" name="level" value="4"><label for="level4">4</label>
-                <span id="time"></span><span id="wins"></span>
-<span id="log"><br/><button type="button" id="prevprev" onclick="" align="right"> &lt;&lt; </button><button type="button" id="prev" onclick="" align="right"> &lt; </button><button type="button" id="next" onclick="" align="right"> &gt; </button><button type="button" id="nextnext" onclick="" align="right"> &gt;&gt; </button></span>
-<br/><button type="button" id="newgame"  onclick="location.reload()">New game</button>
-<br/><button type="button" id="replay" onclick="" > view log </button>
-<br/><button type="button" id="tweetlog" onclick="" > tweet result </button>
-<pre id="manual"># How to play Colamone
-* Colamone is a board game similar to chess.
-* Players will be able to advance in the direction of the point of each piece.
-* The number of a piece will be scoring if it advances to the position of the other side most. 
-* Piece won the scoring can not be moved, it will be invincible.
-* It is a victory of the player score became 8 or more points.
-* When the movable piece of one is lost, the player high score is winning at that point.</pre>
-<span id="sns"><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://xiidec.appspot.com/colamone/colamone.html" data-hashtags="colamone" data-lang="en"></a></span>
-            </div>
-        </div>
-        <IMG src="bk.gif" class="preload">
     </BODY>
 </HTML>
