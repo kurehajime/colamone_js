@@ -588,12 +588,19 @@ function drawPiece(wkCtx,x,y,number,goal){
     grad.addColorStop(0,'rgb(255, 255, 255)');    
     grad.addColorStop(0.4,wkColor); 
     grad.addColorStop(1,wkColor);  
+
+    wkCtx.shadowBlur = 10;
+    wkCtx.shadowColor = "rgba(0, 0, 0, 1)";
+    wkCtx.shadowOffsetX = 2;
+    wkCtx.shadowOffsetY = 2;
     wkCtx.fillStyle   = grad;
-    
-    
     wkCtx.beginPath();
     wkCtx.fillRect(x+cellSize/10,y+cellSize/10,cellSize-1*cellSize/5,cellSize-1*cellSize/5);
-    
+    wkCtx.shadowColor= "rgba(0, 0, 0, 0)";; 
+    wkCtx.shadowBlur = 0;
+    wkCtx.shadowOffsetX = 0;
+    wkCtx.shadowOffsetY = 0;
+
     //曇りエフェクト
     if(img_bk_loaded){
         wkCtx.globalAlpha = 0.35;
