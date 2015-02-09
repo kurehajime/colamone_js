@@ -122,13 +122,17 @@
 !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.async=true;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
             }
             function zoom(){
-                if(screen.width<500){
-                    var viewport = document.querySelector("meta[name=viewport]");
-    viewport.setAttribute('content', 'width=500,user-scalable=no');
-                }
-                if(screen.height<500){
-                    var viewport = document.querySelector("meta[name=viewport]");
-    viewport.setAttribute('content', 'height=500,user-scalable=no');
+                var viewport = document.querySelector("meta[name=viewport]");
+                if(screen.width<500&&screen.height<500){
+                    if(screen.width<screen.height){
+                        viewport.setAttribute('content', 'width=500,user-scalable=no');
+                    }else{
+                        viewport.setAttribute('content', 'height=500,user-scalable=no'); 
+                    }
+                }else if(screen.width<500){
+                    viewport.setAttribute('content', 'width=500,user-scalable=no');
+                }else if(screen.height<500){
+                    viewport.setAttribute('content', 'height=500,user-scalable=no');
                 }
                 
             }
