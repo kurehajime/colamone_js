@@ -309,7 +309,9 @@ function ev_mouseClick(e){
 
             //AIが考える。
             message="thinking..."
-            flush(false,false);
+            window.setTimeout(function(){
+                flush(false,false);
+            },50);
             updateMessage();
             if(winner==null){
                 window.setTimeout(function(){
