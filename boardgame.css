@@ -77,14 +77,17 @@ img.preload{
     }
 }
 @media (orientation: portrait) {
-    #replay,#tweetlog,.howtoplay,#collapsible,#lvs{
+    #replay,#tweetlog,#lvs{
         width: 500px !important;
+    }
+    .howtoplay,#collapsible{
+        width: 495px !important;
     }
     #prevprev,#prev,#next,#nextnext{
-        width: 115px;
+        width: 113px;
     }
     #message{
-        width: 500px !important;
+        width: 495px !important;
         font-size: 20px !important;
     }
     .lv{
@@ -97,6 +100,6 @@ img.preload{
     
     #manual{
         font-size: 20px !important;
-        max-width: 500px;
+        max-width: 495px;
     }
 }
