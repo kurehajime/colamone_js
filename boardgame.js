@@ -27,7 +27,7 @@ var COLOR_PANEL_4="#111111";
 var COLOR_PANEL_5="#444444";
 var COLOR_PANEL_6="#888888";
 
-var COLOR_SELECT="#88FF88";
+var COLOR_SELECT="#7fed7f";
 var COLOR_RED="#E5004F";
 var COLOR_BLUE="#00A0E9";
 var COLOR_WHITE="#FFFFFF";
@@ -486,12 +486,13 @@ function drawFocus(){
     var y=mouse_y- (mouse_y % cellSize);
     var ctx_focus=canv_focus.getContext('2d');
     ctx_focus.clearRect(0,0,ctx.canvas.width,ctx.canvas.width);
-    ctx_focus.globalAlpha = 0.5;
+    ctx_focus.globalAlpha = 0.35;
     ctx_focus.fillStyle=COLOR_SELECT;
     ctx_focus.lineWidth =1;
     ctx_focus.beginPath();
     ctx_focus.fillRect(x, y, cellSize, cellSize);
-    
+    ctx_focus.globalAlpha = 0.6;
+
     if(isTouch==true &&hover_piece==null){
         return canv_focus;
     }
@@ -503,6 +504,7 @@ function drawFocus(){
         for(var i=0;i<=canm.length-1;i++){
             x=Math.floor(canm[i]/10);
             y=Math.floor(canm[i]%10);
+            ctx_focus.globalAlpha = 0.6;
             ctx_focus.strokeStyle  = COLOR_SELECT;
             ctx_focus.lineWidth =5;
             ctx_focus.beginPath();
@@ -689,13 +691,22 @@ function drawOverlay(){
     if(message==""){
         return canv_overlay;
     }
-    ctx_overlay.globalAlpha = 0.8;
+    ctx_overlay.shadowBlur = 5;
+    ctx_overlay.shadowColor = "rgba(0, 0, 0, 0.2)";
+    ctx_overlay.shadowOffsetX = 5;
+    ctx_overlay.shadowOffsetY = 5;
+    
+    ctx_overlay.globalAlpha = 0.9;
     ctx_overlay.fillStyle = COLOR_WHITE;
     ctx_overlay.beginPath();
     ctx_overlay.fillRect(x,y,cellSize*3,cellSize*1);
     ctx_overlay.fill();
     
-    var fontsize=Math.round(cellSize*0.36);    
+    var fontsize=Math.round(cellSize*0.36);
+    ctx_overlay.shadowBlur = 0;
+    ctx_overlay.shadowOffsetX = 0;
+    ctx_overlay.shadowOffsetY = 0;
+    ctx_overlay.shadowColor = "rgba(0, 0, 0, 0)";
     ctx_overlay.font = "bold "+fontsize+"px sans-serif";
     ctx_overlay.globalAlpha = 1;
     ctx_overlay.fillStyle = COLOR_LINE;
