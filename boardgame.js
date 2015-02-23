@@ -692,11 +692,11 @@ function drawOverlay(){
         return canv_overlay;
     }
     ctx_overlay.shadowBlur = 5;
-    ctx_overlay.shadowColor = "rgba(0, 0, 0, 0.2)";
+    ctx_overlay.shadowColor = "rgba(100, 100, 100, 0.1)";
     ctx_overlay.shadowOffsetX = 5;
     ctx_overlay.shadowOffsetY = 5;
     
-    ctx_overlay.globalAlpha = 0.9;
+    ctx_overlay.globalAlpha = 0.8;
     ctx_overlay.fillStyle = COLOR_WHITE;
     ctx_overlay.beginPath();
     ctx_overlay.fillRect(x,y,cellSize*3,cellSize*1);
