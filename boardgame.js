@@ -376,6 +376,9 @@ function ai(){
         thisMap[hand[1]]=thisMap[hand[0]];
         thisMap[hand[0]]=0;
         logArray2.push([hand[0],hand[1]]);
+        //フォーカス座標を移す。
+        mouse_x = Math.floor(hand[1] / 10)*cellSize+1;
+        mouse_y = Math.floor(hand[1] % 10)*cellSize+1;
     }
     turn_player=turn_player*-1;
     endTime=new Date();
@@ -458,8 +461,10 @@ function flush(initflg,cache_flg){
     //選択したコマを表示
     ctx.drawImage(drawHoverPiece(), 0, 0, ctx.canvas.width, ctx.canvas.height);
     
-    //フォーカスを描画
-    ctx.drawImage(drawFocus(), 0, 0, ctx.canvas.width, ctx.canvas.height);
+    if(mouse_x!=0|mouse_y!=0){
+        //フォーカスを描画
+        ctx.drawImage(drawFocus(), 0, 0, ctx.canvas.width, ctx.canvas.height);        
+    }
     
     //メッセージを描画
     ctx.drawImage(drawOverlay(), 0, 0, ctx.canvas.width, ctx.canvas.height);
