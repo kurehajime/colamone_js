@@ -87,7 +87,7 @@ var thisMap={  0:-1,10:-2,20:-3,30:-4,40:-5,50:-6,
                2: 0,12: 0,22: 0,32: 0,42: 0,52: 0,
                3: 0,13: 0,23: 0,33: 0,43: 0,53: 0,
                4: 0,14: 7,24: 0,34: 0,44: 8,54: 0,
-               5: 6,15: 5,25: 4,35: 3,45: 2,55: 1,
+               5: 6,15: 5,25: 4,35: 3,45: 2,55: 1
               };
 
 
@@ -667,9 +667,9 @@ function drawPieceAll(wkMap){
         for(var y=0;y<6;y++){
             if(wkMap[x*10+y]!=0){
                 var goal=false;
-                if(y*cellSize,wkMap[x*10+y]>0 & y==0){
+                if(wkMap[x*10+y]>0 & y==0){
                     goal=true;
-                }else if(y*cellSize,wkMap[x*10+y]<0 & y==5){
+                }else if(wkMap[x*10+y]<0 & y==5){
                     goal=true;
                 }
                 ctx_pieces=drawPiece(ctx_pieces,x*cellSize

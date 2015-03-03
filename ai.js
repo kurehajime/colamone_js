@@ -1,19 +1,23 @@
-(function(global) {
+(function (global) {
     "use strict";
 
     // Class ------------------------------------------------
-    function Aijs() {
-    };    
+    function Aijs () {}    
     // Header -----------------------------------------------
-    global["Aijs"] = Aijs;
-    global["Aijs"]["copyMap"] = copyMap;
-    global["Aijs"]["thinkAI"] = thinkAI;
-    global["Aijs"]["getCanMovePanelX"] = getCanMovePanelX;
-    global["Aijs"]["isEndX"] = isEndX ;
-    global["Aijs"]["isDraw"] = isDraw ;
+    global.Aijs = Aijs;
+    global.Aijs.copyMap = copyMap;
+    global.Aijs.thinkAI = thinkAI;
+    global.Aijs.getCanMovePanelX = getCanMovePanelX;
+    global.Aijs.isEndX = isEndX ;
+    global.Aijs.isDraw = isDraw ;
 
     // Body ---------------------------------------
     
+    /** 
+     * 駒の進める方向 
+     * @const 
+     * @type {Object.<string, Array.<number>>} 
+     */
     var PIECES={"1":[1,1,1,
                      1,0,1,
                      1,1,1],
@@ -63,6 +67,11 @@
                       0,0,0,
                       0,1,0]
                }
+    /** 
+     * 初期評価関数 
+     * @const 
+     * @type {Object.<number, Array.<number>>} 
+     */
     var DEFAULT_EVALPARAM= {1:[1800,1850,1900,1950,2100,2800],
                     2:[1800,1860,1920,2100,2400,3800],
                     3:[1450,1520,1590,1900,2350,4450],
@@ -72,6 +81,12 @@
                     7:[1250,1360,1470,2300,3350,8250],
                     8:[1250,1370,1490,2450,4350,11250]
                      }
+    
+    /** 
+     * Mapをコピーして返す。 
+     * @param  {Object.<number, number>}  wkMap
+     * @return {Object.<number, number>} 
+     */
     function copyMap(wkMap){
         var rtnMap={};
         //不格好だがループするより高速。
@@ -114,7 +129,12 @@
         return rtnMap;
     }
 
-    //終了判定(実質的勝利含む)
+    /** 
+     * 終了判定(実質的勝利含む) 
+     * @param  {Object.<number, number>}  wkMap
+     * @param  {boolean}  nearwin
+     * @return {number} 0:引き分け,1:先手勝利,-1:後手勝利
+     */
     function isEndX(wkMap,nearwin){
         var sum1=0;
         var sum2=0;
@@ -151,6 +171,7 @@
             var live1=0;
             var live2=0; 
             for(var num in wkMap){
+                num=num|0;
                 if(wkMap[num]>0){
                     live1+=wkMap[num];
                 }else if(wkMap[num]<0){
@@ -165,7 +186,12 @@
         }
         return 0; 
     }
-    //最後の一個を取るかどうかの判断
+
+    /** 
+     * 引き分け判定。最後の一個を取るかどうかの判断
+     * @param  {Object.<number, number>}  wkMap
+     * @return {boolean} 
+     */
     function isDraw(wkMap){
         if(!isNoneNode(wkMap)){
             return false;
@@ -192,12 +218,16 @@
         }
     }
 
-
-    //手詰まり判定
+    /** 
+     * 手詰まり判定
+     * @param  {Object.<number, number>}  wkMap
+     * @return {boolean} 
+     */
     function isNoneNode(wkMap){
         var flag1=false;
         var flag2=false;
         for(var panel_num in wkMap){
+            panel_num=panel_num|0;
             if(wkMap[panel_num]===0){
                 continue;
             }
@@ -216,9 +246,14 @@
         return true;
     }
 
-    //動かせるマスを返す。Return:[NN,NN,NN...]
+    /** 
+     * 動かせるマスを返す。Return:[NN,NN,NN...]
+     * @param  {number}  panel_num
+     * @param  {Object.<number, number>}  wkMap
+     * @return {Array.<number, number>} 
+     */
     function getCanMovePanelX(panel_num,wkMap){
-        var number = wkMap[panel_num];
+        var number = wkMap[panel_num]|0;
         var x = Math.floor(panel_num / 10);
         var y = Math.floor(panel_num % 10);
         var canMove=[];
@@ -228,7 +263,7 @@
             return canMove;   
         }
         for(var i=0;i<9;i++){
-            if(PIECES[number][i]===0){
+            if(PIECES[''+number][i]===0){
                 continue;
             }
             var target_x= x + Math.floor(i%3)-1;
@@ -247,10 +282,17 @@
         }
         return canMove;
     }
-    //起こりうる次の一手を返す。Return:[[q,map0],[qmap1],[q,map2]...] //q=[prev,next]
+
+    /** 
+     * 起こりうる次の一手を返す。Return:[[q,map0],[qmap1],[q,map2]...] //q=[prev,next]
+     * @param  {Object.<number, number>}  wkMap
+     * @param  {number}  turn_player
+     * @return {Array.<number,Array.<Array.<number, number>, Object.<number, number>>>} 
+     */
     function getNodeMap(wkMap,turn_player){
         var nodeList=[];
         for(var panel_num in wkMap){
+            panel_num=panel_num|0;
             if(wkMap[panel_num]*turn_player<=0||wkMap[panel_num]===0){
                 continue;
             }
@@ -265,7 +307,14 @@
         return nodeList;
     }
 
-    //盤面を評価して-10000〜+10000で採点数する。
+    /** 
+     * 盤面を評価して-10000〜+10000で採点数する。
+     * @param  {Object.<number, number>}  wkMap
+     * @param  {number}  turn_player
+     * @param  {boolean}  nearwin
+     * @param  {Object.<number, Array.<number>>}  evalparam
+     * @return {number} 
+     */
     function evalMap(wkMap,turn_player,nearwin,evalparam){
         var ev=0;
         var evMap=copyMap(wkMap);
@@ -283,6 +332,7 @@
         }
         //評価
         for(var panel_num in evMap){
+            panel_num=panel_num|0;
             var cell_p=0;
             var p=evMap[panel_num];
             var line;
@@ -297,9 +347,12 @@
             //評価値に加算。
             ev+=cell_p;
         }
-        return parseInt(ev);
+        return (ev|0);
     }
-    //よく考える。 node=[q,map0]
+
+    /** 
+     * よく考える
+     */
     function deepThinkAllAB(map,turn_player,depth,a,b,nearwin,evalparam){
         var best_score=turn_player*9999999*-1;
         var besthand;
@@ -352,7 +405,9 @@
         }
         return [besthand,best_score]
     }
-
+    /** 
+     * 考える
+     */
     function thinkAI(map,turn_player,depth,a,b,evalparam){
         var nearwin;
         if(!evalparam){
