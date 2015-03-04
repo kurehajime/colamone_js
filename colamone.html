@@ -15,9 +15,8 @@
         <meta name="twitter:creator" content="@kurehajime" />
         <link rel="apple-touch-icon" href="http://xiidec.appspot.com/apple-touch-icon.png">
     </HEAD>
-    <BODY onLoad="set_manual();setTweet();zoom();">
+    <BODY onLoad="">
 <div data-role="page" data-title="Colamone">
-
         <div id="main" role="main" class="ui-content">
             <canvas id="canv" width="500px" height="500px"></canvas>
             <div id="message">
@@ -33,7 +32,6 @@
                     </select>
                     <button type="button" id="newgame"  onclick="location.reload()"   class="ui-btn ui-btn-inline ui-corner-all ui-shadow" >Reset</button>
                 </div>
-
 <span id="log"><button type="button" id="prevprev" onclick="" align="right" class="ui-btn ui-btn-inline  ui-corner-all ui-shadow"> &lt;&lt; </button><button type="button" id="prev" onclick="" align="right" class="ui-btn ui-btn-inline  ui-corner-all ui-shadow"> &lt; </button><button type="button" id="next" onclick="" align="right" class="ui-btn ui-btn-inline  ui-corner-all ui-shadow"> &gt; </button><button type="button" id="nextnext" onclick="" align="right" class="ui-btn ui-btn-inline  ui-corner-all ui-shadow"> &gt;&gt; </button></span>
 <span id="span_replay"><button type="button" id="replay" onclick="" > View log </button></span>
 <span id="span_tweetlog"><button type="button" id="tweetlog" onclick="" > Tweet result </button></span>
@@ -43,90 +41,16 @@
 Colamone is a chess-like board game in browser.
 </p>
                 </div>
-
 <span id="sns"><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://xiidec.appspot.com/colamone/colamone.html" data-hashtags="colamone, boardgames" data-lang="en"  data-size="large"></a></span>
                 </div>
         </div>
-    <IMG src="bk.gif" class="preload"></IMG>
+    <IMG src="bk.gif" class="preload">
 </div>
-
         <link rel="stylesheet" type="text/css" href="boardgame.css?2015021002">
         <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.3/jquery.mobile.min.css" />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.3/jquery.mobile.min.js"></script>
         <script type="text/javascript" src="ai.js?2015030301"></script>
-        <script type="text/javascript" src="boardgame.js?2015022302"></script>
-        <script type="text/javascript">
-            function get_lang() {
-                return (navigator.browserLanguage || navigator.language || navigator.userLanguage).substr(0,2).toLowerCase();
-            }
-            function set_manual(){
-                if(get_lang()==="ja"){
-                    var manual=document.getElementById("manual");
-                    manual.innerHTML="【ルール】\n\
-1.各コマは、丸が付いている方向に進めます。\n\
-2.取られたコマは盤上から除かれます。再利用はできません。\n\
-3.一番奥の陣地まで進めると、コマの数字が得点になります。\n\
-4.得点になったコマは動くことも取ることもできません。\n\
-5.先に得点が8点以上になったプレーヤーの勝利です。\n\
-6.ただしどちらかのプレーヤーの動かせるコマが無くなった時は\n\
-　その時点で点数の高いプレーヤーの勝利です。 ";
-                    var canvas= document.getElementById("canv");
-                    if (!canvas || !canvas.getContext) { 
-                        alert("申し訳ございません。お使いのブラウザは対応していません。"); 
-                    }
-                    $('#htp').text("Colamoneのルール");
-                    $('#newgame').text("リセット");
-                }else{
-                    var manual=document.getElementById("manual");
-                    //Translator:Extractum11
-                    manual.innerHTML="# How to play Colamone\n\
-* Colamone is kinda like chess. \n\
-   Only some loose similarities. \n\
-* Each piece can move 1 tile in the direction \n\
-   of any of it's dots. \n\
-* If a piece gets to the other side, \n\
-   you get how many ever points it's worth. \n\
-* If you get 8 points, you win.\n\
-* When a piece gets to the other side, you can \n\
-  no longer move it and the enemy cannot take it. \n\
-* When a player can't make any more moves, \n\
-   whoever has the highest score wins.";
-                    $('#htp').text("How to play Colamone");
-                    $('#newgame').text("Reset");
-                    var canvas= document.getElementById("canv");
-                    if (!canvas || !canvas.getContext) { 
-                        alert("Sorry. Your browser does not support."); 
-                    }
-                }
-                if (window.innerHeight > window.innerWidth) {
-
-                } else {
-                  $("#collapsible").collapsible({
-                      collapsed: false
-                    });
-                };
- 
-                    
-            }
-            function setTweet(){
-!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.async=true;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
-            }
-            function zoom(){
-                var viewport = document.querySelector("meta[name=viewport]");
-                if(screen.width<500&&screen.height<500){
-                    if(screen.width<screen.height){
-                        viewport.setAttribute('content', 'width=500,user-scalable=no');
-                    }else{
-                        viewport.setAttribute('content', 'height=500,user-scalable=no'); 
-                    }
-                }else if(screen.width<500){
-                    viewport.setAttribute('content', 'width=500,user-scalable=no');
-                }else if(screen.height<500){
-                    viewport.setAttribute('content', 'height=500,user-scalable=no');
-                }
-                
-            }
-        </script>
+        <script type="text/javascript" src="boardgame.js?2015030404"></script>
     </BODY>
 </HTML>
