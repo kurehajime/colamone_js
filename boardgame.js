@@ -149,6 +149,7 @@ $(function(){
      * 初期化
      */
     function init(){
+        
         set_manual();//国際化
         zoom();//小さい端末でズーム
         
@@ -235,9 +236,9 @@ $(function(){
             $('#level').val([2]); 
         }
 
-
         //パラメータを取得
         var paramObj=getParam();
+
         //盤面を初期化
         if(paramObj["init"]){
             startMap= getMapByParam(paramObj["init"]);
@@ -303,16 +304,18 @@ $(function(){
      * 国際化
      */
     function set_manual(){
-        if(get_lang()==="ja"){
-            var manual=document.getElementById("manual");
-            manual.innerHTML="【ルール】\n\
-1.各コマは、丸が付いている方向に進めます。\n\
-2.取られたコマは盤上から除かれます。再利用はできません。\n\
-3.一番奥の陣地まで進めると、コマの数字が得点になります。\n\
-4.得点になったコマは動くことも取ることもできません。\n\
-5.先に得点が8点以上になったプレーヤーの勝利です。\n\
-6.ただしどちらかのプレーヤーの動かせるコマが無くなった時は\n\
-その時点で点数の高いプレーヤーの勝利です。 ";
+        var lang="";
+        //パラメータを取得
+        var paramObj=getParam();
+        if(paramObj["lang"]){
+            lang=paramObj["lang"];
+        }else{
+            lang=get_lang();
+        }
+        
+        if(lang==="ja"){
+            $("#manual_en").hide();
+            $("#manual_ja").show();
             var canvas= document.getElementById("canv");
             if (!canvas || !canvas.getContext) { 
                 alert("申し訳ございません。お使いのブラウザは対応していません。"); 
@@ -320,20 +323,8 @@ $(function(){
             $('#htp').text("Colamoneのルール");
             $('#newgame').text("リセット");
         }else{
-            var manual=document.getElementById("manual");
-            //Translator:Extractum11
-            manual.innerHTML="# How to play Colamone\n\
-* Colamone is kinda like chess. \n\
-Only some loose similarities. \n\
-* Each piece can move 1 tile in the direction \n\
-of any of it's dots. \n\
-* If a piece gets to the other side, \n\
-you get how many ever points it's worth. \n\
-* If you get 8 points, you win.\n\
-* When a piece gets to the other side, you can \n\
-no longer move it and the enemy cannot take it. \n\
-* When a player can't make any more moves, \n\
-whoever has the highest score wins.";
+            $("#manual_en").show();
+            $("#manual_ja").hide();
             $('#htp').text("How to play Colamone");
             $('#newgame').text("Reset");
             var canvas= document.getElementById("canv");
@@ -1158,7 +1149,13 @@ whoever has the highest score wins.";
      * リセット
      */
     function reloadnew(){
-        location.href =document.location.href.split("?")[0];
+        var url=document.location.href.split("?")[0];
+        //パラメータを取得
+        var paramObj=getParam();
+        if(paramObj["lang"]){
+            url+="?lang="+paramObj["lang"];
+        }
+        location.href =url;
     }
     
     /** 
