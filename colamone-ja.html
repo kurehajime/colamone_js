@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <HTML>
     <HEAD>
-        <title>colamone</title>
+        <title>colamone(コラモネ)</title>
         <meta content="text/html" charset="UTF-8">
         <meta name="viewport" content="width=device-width,user-scalable=no">
         <meta property="og:title" content="colamone">
@@ -19,7 +19,7 @@
         <link rel="alternate" hreflang="en" href="http://xiidec.appspot.com/colamone/colamone-en.html" />
     </HEAD>
     <BODY onLoad="set_manual()">
-<div data-role="page" data-title="Colamone">
+<div data-role="page" data-title="Colamone(コラモネ)">
         <div id="main" role="main" class="ui-content">
             <canvas id="canv" width="500px" height="500px"></canvas>
             <div id="message">
@@ -33,25 +33,13 @@
                         <option value="3" class="lv">Lv.3</option>
                         <option value="4"  class="lv">Lv.4</option>
                     </select>
-                    <button type="button" id="newgame"  onclick="location.reload()"   class="ui-btn ui-btn-inline ui-corner-all ui-shadow" >Reset</button>
+                    <button type="button" id="newgame"  onclick="location.reload()"   class="ui-btn ui-btn-inline ui-corner-all ui-shadow" >リセット</button>
                 </div>
 <span id="log"><button type="button" id="prevprev" onclick="" align="right" class="ui-btn ui-btn-inline  ui-corner-all ui-shadow"> &lt;&lt; </button><button type="button" id="prev" onclick="" align="right" class="ui-btn ui-btn-inline  ui-corner-all ui-shadow"> &lt; </button><button type="button" id="next" onclick="" align="right" class="ui-btn ui-btn-inline  ui-corner-all ui-shadow"> &gt; </button><button type="button" id="nextnext" onclick="" align="right" class="ui-btn ui-btn-inline  ui-corner-all ui-shadow"> &gt;&gt; </button></span>
 <span id="span_replay"><button type="button" id="replay" onclick="" > View log </button></span>
 <span id="span_tweetlog"><button type="button" id="tweetlog" onclick="" > Tweet result </button></span>
 <div data-role="collapsible" id="collapsible" class="ui-shadow">
-    <h5 class="howtoplay"><span id="htp">How to play Colamone</span></h5>
-<p id="manual_en" class="manual" lang="en" ># How to play Colamone
-* Colamone is kinda like chess. 
-Only some loose similarities. 
-* Each piece can move 1 tile in the direction 
-of any of it's dots. 
-* If a piece gets to the other side, 
-you get how many ever points it's worth. 
-* If you get 8 points, you win.
-* When a piece gets to the other side, you can 
-no longer move it and the enemy cannot take it. 
-* When a player can't make any more moves, 
-whoever has the highest score wins.</p>
+    <h5 class="howtoplay"><span id="htp">Colamoneのルール</span></h5>
 <p id="manual_ja" class="manual" lang="ja">【ルール】
 0.Colamone(ｺﾗﾓﾈ)はﾁｪｽや将棋に似たﾎﾞｰﾄﾞｹﾞｰﾑです。
 1.各コマは、丸が付いている方向に進めます。
@@ -61,7 +49,6 @@ whoever has the highest score wins.</p>
 5.先に得点が8点以上になったプレーヤーの勝利です。
 6.どちらかのﾌﾟﾚｰﾔｰの動かせるコマが無くなった時は
 　 その時点で点数の高いﾌﾟﾚｰﾔｰの勝利です。 </p>
-
                 </div>
 <span id="sns"><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://xiidec.appspot.com/colamone/colamone.html" data-hashtags="colamone, boardgames" data-lang="en"  data-size="large"></a></span>
                 </div>
@@ -76,44 +63,13 @@ whoever has the highest score wins.</p>
         <script type="text/javascript" src="boardgame.js?2015031101"></script>
         <script type="text/javascript">
     /** 
-     * 国際化
+     * 国際化・・・しない。
      */
-    function set_manual(){
-        var lang="";
-        var paramObj = new Object();
-        if (1 < document.location.search.length) {
-            var paramstr = document.location.search.substring(1).split('&');
-            for (var i = 0; i < paramstr.length; i++) {
-                var entry = paramstr[i].split('=');
-                var key = decodeURIComponent(entry[0]);
-                var value = decodeURIComponent(entry[1]);
-                paramObj[key] = decodeURIComponent(value);
-            }
-        }
-        if(paramObj["lang"]){
-            lang=paramObj["lang"];
-        }else{
-            lang=(navigator.browserLanguage || navigator.language || navigator.userLanguage).substr(0,2).toLowerCase();
-        }
-        
-        if(lang==="ja"){
-            $("#manual_en").hide();
-            $("#manual_ja").show();
-            var canvas= document.getElementById("canv");
-            if (!canvas || !canvas.getContext) { 
-                alert("申し訳ございません。お使いのブラウザは対応していません。"); 
-            }
-            $('#htp').text("Colamoneのルール");
-            $('#newgame').text("リセット");
-        }else{
-            $("#manual_en").show();
-            $("#manual_ja").hide();
-            $('#htp').text("How to play Colamone");
-            $('#newgame').text("Reset");
-            var canvas= document.getElementById("canv");
-            if (!canvas || !canvas.getContext) { 
-                alert("Sorry. Your browser does not support."); 
-            }
+    function set_manual(){        
+        $("#manual_ja").show();
+        var canvas= document.getElementById("canv");
+        if (!canvas || !canvas.getContext) { 
+            alert("申し訳ございません。お使いのブラウザは対応していません。"); 
         }
         if (window.innerHeight < window.innerWidth) {
           $("#collapsible").collapsible({

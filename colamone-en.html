@@ -52,16 +52,6 @@ you get how many ever points it's worth.
 no longer move it and the enemy cannot take it. 
 * When a player can't make any more moves, 
 whoever has the highest score wins.</p>
-<p id="manual_ja" class="manual" lang="ja">【ルール】
-0.Colamone(ｺﾗﾓﾈ)はﾁｪｽや将棋に似たﾎﾞｰﾄﾞｹﾞｰﾑです。
-1.各コマは、丸が付いている方向に進めます。
-2.取られたコマは盤上から除かれ、再利用できません。
-3.奥の陣地まで進めるとコマの数字が得点になります。
-4.得点になったコマは動く事も取る事もできません。
-5.先に得点が8点以上になったプレーヤーの勝利です。
-6.どちらかのﾌﾟﾚｰﾔｰの動かせるコマが無くなった時は
-　 その時点で点数の高いﾌﾟﾚｰﾔｰの勝利です。 </p>
-
                 </div>
 <span id="sns"><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://xiidec.appspot.com/colamone/colamone.html" data-hashtags="colamone, boardgames" data-lang="en"  data-size="large"></a></span>
                 </div>
@@ -76,44 +66,13 @@ whoever has the highest score wins.</p>
         <script type="text/javascript" src="boardgame.js?2015031101"></script>
         <script type="text/javascript">
     /** 
-     * 国際化
+     * 国際化・・・しない。
      */
-    function set_manual(){
-        var lang="";
-        var paramObj = new Object();
-        if (1 < document.location.search.length) {
-            var paramstr = document.location.search.substring(1).split('&');
-            for (var i = 0; i < paramstr.length; i++) {
-                var entry = paramstr[i].split('=');
-                var key = decodeURIComponent(entry[0]);
-                var value = decodeURIComponent(entry[1]);
-                paramObj[key] = decodeURIComponent(value);
-            }
-        }
-        if(paramObj["lang"]){
-            lang=paramObj["lang"];
-        }else{
-            lang=(navigator.browserLanguage || navigator.language || navigator.userLanguage).substr(0,2).toLowerCase();
-        }
-        
-        if(lang==="ja"){
-            $("#manual_en").hide();
-            $("#manual_ja").show();
-            var canvas= document.getElementById("canv");
-            if (!canvas || !canvas.getContext) { 
-                alert("申し訳ございません。お使いのブラウザは対応していません。"); 
-            }
-            $('#htp').text("Colamoneのルール");
-            $('#newgame').text("リセット");
-        }else{
-            $("#manual_en").show();
-            $("#manual_ja").hide();
-            $('#htp').text("How to play Colamone");
-            $('#newgame').text("Reset");
-            var canvas= document.getElementById("canv");
-            if (!canvas || !canvas.getContext) { 
+    function set_manual(){        
+        $("#manual_en").show();
+        var canvas= document.getElementById("canv");
+        if (!canvas || !canvas.getContext) { 
                 alert("Sorry. Your browser does not support."); 
-            }
         }
         if (window.innerHeight < window.innerWidth) {
           $("#collapsible").collapsible({

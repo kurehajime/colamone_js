@@ -33,6 +33,9 @@ html {
     overflow: auto;   
     max-width: 340px;
 }
+#manual_ja{
+    display: none;
+}
 #prevprev,#prev,#next,#nextnext{
     width: 78px;
     font-size: 16px;

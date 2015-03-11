@@ -149,10 +149,12 @@ $(function(){
      * 初期化
      */
     function init(){
-        
-        set_manual();//国際化
         zoom();//小さい端末でズーム
-        
+        if (window.innerHeight < window.innerWidth) {
+          $("#collapsible").collapsible({
+              collapsed: false
+            });
+        };
         ctx=$("#canv")[0].getContext('2d');
 
         canv_board =document.createElement("canvas");
@@ -294,50 +296,8 @@ $(function(){
         setTweet();//ツイートボタンを生成
         
     }
-    /** 
-     * ユーザーの言語環境を取得
-     */
-    function get_lang() {
-        return (navigator.browserLanguage || navigator.language || navigator.userLanguage).substr(0,2).toLowerCase();
-    }
-    /** 
-     * 国際化
-     */
-    function set_manual(){
-        var lang="";
-        //パラメータを取得
-        var paramObj=getParam();
-        if(paramObj["lang"]){
-            lang=paramObj["lang"];
-        }else{
-            lang=get_lang();
-        }
-        
-        if(lang==="ja"){
-            $("#manual_en").hide();
-            $("#manual_ja").show();
-            var canvas= document.getElementById("canv");
-            if (!canvas || !canvas.getContext) { 
-                alert("申し訳ございません。お使いのブラウザは対応していません。"); 
-            }
-            $('#htp').text("Colamoneのルール");
-            $('#newgame').text("リセット");
-        }else{
-            $("#manual_en").show();
-            $("#manual_ja").hide();
-            $('#htp').text("How to play Colamone");
-            $('#newgame').text("Reset");
-            var canvas= document.getElementById("canv");
-            if (!canvas || !canvas.getContext) { 
-                alert("Sorry. Your browser does not support."); 
-            }
-        }
-        if (window.innerHeight < window.innerWidth) {
-          $("#collapsible").collapsible({
-              collapsed: false
-            });
-        };
-    }
+
+
     
     /** 
      * 小さい画面ではViewportを固定化
