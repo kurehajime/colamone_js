@@ -105,4 +105,7 @@ img.preload{
         font-size: 20px !important;
         max-width: 495px;
     }
+    #footer{
+        display: none;   
+    }
 }
