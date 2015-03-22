@@ -72,6 +72,11 @@ img.preload{
 #collapsible{
     width: 340px;   
 }
+
+#log,#prevprev,#prev,#next,#nextnext,#span_replay,#span_tweetlog{
+	display:none;
+}
+
 @media (orientation: landscape) {
     #main{
         display: table-cell; 
