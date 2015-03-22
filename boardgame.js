@@ -108,6 +108,8 @@ $(function(){
                    4: 0,14: 7,24: 0,34: 0,44: 8,54: 0,
                    5: 6,15: 5,25: 4,35: 3,45: 2,55: 1
                   };
+    var map_list={};
+    var LIMIT_1000DAY=5;
     var mouse_x =0;
     var mouse_y =0;
     var startMap;
@@ -932,9 +934,15 @@ $(function(){
             }else if(Math.abs(sum1)==Math.abs(sum2)){
                 winner=0;
             }
+        }else{
+            if(is1000day(thisMap)===true){
+                winner=0;
+            }
         }
         blueScore=Math.abs(sum1);
         redScore=Math.abs(sum2);
+        
+        
     }
 
     /** 
@@ -960,6 +968,24 @@ $(function(){
             }
         }
         return true;
+    }
+    
+
+    /** 
+     * 千日手
+     */
+    function is1000day(wkMap){
+        var map_json=JSON.stringify(wkMap);
+        if(map_list[map_json]===undefined){
+            map_list[map_json]=1;
+            return false;
+        }else{
+            map_list[map_json]+=1;
+        }
+        if(map_list[map_json]>=LIMIT_1000DAY){
+            return true;
+        }
+        return false;
     }
 
     /** 
