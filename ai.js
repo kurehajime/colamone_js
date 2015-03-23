@@ -67,6 +67,18 @@
                       0,0,0,
                       0,1,0]
                }
+
+    /** 
+     * 盤の番号 
+     * @const 
+     * @type {Array.<number>} 
+     */
+    var NUMBERS=[0,1,2,3,4,5,
+                 10,11,12,13,14,15,
+                20,21,22,23,24,25,
+                30,31,32,33,34,35,
+                40,41,42,43,44,45,
+                50,51,52,53,54,55];
     /** 
      * 初期評価関数 
      * @const 
@@ -170,8 +182,8 @@
         if(nearwin===false){
             var live1=0;
             var live2=0; 
-            for(var num in wkMap){
-                num=num|0;
+            for(var i=0;i<=35;i++){
+                var num=NUMBERS[i]|0;
                 if(wkMap[num]>0){
                     live1+=wkMap[num];
                 }else if(wkMap[num]<0){
@@ -226,8 +238,8 @@
     function isNoneNode(wkMap){
         var flag1=false;
         var flag2=false;
-        for(var panel_num in wkMap){
-            panel_num=panel_num|0;
+        for(var i=0;i<=35;i++){
+            var panel_num=NUMBERS[i]|0;
             if(wkMap[panel_num]===0){
                 continue;
             }
@@ -291,8 +303,8 @@
      */
     function getNodeMap(wkMap,turn_player){
         var nodeList=[];
-        for(var panel_num in wkMap){
-            panel_num=panel_num|0;
+        for(var i=0;i<=35;i++){
+            var panel_num=NUMBERS[i]|0;
             if(wkMap[panel_num]*turn_player<=0||wkMap[panel_num]===0){
                 continue;
             }
@@ -331,8 +343,8 @@
             return -9999999;
         }
         //評価
-        for(var panel_num in evMap){
-            panel_num=panel_num|0;
+        for(var i=0;i<=35;i++){
+            var panel_num=NUMBERS[i]|0;
             var cell_p=0;
             var p=evMap[panel_num];
             var line;
