@@ -346,7 +346,6 @@ $(function(){
         }else{
             if(target==hover_piece){
                 hover_piece=null;
-                updateMessage();
                 flush(false,false);
                 return;
             }
@@ -863,7 +862,6 @@ $(function(){
         }
         $("#blue")[0].innerHTML=blueScore;                  
         $("#red")[0].innerHTML=redScore;
-        //$("#score")[0].innerHTML=score;
 
         $("#time")[0].innerHTML="("+(thinktime)+"sec)";
         if(logArray.length==0){
