@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<HTML>
+    <HEAD>
+        <title>colamone</title>
+        <meta content="text/html" charset="UTF-8">
+        <meta name="viewport" content="width=device-width,user-scalable=no">
+        <meta property="og:title" content="colamone">
+        <meta property="og:type" content="website">
+        <meta property="og:description" content="Colamone is a board game similar to chess.">
+        <meta property="og:url" content="http://xiidec.appspot.com/colamone/colamone.html">
+        <meta property="og:image" content="http://xiidec.appspot.com/img/colamone.png">
+        <meta property="og:site_name" content="Yet another tofu">
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:site" content="@kurehajime" />
+        <meta name="twitter:creator" content="@kurehajime" />
+        <link rel="apple-touch-icon" href="http://xiidec.appspot.com/apple-touch-icon.png">
+        <link rel="alternate" hreflang="x-default" href="http://xiidec.appspot.com/colamone/colamone.html" />
+        <link rel="alternate" hreflang="ja" href="http://xiidec.appspot.com/colamone/colamone-ja.html" />
+        <link rel="alternate" hreflang="en" href="http://xiidec.appspot.com/colamone/colamone-en.html" />
+    </HEAD>
+    <BODY onLoad="">
+<div data-role="page" data-title="Colamone">
+        <div id="main" role="main" class="ui-content">
+            <canvas id="canv" width="500px" height="500px"></canvas>
+            <div id="message">
+                <span id="gamename">colamone</span> by <A Href="https://twitter.com/kurehajime">@kurehajime</A><br/>
+                <b>Turn : </b><span id="turn"></span>(
+                Blue: <span id="blue"></span> / Red: <span id="red"></span> ):<span id="time"></span><span id="wins"></span>
+                <div class="ui-field-contain " id="lvs">
+                    <select id="level"  data-inline="true" >
+                        <option value="1" class="lv">Lv.1</option>
+                        <option value="2"  class="lv" selected="selected">Lv.2</option>
+                        <option value="3" class="lv">Lv.3</option>
+                        <option value="4"  class="lv">Lv.4</option>
+                    </select>
+                    <button type="button" id="newgame"  onclick="location.reload()"   class="ui-btn ui-btn-inline ui-corner-all ui-shadow" >Reset</button>
+                </div>
+<span id="log"><button type="button" id="prevprev" onclick="" align="right" class="ui-btn ui-btn-inline  ui-corner-all ui-shadow"> &lt;&lt; </button><button type="button" id="prev" onclick="" align="right" class="ui-btn ui-btn-inline  ui-corner-all ui-shadow"> &lt; </button><button type="button" id="next" onclick="" align="right" class="ui-btn ui-btn-inline  ui-corner-all ui-shadow"> &gt; </button><button type="button" id="nextnext" onclick="" align="right" class="ui-btn ui-btn-inline  ui-corner-all ui-shadow"> &gt;&gt; </button></span>
+<span id="span_replay"><button type="button" id="replay" onclick="" > View log </button></span>
+<span id="span_tweetlog"><button type="button" id="tweetlog" onclick="" > Tweet result </button></span>
+<div data-role="collapsible" id="collapsible" class="ui-shadow">
+    <h5 class="howtoplay"><span id="htp">How to play Colamone</span></h5>
+<p id="manual_en" class="manual" lang="en" ># How to play Colamone
+* Colamone is kinda like chess. 
+Only some loose similarities. 
+* Each piece can move 1 tile in the direction 
+of any of it's dots. 
+* If a piece gets to the other side, 
+you get how many ever points it's worth. 
+* If you get 8 points, you win.
+* When a piece gets to the other side, you can 
+no longer move it and the enemy cannot take it. 
+* When a player can't make any more moves, 
+whoever has the highest score wins.</p>
+<p id="manual_ja" class="manual" lang="ja">【ルール】
+0.Colamone(ｺﾗﾓﾈ)はﾁｪｽや将棋に似たﾎﾞｰﾄﾞｹﾞｰﾑです。
+1.各コマは、丸が付いている方向に進めます。
+2.取られたコマは盤上から除かれ、再利用できません。
+3.奥の陣地まで進めるとコマの数字が得点になります。
+4.得点になったコマは動く事も取る事もできません。
+5.先に得点が8点以上になったプレーヤーの勝利です。
+6.どちらかのﾌﾟﾚｰﾔｰの動かせるコマが無くなった時は
+　 その時点で点数の高いﾌﾟﾚｰﾔｰの勝利です。 </p>
+
+                </div>
+<span id="sns"><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://xiidec.appspot.com/colamone/colamone.html" data-hashtags="colamone, boardgames" data-lang="en"  data-size="large"></a></span>
+                </div>
+        </div>
+    <IMG src="bk.gif" class="preload">
+  <div data-role="footer" id="footer">
+    <p  style="text-align:center;font-size:10px;">(c)2014–<script language=JavaScript type=text/javascript> document.write(new Date().getFullYear()); </script> <A Href="https://twitter.com/kurehajime">@kurehajime</A>. All Rights Reserved. / Ver.<a href="https://github.com/kurehajime/colamone_js"  TARGET="_blank" >20150408</a></p>
+  </div>
+</div>
+        <link rel="stylesheet" type="text/css" href="boardgame.css?2015032201">
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.3/jquery.mobile.min.css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.3/jquery.mobile.min.js"></script>
+        <script type="text/javascript" src="ai.js?2015032301"></script>
+        <script type="text/javascript" src="boardgame.js?2015040801"></script>
+        <script type="text/javascript">
+    /** 
+     * 国際化
+     */
+    function set_manual(){
+        var lang="";
+        var paramObj = new Object();
+        if (1 < document.location.search.length) {
+            var paramstr = document.location.search.substring(1).split('&');
+            for (var i = 0; i < paramstr.length; i++) {
+                var entry = paramstr[i].split('=');
+                var key = decodeURIComponent(entry[0]);
+                var value = decodeURIComponent(entry[1]);
+                paramObj[key] = decodeURIComponent(value);
+            }
+        }
+        if(paramObj["lang"]){
+            lang=paramObj["lang"];
+        }else{
+            lang=(navigator.browserLanguage || navigator.language || navigator.userLanguage).substr(0,2).toLowerCase();
+        }
+        
+        if(lang==="ja"){
+            $("#manual_en").hide();
+            $("#manual_ja").show();
+            var canvas= document.getElementById("canv");
+            if (!canvas || !canvas.getContext) { 
+                alert("申し訳ございません。お使いのブラウザは対応していません。"); 
+            }
+            $('#htp').text("Colamoneのルール");
+            $('#newgame').text("リセット");
+        }else{
+            $("#manual_en").show();
+            $("#manual_ja").hide();
+            $('#htp').text("How to play Colamone");
+            $('#newgame').text("Reset");
+            var canvas= document.getElementById("canv");
+            if (!canvas || !canvas.getContext) { 
+                alert("Sorry. Your browser does not support."); 
+            }
+        }
+        if (window.innerHeight < window.innerWidth) {
+          $("#collapsible").collapsible({
+              collapsed: false
+            });
+        };
+    }
+    set_manual();
+        </script>
+    </BODY>
+</HTML>
