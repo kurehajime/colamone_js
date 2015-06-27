@@ -254,6 +254,11 @@ $(function(){
         if(paramObj["log"]){
             logArray=decodeLog(paramObj["log"],startMap);
         }
+        //レベル取得
+        if(paramObj["lv"]){
+            $('#level').val([parseInt(paramObj["lv"])]); 
+            $('#level').selectmenu('refresh',true);
+        }
 
         if(logArray.length!=0){
             $("#log").show();
@@ -1156,6 +1161,7 @@ $(function(){
                         +startMap[44]+","
                         +startMap[14];
         var log="&log="+encodeLog(logArray2);
+        log+="&lv="+$("#level option:selected").val();
         location.href =url+init+log;
     }
     /** 
@@ -1172,6 +1178,7 @@ $(function(){
                         +startMap[44]+","
                         +startMap[14];
         var log="%26log="+encodeLog(logArray2);
+        log+="%26lv="+$("#level option:selected").val();
         window.open("https://twitter.com/intent/tweet?text="+url+init+log+"%20%23colamone");
     }
     /** 
