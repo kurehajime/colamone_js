@@ -364,11 +364,10 @@ $(function(){
                 hover_piece=null;
 
                 //AIが考える。
-                message="thinking...";
-                
-                (function(){
+                message="thinking..."
+                window.setTimeout(function(){
                     flush(false,false);
-                })();
+                },50);
                 updateMessage();
                 if(winner==null){
                     window.setTimeout(function(){
