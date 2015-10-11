@@ -335,7 +335,7 @@ $(function(){
             var rate=Math.round(screen.width/520);
             viewport.setAttribute(
                 'content', 
-                'initial-scale='+rate+'.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no'
+                'initial-scale='+rate+'.0001, minimum-scale='+rate+'.0001, maximum-scale='+rate+'.0001, user-scalable=no'
                 );
         }
 
