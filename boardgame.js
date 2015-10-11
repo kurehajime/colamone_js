@@ -325,13 +325,18 @@ $(function(){
         }else if(screen.height<500){
             viewport.setAttribute('content', 'height=500,user-scalable=no');
         }
-        if(/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream){
+        if(/iPad/.test(navigator.userAgent) && !window.MSStream){
             viewport.setAttribute(
                 'content', 
                 'initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no'
                 );
         }
-        
+        if(/iPhone|iPod/.test(navigator.userAgent) && !window.MSStream){
+            viewport.setAttribute(
+                'content', 
+                'width=device-width,initial-scale=1,shrink-to-fit=no'
+                );
+        }
 
     }
     
