@@ -334,7 +334,7 @@ $(function(){
         if(/iPhone|iPod/.test(navigator.userAgent) && !window.MSStream){
             viewport.setAttribute(
                 'content', 
-                'initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no'
+                ''
                 );
         }
 
