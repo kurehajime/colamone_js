@@ -325,14 +325,12 @@ $(function(){
         }else if(screen.height<500){
             viewport.setAttribute('content', 'height=500,user-scalable=no');
         }
-        if(/iPad/.test(navigator.userAgent) && !window.MSStream){
-            viewport.setAttribute(
-                'content', 
-                'initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no'
-                );
-        }
-        if(/iPhone|iPod/.test(navigator.userAgent) && !window.MSStream){
+        //iOS9のViewportはなぜか機能してくれない。
+        if(/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream){
             var rate=Math.round((screen.width/520)*1000) / 1000.0;
+            if(rate==Math.round(rate)){//iOS 9のViewportは整数指定すると機能しない
+                rate+=0.0001;
+            }
             viewport.setAttribute(
                 'content', 
                 'initial-scale='+rate+', minimum-scale='+rate+', maximum-scale='+rate+', user-scalable=no'
