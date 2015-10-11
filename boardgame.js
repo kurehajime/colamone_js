@@ -231,6 +231,9 @@ $(function(){
         if(!storage.getItem('level_4')){
             storage.setItem('level_4',0);
         }
+        if(!storage.getItem('level_5')){
+            storage.setItem('level_5',0);
+        }
         //レベル記憶
         if(storage.getItem('level_save')!=undefined && storage.getItem('level_save')!="undefined"){
              $('#level').val([ parseInt(storage.getItem('level_save')) ]); 
@@ -430,8 +433,15 @@ $(function(){
             hand=Aijs.thinkAI(thisMap,turn_player,3+p)[0];  
         }else if($("#level option:selected").val()==3){
             hand=Aijs.thinkAI(thisMap,turn_player,4)[0];        
-        }else{
+        }else if($("#level option:selected").val()==4){
             hand=Aijs.thinkAI(thisMap,turn_player,5)[0];        
+        }else{
+            if(zan<=10){
+                hand=Aijs.thinkAI(thisMap,turn_player,6)[0];        
+            }else{
+                hand=Aijs.thinkAI(thisMap,turn_player,5)[0];        
+            }
+
         }
 
         if(hand){
