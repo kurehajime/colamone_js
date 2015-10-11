@@ -3,7 +3,7 @@
     <HEAD>
         <title>colamone</title>
         <meta content="text/html" charset="UTF-8">
-        <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0001">
+        <meta name="viewport" content="width=device-width,user-scalable=no">
         <meta property="og:title" content="colamone">
         <meta property="og:type" content="website">
         <meta property="og:description" content="Colamone is a board game similar to chess.">
@@ -124,6 +124,15 @@ whoever has the highest score wins.</p>
               collapsed: false
             });
         };
+if(/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream){
+  document.querySelector('meta[name=viewport]')
+    .setAttribute(
+      'content', 
+      'initial-scale=1.0001, minimum-scale=1.0001, maximum-scale=1.0001, user-scalable=no'
+    );
+}
+        
+        
     }
     set_manual();
         </script>
