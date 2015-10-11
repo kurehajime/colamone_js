@@ -151,7 +151,7 @@ $(function(){
      * 初期化
      */
     function init(){
-        zoom();//小さい端末でズーム
+        //zoom();//小さい端末でズーム
         if (window.innerHeight < window.innerWidth) {
           $("#collapsible").collapsible({
               collapsed: false
