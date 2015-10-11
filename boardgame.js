@@ -332,10 +332,10 @@ $(function(){
                 );
         }
         if(/iPhone|iPod/.test(navigator.userAgent) && !window.MSStream){
-            var rate=Math.round(screen.width/520);
+            var rate=Math.round((screen.width/520)*1000) / 1000.0;
             viewport.setAttribute(
                 'content', 
-                'initial-scale='+rate+'.0001, minimum-scale='+rate+'.0001, maximum-scale='+rate+'.0001, user-scalable=no'
+                'initial-scale='+rate+', minimum-scale='+rate+', maximum-scale='+rate+', user-scalable=no'
                 );
         }
 
