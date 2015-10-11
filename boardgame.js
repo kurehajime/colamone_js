@@ -334,7 +334,7 @@ $(function(){
         if(/iPhone|iPod/.test(navigator.userAgent) && !window.MSStream){
             viewport.setAttribute(
                 'content', 
-                'width=device-width,initial-scale=1,shrink-to-fit=no'
+                'width=520'
                 );
         }
 
