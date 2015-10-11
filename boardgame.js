@@ -327,10 +327,15 @@ $(function(){
         }
         //iOS9のViewportはなぜか機能してくれない。
         if(/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream){
-            var rate=Math.round((screen.width/520)*1000) / 1000.0;
+            var w=screen.width;
+            if(screen.width>screen.height){
+                   w-=screen.height-screen.availHeight;
+            }
+            var rate=Math.round((w/520)*1000) / 1000.0;
             if(rate==Math.round(rate)){//iOS 9のViewportは整数指定すると機能しない
                 rate+=0.0001;
             }
+ 
             viewport.setAttribute(
                 'content', 
                 'initial-scale='+rate+', minimum-scale='+rate+', maximum-scale='+rate+', user-scalable=no'
