@@ -328,7 +328,7 @@ $(function(){
         //iOS9のViewportはなぜか機能してくれない。
         if(/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream){
             var w=screen.width;
-            if(screen.width>screen.height){
+            if(Math.abs(window.orientation) != 0){
                    w-=screen.height-screen.availHeight;
             }
             var rate=Math.round((w/520)*1000) / 1000.0;
