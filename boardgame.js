@@ -329,7 +329,7 @@ $(function(){
         if(/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream){
             var w=screen.width;
             if(Math.abs(window.orientation) != 0){
-                   w-=35;
+                var w=screen.height;
             }
             var rate=Math.round((w/520)*1000) / 1000.0;
             if(rate==Math.round(rate)){//iOS 9のViewportは整数指定すると機能しない
