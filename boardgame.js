@@ -331,7 +331,7 @@ $(function(){
             var w2=520;
             if(Math.abs(window.orientation) != 0){
                 w=screen.height;
-                w2=860;
+                w2=900;
             }
             var rate=Math.round((w/w2)*1000) / 1000.0;
             if(rate==Math.round(rate)){//iOS 9のViewportは整数指定すると機能しない
