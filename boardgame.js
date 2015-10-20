@@ -333,7 +333,7 @@ $(function(){
                 w=screen.height;
                 w2=860;
             }
-            var rate=Math.round((w/520)*1000) / 1000.0;
+            var rate=Math.round((w/w2)*1000) / 1000.0;
             if(rate==Math.round(rate)){//iOS 9のViewportは整数指定すると機能しない
                 rate+=0.0001;
             }
