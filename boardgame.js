@@ -231,6 +231,9 @@ $(function(){
         if(!storage.getItem('level_4')){
             storage.setItem('level_4',0);
         }
+        if(!storage.getItem('level_5')){
+            storage.setItem('level_5',0);
+        }
         //レベル記憶
         if(storage.getItem('level_save')!=undefined && storage.getItem('level_save')!="undefined"){
              $('#level').val([ parseInt(storage.getItem('level_save')) ]); 
@@ -253,6 +256,11 @@ $(function(){
         //ログをデコード
         if(paramObj["log"]){
             logArray=decodeLog(paramObj["log"],startMap);
+        }
+        //レベル取得
+        if(paramObj["lv"]){
+            $('#level').val([parseInt(paramObj["lv"])]); 
+            $('#level').selectmenu('refresh',true);
         }
 
         if(logArray.length!=0){
@@ -316,6 +324,24 @@ $(function(){
             viewport.setAttribute('content', 'width=500,user-scalable=no');
         }else if(screen.height<500){
             viewport.setAttribute('content', 'height=500,user-scalable=no');
+        }
+        //iOS9のViewportはなぜか機能してくれない。
+        if(/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream){
+            var w=screen.width;
+            var w2=520;
+            if(Math.abs(window.orientation) != 0){
+                w=screen.height;
+                w2=900;
+            }
+            var rate=Math.round((w/w2)*1000) / 1000.0;
+            if(rate==Math.round(rate)){//iOS 9のViewportは整数指定すると機能しない
+                rate+=0.0001;
+            }
+ 
+            viewport.setAttribute(
+                'content', 
+                'initial-scale='+rate+', minimum-scale='+rate+', maximum-scale='+rate+', user-scalable=no'
+                );
         }
 
     }
@@ -425,8 +451,15 @@ $(function(){
             hand=Aijs.thinkAI(thisMap,turn_player,3+p)[0];  
         }else if($("#level option:selected").val()==3){
             hand=Aijs.thinkAI(thisMap,turn_player,4)[0];        
-        }else{
+        }else if($("#level option:selected").val()==4){
             hand=Aijs.thinkAI(thisMap,turn_player,5)[0];        
+        }else{
+            if(zan<=10){
+                hand=Aijs.thinkAI(thisMap,turn_player,6)[0];        
+            }else{
+                hand=Aijs.thinkAI(thisMap,turn_player,5)[0];        
+            }
+
         }
 
         if(hand){
@@ -1156,6 +1189,7 @@ $(function(){
                         +startMap[44]+","
                         +startMap[14];
         var log="&log="+encodeLog(logArray2);
+        log+="&lv="+$("#level option:selected").val();
         location.href =url+init+log;
     }
     /** 
@@ -1172,6 +1206,7 @@ $(function(){
                         +startMap[44]+","
                         +startMap[14];
         var log="%26log="+encodeLog(logArray2);
+        log+="%26lv="+$("#level option:selected").val();
         window.open("https://twitter.com/intent/tweet?text="+url+init+log+"%20%23colamone");
     }
     /** 

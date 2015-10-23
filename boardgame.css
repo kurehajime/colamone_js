@@ -113,4 +113,15 @@ img.preload{
     #footer{
         display: none;   
     }
+    .ui-page{
+    text-align: center !important;
+    }
+    
+    #main{
+        display: block!important;
+        text-align : left ;
+        width: 505px!important;
+        margin-left : auto !important; 
+        margin-right : auto !important;
+    }
 }
