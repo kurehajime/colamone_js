@@ -271,6 +271,7 @@ $(function(){
             $("#nextnext").show();
             $("#span_replay").hide();
             $("#span_tweetlog").hide();
+            $("#next").focus();
         }else{
             $("#log").hide();
             $("#prevprev").hide();
