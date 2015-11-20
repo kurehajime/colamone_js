@@ -380,10 +380,10 @@
         var nodeList= getNodeMap(map,turn_player);
         for(var i =0;i<nodeList.length;i++){
             var hand=nodeList[i][0];
-            var map=nodeList[i][1];
+            var map0=nodeList[i][1];
 
             //必勝
-            var end=isEndX(map,nearwin);
+            var end=isEndX(map0,nearwin);
             if(end===turn_player){
                 return [hand,999999*turn_player];
             }
@@ -395,7 +395,7 @@
                 }
                 continue;
             }
-            var sc  =deepThinkAllAB(map,turn_player*-1,depth-1,b,a,nearwin,evalparam)[1]
+            var sc  =deepThinkAllAB(map0,turn_player*-1,depth-1,b,a,nearwin,evalparam)[1]
             if(besthand===void 0){
                 best_score=sc;
                 besthand=hand;

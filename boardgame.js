@@ -559,7 +559,7 @@ $(function(){
         //選択したコマを表示
         ctx.drawImage(drawHoverPiece(), 0, 0, ctx.canvas.width, ctx.canvas.height);
 
-        if(mouse_x!=0|mouse_y!=0){
+        if(mouse_x!=0||mouse_y!=0){
             //フォーカスを描画
             ctx.drawImage(drawFocus(), 0, 0, ctx.canvas.width, ctx.canvas.height);        
         }
@@ -783,9 +783,9 @@ $(function(){
             for(var y=0;y<6;y++){
                 if(wkMap[x*10+y]!=0){
                     var goal=false;
-                    if(wkMap[x*10+y]>0 & y==0){
+                    if(wkMap[x*10+y]>0 && y==0){
                         goal=true;
-                    }else if(wkMap[x*10+y]<0 & y==5){
+                    }else if(wkMap[x*10+y]<0 && y==5){
                         goal=true;
                     }
                     ctx_pieces=drawPiece(ctx_pieces,x*cellSize
@@ -848,9 +848,9 @@ $(function(){
             return canMove;   
         }
         //アガリのコマは動かしたらダメ。
-        if(number>0 & y==0){
+        if(number>0 && y==0){
             return canMove;   
-        }else if(number<0 &y==5){
+        }else if(number<0 &&y==5){
             return canMove;   
         }
 
@@ -861,7 +861,7 @@ $(function(){
             if(PIECES[number][i]==0){
                 continue;
             }
-            if(target_x<0 || target_y<0|target_x>5|target_y>5 ){
+            if(target_x<0 || target_y<0||target_x>5||target_y>5 ){
                 continue;
             }
             var target_number=thisMap[target_x*10+target_y];
@@ -869,9 +869,9 @@ $(function(){
                 continue;   
             }
             //アガリのコマはとったらダメ。
-            if(target_number>0 & target_y==0){
+            if(target_number>0 && target_y==0){
                 continue;   
-            }else if(target_number<0 &target_y==5){
+            }else if(target_number<0 && target_y==5){
                 continue;
             }
             canMove.push(target_x*10+target_y);
