@@ -415,6 +415,9 @@ $(function(){
         }else{
             $("#wins")[0].innerHTML="";
         }
+        thisMap=Aijs.copyMap(startMap);
+        logArray2=new Array();
+        flush(false,false);
     }
 
     /** 
