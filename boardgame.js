@@ -651,13 +651,24 @@ $(function(){
         ctx_cover.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
         
         //枠
-        var x = cellSize*1.5
-        var y = cellSize*2.5
+        var x = cellSize*2
+        var y = cellSize*3.5
+        ctx_cover.shadowBlur = 20;
+        ctx_cover.shadowColor = "rgba(0, 0, 0, 0.3)";
+        ctx_cover.shadowOffsetX = 5;
+        ctx_cover.shadowOffsetY = 5;
         ctx_cover.globalAlpha = 0.8;
         ctx_cover.fillStyle = COLOR_WHITE;
         ctx_cover.beginPath();
-        ctx_cover.fillRect(x,y,cellSize*3,cellSize*1);
+        ctx_cover.fillRect(x,y,cellSize*2,cellSize*1);
         ctx_cover.fill();
+        ctx_cover.shadowColor= "rgba(0, 0, 0, 0)";; 
+        ctx_cover.shadowBlur = 0;
+        ctx_cover.shadowOffsetX = 0;
+        ctx_cover.shadowOffsetY = 0;
+        
+        
+
         
         //文字
        var fontsize=Math.round(cellSize*0.5);
@@ -672,7 +683,15 @@ $(function(){
         ctx_cover.textBaseline ="middle";
         ctx_cover.textAlign="center";
         ctx_cover.beginPath();
-        ctx_cover.fillText(message, cellSize*3, cellSize*3);
+        ctx_cover.fillText(message, cellSize*3, cellSize*4);
+        //文字２
+        message="colamone"
+        fontsize=Math.round(cellSize*1);
+        ctx_cover.font = "bold "+fontsize+"px sans-serif";
+        ctx_cover.fillStyle = COLOR_WHITE;
+        ctx_cover.beginPath();
+        ctx_cover.fillText(message, cellSize*3, cellSize*2);
+        
         
         return canv_cover;
     }
@@ -802,7 +821,7 @@ $(function(){
         }else{
             wkColor=COLOR_RED;           
         }
-        //wkCtx.fillStyle = wkColor;
+        
         var grad  = ctx.createLinearGradient(x,y, x+cellSize,y+cellSize);
         grad.addColorStop(0,'rgb(255, 255, 255)');    
         grad.addColorStop(0.4,wkColor); 
