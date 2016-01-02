@@ -330,16 +330,11 @@ $(function(){
      * Demoを再生
      */
     function playDemo(){
-        var level=1;
-        if(Math.round()>0.3){
-            level=2;
+        if(Math.random()>0.3){
+            ai(2);
+        }else{
+            ai(1);
         }
-        var hand=Aijs.thinkAI(thisMap,turn_player,level)[0]; 
-        if(hand){
-            thisMap[hand[1]]=thisMap[hand[0]];
-            thisMap[hand[0]]=0;
-        }
-        turn_player=turn_player*-1;
         calcScore();
         flush(false,false);
         if(winner==1||winner==-1||winner==0){
@@ -444,7 +439,7 @@ $(function(){
                 updateMessage();
                 if(winner==null){
                     window.setTimeout(function(){
-                        ai();   
+                        ai($("#level option:selected").val());   
                         message=""
                         updateMessage();
                         flush(false,false);
@@ -474,7 +469,7 @@ $(function(){
     /** 
      * AIに考えてもらう。
      */
-    function ai(){
+    function ai(level){
         var hand;
         var startTime = new Date();
         var endTime;
@@ -491,7 +486,7 @@ $(function(){
                 zan+=1;
             }
         }
-        if(zan<8&&$("#level option:selected").val()!=3){
+        if(zan<8&&level!=3){
             p+=1;
         }
         if(zan<5){
@@ -500,13 +495,13 @@ $(function(){
         if(zan<4){
             p+=1;
         }
-        if($("#level option:selected").val()==1){
+        if(level==1){
             hand=Aijs.thinkAI(thisMap,turn_player,2+p)[0];  
-        }else if($("#level option:selected").val()==2){
+        }else if(level==2){
             hand=Aijs.thinkAI(thisMap,turn_player,3+p)[0];  
-        }else if($("#level option:selected").val()==3){
+        }else if(level==3){
             hand=Aijs.thinkAI(thisMap,turn_player,4)[0];        
-        }else if($("#level option:selected").val()==4){
+        }else if(level==4){
             hand=Aijs.thinkAI(thisMap,turn_player,5)[0];        
         }else{
             if(zan<=10){
