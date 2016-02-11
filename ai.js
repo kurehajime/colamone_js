@@ -266,8 +266,8 @@
      */
     function getCanMovePanelX(panel_num,wkMap){
         var number = wkMap[panel_num]|0;
-        var x = Math.floor(panel_num / 10);
-        var y = Math.floor(panel_num % 10);
+        var x = ~~(panel_num / 10);// [~~]=Math.floor 
+        var y = ~~(panel_num % 10);
         var canMove=[];
 
         //アガリのコマは動かしたらダメ。何も無いマスも動かしようがない。
@@ -278,8 +278,8 @@
             if(PIECES[''+number][i]===0){
                 continue;
             }
-            var target_x= x + Math.floor(i%3)-1;
-            var target_y= y + Math.floor(i/3)-1;
+            var target_x= x + ~~(i%3)-1;
+            var target_y= y + ~~(i/3)-1;
             if(target_y<0 || target_y>5 || target_x>5 || target_x<0 ){
                 continue;
             }
@@ -354,7 +354,7 @@
                 cell_p+=evalparam[p][line];//ポジションボーナス
             }else if(p<0){
                 line=(panel_num % 10)
-                cell_p+=evalparam[Math.abs(p)][line]*-1;
+                cell_p+=evalparam[-1*p][line]*-1;
             }
             //評価値に加算。
             ev+=cell_p;
