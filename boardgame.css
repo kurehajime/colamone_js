@@ -39,7 +39,13 @@ html {
 #prevprev,#prev,#next,#nextnext{
     width: 78px;
     font-size: 16px;
+    background-color: #00A0E9;
+    color: snow;
 }
+#prevprev:hover,#prev:hover,#next:hover,#nextnext:hover{
+    background-color: #33AAE9;
+}
+
 #replay,#tweetlog,.howtoplay{
     width: 340px;
     font-size: 16px;

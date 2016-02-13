@@ -266,8 +266,8 @@
      */
     function getCanMovePanelX(panel_num,wkMap){
         var number = wkMap[panel_num]|0;
-        var x = Math.floor(panel_num / 10);
-        var y = Math.floor(panel_num % 10);
+        var x = ~~(panel_num / 10);// [~~]=Math.floor 
+        var y = ~~(panel_num % 10);
         var canMove=[];
 
         //アガリのコマは動かしたらダメ。何も無いマスも動かしようがない。
@@ -278,8 +278,8 @@
             if(PIECES[''+number][i]===0){
                 continue;
             }
-            var target_x= x + Math.floor(i%3)-1;
-            var target_y= y + Math.floor(i/3)-1;
+            var target_x= x + ~~(i%3)-1;
+            var target_y= y + ~~(i/3)-1;
             if(target_y<0 || target_y>5 || target_x>5 || target_x<0 ){
                 continue;
             }
@@ -329,14 +329,13 @@
      */
     function evalMap(wkMap,turn_player,nearwin,evalparam){
         var ev=0;
-        var evMap=copyMap(wkMap);
 
         //引き分け判定
         if(isDraw(wkMap)){
             return 0;
         }
         //終局判定
-        var end=isEndX(evMap,nearwin);
+        var end=isEndX(wkMap,nearwin);
         if(end===1){
             return +9999999;
         }else if(end===-1){
@@ -346,7 +345,7 @@
         for(var i=0;i<=35;i++){
             var panel_num=NUMBERS[i]|0;
             var cell_p=0;
-            var p=evMap[panel_num];
+            var p=wkMap[panel_num];
             var line;
             //コマの評価値を加算
             if(p>0){
@@ -354,7 +353,7 @@
                 cell_p+=evalparam[p][line];//ポジションボーナス
             }else if(p<0){
                 line=(panel_num % 10)
-                cell_p+=evalparam[Math.abs(p)][line]*-1;
+                cell_p+=evalparam[-1*p][line]*-1;
             }
             //評価値に加算。
             ev+=cell_p;
@@ -380,10 +379,10 @@
         var nodeList= getNodeMap(map,turn_player);
         for(var i =0;i<nodeList.length;i++){
             var hand=nodeList[i][0];
-            var map=nodeList[i][1];
+            var map0=nodeList[i][1];
 
             //必勝
-            var end=isEndX(map,nearwin);
+            var end=isEndX(map0,nearwin);
             if(end===turn_player){
                 return [hand,999999*turn_player];
             }
@@ -395,7 +394,7 @@
                 }
                 continue;
             }
-            var sc  =deepThinkAllAB(map,turn_player*-1,depth-1,b,a,nearwin,evalparam)[1]
+            var sc  =deepThinkAllAB(map0,turn_player*-1,depth-1,b,a,nearwin,evalparam)[1]
             if(besthand===void 0){
                 best_score=sc;
                 besthand=hand;

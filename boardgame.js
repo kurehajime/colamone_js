@@ -28,6 +28,7 @@ $(function(){
     var canv_hover_piece=null;
     var canv_overlay=null;
     var canv_bk=null;
+    var canv_cover=null;
     var canv_cache=null;
     var cache_on=false;
     var img_bk_loaded=false;
@@ -39,6 +40,8 @@ $(function(){
     var winner=null;
     var message="";
     var thinktime=0.0;
+    var demo=true;
+    var intervalID=null;
     var COLOR_LINE="#333333";
     var COLOR_PANEL_1="#550025";
     var COLOR_PANEL_2="#003856";
@@ -162,6 +165,7 @@ $(function(){
         canv_board =document.createElement("canvas");
         canv_board.width=ctx.canvas.width;
         canv_board.height=ctx.canvas.height;
+        
 
         canv_board2 =document.createElement("canvas");
         canv_board2.width=ctx.canvas.width;
@@ -187,6 +191,11 @@ $(function(){
         canv_bk =document.createElement("canvas");
         canv_bk.width=ctx.canvas.width;
         canv_bk.height=ctx.canvas.height;
+        
+        canv_cover =document.createElement("canvas");
+        canv_cover.width=ctx.canvas.width;
+        canv_cover.height=ctx.canvas.height;
+        
 
         canv_cache =document.createElement("canvas");
         canv_cache.width=ctx.canvas.width;
@@ -194,6 +203,7 @@ $(function(){
 
         cellSize=ctx.canvas.width /6;
         turn_player=1;
+        demo=true;
 
         if('ontouchstart' in window){
             isTouch=true;
@@ -271,6 +281,7 @@ $(function(){
             $("#nextnext").show();
             $("#span_replay").hide();
             $("#span_tweetlog").hide();
+            $("#next").focus();
         }else{
             $("#log").hide();
             $("#prevprev").hide();
@@ -305,6 +316,31 @@ $(function(){
         updateMessage();
         setTweet();//ツイートボタンを生成
         
+         if(logArray.length==0){
+            intervalID=window.setInterval(playDemo,1000);
+            playDemo();
+         }else{
+             demo=false;
+         }
+         flush(true,false);
+        
+    }
+    
+    /** 
+     * Demoを再生
+     */
+    function playDemo(){
+        if(Math.random()>0.3){
+            ai(2);
+        }else{
+            ai(1);
+        }
+        calcScore();
+        flush(false,false);
+        if(winner==1||winner==-1||winner==0){
+            winner=null;
+            window.clearInterval(intervalID);
+        }
     }
 
 
@@ -365,6 +401,17 @@ $(function(){
             reloadnew();
             return true;
         }
+        if(demo==true){
+            demo=false;
+            thisMap=Aijs.copyMap(startMap);
+            logArray2=new Array();
+            flush(false,false);
+            winner=null;
+            turn_player=1;
+            window.clearInterval(intervalID);
+            return true;
+        }
+        
         if(hover_piece==null){
             if(thisMap[target]*turn_player>0){
                 hover_piece=target;
@@ -392,7 +439,7 @@ $(function(){
                 updateMessage();
                 if(winner==null){
                     window.setTimeout(function(){
-                        ai();   
+                        ai($("#level option:selected").val());   
                         message=""
                         updateMessage();
                         flush(false,false);
@@ -414,12 +461,15 @@ $(function(){
         }else{
             $("#wins")[0].innerHTML="";
         }
+        thisMap=Aijs.copyMap(startMap);
+        logArray2=new Array();
+        flush(false,false);
     }
 
     /** 
      * AIに考えてもらう。
      */
-    function ai(){
+    function ai(level){
         var hand;
         var startTime = new Date();
         var endTime;
@@ -436,7 +486,7 @@ $(function(){
                 zan+=1;
             }
         }
-        if(zan<8&&$("#level option:selected").val()!=3){
+        if(zan<8&&level!=3){
             p+=1;
         }
         if(zan<5){
@@ -445,13 +495,13 @@ $(function(){
         if(zan<4){
             p+=1;
         }
-        if($("#level option:selected").val()==1){
+        if(level==1){
             hand=Aijs.thinkAI(thisMap,turn_player,2+p)[0];  
-        }else if($("#level option:selected").val()==2){
+        }else if(level==2){
             hand=Aijs.thinkAI(thisMap,turn_player,3+p)[0];  
-        }else if($("#level option:selected").val()==3){
+        }else if(level==3){
             hand=Aijs.thinkAI(thisMap,turn_player,4)[0];        
-        }else if($("#level option:selected").val()==4){
+        }else if(level==4){
             hand=Aijs.thinkAI(thisMap,turn_player,5)[0];        
         }else{
             if(zan<=10){
@@ -558,13 +608,19 @@ $(function(){
         //選択したコマを表示
         ctx.drawImage(drawHoverPiece(), 0, 0, ctx.canvas.width, ctx.canvas.height);
 
-        if(mouse_x!=0|mouse_y!=0){
+        if((mouse_x!=0||mouse_y!=0)&&demo==false){
             //フォーカスを描画
             ctx.drawImage(drawFocus(), 0, 0, ctx.canvas.width, ctx.canvas.height);        
         }
 
         //メッセージを描画
         ctx.drawImage(drawOverlay(), 0, 0, ctx.canvas.width, ctx.canvas.height);
+       
+        //カバーを描画
+        if(demo==true){
+            ctx.drawImage(drawCover(), 0, 0, ctx.canvas.width, ctx.canvas.height);
+        }
+        
 
     }
     
@@ -578,7 +634,62 @@ $(function(){
         }
         return canv_bk;
     }
+    /** 
+     * カバー描画
+     */
+    function drawCover(){
+        //背景
+        var ctx_cover=canv_cover.getContext('2d');
+        ctx_cover.clearRect(0,0,ctx.canvas.width,ctx.canvas.width);
+        ctx_cover.globalAlpha = 0.60;
+        ctx_cover.fillStyle="#000000";
+        ctx_cover.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+        
+        //枠
+        var x = cellSize*2
+        var y = cellSize*3.5
+        ctx_cover.shadowBlur = 20;
+        ctx_cover.shadowColor = "rgba(0, 0, 0, 0.3)";
+        ctx_cover.shadowOffsetX = 5;
+        ctx_cover.shadowOffsetY = 5;
+        ctx_cover.globalAlpha = 0.8;
+        ctx_cover.fillStyle = COLOR_WHITE;
+        ctx_cover.beginPath();
+        ctx_cover.fillRect(x,y,cellSize*2,cellSize*1);
+        ctx_cover.fill();
+        ctx_cover.shadowColor= "rgba(0, 0, 0, 0)";; 
+        ctx_cover.shadowBlur = 0;
+        ctx_cover.shadowOffsetX = 0;
+        ctx_cover.shadowOffsetY = 0;
+        
+        
 
+        
+        //文字
+       var fontsize=Math.round(cellSize*0.5);
+       var message="Play"
+        ctx_cover.shadowBlur = 0;
+        ctx_cover.shadowOffsetX = 0;
+        ctx_cover.shadowOffsetY = 0;
+        ctx_cover.shadowColor = "rgba(0, 0, 0, 0)";
+        ctx_cover.font = "bold "+fontsize+"px sans-serif";
+        ctx_cover.globalAlpha = 1;
+        ctx_cover.fillStyle = COLOR_LINE;
+        ctx_cover.textBaseline ="middle";
+        ctx_cover.textAlign="center";
+        ctx_cover.beginPath();
+        ctx_cover.fillText(message, cellSize*3, cellSize*4);
+        //文字２
+        message="colamone"
+        fontsize=Math.round(cellSize*1);
+        ctx_cover.font = "bold "+fontsize+"px sans-serif";
+        ctx_cover.fillStyle = COLOR_WHITE;
+        ctx_cover.beginPath();
+        ctx_cover.fillText(message, cellSize*3, cellSize*2);
+        
+        
+        return canv_cover;
+    }
 
     /** 
      * フォーカスを描画
@@ -705,7 +816,7 @@ $(function(){
         }else{
             wkColor=COLOR_RED;           
         }
-        //wkCtx.fillStyle = wkColor;
+        
         var grad  = ctx.createLinearGradient(x,y, x+cellSize,y+cellSize);
         grad.addColorStop(0,'rgb(255, 255, 255)');    
         grad.addColorStop(0.4,wkColor); 
@@ -782,9 +893,9 @@ $(function(){
             for(var y=0;y<6;y++){
                 if(wkMap[x*10+y]!=0){
                     var goal=false;
-                    if(wkMap[x*10+y]>0 & y==0){
+                    if(wkMap[x*10+y]>0 && y==0){
                         goal=true;
-                    }else if(wkMap[x*10+y]<0 & y==5){
+                    }else if(wkMap[x*10+y]<0 && y==5){
                         goal=true;
                     }
                     ctx_pieces=drawPiece(ctx_pieces,x*cellSize
@@ -847,9 +958,9 @@ $(function(){
             return canMove;   
         }
         //アガリのコマは動かしたらダメ。
-        if(number>0 & y==0){
+        if(number>0 && y==0){
             return canMove;   
-        }else if(number<0 &y==5){
+        }else if(number<0 &&y==5){
             return canMove;   
         }
 
@@ -860,7 +971,7 @@ $(function(){
             if(PIECES[number][i]==0){
                 continue;
             }
-            if(target_x<0 || target_y<0|target_x>5|target_y>5 ){
+            if(target_x<0 || target_y<0||target_x>5||target_y>5 ){
                 continue;
             }
             var target_number=thisMap[target_x*10+target_y];
@@ -868,9 +979,9 @@ $(function(){
                 continue;   
             }
             //アガリのコマはとったらダメ。
-            if(target_number>0 & target_y==0){
+            if(target_number>0 && target_y==0){
                 continue;   
-            }else if(target_number<0 &target_y==5){
+            }else if(target_number<0 && target_y==5){
                 continue;
             }
             canMove.push(target_x*10+target_y);
