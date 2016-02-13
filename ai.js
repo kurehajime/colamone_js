@@ -329,14 +329,13 @@
      */
     function evalMap(wkMap,turn_player,nearwin,evalparam){
         var ev=0;
-        var evMap=copyMap(wkMap);
 
         //引き分け判定
         if(isDraw(wkMap)){
             return 0;
         }
         //終局判定
-        var end=isEndX(evMap,nearwin);
+        var end=isEndX(wkMap,nearwin);
         if(end===1){
             return +9999999;
         }else if(end===-1){
@@ -346,7 +345,7 @@
         for(var i=0;i<=35;i++){
             var panel_num=NUMBERS[i]|0;
             var cell_p=0;
-            var p=evMap[panel_num];
+            var p=wkMap[panel_num];
             var line;
             //コマの評価値を加算
             if(p>0){
