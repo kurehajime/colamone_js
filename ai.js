@@ -421,6 +421,7 @@
      */
     function thinkAI(map,turn_player,depth,a,b,evalparam){
         var nearwin;
+        var hand=[null,null];
         if(!evalparam){
             evalparam=DEFAULT_EVALPARAM;
         }
@@ -428,7 +429,11 @@
             nearwin=true;
         }
 
-        return deepThinkAllAB(map,turn_player,depth,a,b,nearwin,evalparam)
+        hand=deepThinkAllAB(map,turn_player,depth,a,b,nearwin,evalparam)
+        if(hand[1]*turn_player===-999999){
+            hand=deepThinkAllAB(map,turn_player,1,a,b,nearwin,evalparam)
+        }
+        return hand;
     }
 
 })((this || 0).self || global);
