@@ -1302,7 +1302,17 @@ $(function(){
         if(paramObj["lang"]){
             url+="?lang="+paramObj["lang"];
         }
-        location.href =url;
+        if(navigator.onLine){
+            location.href =url;
+        }else{
+            thisMap=Aijs.copyMap(startMap);
+            shuffleBoard();
+            logArray2=new Array();
+            message="";
+            winner=null;
+            turn_player=1;
+            flush(false,false);
+        }
     }
     
     /** 
@@ -1321,6 +1331,8 @@ $(function(){
         var log="&log="+encodeLog(logArray2);
         log+="&lv="+$("#level option:selected").val();
         location.href =url+init+log;
+
+
     }
     /** 
      * ログをツイートする。
