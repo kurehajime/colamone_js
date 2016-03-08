@@ -42,7 +42,7 @@
 <span id="span_tweetlog"><button type="button" id="tweetlog" onclick=""  class="ui-btn ui-icon-action ui-btn-icon-left"> Tweet result </button></span>
 <div data-role="collapsible" id="collapsible" class="ui-shadow">
     <h5 class="howtoplay"><span id="htp">How to play Colamone</span></h5>
-<p id="manual_en" class="manual" lang="en" >(1) Colamone is kinda like chess. 
+<p id="manual_en" class="manual" lang="en" style="display:none">(1) Colamone is kinda like chess. 
      Only some loose similarities. 
 (2) Each piece can move 1 tile in the direction 
      of any of it's dots. 
@@ -55,7 +55,7 @@
      whoever has the highest score wins.
 (7) if the current position on the board
      appeared 3 times then the result is a draw.</p>
-<p id="manual_ja" class="manual" lang="ja">①Colamone(ｺﾗﾓﾈ)はﾁｪｽや将棋に似たﾎﾞｰﾄﾞｹﾞｰﾑです。
+<p id="manual_ja" class="manual" lang="ja" style="display:none">①Colamone(ｺﾗﾓﾈ)はﾁｪｽや将棋に似たﾎﾞｰﾄﾞｹﾞｰﾑです。
 ②各コマは、丸が付いている方向に進めます。
 ③取られたコマは盤上から除かれ、再利用できません。
 ④奥の陣地まで進めるとコマの数字が得点になります。
@@ -71,14 +71,14 @@
         </div>
     <IMG src="bk.gif" class="preload">
   <div data-role="footer" id="footer">
-    <p  style="text-align:center;font-size:10px;">(c)2014–<script language=JavaScript type=text/javascript> document.write(new Date().getFullYear()); </script> <A Href="https://twitter.com/kurehajime">@kurehajime</A>. All Rights Reserved. / Ver.<a href="https://github.com/kurehajime/colamone_js"  TARGET="_blank" >20160302</a></p>
+    <p  style="text-align:center;font-size:10px;">(c)2014–<script language=JavaScript type=text/javascript> document.write(new Date().getFullYear()); </script> <A Href="https://twitter.com/kurehajime">@kurehajime</A>. All Rights Reserved. / Ver.<a href="https://github.com/kurehajime/colamone_js"  TARGET="_blank" >20160306</a></p>
   </div>
 </div>
         <link rel="stylesheet" type="text/css" href="boardgame.css?2015102001">
-        <link rel="stylesheet" href="./lib/jquery.mobile.css" />
-        <script src="./lib/jquery.js"></script>
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
         <script>$(document).bind('mobileinit',function(){$.mobile.pushStateEnabled = false;});</script>
-        <script src="./lib/jquery.mobile.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
         <script type="text/javascript" src="ai.js?20160217001"></script>
         <script type="text/javascript" src="boardgame.js?2016022401"></script>
         <script type="text/javascript">
