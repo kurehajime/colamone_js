@@ -176,10 +176,12 @@
                 return 1;
             }else if(sum1<(-1*sum2)){
                 return -1;
+            }else{
+                return 0;
             }
         }
         //実質的判定勝利
-        if(nearwin===false){
+        if(nearwin===false&&(sum1!=0||sum2!=0)){
             var live1=0;
             var live2=0; 
             for(var i=0;i<=35;i++){
@@ -190,9 +192,9 @@
                     live2+=wkMap[num];
                 }
             }
-            if(sum1>(-1*live2)){
+            if(sum1>(-1*(live2+sum2))){
                 return 1;
-            }else if(-1*sum2>live1){
+            }else if(-1*sum2>(live1+sum1)){
                 return -1;
             }
         }
@@ -380,8 +382,8 @@
         for(var i =0;i<nodeList.length;i++){
             var hand=nodeList[i][0];
             var map0=nodeList[i][1];
-
-            //必勝
+            var sc =0;
+            //必勝            
             var end=isEndX(map0,nearwin);
             if(end===turn_player){
                 return [hand,999999*turn_player];
@@ -394,7 +396,11 @@
                 }
                 continue;
             }
-            var sc  =deepThinkAllAB(map0,turn_player*-1,depth-1,b,a,nearwin,evalparam)[1]
+            if(isNoneNode(map0)){
+                sc =0;
+            }else{
+                sc=deepThinkAllAB(map0,turn_player*-1,depth-1,b,a,nearwin,evalparam)[1];
+            }
             if(besthand===void 0){
                 best_score=sc;
                 besthand=hand;
@@ -420,7 +426,7 @@
      * 考える
      */
     function thinkAI(map,turn_player,depth,a,b,evalparam){
-        var nearwin;
+        var nearwin=false;
         var hand=[null,null];
         if(!evalparam){
             evalparam=DEFAULT_EVALPARAM;
