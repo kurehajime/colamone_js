@@ -225,6 +225,7 @@ $(function(){
         $("#replay").bind('click',jumpkento);
         $("#tweetlog").bind('click',tweetlog);
         $("#newgame").bind('click',reloadnew);
+        $(window).bind('orientationchange',zoom);
 
         shuffleBoard();
 
