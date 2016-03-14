@@ -22,17 +22,13 @@ html {
 }
 #wins{
     color: #16b1db;
-    font-family: "Arial Black", 'Arial Bold', Arial,Verdana,sans-serif;
 }
 #gamename{
     font-size: 38px;
-    font-family: "Arial Black", 'Arial Bold', Arial,Verdana,sans-serif;
 }
 .score{
-  font-weight: bolder;
   font-size: 15px;
   letter-spacing:3px;
-  font-family: "Arial Black", 'Arial Bold', Arial,Verdana,sans-serif;
 }
 #blue{
   color:#1e90ff;
@@ -40,7 +36,7 @@ html {
 #red{
   color:#ff1493;
 }
-#lvs,#prevprev,#prev,#next,#nextnext,#replay,#tweetlog,.howtoplay a,#newgame,.lv{
+#wins,#gamename,.score,#lvs,#prevprev,#prev,#next,#nextnext,#replay,#tweetlog,.howtoplay a,#newgame,.lv{
   font-family: "Arial Black", 'Arial Bold', Arial,Verdana,sans-serif;
   font-weight: bolder;
 }
