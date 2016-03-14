@@ -41,7 +41,7 @@ html {
   color:#ff1493;
 }
 #lvs,#prevprev,#prev,#next,#nextnext,#replay,#tweetlog,.howtoplay a,#newgame,.lv{
-  font-family: "Arial Black", 'Arial Bold', Gadget, sans-serif;
+  font-family: "Arial Black", 'Arial Bold', Arial, sans-serif;
 }
 
 .manual{
