@@ -25,8 +25,7 @@
             <canvas id="canv" width="500px" height="500px"></canvas>
             <div id="message">
                 <span id="gamename">colamone</span> by <A Href="https://twitter.com/kurehajime">@kurehajime</A><br/>
-                <b>Turn : </b><span id="turn"></span>(
-                Blue: <span id="blue"></span>/8 - Red: <span id="red"></span>/8):<span id="time"></span><span id="wins"></span>
+                 <span id="blue" class="score"></span> - <span id="red" class="score"> </span>　<span id="wins"></span>
                 <div class="ui-field-contain " id="lvs">
                     <select id="level"  data-inline="true" >
                         <option value="1" class="lv">Lv.1</option>
@@ -57,16 +56,16 @@
         </div>
     <IMG src="bk.gif" class="preload">
   <div data-role="footer" id="footer">
-    <p  style="text-align:center;font-size:10px;">(c)2014–<script language=JavaScript type=text/javascript> document.write(new Date().getFullYear()); </script> <A Href="https://twitter.com/kurehajime">@kurehajime</A>. All Rights Reserved. / Ver.<a href="https://github.com/kurehajime/colamone_js"  TARGET="_blank" >20160312</a></p>
+    <p  style="text-align:center;font-size:10px;">(c)2014–<script language=JavaScript type=text/javascript> document.write(new Date().getFullYear()); </script> <A Href="https://twitter.com/kurehajime">@kurehajime</A>. All Rights Reserved. / Ver.<a href="https://github.com/kurehajime/colamone_js"  TARGET="_blank" >20160314</a>/<span id="time"></span></p>
   </div>
 </div>
-        <link rel="stylesheet" type="text/css" href="boardgame.css?2015102001">
+        <link rel="stylesheet" type="text/css" href="boardgame.css?2016031401">
         <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css" />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
         <script>$(document).bind('mobileinit',function(){$.mobile.pushStateEnabled = false;});</script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
         <script type="text/javascript" src="ai.js?20160312001"></script>
-        <script type="text/javascript" src="boardgame.js?2016022401"></script>
+        <script type="text/javascript" src="boardgame.js?2016031401"></script>
         <script type="text/javascript">
     /** 
      * 国際化・・・しない。

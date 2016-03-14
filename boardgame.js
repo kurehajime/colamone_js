@@ -1010,18 +1010,9 @@ $(function(){
      */
     function updateMessage(){
         calcScore();
-        if(turn_player>0){
-            $("#turn")[0].innerHTML="Blue";
-            $("#turn")[0].style.color=COLOR_BLUE;
-        }else if(turn_player<0){
-            $("#turn")[0].innerHTML="Red";          
-            $("#turn")[0].style.color=COLOR_RED;
-        }else{
-            $("#turn")[0].innerHTML="";                  
-        }
-        $("#blue")[0].innerHTML=blueScore;                  
-        $("#red")[0].innerHTML=redScore;
-
+        var Block="" 
+        $("#blue")[0].innerHTML="Blue: "+blueScore+"/8"
+        $("#red")[0].innerHTML="Red: "+redScore+"/8"
         $("#time")[0].innerHTML="("+(thinktime)+"sec)";
         if(logArray.length==0){
             if(winner==1){

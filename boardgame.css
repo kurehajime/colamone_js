@@ -22,10 +22,28 @@ html {
 }
 #wins{
     color: #16b1db;
+    font-family: "Arial Black"
 }
 #gamename{
-    font-size: 40px;
+    font-size: 38px;
+    font-family: "Arial Black"
 }
+.score{
+  font-weight: bolder;
+  font-size: 15px;
+  letter-spacing:3px;
+  font-family: "Arial Black"
+}
+#blue{
+  color:#1e90ff;
+}
+#red{
+  color:#ff1493;
+}
+#lvs,#prevprev,#prev,#next,#nextnext,#replay,#tweetlog,.howtoplay a,#newgame,.lv{
+  font-family: "Arial Black", 'Arial Bold', Gadget, sans-serif;
+}
+
 .manual{
     font-size: 12px;
     white-space: pre-wrap;
