@@ -475,43 +475,50 @@ $(function(){
         var startTime = new Date();
         var endTime;
        //終盤になったら長考してみる。
-        var zan=0;
-        var p=0;
-        for(var i in thisMap){
-            var number=thisMap[i];
-            var x = Math.floor(i / 10);
-            var y = Math.floor(i % 10);
-            if((number>0 && y==0)||(number<0 && y==5)){
-                continue;   
-            }else if(thisMap[i]!=0){
-                zan+=1;
-            }
+        var count=getNodeCount(thisMap)/2;
+        var plus=0;
+        level=parseInt(level);
+        switch(level){
+            case 1:
+                if(count<=7){
+                    plus++;
+                }
+                break;
+            case 2:
+                if(count<=8){
+                    plus++;
+                }
+                break;
+            case 3:
+                if(count<=10){
+                    plus++;
+                }
+                if(count<=6){
+                    plus++;
+                }
+                break;
+            case 4:
+                if(count<=11){
+                    plus++;
+                }
+                if(count<=7){
+                    plus++;
+                }
+                break;
+             case 5:
+                if(count>16){
+                    plus--;
+                }
+                if(count<=12){
+                    plus++;
+                }
+                if(count<=8){
+                    plus++;
+                }
+                break;
         }
-        if(zan<8&&level!=3){
-            p+=1;
-        }
-        if(zan<5){
-            p+=1;
-        }
-        if(zan<4){
-            p+=1;
-        }
-        if(level==1){
-            hand=Aijs.thinkAI(thisMap,turn_player,2+p)[0];  
-        }else if(level==2){
-            hand=Aijs.thinkAI(thisMap,turn_player,3+p)[0];  
-        }else if(level==3){
-            hand=Aijs.thinkAI(thisMap,turn_player,4)[0];        
-        }else if(level==4){
-            hand=Aijs.thinkAI(thisMap,turn_player,5)[0];        
-        }else{
-            if(zan<=10){
-                hand=Aijs.thinkAI(thisMap,turn_player,6)[0];        
-            }else{
-                hand=Aijs.thinkAI(thisMap,turn_player,5)[0];        
-            }
-
-        }
+        
+        hand=Aijs.thinkAI(thisMap,turn_player,level+plus+1)[0];  
 
         if(hand){
             thisMap[hand[1]]=thisMap[hand[0]];
@@ -1140,6 +1147,23 @@ $(function(){
         }
         return false;
     }
+    
+    /** 
+     * 手の数を取得
+     */
+    function getNodeCount(wkMap){
+        var count=0;
+        for(var panel_num in wkMap){
+            if(wkMap[panel_num]==0){
+                continue;
+            }
+            var canMove=Aijs.getCanMovePanelX(panel_num,wkMap);
+            count+=canMove.length;
+
+        }
+        return count;
+    }
+    
 
     /** 
      * パラメータ取得
