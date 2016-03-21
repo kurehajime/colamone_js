@@ -97,7 +97,32 @@ img.preload{
 #log,#prevprev,#prev,#next,#nextnext,#span_replay,#span_tweetlog{
 	display:none;
 }
-
+.ui-page-active {
+    -webkit-background-size: 10px 10px;
+    -moz-background-size: 10px 10px;
+    background-size: 10px 10px;
+    background-color: #F3F3F3 !important;
+    background-image: -webkit-gradient(linear, 0 0, 100% 100%,
+                color-stop(.25, #F9F9F9), color-stop(.25, transparent),
+                color-stop(.5, transparent), color-stop(.5, #F9F9F9),
+                color-stop(.75, #F9F9F9), color-stop(.75, transparent),
+                to(transparent));
+    background-image: -webkit-linear-gradient(-45deg, #F9F9F9 25%, transparent 25%,
+            transparent 50%, #F9F9F9 50%, #F9F9F9 75%,
+            transparent 75%, transparent);
+    background-image: -moz-linear-gradient(-45deg, #F9F9F9 25%, transparent 25%,
+            transparent 50%, #F9F9F9 50%, #F9F9F9 75%,
+            transparent 75%, transparent);
+    background-image: -ms-linear-gradient(-45deg, #F9F9F9 25%, transparent 25%,
+            transparent 50%, #F9F9F9 50%, #F9F9F9 75%,
+            transparent 75%, transparent);
+    background-image: -o-linear-gradient(-45deg, #F9F9F9 25%, transparent 25%,
+            transparent 50%, #F9F9F9 50%, #F9F9F9 75%,
+            transparent 75%, transparent);
+    background-image: linear-gradient(-45deg, #F9F9F9 25%, transparent 25%,
+            transparent 50%, #F9F9F9 50%, #F9F9F9 75%,
+            transparent 75%, transparent);
+}
 @media (orientation: landscape) {
     #main{
         display: table-cell; 
