@@ -460,7 +460,7 @@ $(function(){
         if(storage.getItem('level_'+num)>0){
             $("#wins")[0].innerHTML=storage.getItem('level_'+num)+" win!";
         }else{
-            $("#wins")[0].innerHTML="";
+            $("#wins")[0].innerHTML="0 win";
         }
         thisMap=Aijs.copyMap(startMap);
         logArray2=new Array();
@@ -1045,7 +1045,7 @@ $(function(){
         if(storage.getItem('level_'+$("#level option:selected").val())>0){
             $("#wins")[0].innerHTML=storage.getItem('level_'+$("#level option:selected").val())+" win!";
         }else{
-            $("#wins")[0].innerHTML="";   
+            $("#wins")[0].innerHTML="0 win";   
         }
 
     }
