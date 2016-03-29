@@ -27,7 +27,7 @@
         </style>
         <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css" />
     </HEAD>
-    <BODY onLoad="set_manual()">
+    <BODY>
 <div data-role="page" data-title="Colamone(コラモネ)">
         <div id="main" role="main" class="ui-content">
             <canvas id="canv" width="500px" height="500px"></canvas>
@@ -59,11 +59,11 @@
     <p  style="text-align:center;font-size:10px;">(c)2014–<script language=JavaScript type=text/javascript> document.write(new Date().getFullYear()); </script> <A Href="https://twitter.com/kurehajime">@kurehajime</A>. All Rights Reserved. / Ver.<a href="https://github.com/kurehajime/colamone_js"  TARGET="_blank" >20160323</a> / オリジナル版<a href="https://xiidec.appspot.com/colamone/colamone.html" rel="alternate"  TARGET="_blank" >Colamone</a>   /<span id="time"></span></p>
   </div>
 </div>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-        <script>$(document).bind('mobileinit',function(){$.mobile.pushStateEnabled = false;});</script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
-        <script type="text/javascript" src="ai.js?20160312001"></script>
-        <script type="text/javascript" src="boardgame.js?2016031701"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"  defer ></script>
+        <script type="text/javascript" src="jq_option.js?20160312001" defer></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"  defer></script>
+        <script type="text/javascript" src="ai.js?20160312001" defer></script>
+        <script type="text/javascript" src="boardgame.js?2016031701" defer></script>
         <script type="text/javascript">
     /** 
      * 国際化・・・しない。
@@ -80,6 +80,10 @@
             });
         };
     }
+    document.addEventListener( 'DOMContentLoaded', function()
+    {
+       set_manual();
+    }, false );
         </script>
         <script>
             (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
