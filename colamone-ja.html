@@ -81,10 +81,47 @@
             alert("申し訳ございません。お使いのブラウザは対応していません。"); 
         }
     }
+    /** 
+     * 小さい画面ではViewportを固定化
+     */
+    function zoom(){
+        var viewport = document.querySelector("meta[name=viewport]");
+        if(screen.width<500&&screen.height<500){
+            if(screen.width<screen.height){
+                viewport.setAttribute('content', 'width=500,user-scalable=no');
+            }else{
+                viewport.setAttribute('content', 'height=500,user-scalable=no'); 
+            }
+        }else if(screen.width<500){
+            viewport.setAttribute('content', 'width=500,user-scalable=no');
+        }else if(screen.height<500){
+            viewport.setAttribute('content', 'height=500,user-scalable=no');
+        }
+        //iOS9のViewportはなぜか機能してくれない。
+        if(/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream){
+            var w=screen.width;
+            var w2=520;
+            if(Math.abs(window.orientation) != 0){
+                w=screen.height;
+                w2=900;
+            }
+            var rate=Math.round((w/w2)*1000) / 1000.0;
+            if(rate==Math.round(rate)){//iOS 9のViewportは整数指定すると機能しない
+                rate+=0.0001;
+            }
+ 
+            viewport.setAttribute(
+                'content', 
+                'initial-scale='+rate+', minimum-scale='+rate+', maximum-scale='+rate+', user-scalable=no'
+                );
+        }
+
+    }
     document.addEventListener( 'DOMContentLoaded', function()
     {
        set_manual();
     }, false );
+    zoom();
         </script>
         <script>
             (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

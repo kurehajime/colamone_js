@@ -156,9 +156,11 @@ $(function(){
     function init(){
         zoom();//小さい端末でズーム
         if (window.innerHeight < window.innerWidth) {
-          $("#collapsible").collapsible({
-              collapsed: false
-            });
+            if($("#collapsible").collapsible){
+                $("#collapsible").collapsible({
+                    collapsed: false
+                    });
+            }
         };
         ctx=$("#canv")[0].getContext('2d');
 
@@ -248,7 +250,9 @@ $(function(){
         //レベル記憶
         if(storage.getItem('level_save')!=undefined && storage.getItem('level_save')!="undefined"){
              $('#level').val([ parseInt(storage.getItem('level_save')) ]); 
-            $('#level').selectmenu('refresh',true);
+            if($('#level').selectmenu){
+                $('#level').selectmenu('refresh',true);
+            }
         }else{
             storage.setItem('level_save',2);
             $('#level').val([2]); 
