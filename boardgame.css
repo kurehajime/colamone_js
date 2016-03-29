@@ -157,7 +157,7 @@ img.preload{
         max-width: 495px;
     }
     #footer{
-        display: none;   
+       /* display: none;*/   
     }
     .ui-page{
     text-align: center !important;
