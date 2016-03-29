@@ -23,6 +23,7 @@
         <style type="text/css">
             html{height:100%;margin:0 auto;padding:0;display:table}#main{display:table-cell;vertical-align:middle;padding:10px 0}#canv{height:500px;width:500px;float:left}#message{float:left;font-size:14px;margin-left:5px;max-width:500px}#wins{color:#16b1db}#gamename{font-size:38px}.score{font-size:15px;letter-spacing:3px}#blue{color:#1e90ff}#red{color:#ff1493}#wins,#gamename,.score,#lvs,#prevprev,#prev,#next,#nextnext,#replay,#tweetlog,.howtoplay a,#newgame,.lv{font-family:"Arial Black",'Arial Bold',Arial,Verdana,sans-serif;font-weight:bolder}.manual{font-size:12px;white-space:pre-wrap;word-wrap:break-word;overflow:auto;max-width:340px}#manual_ja{display:none}#prevprev,#prev,#next,#nextnext{width:78px;font-size:16px;background-color:#00A0E9;color:#fffafa}#prevprev:hover,#prev:hover,#next:hover,#nextnext:hover{background-color:#33AAE9}#replay,#tweetlog,.howtoplay{width:340px;font-size:16px;margin-bottom:5px}.howtoplay a{text-align:center!important;padding-right:2.5em!important}#newgame{width:160px}#lvs{margin:0!important}.lv{width:110px}#sns{margin-left:5px}img.preload{display:none}body{-webkit-text-size-adjust:100%}#collapsible{width:340px}#log,#prevprev,#prev,#next,#nextnext,#span_replay,#span_tweetlog{display:none}.ui-page-active{-webkit-background-size:10px 10px;-moz-background-size:10px 10px;background-size:10px 10px;background-color:#F3F3F3!important;background-image:-webkit-gradient(linear,0 0,100% 100%,color-stop(.25,#F9F9F9),color-stop(.25,transparent),color-stop(.5,transparent),color-stop(.5,#F9F9F9),color-stop(.75,#F9F9F9),color-stop(.75,transparent),to(transparent));background-image:-webkit-linear-gradient(-45deg,#F9F9F9 25%,transparent 25%,transparent 50%,#F9F9F9 50%,#F9F9F9 75%,transparent 75%,transparent);background-image:-moz-linear-gradient(-45deg,#F9F9F9 25%,transparent 25%,transparent 50%,#F9F9F9 50%,#F9F9F9 75%,transparent 75%,transparent);background-image:-ms-linear-gradient(-45deg,#F9F9F9 25%,transparent 25%,transparent 50%,#F9F9F9 50%,#F9F9F9 75%,transparent 75%,transparent);background-image:-o-linear-gradient(-45deg,#F9F9F9 25%,transparent 25%,transparent 50%,#F9F9F9 50%,#F9F9F9 75%,transparent 75%,transparent);background-image:linear-gradient(-45deg,#F9F9F9 25%,transparent 25%,transparent 50%,#F9F9F9 50%,#F9F9F9 75%,transparent 75%,transparent)}@media (orientation: landscape){#main{display:table-cell;vertical-align:middle;padding:10px}}@media (orientation: portrait){#replay,#tweetlog,#lvs{width:500px!important}.howtoplay,#collapsible{width:495px!important}#prevprev,#prev,#next,#nextnext{width:113px}#message{width:495px!important;font-size:20px!important}.lv{width:200px!important}#newgame{width:212px!important}.manual{font-size:20px!important;max-width:495px}#footer{display:none}.ui-page{text-align:center!important}#main{display:block!important;text-align:left;width:505px!important;margin-left:auto!important;margin-right:auto!important}.score{font-size:20px}}
         </style>
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css" />
     </HEAD>
     <BODY>
 <div data-role="page" data-title="Colamone(コラモネ)">
@@ -64,7 +65,6 @@
     <p  style="text-align:center;font-size:10px;">(c)2014–<script language=JavaScript type=text/javascript> document.write(new Date().getFullYear()); </script> <A Href="https://twitter.com/kurehajime">@kurehajime</A>. All Rights Reserved. / Ver.<a href="https://github.com/kurehajime/colamone_js"  TARGET="_blank" >20160323</a>/<span id="time"></span></p>
   </div>
 </div>
-        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css" />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"  defer ></script>
         <script type="text/javascript" src="jq_option.js?20160312001" defer></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"  defer></script>
@@ -80,11 +80,6 @@
         if (!canvas || !canvas.getContext) { 
             alert("申し訳ございません。お使いのブラウザは対応していません。"); 
         }
-        if (window.innerHeight < window.innerWidth) {
-          $("#collapsible").collapsible({
-              collapsed: false
-            });
-        };
     }
     document.addEventListener( 'DOMContentLoaded', function()
     {
