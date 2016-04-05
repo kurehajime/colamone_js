@@ -16,57 +16,62 @@
     /** 
      * 駒の進める方向 
      * @const 
-     * @type {Object.<string, Array.<number>>} 
+     * @type {Array.<Array.<number>>} 
+     * index+8:コマの数字
      */
-    var PIECES={"1":[1,1,1,
-                     1,0,1,
-                     1,1,1],
-                "2":[1,1,1,
-                     1,0,1,
-                     1,0,1],
-                "3":[1,1,1,
-                     0,0,0,
-                     1,1,1],
-                "4":[1,1,1,
-                     0,0,0,
-                     1,0,1],
-                "5":[1,0,1,
-                     0,0,0,
-                     1,0,1],
-                "6":[1,0,1,
-                     0,0,0,
-                     0,1,0],
-                "7":[0,1,0,
-                     0,0,0,
-                     0,1,0],
-                "8":[0,1,0,
-                     0,0,0,
-                     0,0,0],
-                "-1":[1,1,1,
-                      1,0,1,
-                      1,1,1],
-                "-2":[1,0,1,
-                      1,0,1,
-                      1,1,1],
-                "-3":[1,1,1,
-                      0,0,0,
-                      1,1,1],
-                "-4":[1,0,1,
-                      0,0,0,
-                      1,1,1],
-                "-5":[1,0,1,
-                      0,0,0,
-                      1,0,1],
-                "-6":[0,1,0,
-                      0,0,0,
-                      1,0,1],
-                "-7":[0,1,0,
+    var PIECES=[
+                    [0,0,0,
                       0,0,0,
                       0,1,0],
-                "-8":[0,0,0,
+                     [0,1,0,
                       0,0,0,
-                      0,1,0]
-               }
+                      0,1,0],
+                     [0,1,0,
+                      0,0,0,
+                      1,0,1],
+                     [1,0,1,
+                      0,0,0,
+                      1,0,1],  
+                     [1,0,1,
+                      0,0,0,
+                      1,1,1],
+                     [1,1,1,
+                      0,0,0,
+                      1,1,1],  
+                     [1,0,1,
+                      1,0,1,
+                      1,1,1],             
+                    [1,1,1,
+                      1,0,1,
+                      1,1,1],
+                    [0,0,0,
+                      0,0,0,
+                      0,0,0],
+                    [1,1,1,
+                     1,0,1,
+                     1,1,1],
+                    [1,1,1,
+                     1,0,1,
+                     1,0,1],
+                    [1,1,1,
+                     0,0,0,
+                     1,1,1],
+                    [1,1,1,
+                     0,0,0,
+                     1,0,1],
+                    [1,0,1,
+                     0,0,0,
+                     1,0,1],
+                    [1,0,1,
+                     0,0,0,
+                     0,1,0],
+                    [0,1,0,
+                     0,0,0,
+                     0,1,0],
+                    [0,1,0,
+                     0,0,0,
+                     0,0,0]
+                    ]
 
     /** 
      * 盤の番号 
@@ -245,8 +250,8 @@
             if(wkMap[panel_num]===0){
                 continue;
             }
-            var canMove=getCanMovePanelX(panel_num,wkMap);
-            if(canMove.length!=0){
+            var canMove=hasCanMovePanelX(panel_num,wkMap);
+            if(canMove==true){
                 if(wkMap[panel_num]>0){
                     flag1=true;
                 }else if(wkMap[panel_num]<0){
@@ -259,7 +264,42 @@
         }
         return true;
     }
+    /** 
+     * 動かせるマスを返す。Return:[NN,NN,NN...]
+     * @param  {number}  panel_num
+     * @param  {Object.<number, number>}  wkMap
+     * @return {boolean} 
+     */
+    function hasCanMovePanelX(panel_num,wkMap){
+        var number = wkMap[panel_num]|0;
+        var x = ~~(panel_num / 10);// [~~]=Math.floor 
+        var y = ~~(panel_num % 10);
 
+        //アガリのコマは動かしたらダメ。何も無いマスも動かしようがない。
+        if((number>0 && y===0)||(number<0 && y===5)||number===0){
+            return false;
+        }
+        for(var i=0;i<9;i++){
+            if(PIECES[number+8][i]===0){
+                continue;
+            }
+            var target_x= x + ~~(i%3)-1;
+            var target_y= y + ~~(i/3)-1;
+            if(target_y<0 || target_y>5 || target_x>5 || target_x<0 ){
+                continue;
+            }
+
+            var idx=target_x*10+target_y;
+            var target_number=wkMap[idx];
+            
+            //自コマとアガリのコマはとったらダメ。
+            if((target_number*number>0)||(target_number>0 && target_y===0)||(target_number<0 &&target_y===5)){
+                continue;   
+            }
+            return true;
+        }
+        return false;
+    }
     /** 
      * 動かせるマスを返す。Return:[NN,NN,NN...]
      * @param  {number}  panel_num
@@ -277,7 +317,7 @@
             return canMove;   
         }
         for(var i=0;i<9;i++){
-            if(PIECES[''+number][i]===0){
+            if(PIECES[number+8][i]===0){
                 continue;
             }
             var target_x= x + ~~(i%3)-1;
@@ -285,6 +325,7 @@
             if(target_y<0 || target_y>5 || target_x>5 || target_x<0 ){
                 continue;
             }
+
             var idx=target_x*10+target_y;
             var target_number=wkMap[idx];
 
