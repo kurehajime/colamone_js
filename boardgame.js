@@ -1,12 +1,4 @@
 /** 
- * init 
- */
-$(function(){
-    BoardGamejs.init();
-});
-
-
-/** 
  * BoardGamejs名前空間 
  */
 (function (global) {
@@ -1379,3 +1371,10 @@ $(function(){
     }
 
 })((this || 0).self || global); 
+
+/** 
+ * init 
+ */
+$(function(){
+    BoardGamejs.init();
+});
