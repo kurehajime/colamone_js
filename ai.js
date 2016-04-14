@@ -1,3 +1,4 @@
+/* @license Copyright (c) @kurehajime / source code: https://github.com/kurehajime/colamone_js */
 (function (global) {
     "use strict";
 
@@ -105,7 +106,7 @@
      * @return {Object.<number, number>} 
      */
     function copyMap(wkMap){
-        var rtnMap={};
+        var rtnMap=[];
         //不格好だがループするより高速。
         rtnMap[0]=wkMap[0];
         rtnMap[10]=wkMap[10];
@@ -469,16 +470,17 @@
     function thinkAI(map,turn_player,depth,a,b,evalparam){
         var nearwin=false;
         var hand=[null,null];
+        var wkMap=copyMap(map)
         if(!evalparam){
             evalparam=DEFAULT_EVALPARAM;
         }
-        if(isEndX(map,false)!=0){
+        if(isEndX(wkMap,false)!=0){
             nearwin=true;
         }
 
         hand=deepThinkAllAB(map,turn_player,depth,a,b,nearwin,evalparam)
         if(hand[1]*turn_player===-999999){
-            hand=deepThinkAllAB(map,turn_player,1,a,b,nearwin,evalparam)
+            hand=deepThinkAllAB(wkMap,turn_player,1,a,b,nearwin,evalparam)
         }
         return hand;
     }
