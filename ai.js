@@ -478,7 +478,7 @@
             nearwin=true;
         }
 
-        hand=deepThinkAllAB(map,turn_player,depth,a,b,nearwin,evalparam)
+        hand=deepThinkAllAB(wkMap,turn_player,depth,a,b,nearwin,evalparam)
         if(hand[1]*turn_player===-999999){
             hand=deepThinkAllAB(wkMap,turn_player,1,a,b,nearwin,evalparam)
         }
