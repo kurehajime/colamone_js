@@ -420,7 +420,7 @@
                 flush(false,false);
                 return;
             }
-            var canm=getCanMovePanel(hover_piece);
+            var canm=Aijs.getCanMovePanelX(hover_piece,thisMap);
             if(canm.indexOf (target)>=0){
                 flush(false,true);
                 thisMap[target]=thisMap[hover_piece];
@@ -719,7 +719,7 @@
         //移動可能マスを強調
         var target=(x/cellSize)*10+(y/cellSize);
         if(thisMap[target]*turn_player>0){
-            var canm = getCanMovePanel(target)
+            var canm = Aijs.getCanMovePanelX(target,thisMap)
             for(var i=0;i<=canm.length-1;i++){
                 x=Math.floor(canm[i]/10);
                 y=Math.floor(canm[i]%10);
@@ -967,50 +967,6 @@
     }
 
     /** 
-     * 動かせるマスを返す。
-     */
-    function getCanMovePanel(panel_num){
-        var number = thisMap[panel_num];
-        var x = Math.floor(panel_num / 10);
-        var y = Math.floor(panel_num % 10);
-        var canMove=new Array;
-        if(number==0){
-            return canMove;   
-        }
-        //アガリのコマは動かしたらダメ。
-        if(number>0 && y==0){
-            return canMove;   
-        }else if(number<0 &&y==5){
-            return canMove;   
-        }
-
-        for(var i=0;i<=PIECES[number].length-1;i++){
-            var target_x= x + Math.floor(i%3)-1;
-            var target_y= y + Math.floor(i/3)-1;
-
-            if(PIECES[number][i]==0){
-                continue;
-            }
-            if(target_x<0 || target_y<0||target_x>5||target_y>5 ){
-                continue;
-            }
-            var target_number=thisMap[target_x*10+target_y];
-            if(target_number*number>0){
-                continue;   
-            }
-            //アガリのコマはとったらダメ。
-            if(target_number>0 && target_y==0){
-                continue;   
-            }else if(target_number<0 && target_y==5){
-                continue;
-            }
-            canMove.push(target_x*10+target_y);
-
-        }
-        return canMove;
-    }
-
-    /** 
      * メッセージを更新
      */
     function updateMessage(){
@@ -1112,7 +1068,7 @@
             if(wkMap[panel_num]==0){
                 continue;
             }
-            var canMove=Aijs.getCanMovePanelX(panel_num,wkMap,false);
+            var canMove=Aijs.getCanMovePanelX(panel_num,wkMap);
             if(canMove.length!=0){
                 if(wkMap[panel_num]>0){
                     flag1=true;
