@@ -18,6 +18,7 @@
     var canv_board2=null;
     var canv_focus=null;
     var canv_pieces=null;
+    var canv_shadow=null;
     var canv_hover_piece=null;
     var canv_overlay=null;
     var canv_bk=null;
@@ -35,6 +36,7 @@
     var thinktime=0.0;
     var demo=true;
     var intervalID=null;
+    var thisHand=[];
     var COLOR_LINE="#333333";
     var COLOR_PANEL_1="#550025";
     var COLOR_PANEL_2="#003856";
@@ -174,6 +176,10 @@
         canv_pieces =document.createElement("canvas");
         canv_pieces.width=ctx.canvas.width;
         canv_pieces.height=ctx.canvas.height;
+
+        canv_shadow =document.createElement("canvas");
+        canv_shadow.width=ctx.canvas.width;
+        canv_shadow.height=ctx.canvas.height;
 
         canv_hover_piece =document.createElement("canvas");
         canv_hover_piece.width=ctx.canvas.width;
@@ -401,6 +407,7 @@
         }
         if(demo==true){
             demo=false;
+            thisHand=[];
             thisMap=Aijs.copyMap(startMap);
             logArray2=new Array();
             flush(false,false);
@@ -427,7 +434,9 @@
                 thisMap[hover_piece]=0;
                 turn_player=turn_player*-1;
                 logArray2.push([hover_piece,target]);
+                thisHand=[hover_piece,target];
                 hover_piece=null;
+                
 
                 //AIが考える。
                 message="thinking..."
@@ -516,14 +525,14 @@
         }
         
         hand=Aijs.thinkAI(thisMap,turn_player,level+plus+1)[0];  
-
+        thisHand=hand;
         if(hand){
             thisMap[hand[1]]=thisMap[hand[0]];
             thisMap[hand[0]]=0;
             logArray2.push([hand[0],hand[1]]);
-            //フォーカス座標を移す。
-            mouse_x = Math.floor(hand[1] / 10)*cellSize+1;
-            mouse_y = Math.floor(hand[1] % 10)*cellSize+1;
+            // //フォーカス座標を移す。
+            // mouse_x = Math.floor(hand[1] / 10)*cellSize+1;
+            // mouse_y = Math.floor(hand[1] % 10)*cellSize+1;
         }
         turn_player=turn_player*-1;
         endTime=new Date();
@@ -595,6 +604,11 @@
             if(hover_piece!=null){
                 wkMap[hover_piece]=0;
             }
+            
+            //残像を表示
+            ctx.drawImage(drawShadow(wkMap,thisHand), 0, 0, ctx.canvas.width, ctx.canvas.height);
+
+            
             //コマを表示
             ctx.drawImage(drawPieceAll(wkMap), 0, 0, ctx.canvas.width, ctx.canvas.height);
 
@@ -791,6 +805,7 @@
 
         return canv_board2;
     }
+    
 
     /** 
      * 浮遊しているコマを描画する。
@@ -925,7 +940,148 @@
         }
         return canv_pieces;
     }
+    /** 
+     * 残像を描画する。
+     */
+    function drawShadow(wkMap,hand){
+         var ctx_shadow=canv_shadow.getContext('2d');
+        ctx_shadow.clearRect(0,0,ctx.canvas.width,ctx.canvas.width);
+        var x0=(hand[0]/ 10|0);
+        var y0=hand[0]% 10;
+        var x1=(hand[1]/ 10|0);
+        var y1=hand[1]% 10;
+        var h=cellSize-1*cellSize/5;
+        var w=cellSize-1*cellSize/5;
+        var x=x1*cellSize+cellSize/10;
+        var y=y1*cellSize+cellSize/10;
+        var shadow_start_x=x+w/2;
+        var shadow_start_y=y+h/2;
+        var shadow_end_x=shadow_start_x;
+        var shadow_end_y=shadow_start_y;
+        var number=wkMap[hand[1]];
+        var wkColor=""
+        var center=0;
+        var grad;
+        if(hand.length!=2){
+            return canv_shadow;
+        }
+        if(number>0){
+            wkColor=COLOR_BLUE//"#EAEFFD";   
+        }else{
+            wkColor=COLOR_RED//"#FDEAFA";           
+        }
+        if(x0==x1||y0==y1){//直角移動
+            if((x0+y0) % 2 ==0 && y0!=0 && y0!=5){
+                center=0.5;
+            }else{
+                center=0.3;
+            }
+            if(x0<x1){
+                x=x-w;
+                shadow_end_x=shadow_end_x-w;
+            }
+            if(x0>x1){
+                x=x+w;
+                shadow_end_x=shadow_end_x+w;
+            }
+            if(y0<y1){
+                y=y-h;
+                shadow_end_y=shadow_end_y-h;
+            }
+            if(y0>y1){
+                y=y+h;
+                shadow_end_y=shadow_end_y+h;
+            }
+            grad  = ctx_shadow.createLinearGradient(shadow_start_x,shadow_start_y,shadow_end_x,shadow_end_y);
 
+            grad.addColorStop(0,wkColor);
+            grad.addColorStop(center,wkColor);
+            grad.addColorStop(1,'rgba(255, 255, 255, 0)');    
+            ctx_shadow.fillStyle=grad;
+            ctx_shadow.fillRect(x,y,h,w);
+            
+        }else{//斜め移動
+            if((x0+y0) % 2 ==0 && y0!=0 && y0!=5){
+                center=0.3;
+            }else{
+                center=0.5;
+            }
+            var px1,py1,px2,py2,px3,py3,px4,py4;
+            if(x0<x1&&y0<y1){
+                px1=x;
+                py1=y-h;
+                px2=x+w;
+                py2=y;
+                px3=x;
+                py3=y+h;
+                px4=x-w;
+                py4=y;
+                shadow_end_x=shadow_end_x-w;
+                shadow_end_y=shadow_end_y-h;
+                shadow_start_x=shadow_start_x+w*2;
+                shadow_start_y=shadow_start_y+h*2;
+            }
+            if(x0>x1&&y0>y1){
+                px1=x+w;
+                py1=y;
+                px2=x+w+w;
+                py2=y+h;
+                px3=x+w;
+                py3=y+h+h;
+                px4=x;
+                py4=y+h;
+                shadow_end_x=shadow_end_x+w;
+                shadow_end_y=shadow_end_y+h;
+                shadow_start_x=shadow_start_x-w*2;
+                shadow_start_y=shadow_start_y-h*2;
+            }
+            if(x0<x1&&y0>y1){
+                px1=x;
+                py1=y;
+                px2=x+w;
+                py2=y+h;
+                px3=x;
+                py3=y+h+h;
+                px4=x-w;
+                py4=y+h;
+                shadow_end_x=shadow_end_x-w;
+                shadow_end_y=shadow_end_y+h;
+                shadow_start_x=shadow_start_x+w*2;
+                shadow_start_y=shadow_start_y-h*2;
+            }
+            if(x0>x1&&y0<y1){
+                px1=x+w;
+                py1=y-h;
+                px2=x+w+w;
+                py2=y;
+                px3=x+w;
+                py3=y+h;
+                px4=x;
+                py4=y;
+                shadow_end_x=shadow_end_x+w;
+                shadow_end_y=shadow_end_y-h;
+                shadow_start_x=shadow_start_x-w*2;
+                shadow_start_y=shadow_start_y+h*2;
+            }
+            ctx_shadow.beginPath();
+            ctx_shadow.moveTo(px1,py1);
+            ctx_shadow.lineTo(px2,py2);
+            ctx_shadow.lineTo(px3,py3);
+            ctx_shadow.lineTo(px4,py4);
+            ctx_shadow.lineTo(px1,py1);
+            ctx_shadow.closePath();
+            grad  = ctx_shadow.createLinearGradient(shadow_start_x,shadow_start_y,shadow_end_x,shadow_end_y);
+            grad.addColorStop(0,wkColor);
+            grad.addColorStop(center,wkColor);
+            grad.addColorStop(0.97,'rgba(255, 255, 255, 0)');    
+            ctx_shadow.fillStyle=grad;
+            ctx_shadow.fill()
+
+
+        }
+        
+        return canv_shadow;
+    }
     /** 
      * メッセージを描画
      */
