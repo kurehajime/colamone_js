@@ -470,6 +470,7 @@
         }
         thisMap=Aijs.copyMap(startMap);
         thisHand=[];
+        map_list={};
         logArray2=new Array();
         flush(false,false);
     }
