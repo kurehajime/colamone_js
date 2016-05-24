@@ -469,6 +469,7 @@
             $("#wins")[0].innerHTML="";
         }
         thisMap=Aijs.copyMap(startMap);
+        thisHand=[];
         logArray2=new Array();
         flush(false,false);
     }
