@@ -1097,12 +1097,12 @@
         if(message==""){
             return canv_overlay;
         }
-        ctx_overlay.shadowBlur = 5;
-        ctx_overlay.shadowColor = "rgba(100, 100, 100, 0.1)";
+        ctx_overlay.shadowBlur = 10;
+        ctx_overlay.shadowColor = "rgba(100, 100, 100, 0.5)";
         ctx_overlay.shadowOffsetX = 5;
         ctx_overlay.shadowOffsetY = 5;
 
-        ctx_overlay.globalAlpha = 0.8;
+        ctx_overlay.globalAlpha = 0.9;
         ctx_overlay.fillStyle = COLOR_WHITE;
         ctx_overlay.beginPath();
         ctx_overlay.fillRect(x,y,cellSize*3.4,cellSize*1);
@@ -1135,12 +1135,12 @@
         $("#time")[0].innerHTML="("+(thinktime)+"sec)";
         if(logArray.length==0){
             if(winner==1){
-                message="You Win!"
+                message="You win!"
                 storage.setItem('level_'+$("#level option:selected").val(),
                                parseInt(storage.getItem('level_'+$("#level option:selected").val()))+1);
                 endgame();
             }else if(winner==-1){
-                message="You Lose..."
+                message="You lose..."
                 storage.setItem('level_'+$("#level option:selected").val(),0);
                 endgame();
             }else if(winner==0){
