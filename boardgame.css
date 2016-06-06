@@ -127,6 +127,18 @@ img.preload{
             transparent 50%, #F9F9F9 50%, #F9F9F9 75%,
             transparent 75%, transparent);
 }
+
+.ui-icon-plus>#htp.anime_on{
+  animation: Flash 0.7s infinite;
+}
+
+@keyframes Flash{
+  20%{
+    opacity: 0.6;
+  }
+}
+
+
 @media (orientation: landscape) {
     #main{
         display: table-cell; 

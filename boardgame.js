@@ -325,6 +325,7 @@
             playDemo();
          }else{
              demo=false;
+             $("#htp").removeClass("anime_on");
          }
          flush(true,false);
         
@@ -414,6 +415,7 @@
             winner=null;
             turn_player=1;
             window.clearInterval(intervalID);
+            $("#htp").removeClass("anime_on");
             return true;
         }
         
