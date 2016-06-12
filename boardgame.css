@@ -101,8 +101,8 @@ img.preload{
 #log,#prevprev,#prev,#next,#nextnext,#span_replay,#span_tweetlog{
 	display:none;
 }
-.ui-page-active {
-    -webkit-background-size: 10px 10px;
+.ui-mobile-viewport{
+webkit-background-size: 10px 10px;
     -moz-background-size: 10px 10px;
     background-size: 10px 10px;
     background-color: #F3F3F3 !important;
@@ -126,6 +126,18 @@ img.preload{
     background-image: linear-gradient(-45deg, #F9F9F9 25%, transparent 25%,
             transparent 50%, #F9F9F9 50%, #F9F9F9 75%,
             transparent 75%, transparent);
+
+}
+#footer{
+    border-radius: 5px;      
+    -webkit-border-radius: 5px;  
+    -moz-border-radius: 5px;
+    background:rgba(233,233,233, 0.7) !important;
+
+}
+
+.ui-page-active {
+    background:rgba(255,255,255, 0) !important;
 }
 
 .ui-icon-plus>#htp.anime_on{
@@ -144,6 +156,9 @@ img.preload{
         display: table-cell; 
         vertical-align: middle;
         padding: 10px 10px;
+    }
+    .ui-mobile [data-role=page]{
+        position: static !important;
     }
 }
 @media (orientation: portrait) {
