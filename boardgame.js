@@ -214,6 +214,8 @@
         //イベントを設定
         if(isTouch){
             $("#canv").bind('touchstart',ev_mouseClick)
+            $("#canv").bind('touchmove',ev_touchMove)
+
         }else{
             $("#canv").bind('mousemove ',ev_mouseMove)
             $("#canv").bind('mouseup',ev_mouseClick);
@@ -393,6 +395,13 @@
     function ev_mouseMove(e){
         getMousePosition(e);
         flush(false,true);
+    }
+    /** 
+     * タッチ移動時処理
+     */
+    function ev_touchMove(e){
+        e.preventDefault();
+        e.stopPropagation();
     }
 
     /** 
