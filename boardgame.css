@@ -86,6 +86,11 @@ html {
 
 #sns{
     margin-left: 5px;
+    display: flex;
+    flex-direction: row;
+}
+#twitter-widget-0,#pocket-button-0{
+    padding-left: 7px;
 }
 img.preload{
 	display:none;
