@@ -17,6 +17,7 @@ html {
     height: 500px;
     width: 500px;
     float: left;
+    border-radius: 5px;
 }
 #message{
     float: left;

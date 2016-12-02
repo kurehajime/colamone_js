@@ -862,7 +862,9 @@
         wkCtx.shadowOffsetY = 2;
         wkCtx.fillStyle   = grad;
         wkCtx.beginPath();
-        wkCtx.fillRect(x+cellSize/10,y+cellSize/10,cellSize-1*cellSize/5,cellSize-1*cellSize/5);
+        //wkCtx.fillRect(x+cellSize/10,y+cellSize/10,cellSize-1*cellSize/5,cellSize-1*cellSize/5);
+        fillRoundRect(wkCtx,x+cellSize/10,y+cellSize/10,cellSize-1*cellSize/5,cellSize-1*cellSize/5,5);
+
         wkCtx.shadowColor= "rgba(0, 0, 0, 0)";; 
         wkCtx.shadowBlur = 0;
         wkCtx.shadowOffsetX = 0;
@@ -871,8 +873,10 @@
         //曇りエフェクト
         if(img_bk_loaded){
             wkCtx.globalAlpha = 0.35;
+            wkCtx.save()
+            wkCtx.clip();
             wkCtx.drawImage(drawBk(true),x+cellSize/10,y+cellSize/10,cellSize-1*cellSize/5,cellSize-1*cellSize/5);
-
+            wkCtx.restore();
             wkCtx.globalAlpha = 1;
         }
 
@@ -932,6 +936,23 @@
         return wkCtx;
 
     }
+    //角丸
+    function fillRoundRect(ctx,x,y,w,h,r){
+        ctx.beginPath();
+        ctx.moveTo(x + r, y);
+        ctx.lineTo(x + w - r, y);
+        ctx.arc(x + w - r, y + r, r, Math.PI*1.5, 0, false);
+        ctx.lineTo(x + w, y + h - r);
+        ctx.arc(x + w - r, y + h - r, r, 0, Math.PI*0.5, false);
+        ctx.lineTo(x + r, y + h);
+        ctx.arc(x + r, y + h - r, r, Math.PI*0.5, Math.PI, false);
+        ctx.lineTo(x, y + r);
+        ctx.arc(x + r, y + r, r, Math.PI, Math.PI*1.5, false);
+        ctx.closePath();
+        ctx.fill();
+    }
+
+
     /** 
      * コマをすべて描画
      */
@@ -991,19 +1012,19 @@
                 center=0.3;
             }
             if(x0<x1){
-                x=x-w;
+                x=x-w+10;
                 shadow_end_x=shadow_end_x-w;
             }
             if(x0>x1){
-                x=x+w;
+                x=x+w-10;
                 shadow_end_x=shadow_end_x+w;
             }
             if(y0<y1){
-                y=y-h;
+                y=y-h+10;
                 shadow_end_y=shadow_end_y-h;
             }
             if(y0>y1){
-                y=y+h;
+                y=y+h-10;
                 shadow_end_y=shadow_end_y+h;
             }
             grad  = ctx_shadow.createLinearGradient(shadow_start_x,shadow_start_y,shadow_end_x,shadow_end_y);
