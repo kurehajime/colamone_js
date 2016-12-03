@@ -107,7 +107,7 @@ img.preload{
 #log,#prevprev,#prev,#next,#nextnext,#span_replay,#span_tweetlog{
 	display:none;
 }
-.ui-mobile-viewport{
+body{
     -webkit-background-size: 10px 10px;
     -moz-background-size: 10px 10px;
     background-size: 10px 10px;
@@ -211,4 +211,18 @@ img.preload{
     .score{
         font-size: 20px;
     }
+}
+
+
+
+#level{
+    width: 164px;
+    height: 40px;
+}
+#newgame{
+    width: 158px;
+    height: 40px;
+}
+#footer{
+    height: 33px;
 }
