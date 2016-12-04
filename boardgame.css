@@ -19,6 +19,7 @@ html {
     float: left;
     border-radius: 5px;
     box-shadow: 2px 2px 3px rgba(0,0,0,0.4);
+    background-color: rgba(0,0,0,0.4);
 }
 #message{
     float: left;
@@ -77,7 +78,7 @@ html {
     background-color: #33AAE9;
 }
 
-#replay,#tweetlog{
+#replay,#tweetlog,#suma{
     width: 350px;
     height: 40px;    
     margin-top:5px;
@@ -89,6 +90,13 @@ html {
     border-radius: 3px;
     box-shadow: 0px 3px 4px rgba(0,0,0,0.2);
     transition:box-shadow 0.4s;
+}
+#suma{
+    line-height: 40px;
+    text-align: center;
+}
+#suma_a{
+    text-decoration: none !important;
 }
 .howtoplay a{
     text-align: center !important;
@@ -192,7 +200,6 @@ body{
     font-size: 15px;
     color: #333333;
     font-family: sans-serif;
-    background-color: rgba(255,255,255,1);
     border:none;
     border-radius: 3px;
     box-shadow: 0px 3px 4px rgba(0,0,0,0.2);
@@ -205,6 +212,8 @@ body{
     -o-appearance: none;
     -ms-appearance: none;
     appearance: none;
+    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAGFBMVEUAAAAZJCYWISIYIyQYIiUWIiIYIyQYIiXh0rToAAAACHRSTlMA/hTRqiinvwFkb0sAAABCSURBVHjajchBDsAgDAPBOJDw/x+XVN0icQGfPGs3i+2GEqeiLCXWLENzvdzrDfP2ls/NjfKbgimYglfBq2Dm+LwHguMA235EdKYAAAAASUVORK5CYII=") 95% no-repeat;
+    background-color: rgba(255,255,255,1);
 }
 #newgame{
     width: 158px;
@@ -226,6 +235,8 @@ body{
     font-size: 20px;
     padding: 0px 10px;
     font-weight: normal;
+    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAGFBMVEUAAAAZJCYWISIYIyQYIiUWIiIYIyQYIiXh0rToAAAACHRSTlMA/hTRqiinvwFkb0sAAABCSURBVHjajchBDsAgDAPBOJDw/x+XVN0icQGfPGs3i+2GEqeiLCXWLENzvdzrDfP2ls/NjfKbgimYglfBq2Dm+LwHguMA235EdKYAAAAASUVORK5CYII=") 90% no-repeat;
+
 }
 
 @keyframes Flash{
