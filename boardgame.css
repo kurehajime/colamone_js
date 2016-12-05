@@ -178,6 +178,7 @@ body{
     border-color: rgba(233,233,233, 1) !important;
     border-width: 1px;
     height: 33px;
+    color: #888888;
 }
 #footer>p{
     line-height: 30px;
