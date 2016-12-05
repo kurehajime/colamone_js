@@ -19,7 +19,7 @@ html {
     float: left;
     border-radius: 5px;
     box-shadow: 2px 2px 3px rgba(0,0,0,0.4);
-    background-color: rgba(0,0,0,0.4);
+    background-color: rgba(0,0,0,0.85);
 }
 #message{
     float: left;
@@ -43,7 +43,7 @@ html {
 #red{
   color:#ff1493;
 }
-#wins,#gamename,.score,#prevprev,#prev,#next,#nextnext,#replay,#tweetlog,.howtoplay a,.lv{
+#wins,#gamename,.score,#prevprev,#prev,#next,#nextnext,.howtoplay a,.lv{
   font-family: "Arial Black", 'Arial Bold', Arial,Verdana,sans-serif;
   font-weight: bolder;
 }
@@ -184,14 +184,7 @@ body{
     margin: 0px;
 }
 
-.ui-page-active {
-    background:rgba(255,255,255, 0) !important;
-}
 
-.ui-icon-plus>#htp.anime_on{
-  animation: Flash 0.7s infinite;
-  color: darkblue;
-}
 
 
 #level{
@@ -252,9 +245,6 @@ body{
         vertical-align: middle;
         padding: 10px 10px;
     }
-    .ui-mobile [data-role=page]{
-        position: static !important;
-    }
 }
 @media (orientation: portrait) {
     #replay,#tweetlog,#lvs{
@@ -287,10 +277,6 @@ body{
     #footer{
         display: none;   
     }
-    .ui-page{
-        text-align: center !important;
-    }
-    
     #main{
         display: block!important;
         text-align : left ;
