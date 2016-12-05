@@ -252,18 +252,24 @@ body{
         width: 500px !important;
     }
     .howtoplay,#collapsible{
-        width: 490px !important;
+        width: 495px !important;
         padding: 0px !important;
     }
+
     #prevprev,#prev,#next,#nextnext{
         width: 113px;
     }
     #message{
-        width: 490px !important;
+        width: 495px !important;
         font-size: 20px !important;
         margin-left: 0px;
-        max-width: 490px;
+        max-width: 495px;
+        text-align: left;
 
+    }
+    .howtoplay{
+        line-height: 40px;
+        text-align: center;
     }
     #level{
         width: 260px !important;
@@ -279,12 +285,19 @@ body{
     #footer{
         display: none;   
     }
+    #page{
+        text-align: center !important;
+        width: 500px;
+    }
+    body{
+        margin: 0px;
+    }
+
     #main{
         display: block!important;
-        width: 505px!important;
+        width: 500px !important;
         margin-left : auto !important; 
         margin-right : auto !important;
-        text-align: center !important;
     }
     .score{
         font-size: 20px;
