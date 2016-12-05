@@ -22,31 +22,30 @@
         <link rel="alternate" hreflang="en" href="https://xiidec.appspot.com/colamone/colamone-en.html" />
         <link rel="manifest" href="./manifest.json">
         <link rel="stylesheet" type="text/css" href="boardgame.css" inline>
-        <link rel="stylesheet" type="text/css" href="critical.css" inline>
     </HEAD>
     <BODY onLoad="">
-<div data-role="page" data-title="Colamone">
-        <div id="main" role="main" class="ui-content">
+<div  >
+        <div id="main"  >
             <canvas id="canv" width="500px" height="500px"></canvas>
             <div id="message">
                 <span id="gamename">colamone</span> by <A Href="https://twitter.com/kurehajime">@kurehajime</A><br/>
                 <span id="blue" class="score">Blue: 0/8</span> - <span id="red" class="score"> Red: 0/8</span>　<span id="wins"></span>
-                <div class="ui-field-contain " id="lvs">
-                    <select id="level"  data-inline="true" >
+                <div  id="lvs">
+                    <select id="level"   >
                         <option value="1" class="lv">Lv.1</option>
                         <option value="2"  class="lv" selected="selected">Lv.2</option>
                         <option value="3" class="lv">Lv.3</option>
                         <option value="4"  class="lv">Lv.4</option>
                         <option value="5"  class="lv">Lv.5</option>
                     </select>
-                    <button type="button" id="newgame"  onclick="location.reload()"   class="ui-btn ui-btn-inline ui-corner-all ui-icon-refresh ui-btn-icon-left ui-shadow" >Reset</button>
+                    <button type="button" id="newgame"  onclick="location.reload()" >New Game</button>
                 </div>
-<span id="log"><button type="button" id="prevprev" onclick="" align="right" class="ui-btn ui-btn-inline  ui-corner-all ui-shadow"> |&lt; </button><button type="button" id="prev" onclick="" align="right" class="ui-btn ui-btn-inline  ui-corner-all ui-shadow"> &lt; </button><button type="button" id="next" onclick="" align="right" class="ui-btn ui-btn-inline  ui-corner-all ui-shadow"> &gt; </button><button type="button" id="nextnext" onclick="" align="right" class="ui-btn ui-btn-inline  ui-corner-all ui-shadow"> &gt;|</button></span>
-<span id="span_replay"><button type="button" id="replay" onclick=""  class="ui-btn ui-icon-video ui-btn-icon-left"> View log </button></span>
-<span id="span_tweetlog"><button type="button" id="tweetlog" onclick=""  class="ui-btn ui-icon-action ui-btn-icon-left"> Tweet result </button></span>
-<div data-role="collapsible" id="collapsible" class="ui-shadow">
-    <h5 class="howtoplay"><span id="htp" class="anime_on">How to play Colamone</span></h5>
-<p id="manual_en" class="manual" lang="en" style="display:none">(1) Colamone is kinda like chess. 
+<span id="log"><button type="button" id="prevprev" onclick="" align="right" > |&lt; </button><button type="button" id="prev" onclick="" align="right" > &lt; </button><button type="button" id="next" onclick="" align="right" > &gt; </button><button type="button" id="nextnext" onclick="" align="right" > &gt;|</button></span>
+<span id="span_replay"><button type="button" id="replay" onclick="" > View log </button></span>
+<span id="span_tweetlog"><button type="button" id="tweetlog" onclick=""  > Tweet result </button></span>
+<div  id="collapsible" >
+    <h5 class="howtoplay"><span id="htp" >How to play Colamone</span></h5>
+<div class="manual" ><p id="manual_en"lang="en" style="display:none">(1) Colamone is kinda like chess. 
      Only some loose similarities. 
 (2) Each piece can move 1 tile in the direction 
      of any of it's dots. 
@@ -58,17 +57,16 @@
 (6) When a player can't make any more moves, 
      whoever has the highest score wins.
 (7) if the current position on the board
-     appeared 3 times then the result is a draw.</p>
-<p id="manual_ja" class="manual" lang="ja" style="display:none">①Colamone(ｺﾗﾓﾈ)はﾁｪｽや将棋に似たﾎﾞｰﾄﾞｹﾞｰﾑです。
-②各コマは、丸が付いている方向に進めます。
-③取られたコマは盤上から除かれ、再利用できません。
-④奥の陣地まで進めるとコマの数字が得点になります。
-⑤得点になったコマは動く事も取る事もできません。
-⑥先に得点が8点以上になったプレーヤーの勝利です。
-⑦どちらかのﾌﾟﾚｰﾔｰの動かせるコマが無くなった時は
+     appeared 3 times then the result is a draw.</p><p id="manual_ja" lang="ja" style="display:none">① Colamone(ｺﾗﾓﾈ)はﾁｪｽや将棋に似たﾎﾞｰﾄﾞｹﾞｰﾑです。
+② 各コマは、丸が付いている方向に進めます。
+③ 取られたコマは盤上から除かれ、再利用できません。
+④ 奥の陣地まで進めるとコマの数字が得点になります。
+⑤ 得点になったコマは動く事も取る事もできません。
+⑥ 先に得点が8点以上になったプレーヤーの勝利です。
+⑦ どちらかのﾌﾟﾚｰﾔｰの動かせるコマが無くなった時は
 　 その時点で点数の高いﾌﾟﾚｰﾔｰの勝利です。 
-⑧同一の局面が3回現れた時は千日手で引き分けです。</p>
-
+⑧ 同一の局面が3回現れた時は千日手で引き分けです。</p>
+</div>
                 </div>
 <span id="sns" style="">
     <iframe src="https://www.facebook.com/plugins/share_button.php?href=https%3A%2F%2Fxiidec.appspot.com%2Fcolamone%2Fcolamone.html&layout=button&mobile_iframe=true&appId=1687146941532105&width=60&height=20" width="60" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>  <a href="https://twitter.com/share" class="twitter-share-button" data-url="https://xiidec.appspot.com/colamone/colamone.html" data-hashtags="colamone, boardgames" data-lang="en"  data-size="default"></a><a data-pocket-label="pocket" data-pocket-count="none" class="pocket-btn" data-lang="en"></a>
@@ -76,13 +74,10 @@
                 </div>
         </div>
     <IMG src="bk.gif" class="preload" style="display:none">
-  <div data-role="footer" id="footer">
+  <div  id="footer">
     <p  style="text-align:center;font-size:10px;">(c)2014–<script language=JavaScript type=text/javascript> document.write(new Date().getFullYear()); </script> <A Href="https://twitter.com/kurehajime">@kurehajime</A>. All Rights Reserved. / Ver.<a href="https://github.com/kurehajime/colamone_js"  TARGET="_blank" >TIMESTAMP</a>/<span id="time"></span></p>
   </div>
-<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css"/>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"  defer ></script>
-<script type="text/javascript" src="jq_option.js?20160312001" defer></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"  defer></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"  defer ></script>
 <script type="text/javascript" src="ai.js?TIMESTAMP" defer></script>
 <script type="text/javascript" src="boardgame.js?TIMESTAMP" defer></script>
 <script type="text/javascript">
@@ -116,13 +111,11 @@
             }
             $('#htp').text("Colamoneの遊び方");
             $('#replay').text("棋譜を再生");
-            $('#tweetlog').text("棋譜をツイートする");
-            $('#newgame').text("リセット");
+            $('#tweetlog').text("棋譜を ツイート する");
         }else{
             $("#manual_en").show();
             $("#manual_ja").hide();
             $('#htp').text("How to play Colamone");
-            $('#newgame').text("Reset");
             var canvas= document.getElementById("canv");
             if (!canvas || !canvas.getContext) { 
                 alert("Sorry. Your browser does not support."); 

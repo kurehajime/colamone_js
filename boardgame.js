@@ -151,11 +151,9 @@
     function init(){
         zoom();//小さい端末でズーム
         if (window.innerHeight < window.innerWidth) {
-            if($("#collapsible").collapsible){
-                $("#collapsible").collapsible({
-                    collapsed: false
-                    });
-            }
+            $(".manual").show();
+        }else{
+            $(".manual").hide();
         };
         ctx=$("#canv")[0].getContext('2d');
 
@@ -228,6 +226,11 @@
         $("#replay").bind('click',jumpkento);
         $("#tweetlog").bind('click',tweetlog);
         $("#newgame").bind('click',reloadnew);
+        $("#collapsible").bind('click',function(){
+            $(".manual").toggle();
+        });
+        
+
         $(window).bind('orientationchange',zoom);
 
         shuffleBoard();
@@ -251,9 +254,6 @@
         //レベル記憶
         if(storage.getItem('level_save')!=undefined && storage.getItem('level_save')!="undefined"){
              $('#level').val([ parseInt(storage.getItem('level_save')) ]); 
-            if($('#level').selectmenu){
-                $('#level').selectmenu('refresh',true);
-            }
         }else{
             storage.setItem('level_save',2);
             $('#level').val([2]); 
@@ -276,7 +276,6 @@
         //レベル取得
         if(paramObj["lv"]){
             $('#level').val([parseInt(paramObj["lv"])]); 
-            $('#level').selectmenu('refresh',true);
         }
 
         if(logArray.length!=0){
@@ -328,7 +327,6 @@
             playDemo();
          }else{
              demo=false;
-             $("#htp").removeClass("anime_on");
          }
          flush(true,false);
         
@@ -425,7 +423,6 @@
             winner=null;
             turn_player=1;
             window.clearInterval(intervalID);
-            $("#htp").removeClass("anime_on");
             return true;
         }
         
