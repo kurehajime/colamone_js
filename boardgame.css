@@ -253,6 +253,7 @@ body{
     }
     .howtoplay,#collapsible{
         width: 490px !important;
+        padding: 0px !important;
     }
     #prevprev,#prev,#next,#nextnext{
         width: 113px;
@@ -280,10 +281,10 @@ body{
     }
     #main{
         display: block!important;
-        text-align : left ;
         width: 505px!important;
         margin-left : auto !important; 
         margin-right : auto !important;
+        text-align: center !important;
     }
     .score{
         font-size: 20px;
