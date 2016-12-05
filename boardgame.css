@@ -281,6 +281,7 @@ body{
     .manual{
         font-size: 18px !important;
         max-width: 495px;
+        display: none;   
     }
     #footer{
         display: none;   
