@@ -211,27 +211,27 @@
         }
         //イベントを設定
         if(isTouch){
-            $("#canv").bind('touchstart',ev_mouseClick)
-            $("#canv").bind('touchmove',ev_touchMove)
+            $("#canv").on('touchstart',ev_mouseClick)
+            $("#canv").on('touchmove',ev_touchMove)
 
         }else{
-            $("#canv").bind('mousemove ',ev_mouseMove)
-            $("#canv").bind('mouseup',ev_mouseClick);
+            $("#canv").on('mousemove ',ev_mouseMove)
+            $("#canv").on('mouseup',ev_mouseClick);
         }
-        $("#level").bind('change ',ev_radioChange);
-        $("#prevprev").bind('click',move_start);
-        $("#prev").bind('click',move_prev);
-        $("#next").bind('click',move_next);
-        $("#nextnext").bind('click',move_end);
-        $("#replay").bind('click',jumpkento);
-        $("#tweetlog").bind('click',tweetlog);
-        $("#newgame").bind('click',reloadnew);
-        $("#collapsible").bind('click',function(){
+        $("#level").on('change ',ev_radioChange);
+        $("#prevprev").on('click',move_start);
+        $("#prev").on('click',move_prev);
+        $("#next").on('click',move_next);
+        $("#nextnext").on('click',move_end);
+        $("#replay").on('click',jumpkento);
+        $("#tweetlog").on('click',tweetlog);
+        $("#newgame").on('click',reloadnew);
+        $("#collapsible").on('click',function(){
             $(".manual").toggle();
         });
         
 
-        $(window).bind('orientationchange',zoom);
+        $(window).on('orientationchange',zoom);
 
         shuffleBoard();
 
