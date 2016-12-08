@@ -246,41 +246,6 @@ body{
         vertical-align: middle;
         padding: 10px 10px;
     }
-
-
-
-    #dialogue {
-        box-sizing: border-box;
-        position: absolute;
-        top:0;
-        left:0;
-        z-index: -1;
-        height: 116px;
-        margin-right: calc(((100vw - 0px) / 1) * -1);
-        padding: 1.5em calc((100vw - 0px) / 2);
-        background-color: rgba(51,68,85,0.45);
-    }
-    #gamename{
-        color: #F9F8F7;
-    }
-    #blue{
-        color: #e1f6f7;
-        text-shadow: 0px 0px 1px rgba(51,68,85,0.8); 
-    }
-    #red{
-        color: #f7e1f1;
-        text-shadow: 0px 0px 1px rgba(51,68,85,0.8);  
-    }
-    #wins{
-        color: #f7f6e1;
-        text-shadow: 0px 0px 1px rgba(51,68,85,0.8); 
-    }
-    #message{
-        color: white;
-    }
-    #message a{
-        color: white;
-    }
 }
 @media (orientation: portrait) {
     #replay,#tweetlog,#lvs{
