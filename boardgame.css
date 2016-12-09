@@ -326,7 +326,9 @@ body{
     #gamename{
         color: #F9F8F7;
         text-shadow: 0px 0px 30px rgba(51,68,85,0.3); 
-        height: 54px;
+    }
+    #head{
+        height: 77px;
     }
     .score{
         line-height: 22px;
