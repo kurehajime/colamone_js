@@ -348,6 +348,13 @@ body{
         text-shadow: 0px 0px 30px rgba(51,68,85,0.3); 
     }
 }
+
+/*iPad bug*/
+@media all and (device-width: 768px) and (device-height: 1024px) and (orientation:landscape){
+      #dialogue2{
+            height: 1024px;
+      }
+}
 @media (orientation: portrait) {
     #replay,#tweetlog,#lvs{
         width: 500px !important;
