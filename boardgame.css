@@ -245,6 +245,107 @@ body{
         display: table-cell; 
         vertical-align: middle;
         padding: 10px 10px;
+        background-color: rgba(51,68,85,0) !important;
+
+    }
+    body{
+        background-color: rgba(51,68,85,0) !important;
+        background-image: none;
+    }
+
+    #dialogue {
+        box-sizing: border-box;
+        position: absolute;
+        z-index: -1; 
+        top:0;
+        left:0;
+        height: 116px;
+        margin-right: calc(((100vw - 0px) / 1) * -1);
+        padding: 1.5em calc((100vw - 0px) / 2);        
+        -webkit-background-size: 10px 10px;
+        -moz-background-size: 10px 10px;
+        background-size: 10px 10px;
+        background-color: #939393;
+        background-image: -webkit-gradient(linear, 0 0, 100% 100%,
+                    color-stop(.25, #AAAAAA), color-stop(.25, transparent),
+                    color-stop(.5, transparent), color-stop(.5, #AAAAAA),
+                    color-stop(.75, #AAAAAA), color-stop(.75, transparent),
+                    to(transparent));
+        background-image: -webkit-linear-gradient(-45deg, #AAAAAA 25%, transparent 25%,
+                transparent 50%, #AAAAAA 50%, #AAAAAA 75%,
+                transparent 75%, transparent);
+        background-image: -moz-linear-gradient(-45deg, #AAAAAA 25%, transparent 25%,
+                transparent 50%, #AAAAAA 50%, #AAAAAA 75%,
+                transparent 75%, transparent);
+        background-image: -ms-linear-gradient(-45deg, #AAAAAA 25%, transparent 25%,
+                transparent 50%, #AAAAAA 50%, #AAAAAA 75%,
+                transparent 75%, transparent);
+        background-image: -o-linear-gradient(-45deg, #AAAAAA 25%, transparent 25%,
+                transparent 50%, #AAAAAA 50%, #AAAAAA 75%,
+                transparent 75%, transparent);
+        background-image: linear-gradient(-45deg, #999999 25%, transparent 25%,
+                transparent 50%, #999999 50%, #999999 75%,
+                transparent 75%, transparent);
+
+    }
+    #dialogue2{
+        box-sizing: border-box;
+        position: absolute;
+        z-index: -2; 
+        top:0px;
+        left:0px;
+        height: calc(100vh);
+        margin-right: calc(((100vw - 0px) / 1) * -1);
+        padding: 1.5em calc((100vw - 0px) / 2);
+        -webkit-background-size: 10px 10px;
+        -moz-background-size: 10px 10px;
+        background-size: 10px 10px;
+        background-color: #F3F3F3 !important;
+        background-image: -webkit-gradient(linear, 0 0, 100% 100%,
+                    color-stop(.25, #F9F9F9), color-stop(.25, transparent),
+                    color-stop(.5, transparent), color-stop(.5, #F9F9F9),
+                    color-stop(.75, #F9F9F9), color-stop(.75, transparent),
+                    to(transparent));
+        background-image: -webkit-linear-gradient(-45deg, #F9F9F9 25%, transparent 25%,
+                transparent 50%, #F9F9F9 50%, #F9F9F9 75%,
+                transparent 75%, transparent);
+        background-image: -moz-linear-gradient(-45deg, #F9F9F9 25%, transparent 25%,
+                transparent 50%, #F9F9F9 50%, #F9F9F9 75%,
+                transparent 75%, transparent);
+        background-image: -ms-linear-gradient(-45deg, #F9F9F9 25%, transparent 25%,
+                transparent 50%, #F9F9F9 50%, #F9F9F9 75%,
+                transparent 75%, transparent);
+        background-image: -o-linear-gradient(-45deg, #F9F9F9 25%, transparent 25%,
+                transparent 50%, #F9F9F9 50%, #F9F9F9 75%,
+                transparent 75%, transparent);
+        background-image: linear-gradient(-45deg, #F9F9F9 25%, transparent 25%,
+                transparent 50%, #F9F9F9 50%, #F9F9F9 75%,
+                transparent 75%, transparent);
+
+    }
+    #gamename{
+        color: #F9F8F7;
+        text-shadow: 0px 0px 30px rgba(51,68,85,0.3); 
+    }
+    #blue{
+        color: #e1f6f7;
+        text-shadow: 0px 0px 1px rgba(51,68,85,0.8); 
+    }
+    #red{
+        color: #f7e1f1;
+        text-shadow: 0px 0px 1px rgba(51,68,85,0.8);  
+    }
+    #wins{
+        color: #f7f6e1;
+        text-shadow: 0px 0px 1px rgba(51,68,85,0.8); 
+    }
+    #message{
+        color: white;
+        text-shadow: 0px 0px 30px rgba(51,68,85,0.3); 
+    }
+    #message a{
+        color: white;
+        text-shadow: 0px 0px 30px rgba(51,68,85,0.3); 
     }
 }
 @media (orientation: portrait) {
