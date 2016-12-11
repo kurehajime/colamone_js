@@ -2,7 +2,7 @@
 <HTML>
     <HEAD>
         <title>colamone</title>
-        <meta content="text/html" charset="UTF-8">
+        <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width,user-scalable=no">
         <meta name="description" content="Colamone is a board game similar to chess.">
         <meta property="og:title" content="colamone">
@@ -29,7 +29,7 @@
 
 <div  id="page">
         <div id="main"  >
-            <canvas id="canv" width="500px" height="500px"></canvas>
+            <canvas id="canv" width="500" height="500"></canvas>
             <div id="message">
                 <div id="head">
                     <span id="gamename">colamone</span> by <A Href="https://twitter.com/kurehajime">@kurehajime</A><br/>
@@ -45,12 +45,12 @@
                     </select>
                     <button type="button" id="newgame"  onclick="location.reload()" >New Game</button>
                 </div>
-<span id="log"><button type="button" id="prevprev" onclick="" align="right" > |&lt; </button><button type="button" id="prev" onclick="" align="right" > &lt; </button><button type="button" id="next" onclick="" align="right" > &gt; </button><button type="button" id="nextnext" onclick="" align="right" > &gt;|</button></span>
+<span id="log"><button type="button" id="prevprev" onclick="" > |&lt; </button><button type="button" id="prev" onclick=""  > &lt; </button><button type="button" id="next" onclick=""  > &gt; </button><button type="button" id="nextnext" onclick="" > &gt;|</button></span>
 <span id="span_replay"><button type="button" id="replay" onclick="" > View log </button></span>
 <span id="span_tweetlog"><button type="button" id="tweetlog" onclick=""  > Tweet result </button></span>
 <div  id="collapsible" >
     <h5 class="howtoplay"><span id="htp" >How to play Colamone</span></h5>
-<div class="manual" ><p id="manual_en"lang="en" style="display:none">(1) Colamone is kinda like chess. 
+<div class="manual" ><p id="manual_en" lang="en" style="display:none">(1) Colamone is kinda like chess. 
      Only some loose similarities. 
 (2) Each piece can move 1 tile in the direction 
      of any of it's dots. 
@@ -78,13 +78,13 @@
     </span>
                 </div>
         </div>
-    <IMG src="bk.gif" class="preload" style="display:none">
+    <IMG src="bk.gif" class="preload" style="display:none" alt="bk">
   <div  id="footer">
-    <p  style="text-align:center;font-size:10px;">(c)2014–<script language=JavaScript type=text/javascript> document.write(new Date().getFullYear()); </script> <A Href="https://twitter.com/kurehajime">@kurehajime</A>. All Rights Reserved. / Ver.<a href="https://github.com/kurehajime/colamone_js"  TARGET="_blank" >201612102346</a>/<span id="time"></span></p>
+    <p  style="text-align:center;font-size:10px;">(c)2014–<script type=text/javascript> document.write(new Date().getFullYear()); </script> <A Href="https://twitter.com/kurehajime">@kurehajime</A>. All Rights Reserved. / Ver.<a href="https://github.com/kurehajime/colamone_js"  TARGET="_blank" >201612111349</a>/<span id="time"></span></p>
   </div>
 <script src="lib/jquery.js"  defer ></script>
-<script type="text/javascript" src="ai.js?201612102346" defer></script>
-<script type="text/javascript" src="boardgame.js?201612102346" defer></script>
+<script type="text/javascript" src="ai.js?201612111349" defer></script>
+<script type="text/javascript" src="boardgame.js?201612111349" defer></script>
 <script type="text/javascript">
     /** 
      * 国際化
