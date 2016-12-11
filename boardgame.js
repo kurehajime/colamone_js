@@ -3,6 +3,8 @@
  * BoardGamejs名前空間 
  */
 (function (global) {
+    "use strict";
+
     // Class ------------------------------------------------
     function BoardGamejs () {}    
     
