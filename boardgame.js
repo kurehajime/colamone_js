@@ -256,7 +256,7 @@
       storage.setItem('level_5', 0);
     }
     // レベル記憶
-    if (storage.getItem('level_save') !== undefined && storage.getItem('level_save') !== 'undefined') {
+    if (storage.getItem('level_save') !== undefined && storage.getItem('level_save') !== 'undefined' && storage.getItem('level_save') !== null) {
       $('#level').val([parseInt(storage.getItem('level_save'))]);
     } else {
       storage.setItem('level_save', 2);
