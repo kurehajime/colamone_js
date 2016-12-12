@@ -1,3 +1,7 @@
+/* @license Copyright (c) @kurehajime / source code: https://github.com/kurehajime/colamone_js */
+body {
+  color: #202020;
+}
 html {
 	height: 100%;
 	margin: 0 auto;
@@ -13,43 +17,86 @@ html {
     height: 500px;
     width: 500px;
     float: left;
+    border-radius: 5px;
+    box-shadow: 2px 2px 3px rgba(0,0,0,0.4);
+    background-color: rgba(0,0,0,0.85);
 }
 #message{
     float: left;
     font-size: 14px;
-    margin-left: 5px;
-    max-width: 500px;
+    max-width: 360px;
+    margin-left: 10px;
 }
 #wins{
     color: #16b1db;
 }
 #gamename{
-    font-size: 40px;
+    font-size: 38px;
 }
+.score{
+  font-size: 15px;
+  letter-spacing:3px;
+}
+#blue{
+  color:#1e90ff;
+}
+#red{
+  color:#ff1493;
+}
+#wins,#gamename,.score,#prevprev,#prev,#next,#nextnext,.howtoplay a,.lv{
+  font-family: "Arial Black", 'Arial Bold', Arial,Verdana,sans-serif;
+  font-weight: bolder;
+}
+
 .manual{
     font-size: 12px;
     white-space: pre-wrap;
     word-wrap: break-word;
     overflow: auto;   
     max-width: 340px;
+    padding: 0px 10px;
+    line-height:20px;
 }
 #manual_ja{
     display: none;
 }
 #prevprev,#prev,#next,#nextnext{
-    width: 78px;
-    font-size: 16px;
-    background-color: #00A0E9;
-    color: snow;
+    width: 80px;
+    height: 40px;    
+    margin-top:5px;
+    margin-right: 10px;
+    font-size: 15px;
+    color: #FFFFFF;
+    font-family: sans-serif;
+    background-color: rgba(30,144,255,1);
+    border:none;
+    border-radius: 3px;
+    box-shadow: 0px 3px 4px rgba(0,0,0,0.2);
+    transition:box-shadow 0.4s;
 }
-#prevprev:hover,#prev:hover,#next:hover,#nextnext:hover{
+#prevprev:hover,#prev:hover,#next:hover,#nextnext:hover,#newgame:hover,#replay:hover,#tweetlog:hover{
     background-color: #33AAE9;
 }
 
-#replay,#tweetlog,.howtoplay{
-    width: 340px;
-    font-size: 16px;
-    margin-bottom: 5px;
+#replay,#tweetlog,#suma{
+    width: 350px;
+    height: 40px;    
+    margin-top:5px;
+    font-size: 15px;
+    color: #FFFFFF;
+    font-family: sans-serif;
+    background-color: rgba(30,144,255,1);
+    border:none;
+    border-radius: 3px;
+    box-shadow: 0px 3px 4px rgba(0,0,0,0.2);
+    transition:box-shadow 0.4s;
+}
+#suma{
+    line-height: 40px;
+    text-align: center;
+}
+#suma_a{
+    text-decoration: none !important;
 }
 .howtoplay a{
     text-align: center !important;
@@ -67,6 +114,11 @@ html {
 
 #sns{
     margin-left: 5px;
+    display: flex;
+    flex-direction: row;
+}
+#twitter-widget-0,#pocket-button-0{
+    padding-left: 7px;
 }
 img.preload{
 	display:none;
@@ -77,57 +129,296 @@ img.preload{
 
 #collapsible{
     width: 340px;   
+    color: #444444;
+    padding: 5px;
+    margin: 10px 0px;
+    font-family: sans-serif;
+    background-color: rgba(255,255,255,1);
+    border:none;
+    border-radius: 3px;
+    box-shadow: 0px 3px 4px rgba(0,0,0,0.2);
 }
 
 #log,#prevprev,#prev,#next,#nextnext,#span_replay,#span_tweetlog{
 	display:none;
 }
+body{
+    -webkit-background-size: 10px 10px;
+    -moz-background-size: 10px 10px;
+    background-size: 10px 10px;
+    background-color: #F3F3F3 !important;
+    background-image: -webkit-gradient(linear, 0 0, 100% 100%,
+                color-stop(.25, #F9F9F9), color-stop(.25, transparent),
+                color-stop(.5, transparent), color-stop(.5, #F9F9F9),
+                color-stop(.75, #F9F9F9), color-stop(.75, transparent),
+                to(transparent));
+    background-image: -webkit-linear-gradient(-45deg, #F9F9F9 25%, transparent 25%,
+            transparent 50%, #F9F9F9 50%, #F9F9F9 75%,
+            transparent 75%, transparent);
+    background-image: -moz-linear-gradient(-45deg, #F9F9F9 25%, transparent 25%,
+            transparent 50%, #F9F9F9 50%, #F9F9F9 75%,
+            transparent 75%, transparent);
+    background-image: -ms-linear-gradient(-45deg, #F9F9F9 25%, transparent 25%,
+            transparent 50%, #F9F9F9 50%, #F9F9F9 75%,
+            transparent 75%, transparent);
+    background-image: -o-linear-gradient(-45deg, #F9F9F9 25%, transparent 25%,
+            transparent 50%, #F9F9F9 50%, #F9F9F9 75%,
+            transparent 75%, transparent);
+    background-image: linear-gradient(-45deg, #F9F9F9 25%, transparent 25%,
+            transparent 50%, #F9F9F9 50%, #F9F9F9 75%,
+            transparent 75%, transparent);
+
+}
+#footer{
+    border-radius: 5px;      
+    -webkit-border-radius: 5px;  
+    -moz-border-radius: 5px;
+    background:rgba(99,99,99, 0.1) !important;
+    border-style: solid;
+    border-color: rgba(233,233,233, 1) !important;
+    border-width: 1px;
+    height: 33px;
+    color: #555555;
+    z-index: -1;
+    position: absolute;
+    top: calc(100vh - 33px);
+    left:0px;
+    width: calc(100vw - 2px);
+    margin: 0px;
+    height: 31px;
+}
+#footer a{
+    color: #555555;
+}
+#footer>p{
+    line-height: 30px;
+    margin: 0px;
+}
+
+
+
+
+#level{
+    width: 180px;
+    height: 40px;
+    font-size: 15px;
+    color: #333333;
+    font-family: sans-serif;
+    border:none;
+    border-radius: 3px;
+    box-shadow: 0px 3px 4px rgba(0,0,0,0.2);
+    margin-right: 8px;
+    transition:box-shadow 0.4s;
+    padding: 0px 20px;
+    text-align: center;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    -o-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAGFBMVEUAAAAZJCYWISIYIyQYIiUWIiIYIyQYIiXh0rToAAAACHRSTlMA/hTRqiinvwFkb0sAAABCSURBVHjajchBDsAgDAPBOJDw/x+XVN0icQGfPGs3i+2GEqeiLCXWLENzvdzrDfP2ls/NjfKbgimYglfBq2Dm+LwHguMA235EdKYAAAAASUVORK5CYII=") 95% no-repeat;
+    background-color: rgba(255,255,255,1);
+}
+#newgame{
+    width: 158px;
+    height: 40px;    
+    font-size: 15px;
+    color: #FFFFFF;
+    font-family: sans-serif;
+    background-color: rgba(30,144,255,1);
+    border:none;
+    border-radius: 3px;
+    box-shadow: 0px 3px 4px rgba(0,0,0,0.2);
+    transition:box-shadow 0.4s;
+}
+
+
+.howtoplay{
+    margin: 0px;
+    color: #777777;
+    font-size: 20px;
+    padding: 0px 10px;
+    font-weight: normal;
+    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAGFBMVEUAAAAZJCYWISIYIyQYIiUWIiIYIyQYIiXh0rToAAAACHRSTlMA/hTRqiinvwFkb0sAAABCSURBVHjajchBDsAgDAPBOJDw/x+XVN0icQGfPGs3i+2GEqeiLCXWLENzvdzrDfP2ls/NjfKbgimYglfBq2Dm+LwHguMA235EdKYAAAAASUVORK5CYII=") 90% no-repeat;
+
+}
+
+@keyframes Flash{
+  20%{
+    opacity: 0.6;
+  }
+}
+
 
 @media (orientation: landscape) {
     #main{
         display: table-cell; 
         vertical-align: middle;
         padding: 10px 10px;
+        background-color: rgba(51,68,85,0) !important;
+
+    }
+    body{
+        background-color: rgba(51,68,85,0) !important;
+        background-image: none;
+    }
+
+    #dialogue {
+        box-sizing: border-box;
+        position: absolute;
+        z-index: -1; 
+        top:0;
+        left:0;
+        height: 116px;
+        margin-right: calc(((100vw - 0px) / 1) * -1);
+        padding: 1.5em calc((100vw - 0px) / 2);        
+        -webkit-background-size: 10px 10px;
+        -moz-background-size: 10px 10px;
+        background-size: 10px 10px;
+        background-color: #888888;
+        background-image: -webkit-gradient(linear, 0 0, 100% 100%,
+                    color-stop(.25, #909090), color-stop(.25, transparent),
+                    color-stop(.5, transparent), color-stop(.5, #909090),
+                    color-stop(.75, #909090), color-stop(.75, transparent),
+                    to(transparent));
+        background-image: -webkit-linear-gradient(-45deg, #909090 25%, transparent 25%,
+                transparent 50%, #909090 50%, #909090 75%,
+                transparent 75%, transparent);
+        background-image: -moz-linear-gradient(-45deg, #909090 25%, transparent 25%,
+                transparent 50%, #909090 50%, #909090 75%,
+                transparent 75%, transparent);
+        background-image: -ms-linear-gradient(-45deg, #909090 25%, transparent 25%,
+                transparent 50%, #909090 50%, #909090 75%,
+                transparent 75%, transparent);
+        background-image: -o-linear-gradient(-45deg, #888888 25%, transparent 25%,
+                transparent 50%, #909090 50%, #909090 75%,
+                transparent 75%, transparent);
+        background-image: linear-gradient(-45deg, #909090 25%, transparent 25%,
+                transparent 50%, #909090 50%, #909090 75%,
+                transparent 75%, transparent);
+
+    }
+    #dialogue2{
+        box-sizing: border-box;
+        position: absolute;
+        z-index: -2; 
+        top:0px;
+        left:0px;
+        height: calc(100vh);
+        margin-right: calc(((100vw - 0px) / 1) * -1);
+        padding: 1.5em calc((100vw - 0px) / 2);
+        -webkit-background-size: 10px 10px;
+        -moz-background-size: 10px 10px;
+        background-size: 10px 10px;
+        background-color: #F3F3F3 !important;
+        background-image: -webkit-gradient(linear, 0 0, 100% 100%,
+                    color-stop(.25, #F9F9F9), color-stop(.25, transparent),
+                    color-stop(.5, transparent), color-stop(.5, #F9F9F9),
+                    color-stop(.75, #F9F9F9), color-stop(.75, transparent),
+                    to(transparent));
+        background-image: -webkit-linear-gradient(-45deg, #F9F9F9 25%, transparent 25%,
+                transparent 50%, #F9F9F9 50%, #F9F9F9 75%,
+                transparent 75%, transparent);
+        background-image: -moz-linear-gradient(-45deg, #F9F9F9 25%, transparent 25%,
+                transparent 50%, #F9F9F9 50%, #F9F9F9 75%,
+                transparent 75%, transparent);
+        background-image: -ms-linear-gradient(-45deg, #F9F9F9 25%, transparent 25%,
+                transparent 50%, #F9F9F9 50%, #F9F9F9 75%,
+                transparent 75%, transparent);
+        background-image: -o-linear-gradient(-45deg, #F9F9F9 25%, transparent 25%,
+                transparent 50%, #F9F9F9 50%, #F9F9F9 75%,
+                transparent 75%, transparent);
+        background-image: linear-gradient(-45deg, #F9F9F9 25%, transparent 25%,
+                transparent 50%, #F9F9F9 50%, #F9F9F9 75%,
+                transparent 75%, transparent);
+
+    }
+    #gamename{
+        color: #F9F8F7;
+        text-shadow: 0px 0px 30px rgba(51,68,85,0.3); 
+    }
+    #head{
+        height: 76px;
+    }
+    .score{
+        line-height: 22px;
+    }
+    #blue{
+        color: #e1f6f7;
+        text-shadow: 0px 0px 1px rgba(51,68,85,0.8); 
+    }
+    #red{
+        color: #f7e1f1;
+        text-shadow: 0px 0px 1px rgba(51,68,85,0.8);  
+    }
+    #wins{
+        color: #FFF9C4;
+        text-shadow: 0px 0px 1px rgba(51,68,85,0.8); 
+    }
+    #message{
+        color: white;
+        text-shadow: 0px 0px 30px rgba(51,68,85,0.3); 
+    }
+    #message a{
+        color: white;
+        text-shadow: 0px 0px 30px rgba(51,68,85,0.3); 
     }
 }
+
 @media (orientation: portrait) {
     #replay,#tweetlog,#lvs{
         width: 500px !important;
     }
     .howtoplay,#collapsible{
         width: 495px !important;
+        padding: 0px !important;
     }
+
     #prevprev,#prev,#next,#nextnext{
         width: 113px;
     }
     #message{
         width: 495px !important;
         font-size: 20px !important;
+        margin-left: 0px;
+        max-width: 495px;
+        text-align: left;
+
     }
-    .lv{
-        width: 200px !important;
+    .howtoplay{
+        line-height: 40px;
+        text-align: center;
+    }
+    #level{
+        width: 260px !important;
     }
     #newgame{
-        width: 212px !important;
-
+        width: 225px !important;
     }
     
     .manual{
-        font-size: 20px !important;
+        font-size: 18px !important;
         max-width: 495px;
+        display: none;   
     }
     #footer{
         display: none;   
     }
-    .ui-page{
-    text-align: center !important;
+    #page{
+        text-align: center !important;
+        width: 500px;
     }
-    
+    body{
+        margin: 0px;
+    }
+
     #main{
         display: block!important;
-        text-align : left ;
-        width: 505px!important;
+        width: 500px !important;
         margin-left : auto !important; 
         margin-right : auto !important;
+    }
+    .score{
+        font-size: 20px;
     }
 }
