@@ -132,14 +132,5 @@
             ga('create', 'UA-75520116-1', 'auto');
             ga('send', 'pageview');
         </script>
-        <script>
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('/serviceworker.js',{scope: '/colamone'}).then(function(registration) { 
-                        console.log(registration);
-                    }).catch(function(error) {
-                        console.log(error);
-                });
-            }
-        </script>
     </BODY>
 </HTML>
