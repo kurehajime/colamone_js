@@ -1148,7 +1148,7 @@
     var Block = '';
     $('#blue')[0].innerHTML = 'Blue: ' + blueScore + '/8';
     $('#red')[0].innerHTML = 'Red: ' + redScore + '/8';
-    $('#time')[0].innerHTML = '(' + (thinktime) + 'sec)';
+    $('#time')[0].innerHTML = '(' + (thinktime.toFixed(3)) + 'sec)';
     if (logArray.length === 0) {
       if (winner == 1) {
         message = 'You win!';
