@@ -324,7 +324,6 @@
     }, 2500);
     updateMessage();
     setTweet(); // ツイートボタンを生成
-    setPocket(); // pocketボタンを生成
 
     if (logArray.length === 0) {
       intervalID = window.setInterval(playDemo, 1000);
@@ -1499,16 +1498,6 @@
       var js, fjs = d.getElementsByTagName(s)[0];
       if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.async = true; js.src = 'https://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); }
     } (document, 'script', 'twitter-wjs');
-  }
-  function setPocket() {
-    /*jshint -W030 */
-    !function (d, i) {
-      if (!d.getElementById(i)) {
-        var j = d.createElement('script');
-        j.id = i; j.src = 'https://widgets.getpocket.com/v1/j/btn.js?v=1'; var w = d.getElementById(i);
-        d.body.appendChild(j);
-      }
-    } (document, 'pocket-btn-js');
   }
 })((this || 0).self || global);
 
