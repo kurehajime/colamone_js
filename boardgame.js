@@ -41,14 +41,14 @@
   var intervalID = null;
   var thisHand = [];
   var COLOR_LINE = '#333333';
-  var COLOR_PANEL_1 = '#550025';
+  var COLOR_PANEL_1 = '#640125';
   var COLOR_PANEL_2 = '#003856';
   var COLOR_PANEL_3 = '#FFFFFF';
   var COLOR_PANEL_4 = '#111111';
   var COLOR_PANEL_5 = '#444444';
   var COLOR_PANEL_6 = '#888888';
   var COLOR_SELECT = '#7fed7f';
-  var COLOR_RED = '#E5004F';
+  var COLOR_RED = '#ff0066';
   var COLOR_BLUE = '#00A0E9';
   var COLOR_WHITE = '#FFFFFF';
   var COLOR_GOLD = '#FFFF00';
