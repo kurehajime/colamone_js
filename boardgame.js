@@ -667,7 +667,7 @@
     // 背景
     var ctx_cover = canv_cover.getContext('2d');
     ctx_cover.clearRect(0, 0, ctx.canvas.width, ctx.canvas.width);
-    ctx_cover.globalAlpha = 0.60;
+    ctx_cover.globalAlpha = 0.50;
     ctx_cover.fillStyle = '#000000';
     ctx_cover.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 

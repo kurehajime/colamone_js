@@ -129,7 +129,7 @@ img.preload{
 
 #collapsible{
     width: 340px;   
-    color: #444444;
+    color: rgba(44,44,44,1);
     padding: 5px;
     margin: 10px 0px;
     font-family: sans-serif;
@@ -272,30 +272,18 @@ body{
         height: 116px;
         margin-right: calc(((100vw - 0px) / 1) * -1);
         padding: 1.5em calc((100vw - 0px) / 2);        
-        -webkit-background-size: 30px 30px;
-        -moz-background-size: 30px 30px;
-        background-size: 30px 30px;
-        background-color: #555555;
-        background-image: -webkit-gradient(linear, 0 0, 100% 100%,
-                    color-stop(.25, #505050), color-stop(.25, transparent),
-                    color-stop(.5, transparent), color-stop(.5, #505050),
-                    color-stop(.75, #505050), color-stop(.75, transparent),
-                    to(transparent));
-        background-image: -webkit-linear-gradient(-45deg, #505050 25%, transparent 25%,
-                transparent 50%, #505050 50%, #505050 75%,
-                transparent 75%, transparent);
-        background-image: -moz-linear-gradient(-45deg, #505050 25%, transparent 25%,
-                transparent 50%, #505050 50%, #505050 75%,
-                transparent 75%, transparent);
-        background-image: -ms-linear-gradient(-45deg, #505050 25%, transparent 25%,
-                transparent 50%, #505050 50%, #505050 75%,
-                transparent 75%, transparent);
-        background-image: -o-linear-gradient(-45deg, #505050 25%, transparent 25%,
-                transparent 50%, #505050 50%, #505050 75%,
-                transparent 75%, transparent);
-        background-image: linear-gradient(-45deg, #505050 25%, transparent 25%,
-                transparent 50%, #505050 50%, #505050 75%,
-                transparent 75%, transparent);
+        
+  background: -webkit-linear-gradient(-45deg, rgba(255,255,255,0.2) 25%, rgba(0,0,0,0) 25%, rgba(0,0,0,0) 50%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.2) 75%, rgba(0,0,0,0) 75%, rgba(0,0,0,0) 0), rgba(8,151,173,1);
+  background: -moz-linear-gradient(-45deg, rgba(255,255,255,0.2) 25%, rgba(0,0,0,0) 25%, rgba(0,0,0,0) 50%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.2) 75%, rgba(0,0,0,0) 75%, rgba(0,0,0,0) 0), rgba(8,151,173,1);
+  background: linear-gradient(-45deg, rgba(255,255,255,0.2) 25%, rgba(0,0,0,0) 25%, rgba(0,0,0,0) 50%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.2) 75%, rgba(0,0,0,0) 75%, rgba(0,0,0,0) 0), rgba(8,151,173,1);
+  background-position: auto auto;
+  -webkit-background-origin: padding-box;
+  background-origin: padding-box;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  -webkit-background-size: 50px 50px;
+  background-size: 50px 50px;
+
     }
     #dialogue2{
         box-sizing: border-box;
@@ -334,7 +322,7 @@ body{
     }
     #gamename{
         color: #F9F8F7;
-        text-shadow: 0px 0px 30px rgba(51,68,85,0.3); 
+        text-shadow: 0px 0px 30px rgba(10,10,10,0.3); 
     }
     #head{
         height: 76px;
