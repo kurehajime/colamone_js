@@ -438,6 +438,7 @@
       var canm = Aijs.getCanMovePanelX(hover_piece, thisMap);
       if (canm.indexOf(target) >= 0) {
         flush(false, true);
+
         thisMap[target] = thisMap[hover_piece];
         thisMap[hover_piece] = 0;
         turn_player = turn_player * -1;
@@ -537,6 +538,7 @@
     hand = Aijs.thinkAI(thisMap, turn_player, level + plus + 1)[0];
     thisHand = hand;
     if (hand) {
+
       thisMap[hand[1]] = thisMap[hand[0]];
       thisMap[hand[0]] = 0;
       logArray2.push([hand[0], hand[1]]);
@@ -548,7 +550,15 @@
     endTime = new Date();
     thinktime = (endTime - startTime) / 1000;
   }
-
+  /** 
+   * コマ取りが発生したか
+   */
+  function isCaptchaed(map,beforeHand,afterHand){
+      if(map[afterHand]*thisMap[beforeHand]<-1){//キャプチャが発生した。
+          return true;
+      }
+      return false;
+  }
   /** 
    * 盤面をシャッフル。
    */
