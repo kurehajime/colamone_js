@@ -17,6 +17,7 @@
   // Body ---------------------------------------
   var ctx = null;
   var isTouch = true;
+  var goaled=false;
   var canv_board = null;
   var canv_board2 = null;
   var canv_focus = null;
@@ -26,6 +27,7 @@
   var canv_overlay = null;
   var canv_bk = null;
   var canv_cover = null;
+  var canv_score = null;
   var canv_cache = null;
   var cache_on = false;
   var img_bk_loaded = false;
@@ -50,6 +52,8 @@
   var COLOR_SELECT = '#7fed7f';
   var COLOR_RED = '#ff0066';
   var COLOR_BLUE = '#00A0E9';
+  var COLOR_RED2 = '#ff0066';
+  var COLOR_BLUE2 = '#0033FF';
   var COLOR_WHITE = '#FFFFFF';
   var COLOR_GOLD = '#FFFF00';
   var PIECES = {
@@ -200,6 +204,9 @@
     canv_cover.width = ctx.canvas.width;
     canv_cover.height = ctx.canvas.height;
 
+    canv_score = document.createElement('canvas');
+    canv_score.width = ctx.canvas.width;
+    canv_score.height = ctx.canvas.height;
 
     canv_cache = document.createElement('canvas');
     canv_cache.width = ctx.canvas.width;
@@ -326,11 +333,12 @@
     setTweet(); // ツイートボタンを生成
 
     if (logArray.length === 0) {
-      intervalID = window.setInterval(playDemo, 1000);
+      intervalID = window.setInterval(playDemo, 100);
       playDemo();
     } else {
       demo = false;
     }
+    goaled=false;
     flush(true, false);
   }
 
@@ -338,16 +346,21 @@
    * Demoを再生
    */
   function playDemo() {
-    if (Math.random() > 0.3) {
-      ai(2);
-    } else {
-      ai(1);
+    if (intervalID !==null) {
+      if (Math.random() > 0.3) {
+        ai(2);
+      } else {
+        ai(1);
+      }
     }
+
     calcScore();
     flush(false, false);
     if (winner === 1 || winner === -1 || winner === 0) {
+      goaled=true;
       winner = null;
-      window.clearInterval(intervalID);
+      flush(false, false);
+      shuffleBoard();
     }
   }
 
@@ -420,6 +433,7 @@
       logArray2 = [];
       flush(false, false);
       winner = null;
+      goaled=false;
       turn_player = 1;
       window.clearInterval(intervalID);
       return true;
@@ -438,6 +452,15 @@
       var canm = Aijs.getCanMovePanelX(hover_piece, thisMap);
       if (canm.indexOf(target) >= 0) {
         flush(false, true);
+        if(isGoaled(thisMap,target,turn_player)){
+            goaled=true;
+            flush(false, true);
+            setInterval(function(){
+              goaled=false;
+              flush(false, false);
+            },1500);
+        }
+
 
         thisMap[target] = thisMap[hover_piece];
         thisMap[hover_piece] = 0;
@@ -538,7 +561,14 @@
     hand = Aijs.thinkAI(thisMap, turn_player, level + plus + 1)[0];
     thisHand = hand;
     if (hand) {
-
+      if(isGoaled(thisMap,hand[1],turn_player)){
+          goaled=true;
+          flush(false, true);
+          setInterval(function(){
+            goaled=false;
+            flush(false, false);
+          },1500);
+      }
       thisMap[hand[1]] = thisMap[hand[0]];
       thisMap[hand[0]] = 0;
       logArray2.push([hand[0], hand[1]]);
@@ -551,12 +581,19 @@
     thinktime = (endTime - startTime) / 1000;
   }
   /** 
-   * コマ取りが発生したか
+   * ゴールしたか
    */
-  function isCaptchaed(map,beforeHand,afterHand){
-      if(map[afterHand]*thisMap[beforeHand]<-1){//キャプチャが発生した。
-          return true;
+  function isGoaled(map,afterHand,turn){
+      if(turn>0){
+        if(afterHand%10===0){
+            return true;
+        }
+      }else if(turn<0){
+        if(afterHand%10===5){
+            return true;
+        }
       }
+
       return false;
   }
   /** 
@@ -651,6 +688,12 @@
       ctx.drawImage(drawFocus(), 0, 0, ctx.canvas.width, ctx.canvas.height);
     }
 
+    //スコアを表示
+    if(goaled||winner!==null){
+      if(demo===false){
+        ctx.drawImage(drawScore(), 0, 0, ctx.canvas.width, ctx.canvas.height);
+      }
+    }
     // メッセージを描画
     ctx.drawImage(drawOverlay(), 0, 0, ctx.canvas.width, ctx.canvas.height);
 
@@ -658,6 +701,8 @@
     if (demo === true) {
       ctx.drawImage(drawCover(), 0, 0, ctx.canvas.width, ctx.canvas.height);
     }
+
+
   }
 
   /** 
@@ -726,6 +771,77 @@
 
     return canv_cover;
   }
+
+  /** 
+   * スコア描画
+   */
+  function drawScore() {
+    // 背景
+    var ctx_score = canv_score.getContext('2d');
+    var message ="";
+    var fontsize = Math.round(cellSize *1.5);
+    ctx_score.clearRect(0, 0, ctx.canvas.width, ctx.canvas.width);
+
+
+
+    ctx_score.globalAlpha = 0.4;
+    ctx_score.textBaseline = 'middle';
+    ctx_score.textAlign = 'center';
+    ctx_score.shadowBlur = 10;
+    ctx_score.shadowColor = 'rgba(0, 0, 0, 0.5)';
+    ctx_score.font = 'bold ' + fontsize + 'px sans-serif';
+
+    //線
+    ctx_score.globalAlpha = 0.5;
+    ctx_score.lineWidth=cellSize*4;
+    ctx_score.strokeStyle = COLOR_WHITE;
+    ctx_score.beginPath();
+    ctx_score.moveTo(cellSize * 6, cellSize * 0);
+    ctx_score.lineTo(cellSize * 0, cellSize * 6);
+    ctx_score.closePath();
+    ctx_score.stroke();
+
+    // 文字
+    message = blueScore;
+    ctx_score.fillStyle = COLOR_BLUE2;
+    ctx_score.beginPath();
+    ctx_score.fillText(message, cellSize * 1, cellSize * 3.8);
+    // 文字
+    message = "8";
+    ctx_score.beginPath();
+    ctx_score.fillText(message, cellSize * 2, cellSize * 5.3);
+    //線
+    ctx_score.lineWidth=cellSize*0.2;
+    ctx_score.strokeStyle = COLOR_BLUE2;
+    ctx_score.beginPath();
+    ctx_score.moveTo(cellSize * 0.4, cellSize * 5.55);
+    ctx_score.lineTo(cellSize * 2.6, cellSize * 3.55);
+    ctx_score.closePath();
+    ctx_score.stroke();
+
+
+    ctx_score.globalAlpha = 0.7;
+    // 文字
+    message = redScore;
+    ctx_score.fillStyle = COLOR_RED2;
+    ctx_score.beginPath();
+    ctx_score.fillText(message, cellSize * 4, cellSize * 0.7);
+    // 文字
+    message = "8";
+    ctx_score.beginPath();
+    ctx_score.fillText(message, cellSize * 5, cellSize * 2.3);
+    // 文字
+    ctx_score.lineWidth=cellSize*0.2;
+    ctx_score.strokeStyle = COLOR_RED2;
+    ctx_score.beginPath();
+    ctx_score.moveTo(cellSize * 3.4, cellSize * 2.55);
+    ctx_score.lineTo(cellSize * 5.6, cellSize * 0.55);
+    ctx_score.closePath();
+    ctx_score.stroke();
+    return canv_score;
+  }
+
+
 
   /** 
    * フォーカスを描画
@@ -1406,8 +1522,10 @@
   function move_start() {
     logPointer = 0;
     thisMap = Aijs.copyMap(logArray[logPointer]);
-    flush(false, false);
+    winner=null;
+    goaled=false;
     updateMessage();
+    flush(false, false);
   }
 
   /** 
@@ -1417,8 +1535,10 @@
     if (logPointer <= 0) { return; }
     logPointer -= 1;
     thisMap = Aijs.copyMap(logArray[logPointer]);
-    flush(false, false);
+    winner=null;
+    goaled=false;
     updateMessage();
+    flush(false, false);
   }
 
   /** 
@@ -1428,8 +1548,8 @@
     if (logPointer + 1 > logArray.length - 1) { return; }
     logPointer += 1;
     thisMap = Aijs.copyMap(logArray[logPointer]);
-    flush(false, false);
     updateMessage();
+    flush(false, false);
   }
 
   /** 
@@ -1438,8 +1558,8 @@
   function move_end() {
     logPointer = logArray.length - 1;
     thisMap = Aijs.copyMap(logArray[logPointer]);
-    flush(false, false);
     updateMessage();
+    flush(false, false);
   }
 
   /** 
