@@ -455,7 +455,7 @@
         if(isGoaled(thisMap,target,turn_player)){
             goaled=true;
             flush(false, true);
-            setInterval(function(){
+            setTimeout(function(){
               goaled=false;
               flush(false, false);
             },1500);
@@ -564,7 +564,7 @@
       if(isGoaled(thisMap,hand[1],turn_player)){
           goaled=true;
           flush(false, true);
-          setInterval(function(){
+          setTimeout(function(){
             goaled=false;
             flush(false, false);
           },1500);
