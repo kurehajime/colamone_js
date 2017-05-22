@@ -436,6 +436,7 @@
       goaled=false;
       turn_player = 1;
       window.clearInterval(intervalID);
+      flush(false, false);
       return true;
     }
 
