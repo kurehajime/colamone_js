@@ -266,8 +266,8 @@
     if (storage.getItem('level_save') !== undefined && storage.getItem('level_save') !== 'undefined' && storage.getItem('level_save') !== null) {
       $('#level').val([parseInt(storage.getItem('level_save'))]);
     } else {
-      storage.setItem('level_save', 2);
-      $('#level').val([2]);
+      storage.setItem('level_save', 1);
+      $('#level').val([1]);
     }
 
     // パラメータを取得
