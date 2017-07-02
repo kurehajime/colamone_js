@@ -459,7 +459,7 @@
             setTimeout(function(){
               goaled=false;
               flush(false, false);
-            },1500);
+            },3000);
         }
 
 
@@ -568,7 +568,7 @@
           setTimeout(function(){
             goaled=false;
             flush(false, false);
-          },1500);
+          },3000);
       }
       thisMap[hand[1]] = thisMap[hand[0]];
       thisMap[hand[0]] = 0;
@@ -781,8 +781,13 @@
     var ctx_score = canv_score.getContext('2d');
     var message ="";
     var fontsize = Math.round(cellSize *1.5);
+    var blue=COLOR_BLUE2;
+    var red=COLOR_RED2;
     ctx_score.clearRect(0, 0, ctx.canvas.width, ctx.canvas.width);
-
+    if(winner==null){
+      blue="#00CCFF";
+      red="#FF66CC";
+    }
 
 
     ctx_score.globalAlpha = 0.4;
@@ -793,7 +798,11 @@
     ctx_score.font = 'bold ' + fontsize + 'px sans-serif';
 
     //線
-    ctx_score.globalAlpha = 0.5;
+    if(winner==null){
+      ctx_score.globalAlpha = 0;
+    }else{
+      ctx_score.globalAlpha = 0.5;
+    }
     ctx_score.lineWidth=cellSize*4;
     ctx_score.strokeStyle = COLOR_WHITE;
     ctx_score.beginPath();
@@ -803,8 +812,15 @@
     ctx_score.stroke();
 
     // 文字
+    ctx_score.globalAlpha = 0.7;
+
+    if(winner==null){
+      ctx_score.globalAlpha = 0.3;
+      ctx_score.shadowBlur = 2;
+      ctx_score.shadowColor = 'rgba(255, 255, 255, 1)';
+    }
+    ctx_score.fillStyle = blue;
     message = blueScore;
-    ctx_score.fillStyle = COLOR_BLUE2;
     ctx_score.beginPath();
     ctx_score.fillText(message, cellSize * 1, cellSize * 3.8);
     // 文字
@@ -813,7 +829,7 @@
     ctx_score.fillText(message, cellSize * 2, cellSize * 5.3);
     //線
     ctx_score.lineWidth=cellSize*0.2;
-    ctx_score.strokeStyle = COLOR_BLUE2;
+    ctx_score.strokeStyle = blue;
     ctx_score.beginPath();
     ctx_score.moveTo(cellSize * 0.4, cellSize * 5.55);
     ctx_score.lineTo(cellSize * 2.6, cellSize * 3.55);
@@ -821,10 +837,9 @@
     ctx_score.stroke();
 
 
-    ctx_score.globalAlpha = 0.7;
     // 文字
     message = redScore;
-    ctx_score.fillStyle = COLOR_RED2;
+    ctx_score.fillStyle = red;
     ctx_score.beginPath();
     ctx_score.fillText(message, cellSize * 4, cellSize * 0.7);
     // 文字
@@ -833,7 +848,7 @@
     ctx_score.fillText(message, cellSize * 5, cellSize * 2.3);
     // 文字
     ctx_score.lineWidth=cellSize*0.2;
-    ctx_score.strokeStyle = COLOR_RED2;
+    ctx_score.strokeStyle = red;
     ctx_score.beginPath();
     ctx_score.moveTo(cellSize * 3.4, cellSize * 2.55);
     ctx_score.lineTo(cellSize * 5.6, cellSize * 0.55);
