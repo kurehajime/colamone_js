@@ -245,8 +245,6 @@
     $(window).on('orientationchange', zoom);
 
     shuffleBoard();
-    //翻訳リセット
-    storage.setItem('mstto', "");
 
     // 連勝記録初期化
     if (!storage.getItem('level_1')) {
