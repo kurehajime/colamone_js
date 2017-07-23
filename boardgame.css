@@ -242,7 +242,26 @@ body{
     background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAGFBMVEUAAAAZJCYWISIYIyQYIiUWIiIYIyQYIiXh0rToAAAACHRSTlMA/hTRqiinvwFkb0sAAABCSURBVHjajchBDsAgDAPBOJDw/x+XVN0icQGfPGs3i+2GEqeiLCXWLENzvdzrDfP2ls/NjfKbgimYglfBq2Dm+LwHguMA235EdKYAAAAASUVORK5CYII=") 90% no-repeat;
 
 }
+#LauncherLogo{
+    display: none!important;
 
+}
+#WidgetLauncher{
+    height: 22px!important;
+    margin-top: 0px!important;
+    margin-bottom: 0px!important;
+    margin-left: 30px!important;
+}
+#MicrosoftTranslatorWidget{
+    height: 22px!important;
+    background-color: #555555;
+}
+#LauncherTranslatePhrase{
+    height: 15px!important;
+    border:none!important;
+    border-radius: 1px!important;
+    opacity: 0.5;
+}
 @keyframes Flash{
   20%{
     opacity: 0.6;
@@ -346,7 +365,7 @@ body{
         color: white;
         text-shadow: 0px 0px 30px rgba(51,68,85,0.3); 
     }
-    #message a{
+    #head a{
         color: white;
         text-shadow: 0px 0px 30px rgba(51,68,85,0.3); 
     }
