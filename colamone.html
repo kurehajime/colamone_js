@@ -180,9 +180,10 @@
             ga('send', 'pageview');
 </script>
 <script type='text/javascript'>
+var lang=(navigator.browserLanguage || navigator.language || navigator.userLanguage).substr(0,2).toLowerCase();
 setTimeout(function(){{var s=document.createElement('script');
 s.type='text/javascript';s.charset='UTF-8';
-s.src=((location && location.href && location.href.indexOf('https') == 0)?'https://ssl.microsofttranslator.com':'http://www.microsofttranslator.com')+'/ajax/v3/WidgetV3.ashx?siteData=ueOIGRSKkd965FeEGM5JtQ**&ctf=False&ui=true&settings=Manual';
+s.src=((location && location.href && location.href.indexOf('https') == 0)?'https://ssl.microsofttranslator.com':'http://www.microsofttranslator.com')+'/ajax/v3/WidgetV3.ashx?siteData=ueOIGRSKkd965FeEGM5JtQ**&ctf=False&ui=true&settings=Manual&defaultLanguage='+lang;
 var p=document.getElementsByTagName('head')[0]||document.documentElement;
 p.insertBefore(s,p.firstChild); }},0);</script>
 
