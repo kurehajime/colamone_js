@@ -55,7 +55,6 @@
   var COLOR_RED2 = '#FF66CC';
   var COLOR_BLUE2 = '#00CCFF';
   var COLOR_WHITE = '#FFFFFF';
-  var COLOR_GOLD = '#FFFF00';
   var PIECES = {
     '1': [1, 1, 1,
       1, 0, 1,
@@ -991,11 +990,7 @@
     }
 
     // 文字を描画。
-    if (goal) {
-      wkCtx.fillStyle = COLOR_GOLD;
-    } else {
-      wkCtx.fillStyle = COLOR_WHITE;
-    }
+    wkCtx.fillStyle = COLOR_WHITE;
 
     var fontsize = Math.round(cellSize * 0.18);
     wkCtx.textBaseline = 'middle';
@@ -1014,11 +1009,8 @@
       var x_dot = x + cellSize / 4.16 + (Math.floor(cellSize - 1 * cellSize / 5) / 3) * Math.floor(i % 3.0);
       var y_dot = y + cellSize / 4.16 + (Math.floor(cellSize - 1 * cellSize / 5) / 3) * Math.floor(i / 3.0);
 
-      if (goal) {
-        wkCtx.fillStyle = COLOR_GOLD;
-      } else {
-        wkCtx.fillStyle = COLOR_WHITE;
-      }
+      wkCtx.fillStyle = COLOR_WHITE;
+
       wkCtx.beginPath();
       wkCtx.arc(x_dot, y_dot, cellSize * 0.06, 0, Math.PI * 2, false);
       wkCtx.fill();
