@@ -70,7 +70,15 @@
 ⑥ 先に得点が 8 点以上になったプレーヤーの勝利です。
 ⑦ どちらかのﾌﾟﾚｰﾔｰの動かせるコマが無くなった時は
 　 その時点で点数の高いﾌﾟﾚｰﾔｰの勝利です。 
-⑧ 同一の局面が3回現れた時は千日手で引き分けです。</p>
+⑧ 同一の局面が3回現れた時は千日手で引き分けです。</p><p id="manual_kr" lang="kr" style="display:none">① Colamone 체스와 쇼기와 비슷한 보드 게임입니다.
+② 각각의 패널은 포인트가 가리키는 방향으로 진행합니다.
+③ 자신의 패널을 상대 패널로 이동하면 제거 할 수 있습니다.
+④ 안쪽의 진지까지 진행하면 패널의 숫자가 점수가됩니다.
+⑤ 골 한 패널은 움직이는 것도 제거 일도 할 수 없습니다.
+⑥ 먼저 점수가 8 점 이상이 된 플레이어의 승리입니다.
+⑦ 한쪽 플레이어가 움직일 패널가없는 경우는
+   그 시점에서 점수가 높은 선수의 승리입니다.
+⑧ 동일한 국면이 3 번 나타날 때는 무승부입니다.</p>
 </div>
                 </div>
 <span id="sns" >
@@ -111,6 +119,7 @@
         
         if(lang==="ja"||lang==="ja-jp"){
             $("#manual_en").hide();
+            $("#manual_kr").hide();
             $("#manual_ja").show();
             var canvas= document.getElementById("canv");
             if (!canvas || !canvas.getContext) { 
@@ -119,9 +128,19 @@
             $('#htp').text("Colamoneの遊び方");
             $('#replay').text("棋譜を再生");
             $('#tweetlog').text("棋譜を ツイート する");
+        }else if(lang==="ko"||lang==="kr"||lang==="ko-kr"){
+            $("#manual_kr").show();
+            $("#manual_ja").hide();
+            $("#manual_en").hide();
+            $('#htp').text("How to play Colamone");
+            var canvas= document.getElementById("canv");
+            if (!canvas || !canvas.getContext) { 
+                alert("Sorry. Your browser does not support."); 
+            }
         }else{
             $("#manual_en").show();
             $("#manual_ja").hide();
+            $("#manual_kr").hide();
             $('#htp').text("How to play Colamone");
             var canvas= document.getElementById("canv");
             if (!canvas || !canvas.getContext) { 
