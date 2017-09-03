@@ -753,7 +753,7 @@
     ctx_cover.shadowOffsetX = 0;
     ctx_cover.shadowOffsetY = 0;
     ctx_cover.shadowColor = 'rgba(0, 0, 0, 0)';
-    ctx_cover.font = 'bold ' + fontsize + 'px sans-serif';
+    ctx_cover.font = 'bold ' + fontsize + 'px Play,sans-serif';
     ctx_cover.globalAlpha = 1;
     ctx_cover.fillStyle = COLOR_LINE;
     ctx_cover.textBaseline = 'middle';
@@ -763,7 +763,7 @@
     // 文字２
     message = 'colamone';
     fontsize = Math.round(cellSize * 1);
-    ctx_cover.font = 'bold ' + fontsize + 'px sans-serif';
+    ctx_cover.font = 'bold ' + fontsize + 'px Play,sans-serif';
     ctx_cover.fillStyle = COLOR_WHITE;
     ctx_cover.beginPath();
     ctx_cover.fillText(message, cellSize * 3, cellSize * 2);
@@ -789,7 +789,7 @@
     ctx_score.textAlign = 'center';
     ctx_score.shadowBlur = 10;
     ctx_score.shadowColor = 'rgba(0, 0, 0, 0.5)';
-    ctx_score.font = 'bold ' + fontsize + 'px sans-serif';
+    ctx_score.font = 'bold ' + fontsize + 'px Play,sans-serif';
 
     // 文字
     ctx_score.globalAlpha = 0.3;
@@ -995,7 +995,7 @@
     var fontsize = Math.round(cellSize * 0.18);
     wkCtx.textBaseline = 'middle';
     wkCtx.textAlign = 'center';
-    wkCtx.font = fontsize + 'pt Arial';
+    wkCtx.font = fontsize + "pt 'Play',Arial";
     wkCtx.beginPath();
 
     // 数字を印字
@@ -1024,7 +1024,7 @@
       fontsize = Math.round(cellSize * 0.5);
       wkCtx.textBaseline = 'middle';
       wkCtx.textAlign = 'center';
-      wkCtx.font = 'bolder ' + fontsize + 'pt Arial ';
+      wkCtx.font = 'bolder ' + fontsize + 'pt Play,Arial ';
       wkCtx.beginPath();
       wkCtx.fillText(Math.abs(number), x + (cellSize / 2), y + (cellSize / 2));
       wkCtx.globalAlpha = 1;
@@ -1239,7 +1239,7 @@
     ctx_overlay.shadowOffsetX = 0;
     ctx_overlay.shadowOffsetY = 0;
     ctx_overlay.shadowColor = 'rgba(0, 0, 0, 0)';
-    ctx_overlay.font = 'bold ' + fontsize + 'px sans-serif';
+    ctx_overlay.font = 'bold ' + fontsize + 'px Play,sans-serif';
     ctx_overlay.globalAlpha = 1;
     ctx_overlay.fillStyle = COLOR_LINE;
     ctx_overlay.textBaseline = 'middle';

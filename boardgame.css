@@ -1,6 +1,25 @@
 /* @license Copyright (c) @kurehajime / source code: https://github.com/kurehajime/colamone_js */
+/* play-regular - latin */
+@font-face {
+    font-family: 'Play';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Play Regular'), local('Play-Regular'),
+         url('./lib/play-v8-latin-regular.woff2') format('woff2'), 
+         url('./lib/play-v8-latin-regular.woff') format('woff'); 
+  }
+  /* play-700 - latin */
+  @font-face {
+    font-family: 'Play';
+    font-style: normal;
+    font-weight: 700;
+    src: local('Play Bold'), local('Play-Bold'),
+         url('./lib/play-v8-latin-700.woff2') format('woff2'),
+         url('./lib/play-v8-latin-700.woff') format('woff'); 
+  }
 body {
   color: #202020;
+  font-family: 'Play', sans-serif;      
 }
 html {
 	height: 100%;
@@ -44,8 +63,7 @@ html {
   color:#ff1493;
 }
 #wins,#gamename,.score,#prevprev,#prev,#next,#nextnext,.howtoplay a,.lv{
-  font-family: "Arial Black", 'Arial Bold', Arial,Verdana,sans-serif;
-  font-weight: bolder;
+    font-weight: bold;
 }
 
 .manual{
@@ -67,7 +85,6 @@ html {
     margin-right: 10px;
     font-size: 15px;
     color: #FFFFFF;
-    font-family: sans-serif;
     background-color: rgba(30,144,255,1);
     border:none;
     border-radius: 3px;
@@ -84,7 +101,6 @@ html {
     margin-top:5px;
     font-size: 15px;
     color: #FFFFFF;
-    font-family: sans-serif;
     background-color: rgba(30,144,255,1);
     border:none;
     border-radius: 3px;
@@ -132,7 +148,6 @@ img.preload{
     color: rgba(44,44,44,1);
     padding: 5px;
     margin: 10px 0px;
-    font-family: sans-serif;
     background-color: rgba(255,255,255,1);
     border:none;
     border-radius: 3px;
@@ -203,7 +218,6 @@ body{
     height: 40px;
     font-size: 15px;
     color: #333333;
-    font-family: sans-serif;
     border:none;
     border-radius: 3px;
     box-shadow: 0px 3px 4px rgba(0,0,0,0.2);
@@ -224,7 +238,6 @@ body{
     height: 40px;    
     font-size: 15px;
     color: #FFFFFF;
-    font-family: sans-serif;
     background-color: rgba(30,144,255,1);
     border:none;
     border-radius: 3px;
