@@ -143,5 +143,13 @@ s.type='text/javascript';s.charset='UTF-8';
 s.src=((location && location.href && location.href.indexOf('https') == 0)?'https://ssl.microsofttranslator.com':'http://www.microsofttranslator.com')+'/ajax/v3/WidgetV3.ashx?siteData=ueOIGRSKkd965FeEGM5JtQ**&ctf=False&ui=true&settings=Manual&defaultLanguage='+lang;
 var p=document.getElementsByTagName('head')[0]||document.documentElement;
 p.insertBefore(s,p.firstChild); }},0);</script>
+<script type="text/javascript">
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js', { scope: './' })
+      .catch(function(error) {
+          console.log('Registration failed with ' + error);
+        });
+    };
+ </script>
      </BODY>
 </HTML>

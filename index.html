@@ -82,12 +82,12 @@
         </div>
     <IMG src="bk.gif" class="preload" style="display:none" alt="bk">
   <div  id="footer">
-    <p  style="text-align:center;font-size:10px;">(c)2014–<script type=text/javascript> document.write(new Date().getFullYear()); </script> <A Href="https://twitter.com/kurehajime">@kurehajime</A>. All Rights Reserved. / Ver.<a href="https://github.com/kurehajime/colamone_js"  TARGET="_blank" >201709032242</a>/<span id="time"></span></p>
+    <p  style="text-align:center;font-size:10px;">(c)2014–<script type=text/javascript> document.write(new Date().getFullYear()); </script> <A Href="https://twitter.com/kurehajime">@kurehajime</A>. All Rights Reserved. / Ver.<a href="https://github.com/kurehajime/colamone_js"  TARGET="_blank" >201709072158</a>/<span id="time"></span></p>
   </div>
 </div>
 <script src="lib/jquery.js"  defer ></script>
-<script type="text/javascript" src="ai.js?201709032242" defer></script>
-<script type="text/javascript" src="boardgame.js?201709032242" defer></script>
+<script type="text/javascript" src="ai.js?201709072158" defer></script>
+<script type="text/javascript" src="boardgame.js?201709072158" defer></script>
 <script type="text/javascript">
     /** 
      * 国際化
@@ -187,6 +187,13 @@ s.type='text/javascript';s.charset='UTF-8';
 s.src=((location && location.href && location.href.indexOf('https') == 0)?'https://ssl.microsofttranslator.com':'http://www.microsofttranslator.com')+'/ajax/v3/WidgetV3.ashx?siteData=ueOIGRSKkd965FeEGM5JtQ**&ctf=False&ui=true&settings=Manual&defaultLanguage='+lang;
 var p=document.getElementsByTagName('head')[0]||document.documentElement;
 p.insertBefore(s,p.firstChild); }},0);</script>
-
+<script type="text/javascript">
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js', { scope: './' })
+      .catch(function(error) {
+          console.log('Registration failed with ' + error);
+        });
+    };
+ </script>
  </BODY>
 </HTML>
