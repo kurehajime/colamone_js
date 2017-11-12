@@ -40,7 +40,9 @@
   var message = '';
   var thinktime = 0.0;
   var demo = true;
+  var autoLog=false;
   var intervalID = null;
+  var intervalID_log = null;  
   var thisHand = [];
   var COLOR_LINE = '#333333';
   var COLOR_PANEL_1 = '#640125';
@@ -336,6 +338,8 @@
       playDemo();
     } else {
       demo = false;
+      autoLog=true;
+      intervalID_log = window.setInterval(playLog, 1000);      
     }
     goaled=false;
     flush(true, false);
@@ -363,6 +367,17 @@
     }
   }
 
+  /** 
+   * Logを再生
+   */
+  function playLog() {
+
+    if (intervalID_log !==null&&autoLog==true) {
+      move_next();
+    }else{
+      clearInterval(intervalID_log);
+    }
+  }
 
   /** 
    * 小さい画面ではViewportを固定化
@@ -690,7 +705,7 @@
 
     //スコアを表示
     if(goaled||winner!==null){
-      if(demo===false){
+      if(demo===false&&autoLog==false){
         ctx.drawImage(drawScore(), 0, 0, ctx.canvas.width, ctx.canvas.height);
       }
     }
@@ -1506,6 +1521,7 @@
    */
   function move_start() {
     logPointer = 0;
+    autoLog=false;    
     thisMap = Aijs.copyMap(logArray[logPointer]);
     winner=null;
     goaled=false;
@@ -1518,6 +1534,7 @@
    */
   function move_prev() {
     if (logPointer <= 0) { return; }
+    autoLog=false;    
     logPointer -= 1;
     thisMap = Aijs.copyMap(logArray[logPointer]);
     winner=null;
@@ -1542,6 +1559,7 @@
    */
   function move_end() {
     logPointer = logArray.length - 1;
+    autoLog=false;    
     thisMap = Aijs.copyMap(logArray[logPointer]);
     updateMessage();
     flush(false, false);
