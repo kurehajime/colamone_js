@@ -107,9 +107,8 @@
    * @return {Object.<number, number>} 
    */
   function copyMap(wkMap) {
-    var rtnMap = [];
+    var rtnMap = new Array(56);
     // 不格好だがループするより高速。
-    rtnMap[55] = wkMap[55]; // 領域確保
     rtnMap[0] = wkMap[0];
     rtnMap[10] = wkMap[10];
     rtnMap[20] = wkMap[20];
@@ -145,6 +144,7 @@
     rtnMap[25] = wkMap[25];
     rtnMap[35] = wkMap[35];
     rtnMap[45] = wkMap[45];
+    rtnMap[55] = wkMap[55];    
     return rtnMap;
   }
 

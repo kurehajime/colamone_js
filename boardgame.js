@@ -571,6 +571,17 @@
           plus++;
         }
         break;
+      case 6:
+        if (count > 16) {
+          plus--;
+        }
+        if (count <= 12) {
+          plus++;
+        }
+        if (count <= 8) {
+          plus++;
+        }
+        break;
     }
 
     hand = Aijs.thinkAI(thisMap, turn_player, level + plus + 1)[0];
