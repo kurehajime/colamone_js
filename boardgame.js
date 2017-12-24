@@ -44,6 +44,7 @@
   var intervalID = null;
   var intervalID_log = null;  
   var thisHand = [];
+  var demo_inc=0;
   var COLOR_LINE = '#333333';
   var COLOR_PANEL_1 = '#640125';
   var COLOR_PANEL_2 = '#003856';
@@ -363,7 +364,7 @@
         ai(1);
       }
     }
-
+    demo_inc++;
     calcScore();
     flush(false, false);
     if (winner === 1 || winner === -1 || winner === 0) {
@@ -782,6 +783,7 @@
     // 文字
     var fontsize = Math.round(cellSize * 0.5);
     var message = 'Play';
+    message+=(demo_inc%10==0)?" ":"";
     ctx_cover.shadowBlur = 0;
     ctx_cover.shadowOffsetX = 0;
     ctx_cover.shadowOffsetY = 0;
@@ -798,6 +800,7 @@
     fontsize = Math.round(cellSize * 1);
     ctx_cover.font = 'bold ' + fontsize + 'px Play,sans-serif';
     ctx_cover.fillStyle = COLOR_WHITE;
+    ctx_cover.shadowBlur = 0;
     ctx_cover.beginPath();
     ctx_cover.fillText(message, cellSize * 3, cellSize * 2);
 
