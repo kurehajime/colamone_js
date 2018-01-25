@@ -58,6 +58,12 @@
   var COLOR_RED2 = '#FF66CC';
   var COLOR_BLUE2 = '#00CCFF';
   var COLOR_WHITE = '#FFFFFF';
+  var RATIO=1;
+  if( window.devicePixelRatio!==undefined&& window.devicePixelRatio!=1){
+    RATIO = window.devicePixelRatio;
+  }
+  var CANV_SIZE=500*RATIO;
+
   var PIECES = {
     '1': [1, 1, 1,
       1, 0, 1,
@@ -178,53 +184,59 @@
     ctx = $('#canv')[0].getContext('2d');
 
     canv_board = document.createElement('canvas');
-    canv_board.width = ctx.canvas.width;
-    canv_board.height = ctx.canvas.height;
+    canv_board.width = CANV_SIZE;
+    canv_board.height = CANV_SIZE;
 
 
     canv_board2 = document.createElement('canvas');
-    canv_board2.width = ctx.canvas.width;
-    canv_board2.height = ctx.canvas.height;
+    canv_board2.width = CANV_SIZE;
+    canv_board2.height = CANV_SIZE;
 
     canv_focus = document.createElement('canvas');
-    canv_focus.width = ctx.canvas.width;
-    canv_focus.height = ctx.canvas.height;
+    canv_focus.width = CANV_SIZE;
+    canv_focus.height = CANV_SIZE;
 
     canv_pieces = document.createElement('canvas');
-    canv_pieces.width = ctx.canvas.width;
-    canv_pieces.height = ctx.canvas.height;
+    canv_pieces.width = CANV_SIZE;
+    canv_pieces.height = CANV_SIZE;
 
     canv_shadow = document.createElement('canvas');
-    canv_shadow.width = ctx.canvas.width;
-    canv_shadow.height = ctx.canvas.height;
+    canv_shadow.width = CANV_SIZE;
+    canv_shadow.height = CANV_SIZE;
 
     canv_hover_piece = document.createElement('canvas');
-    canv_hover_piece.width = ctx.canvas.width;
-    canv_hover_piece.height = ctx.canvas.height;
+    canv_hover_piece.width = CANV_SIZE;
+    canv_hover_piece.height = CANV_SIZE;
 
     canv_overlay = document.createElement('canvas');
-    canv_overlay.width = ctx.canvas.width;
-    canv_overlay.height = ctx.canvas.height;
+    canv_overlay.width = CANV_SIZE;
+    canv_overlay.height = CANV_SIZE;
 
     canv_bk = document.createElement('canvas');
-    canv_bk.width = ctx.canvas.width;
-    canv_bk.height = ctx.canvas.height;
+    canv_bk.width = CANV_SIZE;
+    canv_bk.height = CANV_SIZE;
 
     canv_cover = document.createElement('canvas');
-    canv_cover.width = ctx.canvas.width;
-    canv_cover.height = ctx.canvas.height;
+    canv_cover.width = CANV_SIZE;
+    canv_cover.height = CANV_SIZE;
 
     canv_score = document.createElement('canvas');
-    canv_score.width = ctx.canvas.width;
-    canv_score.height = ctx.canvas.height;
+    canv_score.width = CANV_SIZE;
+    canv_score.height = CANV_SIZE;
 
     canv_cache = document.createElement('canvas');
-    canv_cache.width = ctx.canvas.width;
-    canv_cache.height = ctx.canvas.height;
+    canv_cache.width = CANV_SIZE;
+    canv_cache.height = CANV_SIZE;
 
-    cellSize = ctx.canvas.width / 6;
+    cellSize = CANV_SIZE / 6;
     turn_player = 1;
     demo = true;
+
+    //retina対応
+    ctx.canvas.style.width = CANV_SIZE/RATIO + "px";
+    ctx.canvas.style.height = CANV_SIZE/RATIO + "px";
+    ctx.canvas.width = CANV_SIZE ;
+    ctx.canvas.height = CANV_SIZE ;
 
     if ('ontouchstart' in window) {
       isTouch = true;
@@ -672,6 +684,8 @@
     var rect = e.target.getBoundingClientRect();
     mouse_x = e.clientX - rect.left;
     mouse_y = e.clientY - rect.top;
+    mouse_x = mouse_x *  RATIO;
+    mouse_y = mouse_y *  RATIO;
   }
 
   /** 
@@ -679,7 +693,7 @@
    */
   function flush(initflg, cache_flg) {
     var wkMap = $.extend(true, {}, thisMap);
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.width);
+    ctx.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
 
     if (cache_flg === false) {
       cache_on = false;
@@ -687,10 +701,10 @@
     // キャッシュに保存
     if (cache_flg === false || cache_on === false) {
       // 盤面を描画
-      ctx.drawImage(drawBoard(initflg), 0, 0, ctx.canvas.width, ctx.canvas.height);
+      ctx.drawImage(drawBoard(initflg), 0, 0, CANV_SIZE, CANV_SIZE);
 
       // テカリを描画
-      ctx.drawImage(drawBoard2(initflg), 0, 0, ctx.canvas.width, ctx.canvas.height);
+      ctx.drawImage(drawBoard2(initflg), 0, 0, CANV_SIZE, CANV_SIZE);
 
       // 選択したコマを除外
       if (hover_piece !== null) {
@@ -698,43 +712,43 @@
       }
 
       // 残像を表示
-      ctx.drawImage(drawShadow(wkMap, thisHand), 0, 0, ctx.canvas.width, ctx.canvas.height);
+      ctx.drawImage(drawShadow(wkMap, thisHand), 0, 0, CANV_SIZE, CANV_SIZE);
 
 
       // コマを表示
-      ctx.drawImage(drawPieceAll(wkMap), 0, 0, ctx.canvas.width, ctx.canvas.height);
+      ctx.drawImage(drawPieceAll(wkMap), 0, 0, CANV_SIZE, CANV_SIZE);
 
       // キャッシュに保存
       var ctx_canv = canv_cache.getContext('2d');
-      ctx_canv.clearRect(0, 0, ctx.canvas.width, ctx.canvas.width);
-      ctx_canv.drawImage(ctx.canvas, 0, 0, ctx.canvas.width, ctx.canvas.height);
+      ctx_canv.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
+      ctx_canv.drawImage(ctx.canvas, 0, 0, CANV_SIZE, CANV_SIZE);
       // キャッシュ有効化
       cache_on = true;
     } else {
       // キャッシュから描画
-      ctx.drawImage(canv_cache, 0, 0, ctx.canvas.width, ctx.canvas.height);
+      ctx.drawImage(canv_cache, 0, 0, CANV_SIZE, CANV_SIZE);
     }
 
     // 選択したコマを表示
-    ctx.drawImage(drawHoverPiece(), 0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.drawImage(drawHoverPiece(), 0, 0, CANV_SIZE, CANV_SIZE);
 
     if ((mouse_x !== 0 || mouse_y !== 0) && demo === false) {
       // フォーカスを描画
-      ctx.drawImage(drawFocus(), 0, 0, ctx.canvas.width, ctx.canvas.height);
+      ctx.drawImage(drawFocus(), 0, 0, CANV_SIZE, CANV_SIZE);
     }
 
     //スコアを表示
     if(goaled||winner!==null){
       if(demo===false&&autoLog==false){
-        ctx.drawImage(drawScore(), 0, 0, ctx.canvas.width, ctx.canvas.height);
+        ctx.drawImage(drawScore(), 0, 0, CANV_SIZE, CANV_SIZE);
       }
     }
     // メッセージを描画
-    ctx.drawImage(drawOverlay(), 0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.drawImage(drawOverlay(), 0, 0, CANV_SIZE, CANV_SIZE);
 
     // カバーを描画
     if (demo === true) {
-      ctx.drawImage(drawCover(), 0, 0, ctx.canvas.width, ctx.canvas.height);
+      ctx.drawImage(drawCover(), 0, 0, CANV_SIZE, CANV_SIZE);
     }
 
 
@@ -746,7 +760,7 @@
   function drawBk() {
     var ctx_bk = canv_bk.getContext('2d');
     if (img_bk_loaded) {
-      ctx_bk.drawImage(img_bk, 0, 0, ctx.canvas.width, ctx.canvas.height, 0, 0, 500, 500);
+      ctx_bk.drawImage(img_bk, 0, 0, CANV_SIZE/RATIO, CANV_SIZE/RATIO, 0, 0, CANV_SIZE, CANV_SIZE);
     }
     return canv_bk;
   }
@@ -756,10 +770,10 @@
   function drawCover() {
     // 背景
     var ctx_cover = canv_cover.getContext('2d');
-    ctx_cover.clearRect(0, 0, ctx.canvas.width, ctx.canvas.width);
+    ctx_cover.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
     ctx_cover.globalAlpha = 0.50;
     ctx_cover.fillStyle = '#000000';
-    ctx_cover.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx_cover.fillRect(0, 0, CANV_SIZE, CANV_SIZE);
 
     // 枠
     var x = cellSize * 2;
@@ -819,7 +833,7 @@
     var fontsize = Math.round(cellSize *1.5);
     var blue=COLOR_BLUE2;
     var red=COLOR_RED2;
-    ctx_score.clearRect(0, 0, ctx.canvas.width, ctx.canvas.width);
+    ctx_score.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
 
     ctx_score.globalAlpha = 0.4;
     ctx_score.textBaseline = 'middle';
@@ -880,7 +894,7 @@
     var x = mouse_x - (mouse_x % cellSize);
     var y = mouse_y - (mouse_y % cellSize);
     var ctx_focus = canv_focus.getContext('2d');
-    ctx_focus.clearRect(0, 0, ctx.canvas.width, ctx.canvas.width);
+    ctx_focus.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
     ctx_focus.globalAlpha = 0.35;
     ctx_focus.fillStyle = COLOR_SELECT;
     ctx_focus.lineWidth = 1;
@@ -919,9 +933,9 @@
       return canv_board;
     }
     var ctx_board = canv_board.getContext('2d');
-    ctx_board.clearRect(0, 0, ctx.canvas.width, ctx.canvas.width);
+    ctx_board.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
 
-    var grad = ctx_board.createLinearGradient(0, 0, ctx.canvas.width, ctx.canvas.width);
+    var grad = ctx_board.createLinearGradient(0, 0, CANV_SIZE, CANV_SIZE);
     grad.addColorStop(0, COLOR_PANEL_6);
     grad.addColorStop(0.3, COLOR_PANEL_5);
     grad.addColorStop(1, COLOR_PANEL_4);
@@ -957,7 +971,7 @@
       return canv_board2;
     }
     var ctx_board2 = canv_board2.getContext('2d');
-    ctx_board2.clearRect(0, 0, ctx.canvas.width, ctx.canvas.width);
+    ctx_board2.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
     ctx_board2.globalAlpha = 0.07;
     ctx_board2.fillStyle = COLOR_WHITE;
     ctx_board2.beginPath();
@@ -973,7 +987,7 @@
    */
   function drawHoverPiece() {
     var ctx_hover = canv_hover_piece.getContext('2d');
-    ctx_hover.clearRect(0, 0, ctx.canvas.width, ctx.canvas.width);
+    ctx_hover.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
     var x = mouse_x - (cellSize / 2);
     var y = mouse_y - (cellSize / 2);
     if (hover_piece !== null) {
@@ -1009,7 +1023,7 @@
     wkCtx.fillStyle = grad;
     wkCtx.beginPath();
     // wkCtx.fillRect(x+cellSize/10,y+cellSize/10,cellSize-1*cellSize/5,cellSize-1*cellSize/5)
-    fillRoundRect(wkCtx, x + cellSize / 10, y + cellSize / 10, cellSize - 1 * cellSize / 5, cellSize - 1 * cellSize / 5, 5);
+    fillRoundRect(wkCtx, x + cellSize / 10, y + cellSize / 10, cellSize - 1 * cellSize / 5, cellSize - 1 * cellSize / 5, cellSize/20);
 
     wkCtx.shadowColor = 'rgba(0, 0, 0, 0)';
     wkCtx.shadowBlur = 0;
@@ -1028,7 +1042,7 @@
 
     // 文字を描画。
     wkCtx.fillStyle = COLOR_WHITE;
-
+    
     var fontsize = Math.round(cellSize * 0.18);
     wkCtx.textBaseline = 'middle';
     wkCtx.textAlign = 'center';
@@ -1092,7 +1106,7 @@
    */
   function drawPieceAll(wkMap) {
     var ctx_pieces = canv_pieces.getContext('2d');
-    ctx_pieces.clearRect(0, 0, ctx.canvas.width, ctx.canvas.width);
+    ctx_pieces.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
     for (var x = 0; x < 6; x++) {
       for (var y = 0; y < 6; y++) {
         if (wkMap[x * 10 + y] !== 0) {
@@ -1113,7 +1127,7 @@
    */
   function drawShadow(wkMap, hand) {
     var ctx_shadow = canv_shadow.getContext('2d');
-    ctx_shadow.clearRect(0, 0, ctx.canvas.width, ctx.canvas.width);
+    ctx_shadow.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
     var x0 = (hand[0] / 10 | 0);
     var y0 = hand[0] % 10;
     var x1 = (hand[1] / 10 | 0);
@@ -1255,7 +1269,7 @@
     var x = cellSize * 1.3;
     var y = cellSize * 2.5;
 
-    ctx_overlay.clearRect(0, 0, ctx.canvas.width, ctx.canvas.width);
+    ctx_overlay.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
 
     if (message === '') {
       return canv_overlay;
