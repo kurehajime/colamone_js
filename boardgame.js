@@ -915,10 +915,10 @@
         y = Math.floor(canm[i] % 10);
         ctx_focus.globalAlpha = 0.6;
         ctx_focus.strokeStyle = COLOR_SELECT;
-        ctx_focus.lineWidth = 5;
+        ctx_focus.lineWidth = cellSize/20;
         ctx_focus.beginPath();
         ctx_focus.arc(x * cellSize + (cellSize / 2), y * cellSize + (cellSize / 2),
-         (cellSize / 2) - 10, 0, Math.PI * 2, false);
+         (cellSize / 2) - (cellSize/10), 0, Math.PI * 2, false);
         ctx_focus.stroke();
       }
     }
