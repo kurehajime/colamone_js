@@ -355,8 +355,13 @@
     setTweet(); // ツイートボタンを生成
 
     if (logArray.length === 0) {
-      intervalID = window.setInterval(playDemo, 100);
-      playDemo();
+      if(window.navigator){
+        var userAgent = window.navigator.userAgent;
+        if(userAgent.indexOf("bot")===-1){
+          intervalID = window.setInterval(playDemo, 100);
+          playDemo();
+        }
+      }
     } else {
       demo = false;
       autoLog=true;
