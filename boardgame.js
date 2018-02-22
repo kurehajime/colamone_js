@@ -386,6 +386,9 @@
       flush(false, false);
       shuffleBoard();
     }
+    if(demo_inc>120){
+      window.clearInterval(intervalID);
+    }
   }
 
   /** 
