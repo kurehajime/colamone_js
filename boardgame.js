@@ -675,6 +675,9 @@
    * マウス位置取得
    */
   function getMousePosition(e) {
+    if(e==null){
+      return;
+    }
     if (!e.clientX) { // SmartPhone
       if (e.touches) {
         e = e.originalEvent.touches[0];
@@ -1609,6 +1612,13 @@
    */
   function reloadnew() {
     var url = document.location.href.split('?')[0];
+
+    //demo中ならdemoを終了
+    if(demo===true){
+      ev_mouseClick(null);
+      return;
+    }
+
     // パラメータを取得
     var paramObj = getParam();
     if (paramObj.lang) {
