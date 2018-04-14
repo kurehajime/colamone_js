@@ -107,7 +107,7 @@
    * @return {Object.<number, number>} 
    */
   function copyMap(wkMap) {
-    var rtnMap = new Array(56);
+    var rtnMap = new Int8Array(56);
     // 不格好だがループするより高速。
     rtnMap[0] = wkMap[0];
     rtnMap[10] = wkMap[10];
