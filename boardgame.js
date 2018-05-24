@@ -791,8 +791,7 @@
     ctx_cover.globalAlpha = 0.8;
     ctx_cover.fillStyle = COLOR_WHITE;
     ctx_cover.beginPath();
-    ctx_cover.fillRect(x, y, cellSize * 2, cellSize * 1);
-    ctx_cover.fill();
+    fillRoundRect(ctx_cover, x, y, cellSize * 2, cellSize * 1, cellSize/20);
     ctx_cover.shadowColor = 'rgba(0, 0, 0, 0)';
     ctx_cover.shadowBlur = 0;
     ctx_cover.shadowOffsetX = 0;
@@ -1028,7 +1027,6 @@
     wkCtx.shadowOffsetY = 2;
     wkCtx.fillStyle = grad;
     wkCtx.beginPath();
-    // wkCtx.fillRect(x+cellSize/10,y+cellSize/10,cellSize-1*cellSize/5,cellSize-1*cellSize/5)
     fillRoundRect(wkCtx, x + cellSize / 10, y + cellSize / 10, cellSize - 1 * cellSize / 5, cellSize - 1 * cellSize / 5, cellSize/20);
 
     wkCtx.shadowColor = 'rgba(0, 0, 0, 0)';
@@ -1287,9 +1285,7 @@
 
     ctx_overlay.globalAlpha = 0.9;
     ctx_overlay.fillStyle = COLOR_WHITE;
-    ctx_overlay.beginPath();
-    ctx_overlay.fillRect(x, y, cellSize * 3.4, cellSize * 1);
-    ctx_overlay.fill();
+    fillRoundRect(ctx_overlay, x, y, cellSize * 3.4, cellSize * 1, cellSize/20);
 
     var fontsize = Math.round(cellSize * 0.36);
     ctx_overlay.shadowBlur = 0;
