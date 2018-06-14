@@ -53,6 +53,7 @@
   var COLOR_PANEL_5 = '#444444';
   var COLOR_PANEL_6 = '#888888';
   var COLOR_SELECT = '#7fed7f';
+  var COLOR_SELECT2='#148d14';
   var COLOR_RED = '#ff0066';
   var COLOR_BLUE = '#00A0E9';
   var COLOR_RED2 = '#FF66CC';
@@ -899,13 +900,16 @@
     var x = mouse_x - (mouse_x % cellSize);
     var y = mouse_y - (mouse_y % cellSize);
     var ctx_focus = canv_focus.getContext('2d');
+    var grad = ctx_focus.createRadialGradient(x, y, 0, x,y, cellSize);
+    grad.addColorStop(0.3, COLOR_SELECT);
+    grad.addColorStop(1, COLOR_SELECT2);
     ctx_focus.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
     ctx_focus.globalAlpha = 0.35;
-    ctx_focus.fillStyle = COLOR_SELECT;
+    ctx_focus.fillStyle = grad;
     ctx_focus.lineWidth = 1;
     ctx_focus.beginPath();
     ctx_focus.fillRect(x, y, cellSize, cellSize);
-    ctx_focus.globalAlpha = 0.6;
+
 
     if (isTouch === true && hover_piece === null) {
       return canv_focus;
