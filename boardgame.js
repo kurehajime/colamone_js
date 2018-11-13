@@ -387,7 +387,7 @@
       flush(false, false);
       shuffleBoard();
     }
-    if(demo_inc>120){
+    if(demo_inc>42){
       window.clearInterval(intervalID);
     }
   }
