@@ -356,8 +356,10 @@
     setTweet(); // ツイートボタンを生成
 
     if (logArray.length === 0) {
-      intervalID = window.setInterval(playDemo, 100);
-      playDemo();
+      if(isBot()==false){
+        intervalID = window.setInterval(playDemo, 100);
+        playDemo();
+      }
     } else {
       demo = false;
       autoLog=true;
@@ -1681,6 +1683,18 @@
       if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.async = true; js.src = 'https://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); }
     } (document, 'script', 'twitter-wjs');
   }
+  /** 
+   * botかどうか判定
+   */
+  function isBot(){
+    var ua = window.navigator.userAgent.toLowerCase();
+    if (ua.indexOf('bot') != -1 ||
+    ua.indexOf('lighthouse') != -1) {
+      return true;
+    }
+    return false;
+  }
+
 })((this || 0).self || global);
 
 /** 
