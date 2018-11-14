@@ -357,8 +357,10 @@
 
     if (logArray.length === 0) {
       if(isBot()==false){
-        intervalID = window.setInterval(playDemo, 100);
-        playDemo();
+        window.setTimeout(function(){
+          intervalID = window.setInterval(playDemo, 100);
+          playDemo();
+        },2000);
       }
     } else {
       demo = false;
@@ -1689,7 +1691,8 @@
   function isBot(){
     var ua = window.navigator.userAgent.toLowerCase();
     if (ua.indexOf('bot') != -1 ||
-    ua.indexOf('lighthouse') != -1) {
+    ua.indexOf('lighthouse') != -1||
+    ua.indexOf('headless') != -1) {
       return true;
     }
     return false;
