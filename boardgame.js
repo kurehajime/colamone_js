@@ -356,12 +356,14 @@
     setTweet(); // ツイートボタンを生成
 
     if (logArray.length === 0) {
-      if(isBot()==false){
-        window.setTimeout(function(){
-          intervalID = window.setInterval(playDemo, 100);
-          playDemo();
-        },2000);
-      }
+      // if(isBot()==false){
+      //   window.setTimeout(function(){
+      //     if(demo==true){
+      //       intervalID = window.setInterval(playDemo, 100);
+      //       playDemo();
+      //     }
+      //   },2000);
+      // }
     } else {
       demo = false;
       autoLog=true;
@@ -1318,7 +1320,7 @@
     calcScore();
     var Block = '';
     $('#blue')[0].innerHTML = 'Blue: ' + blueScore + '/8';
-    $('#red')[0].innerHTML = 'Red: ' + redScore + '/8';
+    $('#red')[0].innerHTML = ' Red: ' + redScore + '/8';
     $('#time')[0].innerHTML = '(' + (thinktime.toFixed(3)) + 'sec)';
     if (logArray.length === 0) {
       if (winner == 1) {
