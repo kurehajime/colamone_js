@@ -705,7 +705,7 @@
    * 画面描画。
    */
   function flush(initflg, cache_flg) {
-    var wkMap = Int8Array.from(thisMap);
+    var wkMap = new Int8Array(thisMap);
     ctx.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
 
     if (cache_flg === false) {
