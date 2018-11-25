@@ -178,11 +178,11 @@
   function init() {
     zoom(); // 小さい端末でズーム
     if (window.innerHeight < window.innerWidth) {
-      $('.manual').show();
+      document.querySelector('.manual').classList.remove("hide");
     } else {
-      $('.manual').hide();
+      document.querySelector('.manual').classList.add("hide");
     }
-    ctx = $('#canv')[0].getContext('2d');
+    ctx = document.querySelector('#canv').getContext('2d');
 
     canv_board = document.createElement('canvas');
     canv_board.width = CANV_SIZE;
@@ -246,26 +246,26 @@
     }
     // イベントを設定
     if (isTouch) {
-      $('#canv').on('touchstart', ev_mouseClick);
-      $('#canv').on('touchmove', ev_touchMove);
+      document.querySelector('#canv').addEventListener('touchstart', ev_mouseClick);
+      document.querySelector('#canv').addEventListener('touchmove', ev_touchMove);
     } else {
-      $('#canv').on('mousemove ', ev_mouseMove);
-      $('#canv').on('mouseup', ev_mouseClick);
+      document.querySelector('#canv').addEventListener('mousemove', ev_mouseMove);
+      document.querySelector('#canv').addEventListener('mouseup', ev_mouseClick);
     }
-    $('#level').on('change ', ev_radioChange);
-    $('#prevprev').on('click', move_start);
-    $('#prev').on('click', move_prev);
-    $('#next').on('click', move_next);
-    $('#nextnext').on('click', move_end);
-    $('#replay').on('click', jumpkento);
-    $('#tweetlog').on('click', tweetlog);
-    $('#newgame').on('click', reloadnew);
-    $('#collapsible').on('click', function () {
-      $('.manual').toggle();
+    document.querySelector('#level').addEventListener('change', ev_radioChange);
+    document.querySelector('#prevprev').addEventListener('click', move_start);
+    document.querySelector('#prev').addEventListener('click', move_prev);
+    document.querySelector('#next').addEventListener('click', move_next);
+    document.querySelector('#nextnext').addEventListener('click', move_end);
+    document.querySelector('#replay').addEventListener('click', jumpkento);
+    document.querySelector('#tweetlog').addEventListener('click', tweetlog);
+    document.querySelector('#newgame').addEventListener('click', reloadnew);
+    document.querySelector('#collapsible').addEventListener('click', function () {
+      document.querySelector('.manual').classList.toggle("hide");
     });
 
 
-    $(window).on('orientationchange', zoom);
+    window.addEventListener('orientationchange', zoom);
 
     shuffleBoard();
 
@@ -287,10 +287,10 @@
     }
     // レベル記憶
     if (storage.getItem('level_save') !== undefined && storage.getItem('level_save') !== 'undefined' && storage.getItem('level_save') !== null) {
-      $('#level').val([parseInt(storage.getItem('level_save'))]);
+      document.querySelector('#level').value=parseInt(storage.getItem('level_save'));
     } else {
       storage.setItem('level_save', 1);
-      $('#level').val([1]);
+      document.querySelector('#level').value=1;
     }
 
     // パラメータを取得
@@ -309,26 +309,26 @@
     }
     // レベル取得
     if (paramObj.lv) {
-      $('#level').val([parseInt(paramObj.lv)]);
+      document.querySelector('#level').value=parseInt(paramObj.lv);
     }
 
     if (logArray.length !== 0) {
-      $('#log').show();
-      $('#prevprev').show();
-      $('#prev').show();
-      $('#next').show();
-      $('#nextnext').show();
-      $('#span_replay').hide();
-      $('#span_tweetlog').hide();
-      $('#next').focus();
+      document.querySelector('#log').classList.remove("hide");
+      document.querySelector('#prevprev').classList.remove("hide");
+      document.querySelector('#prev').classList.remove("hide");
+      document.querySelector('#next').classList.remove("hide");
+      document.querySelector('#nextnext').classList.remove("hide");
+      document.querySelector('#span_replay').classList.add("hide");
+      document.querySelector('#span_tweetlog').classList.add("hide");
+      document.querySelector('#next').focus();
     } else {
-      $('#log').hide();
-      $('#prevprev').hide();
-      $('#prev').hide();
-      $('#next').hide();
-      $('#nextnext').hide();
-      $('#span_replay').hide();
-      $('#span_tweetlog').hide();
+      document.querySelector('#log').classList.add("hide");
+      document.querySelector('#prevprev').classList.add("hide");
+      document.querySelector('#prev').classList.add("hide");
+      document.querySelector('#next').classList.add("hide");
+      document.querySelector('#nextnext').classList.add("hide");
+      document.querySelector('#span_replay').classList.add("hide");
+      document.querySelector('#span_tweetlog').classList.add("hide");
     }
 
     // 画像読み込み成功時
@@ -524,7 +524,7 @@
         updateMessage();
         if (winner === null) {
           window.setTimeout(function () {
-            ai($('#level option:selected').val());
+            ai(document.querySelector('#level').value);
             message = '';
             updateMessage();
             flush(false, false);
@@ -539,12 +539,12 @@
    * ラジオボタン変更時処理
    */
   function ev_radioChange() {
-    var num = $('#level option:selected').val();
+    var num = document.querySelector('#level').value;
     storage.setItem('level_save', num);
     if (storage.getItem('level_' + num) > 0) {
-      $('#wins')[0].innerHTML = storage.getItem('level_' + num) + ' win!';
+      document.querySelector('#wins').innerHTML = storage.getItem('level_' + num) + ' win!';
     } else {
-      $('#wins')[0].innerHTML = '';
+      document.querySelector('#wins').innerHTML = '';
     }
     thisMap = Aijs.copyMap(startMap);
     thisHand = [];
@@ -705,7 +705,7 @@
    * 画面描画。
    */
   function flush(initflg, cache_flg) {
-    var wkMap = $.extend(true, {}, thisMap);
+    var wkMap = Int8Array.from(thisMap);
     ctx.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
 
     if (cache_flg === false) {
@@ -1319,18 +1319,18 @@
   function updateMessage() {
     calcScore();
     var Block = '';
-    $('#blue')[0].innerHTML = 'Blue: ' + blueScore + '/8';
-    $('#red')[0].innerHTML = ' Red: ' + redScore + '/8';
-    $('#time')[0].innerHTML = '(' + (thinktime.toFixed(3)) + 'sec)';
+    document.querySelector('#blue').innerHTML = 'Blue: ' + blueScore + '/8';
+    document.querySelector('#red').innerHTML = ' Red: ' + redScore + '/8';
+    document.querySelector('#time').innerHTML = '(' + (thinktime.toFixed(3)) + 'sec)';
     if (logArray.length === 0) {
       if (winner == 1) {
         message = 'You win!';
-        storage.setItem('level_' + $('#level option:selected').val(),
-          parseInt(storage.getItem('level_' + $('#level option:selected').val())) + 1);
+        storage.setItem('level_' + document.querySelector('#level').value,
+          parseInt(storage.getItem('level_' + document.querySelector('#level').value)) + 1);
         endgame();
       } else if (winner == -1) {
         message = 'You lose...';
-        storage.setItem('level_' + $('#level option:selected').val(), 0);
+        storage.setItem('level_' + document.querySelector('#level').value, 0);
         endgame();
       } else if (winner === 0) {
         if (map_list[JSON.stringify(thisMap)] >= LIMIT_1000DAY) {
@@ -1342,10 +1342,10 @@
       }
     }
 
-    if (storage.getItem('level_' + $('#level option:selected').val()) > 0) {
-      $('#wins')[0].innerHTML = storage.getItem('level_' + $('#level option:selected').val()) + ' win!';
+    if (storage.getItem('level_' + document.querySelector('#level').value) > 0) {
+      document.querySelector('#wins').innerHTML = storage.getItem('level_' + document.querySelector('#level').value) + ' win!';
     } else {
-      $('#wins')[0].innerHTML = '';
+      document.querySelector('#wins').innerHTML = '';
     }
   }
 
@@ -1354,9 +1354,8 @@
    */
   function endgame() {
     if (logArray.length === 0) {
-      // $("#tweet").show()
-      $('#span_replay').show();
-      $('#span_tweetlog').show();
+      document.querySelector('#span_replay').classList.remove("hide");
+      document.querySelector('#span_tweetlog').classList.remove("hide");
     }
   }
   /** 
@@ -1657,7 +1656,7 @@
      startMap[44] + ','+
      startMap[14];
     var log = '&log=' + encodeLog(logArray2);
-    log += '&lv=' + $('#level option:selected').val();
+    log += '&lv=' + document.querySelector('#level').value;
     location.href = url + init + log;
   }
   /** 
@@ -1674,7 +1673,7 @@
      startMap[44] + ','+
      startMap[14];
     var log = '%26log=' + encodeLog(logArray2);
-    log += '%26lv=' + $('#level option:selected').val();
+    log += '%26lv=' + document.querySelector('#level').value;
     window.open('https://twitter.com/intent/tweet?text=' + url + init + log + '%20%23colamone');
   }
   /** 
@@ -1705,6 +1704,6 @@
 /** 
  * init 
  */
-$(function () {
+document.addEventListener('DOMContentLoaded', function() {
   BoardGamejs.init();
 });

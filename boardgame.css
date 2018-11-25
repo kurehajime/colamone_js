@@ -33,6 +33,11 @@ html {
 	padding: 0;
 	display: table;
 }
+
+.hide{
+    display:none !important;
+}
+
 #main{
     display: table-cell; 
     vertical-align: middle;
@@ -81,9 +86,7 @@ html {
     padding: 0px 10px;
     line-height:20px;
 }
-#manual_ja{
-    display: none;
-}
+
 #prevprev,#prev,#next,#nextnext{
     width: 80px;
     height: 40px;    
@@ -163,9 +166,6 @@ img.preload{
     box-shadow: 0px 3px 4px rgba(0,0,0,0.2);
 }
 
-#log,#prevprev,#prev,#next,#nextnext,#span_replay,#span_tweetlog{
-	display:none;
-}
 body{
     background-size: 10px 10px;
     background-color: #F3F3F3 !important;
