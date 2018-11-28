@@ -11,19 +11,21 @@ self.addEventListener('install', function(event) {
 });
 
 self.addEventListener('fetch', function(event) {
-event.respondWith(caches.match(event.request).then(function(response) {
-  if (response !== undefined && !navigator.onLine) {
-    return response;
-  } else {
-    return fetch(event.request).then(function (response) {
-      var responseClone = response.clone();        
-      caches.open(version).then(function (cache) {
-        if((event.request.url.indexOf('http') === 0)){
-          cache.put(event.request, responseClone);
-        }
-      });
-      return response;
-    });
+  if (event.request.url.indexOf(location.origin) === 0) {
+    event.respondWith(caches.match(event.request).then(function(response) {
+      if (response !== undefined && !navigator.onLine) {
+        return response;
+      } else {
+        return fetch(event.request).then(function (response) {
+          var responseClone = response.clone();        
+          caches.open(version).then(function (cache) {
+            if((event.request.url.indexOf('http') === 0)){
+              cache.put(event.request, responseClone);
+            }
+          });
+          return response;
+        });
+      }
+    }));
   }
-}));
 });
