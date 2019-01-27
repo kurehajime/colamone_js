@@ -46,18 +46,18 @@
   var thisHand = [];
   var demo_inc=0;
   var COLOR_LINE = '#333333';
-  var COLOR_PANEL_1 = '#640125';
-  var COLOR_PANEL_2 = '#003856';
+  var COLOR_PANEL_1 = '#660033';
+  var COLOR_PANEL_2 = '#004466';
   var COLOR_PANEL_3 = '#FFFFFF';
   var COLOR_PANEL_4 = '#111111';
   var COLOR_PANEL_5 = '#444444';
   var COLOR_PANEL_6 = '#888888';
   var COLOR_SELECT = '#7fed7f';
   var COLOR_SELECT2='#148d14';
-  var COLOR_RED = '#ff0066';
-  var COLOR_BLUE = '#00A0E9';
-  var COLOR_RED2 = '#FF66CC';
-  var COLOR_BLUE2 = '#00CCFF';
+  var COLOR_RED = '#E60073';
+  var COLOR_BLUE = '#0099E6';
+  var COLOR_RED2 = '#E60073';
+  var COLOR_BLUE2 = '#0099E6';
   var COLOR_WHITE = '#FFFFFF';
   var RATIO=1;
   if( window.devicePixelRatio!==undefined&& window.devicePixelRatio!=1){
@@ -292,6 +292,9 @@
       storage.setItem('level_save', 1);
       document.querySelector('#level').value=1;
     }
+
+    //document.querySelector('#canv').classList.add("hue-rotate1");
+
 
     // パラメータを取得
     var paramObj = getParam();

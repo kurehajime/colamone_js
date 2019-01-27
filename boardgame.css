@@ -261,6 +261,18 @@ body{
     border-radius: 3px!important;
     opacity: 0.5;
 }
+
+.hue-rotate1{
+    filter: hue-rotate(130deg);
+}
+.hue-rotate2{
+    filter: hue-rotate(230deg);
+}
+.hue-rotate3{
+    filter: hue-rotate(330deg);
+}
+
+
 @keyframes Flash{
   20%{
     opacity: 0.6;
