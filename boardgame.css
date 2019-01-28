@@ -312,9 +312,9 @@ body{
         background-clip: border-box;
         background-size:cover;
         /*
-        background-size: 50px 50px;
+        background-size: 50px 50px; */
         animation: huerotator 30s infinite alternate;
- */
+
 
 
 
