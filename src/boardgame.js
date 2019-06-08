@@ -1,4 +1,5 @@
 /* @license Copyright (c) @kurehajime / source code: https://github.com/kurehajime/colamone_js */
+import { Aijs } from "./ai";
 
 /** 
  * BoardGamejs名前空間 
