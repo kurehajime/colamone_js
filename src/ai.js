@@ -211,9 +211,6 @@ function isEndX(wkMap, nearwin) {
  * @return {boolean} 
  */
 function isDraw(wkMap) {
-  if (!isNoneNode(wkMap)) {
-    return false;
-  }
   let sum1 = 0;
   let sum2 = 0;
   // ループだと遅いので展開
@@ -230,10 +227,12 @@ function isDraw(wkMap) {
   if (wkMap[45] * -1 > 0) { sum2 -= wkMap[45]; }
   if (wkMap[55] * -1 > 0) { sum2 -= wkMap[55]; }
   if (sum1 === sum2) {
+    if (!isNoneNode(wkMap)) {
+      return false;
+    }
     return true;
-  } else {
-    return false;
   }
+  return false;
 }
 
 /** 
@@ -326,7 +325,7 @@ function getCanMovePanelX(panel_num, wkMap) {
     }
 
     let idx = target_x * 10 + target_y;
-    let target_number = wkMap[idx];
+    let target_number = wkMap[idx]|0;
 
     // 自コマとアガリのコマはとったらダメ。
     if ((target_number * number > 0) || (target_number > 0 && target_y === 0) || (target_number < 0 && target_y === 5)) {
@@ -364,12 +363,11 @@ function getNodeMap(wkMap, turn_player) {
 /** 
  * 盤面を評価して-10000〜+10000で採点数する。
  * @param  {Object.<number, number>}  wkMap
- * @param  {number}  turn_player
  * @param  {boolean}  nearwin
  * @param  {Object.<number, Array.<number>>}  evalparam
  * @return {number} 
  */
-function evalMap(wkMap, turn_player, nearwin, evalparam) {
+function evalMap(wkMap, nearwin, evalparam) {
   let ev = 0;
 
   // 引き分け判定
@@ -410,7 +408,7 @@ function deepThinkAllAB(map, turn_player, depth, a, b, nearwin, evalparam) {
   let best_score = turn_player * 9999999 * -1;
   let besthand;
   if (depth === 0) {
-    best_score = evalMap(map, turn_player, nearwin, evalparam);
+    best_score = evalMap(map, nearwin, evalparam);
     return [besthand, best_score];
   }
   if (a === void 0 || b === void 0) {
