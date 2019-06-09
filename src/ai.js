@@ -211,9 +211,6 @@ function isEndX(wkMap, nearwin) {
  * @return {boolean} 
  */
 function isDraw(wkMap) {
-  if (!isNoneNode(wkMap)) {
-    return false;
-  }
   let sum1 = 0;
   let sum2 = 0;
   // ループだと遅いので展開
@@ -230,10 +227,12 @@ function isDraw(wkMap) {
   if (wkMap[45] * -1 > 0) { sum2 -= wkMap[45]; }
   if (wkMap[55] * -1 > 0) { sum2 -= wkMap[55]; }
   if (sum1 === sum2) {
+    if (!isNoneNode(wkMap)) {
+      return false;
+    }
     return true;
-  } else {
-    return false;
   }
+  return false;
 }
 
 /** 
@@ -326,7 +325,7 @@ function getCanMovePanelX(panel_num, wkMap) {
     }
 
     let idx = target_x * 10 + target_y;
-    let target_number = wkMap[idx];
+    let target_number = wkMap[idx]|0;
 
     // 自コマとアガリのコマはとったらダメ。
     if ((target_number * number > 0) || (target_number > 0 && target_y === 0) || (target_number < 0 && target_y === 5)) {
