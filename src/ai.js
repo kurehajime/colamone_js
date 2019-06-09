@@ -364,12 +364,11 @@ function getNodeMap(wkMap, turn_player) {
 /** 
  * 盤面を評価して-10000〜+10000で採点数する。
  * @param  {Object.<number, number>}  wkMap
- * @param  {number}  turn_player
  * @param  {boolean}  nearwin
  * @param  {Object.<number, Array.<number>>}  evalparam
  * @return {number} 
  */
-function evalMap(wkMap, turn_player, nearwin, evalparam) {
+function evalMap(wkMap, nearwin, evalparam) {
   let ev = 0;
 
   // 引き分け判定
@@ -410,7 +409,7 @@ function deepThinkAllAB(map, turn_player, depth, a, b, nearwin, evalparam) {
   let best_score = turn_player * 9999999 * -1;
   let besthand;
   if (depth === 0) {
-    best_score = evalMap(map, turn_player, nearwin, evalparam);
+    best_score = evalMap(map, nearwin, evalparam);
     return [besthand, best_score];
   }
   if (a === void 0 || b === void 0) {
