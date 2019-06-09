@@ -1,26 +1,43 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const fs = require('fs');
 const date=require('date-utils');
 const timestamp = (new Date()).toFormat("YYYYMMDDHH24MI");
-let templates = ["colamone.html",
-                "index.html",
-                "colamone-en.html",
-                "colamone-ja.html",
-                "colamone-kr.html",
-                "colamone-mogera.html",
-                "colamone-zh-hans.html",
-                "colamone-zh-hant.html",
+
+// html
+let langs = ["ja",
+            "en",
+            "kr",
+            "zh-hans",
+            "zh-hant"
               ];
 let plugins = [];
-for (let i = 0; i < templates.length; i++) {
-  plugins.push(new HtmlWebpackPlugin({  // Also generate a test.html
-    filename: templates[i],
-    template: 'src/' + templates[i],
-    templateParameters: {
-      'TIMESTAMP': timestamp
-    },
-    inject: false,
-  }));
+for (let i = 0; i < langs.length; i++) {
+  let jsonObject = JSON.parse(fs.readFileSync('lang/'+langs[i]+'.json', 'utf8'));
+  plugins.push(new HtmlWebpackPlugin({  
+      filename: 'colamone-'+langs[i]+'.html',
+      template: 'src/template.html',
+      templateParameters: Object.assign({'TIMESTAMP': timestamp},jsonObject),
+      inject: false,
+    }));
 }
+plugins.push(new HtmlWebpackPlugin({
+  filename: 'colamone.html',
+  template: 'src/colamone.html',
+  templateParameters: {'TIMESTAMP': timestamp},
+  inject: false,
+}));
+plugins.push(new HtmlWebpackPlugin({
+  filename: 'index.html',
+  template: 'src/colamone.html',
+  templateParameters: {'TIMESTAMP': timestamp},
+  inject: false,
+}));
+plugins.push(new HtmlWebpackPlugin({
+  filename: 'colamone-mogera.html',
+  template: 'src/colamone-mogera.html',
+  templateParameters: {'TIMESTAMP': timestamp},
+  inject: false,
+}));
 module.exports = {
     // メインとなるJavaScriptファイル（エントリーポイント）
     entry: `./src/boardgame.js`,

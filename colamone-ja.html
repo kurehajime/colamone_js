@@ -7,7 +7,7 @@
         <meta name="description" content="Colamone:将棋・チェスに似たWebで遊べるボードゲーム">
         <meta property="og:title" content="colamone">
         <meta property="og:type" content="website">
-        <meta property="og:description" content="Colamone is a board game similar to chess.">
+        <meta property="og:description" content="Colamone:将棋・チェスに似たWebで遊べるボードゲーム">
         <meta property="og:url" content="https://xiidec.appspot.com/colamone/colamone.html">
         <meta property="og:image" content="https://xiidec.appspot.com/img/colamone.png">
         <meta property="og:site_name" content="Colamone">
@@ -19,68 +19,66 @@
         <link rel="apple-touch-icon" href="https://xiidec.appspot.com/apple-touch-icon.png">
         <link rel="alternate" hreflang="x-default" href="https://xiidec.appspot.com/colamone/colamone.html" />
         <link rel="alternate" hreflang="ja" href="https://xiidec.appspot.com/colamone/colamone-ja.html" />
-        <link rel="alternate" hreflang="en" href="https://xiidec.appspot.com/colamone/colamone-en.html" />        
-        <link rel="alternate" hreflang="ko" href="https://xiidec.appspot.com/colamone/colamone-kr.html" />                
+        <link rel="alternate" hreflang="en" href="https://xiidec.appspot.com/colamone/colamone-en.html" />
+        <link rel="alternate" hreflang="ko" href="https://xiidec.appspot.com/colamone/colamone-kr.html" />                        
         <link rel="alternate" hreflang="zh-Hant" href="https://xiidec.appspot.com/colamone/colamone-zh-hant.html" />        
         <link rel="alternate" hreflang="zh-Hans" href="https://xiidec.appspot.com/colamone/colamone-zh-hans.html" />        
         <link rel="manifest" href="./manifest.json">
         <link rel="stylesheet" type="text/css" href="boardgame.css" inline>
     </HEAD>
-    <BODY>
+    <BODY onLoad="">
 <span id="dialogue"></span>
 <span id="dialogue2"></span>
-<div  id="page" >
-        <div id="main" >
+<div  id="page">
+        <div id="main"  >
             <canvas id="canv" width="500" height="500"></canvas>
             <div id="message">
                 <div id="head">
                     <span id="gamename">colamone</span> by <A Href="https://twitter.com/kurehajime">@kurehajime</A><br/>
                     <span id="blue" class="score">Blue: 0/8</span> - <span id="red" class="score"> Red: 0/8</span>　<span id="wins"></span>
-                </div>
-                <div id="lvs">
+                 </div>
+                <div  id="lvs">
                     <select id="level"   >
                         <option value="1" class="lv" selected="selected">Lv.1</option>
                         <option value="2"  class="lv">Lv.2</option>
                         <option value="3" class="lv">Lv.3</option>
                         <option value="4"  class="lv">Lv.4</option>
                         <option value="5"  class="lv">Lv.5</option>
-                        <option value="6"  class="lv">Lv.6</option>
+                        <option value="6"  class="lv">Lv.6</option>                        
                     </select>
                     <button type="button" id="newgame" >New Game</button>
                 </div>
-<span id="log" class="hide" ><button type="button" id="prevprev"  class="hide" onclick=""  > |&lt; </button><button type="button" id="prev"  class="hide" onclick=""  > &lt; </button><button type="button" id="next"  class="hide" onclick=""  > &gt; </button><button type="button" id="nextnext"  class="hide" onclick=""  > &gt;| </button></span>
-<span id="span_replay" class="hide" ><button type="button" id="replay" onclick=""  > 棋譜を再生 </button></span>
+<span id="log" class="hide" ><button type="button" id="prevprev"  class="hide" onclick="" > |&lt; </button><button type="button" id="prev"  class="hide" onclick=""  > &lt; </button><button type="button" id="next"  class="hide" onclick=""  > &gt; </button><button type="button" id="nextnext" class="hide"  onclick="" > &gt;|</button></span>
+<span id="span_replay" class="hide" ><button type="button" id="replay" onclick="" > 棋譜を再生 </button></span>
 <span id="span_tweetlog" class="hide" ><button type="button" id="tweetlog" onclick=""  > 棋譜を ツイート する </button></span>
 <div  id="collapsible" >
     <h5 class="howtoplay"><span id="htp" >Colamoneの遊び方</span></h5>
-<p id="manual_ja" class="manual" lang="ja" >① Colamone(ｺﾗﾓﾈ)はﾁｪｽや将棋に似たﾎﾞｰﾄﾞｹﾞｰﾑです。
+<div class="manual" ><p id="manual">① Colamone(ｺﾗﾓﾈ)はﾁｪｽや将棋に似たﾎﾞｰﾄﾞｹﾞｰﾑです。
 ② 各コマは、丸が付いている方向に進めます。
 ③ 取られたコマは盤上から除かれ、再利用できません。
 ④ 奥の陣地まで進めるとコマの数字が得点になります。
 ⑤ 得点になったコマは動く事も取る事もできません。
 ⑥ 先に得点が 8 点以上になったプレーヤーの勝利です。
 ⑦ どちらかのﾌﾟﾚｰﾔｰの動かせるコマが無くなった時は
-　 その時点で点数の高いﾌﾟﾚｰﾔｰの勝利です。 
+　 その時点で点数の高いﾌﾟﾚｰﾔｰの勝利です。
 ⑧ 同一の局面が3回現れた時は千日手で引き分けです。</p>
+</div>
                 </div>
                 <span id="sns"> <a href="https://twitter.com/share" class="twitter-share-button" data-url="https://xiidec.appspot.com/colamone/colamone.html" data-hashtags="colamone, boardgames" data-lang="en"  data-size="default"></a>
-                </span></div>
+                </span>
+                </div>
         </div>
-    <IMG src="bk.gif" class="preload" style="display:none" loading="eager">
+    <IMG src="bk.gif" class="preload" style="display:none" alt="bk" loading="eager">
   <div  id="footer">
-    <p  style="text-align:center;font-size:10px;">(c)2014–<script language=JavaScript type=text/javascript> document.write(new Date().getFullYear()); </script> <A Href="https://twitter.com/kurehajime">@kurehajime</A>. All Rights Reserved. / Ver.<a href="https://github.com/kurehajime/colamone_js"  TARGET="_blank" >201906091249</a>/<span id="time"></span></p>
+    <p  style="text-align:center;font-size:10px;">(c)2014–<script type=text/javascript> document.write(new Date().getFullYear()); </script> <A Href="https://twitter.com/kurehajime">@kurehajime</A>. All Rights Reserved. / Ver.<a href="https://github.com/kurehajime/colamone_js"  TARGET="_blank" >201906091427</a>/<span id="time"></span></p>
   </div>
 </div>
-<script type="text/javascript" src="main.js?201906091249" defer></script>
+<script type="text/javascript" src="main.js?201906091427" defer></script>
 <script type="text/javascript">
     /** 
-     * 国際化・・・しない。
+     * 国際化
      */
-    function set_manual(){        
-        var canvas= document.getElementById("canv");
-        if (!canvas || !canvas.getContext) { 
-            alert("申し訳ございません。お使いのブラウザは対応していません。"); 
-        }
+    function set_manual(){
     }
     /** 
      * 小さい画面ではViewportを固定化
@@ -128,8 +126,7 @@
             (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
             m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
+            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
             ga('create', 'UA-75520116-1', 'auto');
             ga('send', 'pageview');
 </script>
@@ -141,5 +138,5 @@
         });
     };
  </script>
-    </BODY>
+ </BODY>
 </HTML>
