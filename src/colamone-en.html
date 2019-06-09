@@ -4,10 +4,10 @@
         <title>colamone</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width,user-scalable=no">
-        <meta name="description" content="Colamone">
+        <meta name="description" content="Colamone is a board game similar to chess.">
         <meta property="og:title" content="colamone">
         <meta property="og:type" content="website">
-        <meta property="og:description" content="Colamone">
+        <meta property="og:description" content="Colamone is a board game similar to chess.">
         <meta property="og:url" content="https://xiidec.appspot.com/colamone/colamone.html">
         <meta property="og:image" content="https://xiidec.appspot.com/img/colamone.png">
         <meta property="og:site_name" content="Colamone">
@@ -20,7 +20,7 @@
         <link rel="alternate" hreflang="x-default" href="https://xiidec.appspot.com/colamone/colamone.html" />
         <link rel="alternate" hreflang="ja" href="https://xiidec.appspot.com/colamone/colamone-ja.html" />
         <link rel="alternate" hreflang="en" href="https://xiidec.appspot.com/colamone/colamone-en.html" />
-        <link rel="alternate" hreflang="ko" href="https://xiidec.appspot.com/colamone/colamone-kr.html" />        
+        <link rel="alternate" hreflang="ko" href="https://xiidec.appspot.com/colamone/colamone-kr.html" />                        
         <link rel="alternate" hreflang="zh-Hant" href="https://xiidec.appspot.com/colamone/colamone-zh-hant.html" />        
         <link rel="alternate" hreflang="zh-Hans" href="https://xiidec.appspot.com/colamone/colamone-zh-hans.html" />        
         <link rel="manifest" href="./manifest.json">
@@ -52,27 +52,31 @@
 <span id="span_replay" class="hide" ><button type="button" id="replay" onclick=""  > View log </button></span>
 <span id="span_tweetlog" class="hide" ><button type="button" id="tweetlog" onclick="" > Tweet result </button></span>
 <div  id="collapsible" >
-    <h5 class="howtoplay"><span id="htp">如何玩Colamone</span></h5>
-<p id="manual_en" class="manual" lang="en"  >（1）Colamone有點像象棋。
-（2）每個棋子可以向點的方向移動1個棋子。
-（3）如果棋子到達另一邊，你會得到積分。
-（4）如果你得到8分，你就贏了。
-（5）當一個棋子到達另一側時，
-　　　你不能再移動它而敵人也不能剥夺。
-（6）當一名棋手不能再進行任何動作時，
-　　　得分最高的棋手將獲勝。
-（7）如果棋盤上的當前位置出現3次，則結果為平局。</p>
+    <h5 class="howtoplay"><span id="htp">How to play Colamone</span></h5>
+<p id="manual_en" class="manual" lang="en"  >(1) Colamone is kinda like chess. 
+     Only some loose similarities. 
+(2) Each piece can move 1 tile in the direction 
+     of any of it's dots. 
+(3) If a piece gets to the other side, 
+     you get how many ever points it's worth. 
+(4) If you get 8 points, you win.
+(5) When a piece gets to the other side, you can 
+     no longer move it and the enemy cannot take it. 
+(6) When a player can't make any more moves, 
+     whoever has the highest score wins.
+(7) if the current position on the board
+     appeared 3 times then the result is a draw.</p>
                 </div>
-                <span id="sns"> <a href="https://twitter.com/share" class="twitter-share-button" data-url="https://xiidec.appspot.com/colamone/colamone.html" data-hashtags="colamone, boardgames" data-lang="en"  data-size="default"></a>
-                </span>
+<span id="sns"> <a href="https://twitter.com/share" class="twitter-share-button" data-url="https://xiidec.appspot.com/colamone/colamone.html" data-hashtags="colamone, boardgames" data-lang="en"  data-size="default"></a>
+</span>
                </div>
         </div>
-    <IMG src="bk.gif" class="preload" style="display:none" loading="eager">
+    <IMG src="bk.gif" class="preload" style="display:none"  loading="eager">
   <div  id="footer">
-    <p  style="text-align:center;font-size:10px;">(c)2014–<script language=JavaScript type=text/javascript> document.write(new Date().getFullYear()); </script> <A Href="https://twitter.com/kurehajime">@kurehajime</A>. All Rights Reserved. / Ver.<a href="https://github.com/kurehajime/colamone_js"  TARGET="_blank" >201906091249</a>/<span id="time"></span></p>
+    <p  style="text-align:center;font-size:10px;">(c)2014–<script language=JavaScript type=text/javascript> document.write(new Date().getFullYear()); </script> <A Href="https://twitter.com/kurehajime">@kurehajime</A>. All Rights Reserved. / Ver.<a href="https://github.com/kurehajime/colamone_js"  TARGET="_blank" ><%=TIMESTAMP%></a>/<span id="time"></span></p>
   </div>
 </div>
-<script type="text/javascript" src="main.js?201906091249" defer></script>
+<script type="text/javascript" src="main.js?<%=TIMESTAMP%>" defer></script>
 <script type="text/javascript">
     /** 
      * 国際化・・・しない。
