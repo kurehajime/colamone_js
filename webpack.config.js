@@ -49,6 +49,13 @@ plugins.push(new CopyWebpackPlugin([
       }
   }
 ]));
+// assets
+plugins.push(new CopyWebpackPlugin([
+  {
+      from: 'assets',
+      to: ''
+  }
+]));
 module.exports = {
     // メインとなるJavaScriptファイル（エントリーポイント）
     entry: `./src/boardgame.js`,
@@ -58,7 +65,7 @@ module.exports = {
     // ファイルの出力設定
     output: {
       //  出力ファイルのディレクトリ名
-      path: `${__dirname}`,
+      path: `${__dirname}/doc`,
       // 出力ファイル名
       filename: "main.js"
     },
