@@ -1,13 +1,43 @@
 /* @license Copyright (c) @kurehajime / source code: https://github.com/kurehajime/colamone_js */
+/* play-regular - latin */
+@font-face {
+    font-family: 'Play';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local('Play Regular'), local('Play-Regular'),
+         url('./lib/play-v8-latin-regular.woff2') format('woff2'), 
+         url('./lib/play-v8-latin-regular.woff') format('woff'); 
+  }
+  /* play-700 - latin */
+  @font-face {
+    font-family: 'Play';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: local('Play Bold'), local('Play-Bold'),
+         url('./lib/play-v8-latin-700.woff2') format('woff2'),
+         url('./lib/play-v8-latin-700.woff') format('woff'); 
+  }
 body {
   color: #202020;
+  font-family: 'Play', sans-serif;      
 }
+
+button {
+    font-family: 'Play', sans-serif;      
+  }
 html {
 	height: 100%;
 	margin: 0 auto;
 	padding: 0;
 	display: table;
 }
+
+.hide{
+    display:none !important;
+}
+
 #main{
     display: table-cell; 
     vertical-align: middle;
@@ -44,8 +74,7 @@ html {
   color:#ff1493;
 }
 #wins,#gamename,.score,#prevprev,#prev,#next,#nextnext,.howtoplay a,.lv{
-  font-family: "Arial Black", 'Arial Bold', Arial,Verdana,sans-serif;
-  font-weight: bolder;
+    font-weight: bold;
 }
 
 .manual{
@@ -57,9 +86,7 @@ html {
     padding: 0px 10px;
     line-height:20px;
 }
-#manual_ja{
-    display: none;
-}
+
 #prevprev,#prev,#next,#nextnext{
     width: 80px;
     height: 40px;    
@@ -67,15 +94,17 @@ html {
     margin-right: 10px;
     font-size: 15px;
     color: #FFFFFF;
-    font-family: sans-serif;
     background-color: rgba(30,144,255,1);
     border:none;
     border-radius: 3px;
     box-shadow: 0px 3px 4px rgba(0,0,0,0.2);
     transition:box-shadow 0.4s;
 }
+#nextnext{
+    margin-right: 0px;    
+}
 #prevprev:hover,#prev:hover,#next:hover,#nextnext:hover,#newgame:hover,#replay:hover,#tweetlog:hover{
-    background-color: #33AAE9;
+    background: linear-gradient(0deg,#66b3ff, #1E90FF);
 }
 
 #replay,#tweetlog,#suma{
@@ -84,8 +113,7 @@ html {
     margin-top:5px;
     font-size: 15px;
     color: #FFFFFF;
-    font-family: sans-serif;
-    background-color: rgba(30,144,255,1);
+    background: linear-gradient(-60deg,#66b3ff, #1E90FF);
     border:none;
     border-radius: 3px;
     box-shadow: 0px 3px 4px rgba(0,0,0,0.2);
@@ -129,50 +157,24 @@ img.preload{
 
 #collapsible{
     width: 340px;   
-    color: #444444;
+    color: rgba(44,44,44,1);
     padding: 5px;
     margin: 10px 0px;
-    font-family: sans-serif;
     background-color: rgba(255,255,255,1);
     border:none;
     border-radius: 3px;
     box-shadow: 0px 3px 4px rgba(0,0,0,0.2);
 }
 
-#log,#prevprev,#prev,#next,#nextnext,#span_replay,#span_tweetlog{
-	display:none;
-}
 body{
-    -webkit-background-size: 10px 10px;
-    -moz-background-size: 10px 10px;
     background-size: 10px 10px;
     background-color: #F3F3F3 !important;
-    background-image: -webkit-gradient(linear, 0 0, 100% 100%,
-                color-stop(.25, #F9F9F9), color-stop(.25, transparent),
-                color-stop(.5, transparent), color-stop(.5, #F9F9F9),
-                color-stop(.75, #F9F9F9), color-stop(.75, transparent),
-                to(transparent));
-    background-image: -webkit-linear-gradient(-45deg, #F9F9F9 25%, transparent 25%,
-            transparent 50%, #F9F9F9 50%, #F9F9F9 75%,
-            transparent 75%, transparent);
-    background-image: -moz-linear-gradient(-45deg, #F9F9F9 25%, transparent 25%,
-            transparent 50%, #F9F9F9 50%, #F9F9F9 75%,
-            transparent 75%, transparent);
-    background-image: -ms-linear-gradient(-45deg, #F9F9F9 25%, transparent 25%,
-            transparent 50%, #F9F9F9 50%, #F9F9F9 75%,
-            transparent 75%, transparent);
-    background-image: -o-linear-gradient(-45deg, #F9F9F9 25%, transparent 25%,
-            transparent 50%, #F9F9F9 50%, #F9F9F9 75%,
-            transparent 75%, transparent);
     background-image: linear-gradient(-45deg, #F9F9F9 25%, transparent 25%,
             transparent 50%, #F9F9F9 50%, #F9F9F9 75%,
             transparent 75%, transparent);
-
 }
 #footer{
     border-radius: 5px;      
-    -webkit-border-radius: 5px;  
-    -moz-border-radius: 5px;
     background:rgba(99,99,99, 0.1) !important;
     border-style: solid;
     border-color: rgba(233,233,233, 1) !important;
@@ -203,7 +205,6 @@ body{
     height: 40px;
     font-size: 15px;
     color: #333333;
-    font-family: sans-serif;
     border:none;
     border-radius: 3px;
     box-shadow: 0px 3px 4px rgba(0,0,0,0.2);
@@ -213,7 +214,6 @@ body{
     text-align: center;
     -moz-appearance: none;
     -webkit-appearance: none;
-    -o-appearance: none;
     -ms-appearance: none;
     appearance: none;
     background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAGFBMVEUAAAAZJCYWISIYIyQYIiUWIiIYIyQYIiXh0rToAAAACHRSTlMA/hTRqiinvwFkb0sAAABCSURBVHjajchBDsAgDAPBOJDw/x+XVN0icQGfPGs3i+2GEqeiLCXWLENzvdzrDfP2ls/NjfKbgimYglfBq2Dm+LwHguMA235EdKYAAAAASUVORK5CYII=") 95% no-repeat;
@@ -224,8 +224,7 @@ body{
     height: 40px;    
     font-size: 15px;
     color: #FFFFFF;
-    font-family: sans-serif;
-    background-color: rgba(30,144,255,1);
+    background: linear-gradient(-60deg,#66b3ff, #1E90FF);
     border:none;
     border-radius: 3px;
     box-shadow: 0px 3px 4px rgba(0,0,0,0.2);
@@ -242,6 +241,37 @@ body{
     background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAGFBMVEUAAAAZJCYWISIYIyQYIiUWIiIYIyQYIiXh0rToAAAACHRSTlMA/hTRqiinvwFkb0sAAABCSURBVHjajchBDsAgDAPBOJDw/x+XVN0icQGfPGs3i+2GEqeiLCXWLENzvdzrDfP2ls/NjfKbgimYglfBq2Dm+LwHguMA235EdKYAAAAASUVORK5CYII=") 90% no-repeat;
 
 }
+#LauncherLogo{
+    display: none!important;
+
+}
+#WidgetLauncher{
+    height: 22px!important;
+    margin-top: 0px!important;
+    margin-bottom: 0px!important;
+    margin-left: 30px!important;
+}
+#MicrosoftTranslatorWidget{
+    height: 22px!important;
+    background-color: #555555;
+}
+#LauncherTranslatePhrase{
+    height: 16px!important;
+    border:none!important;
+    border-radius: 3px!important;
+    opacity: 0.5;
+}
+
+.hue-rotate1{
+    filter: hue-rotate(130deg);
+}
+.hue-rotate2{
+    filter: hue-rotate(230deg);
+}
+.hue-rotate3{
+    filter: hue-rotate(330deg);
+}
+
 
 @keyframes Flash{
   20%{
@@ -272,32 +302,34 @@ body{
         height: 116px;
         margin-right: calc(((100vw - 0px) / 1) * -1);
         padding: 1.5em calc((100vw - 0px) / 2);        
-        -webkit-background-size: 10px 10px;
-        -moz-background-size: 10px 10px;
-        background-size: 10px 10px;
-        background-color: #888888;
-        background-image: -webkit-gradient(linear, 0 0, 100% 100%,
-                    color-stop(.25, #909090), color-stop(.25, transparent),
-                    color-stop(.5, transparent), color-stop(.5, #909090),
-                    color-stop(.75, #909090), color-stop(.75, transparent),
-                    to(transparent));
-        background-image: -webkit-linear-gradient(-45deg, #909090 25%, transparent 25%,
-                transparent 50%, #909090 50%, #909090 75%,
-                transparent 75%, transparent);
-        background-image: -moz-linear-gradient(-45deg, #909090 25%, transparent 25%,
-                transparent 50%, #909090 50%, #909090 75%,
-                transparent 75%, transparent);
-        background-image: -ms-linear-gradient(-45deg, #909090 25%, transparent 25%,
-                transparent 50%, #909090 50%, #909090 75%,
-                transparent 75%, transparent);
-        background-image: -o-linear-gradient(-45deg, #888888 25%, transparent 25%,
-                transparent 50%, #909090 50%, #909090 75%,
-                transparent 75%, transparent);
-        background-image: linear-gradient(-45deg, #909090 25%, transparent 25%,
-                transparent 50%, #909090 50%, #909090 75%,
-                transparent 75%, transparent);
+/*        
+        background: -moz-linear-gradient(-45deg, rgba(255,255,255,0.2) 25%, rgba(0,0,0,0) 25%, rgba(0,0,0,0) 50%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.2) 75%, rgba(0,0,0,0) 75%, rgba(0,0,0,0) 0), rgba(8,151,173,1);
+        background: linear-gradient(-45deg, rgba(255,255,255,0.2) 25%, rgba(0,0,0,0) 25%, rgba(0,0,0,0) 50%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.2) 75%, rgba(0,0,0,0) 75%, rgba(0,0,0,0) 0), rgba(8,151,173,1);
+*/
+        background-image: url("head.jpg");
+        background-position: auto auto;
+        background-origin: padding-box;
+        background-clip: border-box;
+        background-size:cover;
+        /*
+        background-size: 50px 50px; */
+        animation: huerotator 30s infinite alternate;
+
+
+
 
     }
+
+    @keyframes huerotator {
+        0% {
+          filter: hue-rotate(0deg);
+        }
+      
+        100% {
+          filter: hue-rotate(360deg);
+        }
+    }
+
     #dialogue2{
         box-sizing: border-box;
         position: absolute;
@@ -307,35 +339,18 @@ body{
         height: calc(100vh);
         margin-right: calc(((100vw - 0px) / 1) * -1);
         padding: 1.5em calc((100vw - 0px) / 2);
-        -webkit-background-size: 10px 10px;
-        -moz-background-size: 10px 10px;
+
+
         background-size: 10px 10px;
-        background-color: #F3F3F3 !important;
-        background-image: -webkit-gradient(linear, 0 0, 100% 100%,
-                    color-stop(.25, #F9F9F9), color-stop(.25, transparent),
-                    color-stop(.5, transparent), color-stop(.5, #F9F9F9),
-                    color-stop(.75, #F9F9F9), color-stop(.75, transparent),
-                    to(transparent));
-        background-image: -webkit-linear-gradient(-45deg, #F9F9F9 25%, transparent 25%,
-                transparent 50%, #F9F9F9 50%, #F9F9F9 75%,
-                transparent 75%, transparent);
-        background-image: -moz-linear-gradient(-45deg, #F9F9F9 25%, transparent 25%,
-                transparent 50%, #F9F9F9 50%, #F9F9F9 75%,
-                transparent 75%, transparent);
-        background-image: -ms-linear-gradient(-45deg, #F9F9F9 25%, transparent 25%,
-                transparent 50%, #F9F9F9 50%, #F9F9F9 75%,
-                transparent 75%, transparent);
-        background-image: -o-linear-gradient(-45deg, #F9F9F9 25%, transparent 25%,
-                transparent 50%, #F9F9F9 50%, #F9F9F9 75%,
-                transparent 75%, transparent);
+        background-color: #F6F6F6 !important;
         background-image: linear-gradient(-45deg, #F9F9F9 25%, transparent 25%,
                 transparent 50%, #F9F9F9 50%, #F9F9F9 75%,
                 transparent 75%, transparent);
 
-    }
+}
     #gamename{
-        color: #F9F8F7;
-        text-shadow: 0px 0px 30px rgba(51,68,85,0.3); 
+        color: rgb(255, 255, 255);
+        text-shadow: 0px 0px 10px rgba(10,10,10,0.3); 
     }
     #head{
         height: 76px;
@@ -344,22 +359,22 @@ body{
         line-height: 22px;
     }
     #blue{
-        color: #e1f6f7;
-        text-shadow: 0px 0px 1px rgba(51,68,85,0.8); 
+        color: #FFFFFF;
+        text-shadow: 0px 0px 5px rgba(0,0,255,0.5); 
     }
     #red{
-        color: #f7e1f1;
-        text-shadow: 0px 0px 1px rgba(51,68,85,0.8);  
+        color: #FFFFFF;
+        text-shadow: 0px 0px 5px rgba(255,0,0,0.5); 
     }
     #wins{
-        color: #FFF9C4;
-        text-shadow: 0px 0px 1px rgba(51,68,85,0.8); 
+        color: #FFFFFF;
+        text-shadow: 0px 0px 5px rgba(255,255,0,0.5); 
     }
     #message{
         color: white;
         text-shadow: 0px 0px 30px rgba(51,68,85,0.3); 
     }
-    #message a{
+    #head a{
         color: white;
         text-shadow: 0px 0px 30px rgba(51,68,85,0.3); 
     }
@@ -375,7 +390,7 @@ body{
     }
 
     #prevprev,#prev,#next,#nextnext{
-        width: 113px;
+        width: 116px;
     }
     #message{
         width: 495px !important;

@@ -1,4 +1,5 @@
 /* @license Copyright (c) @kurehajime / source code: https://github.com/kurehajime/colamone_js */
+import { Aijs } from "./ai";
 
 /** 
  * BoardGamejs名前空間 
@@ -17,6 +18,7 @@
   // Body ---------------------------------------
   var ctx = null;
   var isTouch = true;
+  var goaled=false;
   var canv_board = null;
   var canv_board2 = null;
   var canv_focus = null;
@@ -26,6 +28,7 @@
   var canv_overlay = null;
   var canv_bk = null;
   var canv_cover = null;
+  var canv_score = null;
   var canv_cache = null;
   var cache_on = false;
   var img_bk_loaded = false;
@@ -38,20 +41,31 @@
   var message = '';
   var thinktime = 0.0;
   var demo = true;
+  var autoLog=false;
   var intervalID = null;
+  var intervalID_log = null;  
   var thisHand = [];
+  var demo_inc=0;
   var COLOR_LINE = '#333333';
-  var COLOR_PANEL_1 = '#550025';
-  var COLOR_PANEL_2 = '#003856';
+  var COLOR_PANEL_1 = '#660033';
+  var COLOR_PANEL_2 = '#004466';
   var COLOR_PANEL_3 = '#FFFFFF';
   var COLOR_PANEL_4 = '#111111';
   var COLOR_PANEL_5 = '#444444';
   var COLOR_PANEL_6 = '#888888';
   var COLOR_SELECT = '#7fed7f';
-  var COLOR_RED = '#E5004F';
-  var COLOR_BLUE = '#00A0E9';
+  var COLOR_SELECT2='#148d14';
+  var COLOR_RED = '#E60073';
+  var COLOR_BLUE = '#0099E6';
+  var COLOR_RED2 = '#E60073';
+  var COLOR_BLUE2 = '#0099E6';
   var COLOR_WHITE = '#FFFFFF';
-  var COLOR_GOLD = '#FFFF00';
+  var RATIO=1;
+  if( window.devicePixelRatio!==undefined&& window.devicePixelRatio!=1){
+    RATIO = window.devicePixelRatio;
+  }
+  var CANV_SIZE=500*RATIO;
+
   var PIECES = {
     '1': [1, 1, 1,
       1, 0, 1,
@@ -103,14 +117,22 @@
       0, 1, 0]
   };
 
-  var thisMap = {
+/*  var thisMap = {
     0: -1, 10: -2, 20: -3, 30: -4, 40: -5, 50: -6,
     1: 0, 11: -8, 21: 0, 31: 0, 41: -7, 51: 0,
     2: 0, 12: 0, 22: 0, 32: 0, 42: 0, 52: 0,
     3: 0, 13: 0, 23: 0, 33: 0, 43: 0, 53: 0,
     4: 0, 14: 7, 24: 0, 34: 0, 44: 8, 54: 0,
     5: 6, 15: 5, 25: 4, 35: 3, 45: 2, 55: 1
-  };
+  };*/
+  var thisMap =[
+    -1,0,0,0,0,6,0,0,0,0,-2,-8,
+    0,0,7,5,0,0,0,0,-3,0,0,0,
+    0,4,0,0,0,0,-4,0,0,0,0,
+    3,0,0,0,0,-5,-7,0,0,8,2,
+    0,0,0,0,-6,0,0,0,0,1
+  ]
+
   var map_list = {};
   var LIMIT_1000DAY = 3;
   var mouse_x = 0;
@@ -157,57 +179,66 @@
   function init() {
     zoom(); // 小さい端末でズーム
     if (window.innerHeight < window.innerWidth) {
-      $('.manual').show();
+      document.querySelector('.manual').classList.remove("hide");
     } else {
-      $('.manual').hide();
+      document.querySelector('.manual').classList.add("hide");
     }
-    ctx = $('#canv')[0].getContext('2d');
+    ctx = document.querySelector('#canv').getContext('2d');
 
     canv_board = document.createElement('canvas');
-    canv_board.width = ctx.canvas.width;
-    canv_board.height = ctx.canvas.height;
+    canv_board.width = CANV_SIZE;
+    canv_board.height = CANV_SIZE;
 
 
     canv_board2 = document.createElement('canvas');
-    canv_board2.width = ctx.canvas.width;
-    canv_board2.height = ctx.canvas.height;
+    canv_board2.width = CANV_SIZE;
+    canv_board2.height = CANV_SIZE;
 
     canv_focus = document.createElement('canvas');
-    canv_focus.width = ctx.canvas.width;
-    canv_focus.height = ctx.canvas.height;
+    canv_focus.width = CANV_SIZE;
+    canv_focus.height = CANV_SIZE;
 
     canv_pieces = document.createElement('canvas');
-    canv_pieces.width = ctx.canvas.width;
-    canv_pieces.height = ctx.canvas.height;
+    canv_pieces.width = CANV_SIZE;
+    canv_pieces.height = CANV_SIZE;
 
     canv_shadow = document.createElement('canvas');
-    canv_shadow.width = ctx.canvas.width;
-    canv_shadow.height = ctx.canvas.height;
+    canv_shadow.width = CANV_SIZE;
+    canv_shadow.height = CANV_SIZE;
 
     canv_hover_piece = document.createElement('canvas');
-    canv_hover_piece.width = ctx.canvas.width;
-    canv_hover_piece.height = ctx.canvas.height;
+    canv_hover_piece.width = CANV_SIZE;
+    canv_hover_piece.height = CANV_SIZE;
 
     canv_overlay = document.createElement('canvas');
-    canv_overlay.width = ctx.canvas.width;
-    canv_overlay.height = ctx.canvas.height;
+    canv_overlay.width = CANV_SIZE;
+    canv_overlay.height = CANV_SIZE;
 
     canv_bk = document.createElement('canvas');
-    canv_bk.width = ctx.canvas.width;
-    canv_bk.height = ctx.canvas.height;
+    canv_bk.width = CANV_SIZE;
+    canv_bk.height = CANV_SIZE;
 
     canv_cover = document.createElement('canvas');
-    canv_cover.width = ctx.canvas.width;
-    canv_cover.height = ctx.canvas.height;
+    canv_cover.width = CANV_SIZE;
+    canv_cover.height = CANV_SIZE;
 
+    canv_score = document.createElement('canvas');
+    canv_score.width = CANV_SIZE;
+    canv_score.height = CANV_SIZE;
 
     canv_cache = document.createElement('canvas');
-    canv_cache.width = ctx.canvas.width;
-    canv_cache.height = ctx.canvas.height;
+    canv_cache.width = CANV_SIZE;
+    canv_cache.height = CANV_SIZE;
 
-    cellSize = ctx.canvas.width / 6;
+    cellSize = CANV_SIZE / 6;
     turn_player = 1;
     demo = true;
+
+    //retina対応
+    ctx.canvas.style.width = CANV_SIZE/RATIO + "px";
+    ctx.canvas.style.height = CANV_SIZE/RATIO + "px";
+    ctx.canvas.width = CANV_SIZE ;
+    ctx.canvas.height = CANV_SIZE ;
 
     if ('ontouchstart' in window) {
       isTouch = true;
@@ -216,26 +247,26 @@
     }
     // イベントを設定
     if (isTouch) {
-      $('#canv').on('touchstart', ev_mouseClick);
-      $('#canv').on('touchmove', ev_touchMove);
+      document.querySelector('#canv').addEventListener('touchstart', ev_mouseClick);
+      document.querySelector('#canv').addEventListener('touchmove', ev_touchMove);
     } else {
-      $('#canv').on('mousemove ', ev_mouseMove);
-      $('#canv').on('mouseup', ev_mouseClick);
+      document.querySelector('#canv').addEventListener('mousemove', ev_mouseMove);
+      document.querySelector('#canv').addEventListener('mouseup', ev_mouseClick);
     }
-    $('#level').on('change ', ev_radioChange);
-    $('#prevprev').on('click', move_start);
-    $('#prev').on('click', move_prev);
-    $('#next').on('click', move_next);
-    $('#nextnext').on('click', move_end);
-    $('#replay').on('click', jumpkento);
-    $('#tweetlog').on('click', tweetlog);
-    $('#newgame').on('click', reloadnew);
-    $('#collapsible').on('click', function () {
-      $('.manual').toggle();
+    document.querySelector('#level').addEventListener('change', ev_radioChange);
+    document.querySelector('#prevprev').addEventListener('click', move_start);
+    document.querySelector('#prev').addEventListener('click', move_prev);
+    document.querySelector('#next').addEventListener('click', move_next);
+    document.querySelector('#nextnext').addEventListener('click', move_end);
+    document.querySelector('#replay').addEventListener('click', jumpkento);
+    document.querySelector('#tweetlog').addEventListener('click', tweetlog);
+    document.querySelector('#newgame').addEventListener('click', reloadnew);
+    document.querySelector('#collapsible').addEventListener('click', function () {
+      document.querySelector('.manual').classList.toggle("hide");
     });
 
 
-    $(window).on('orientationchange', zoom);
+    window.addEventListener('orientationchange', zoom);
 
     shuffleBoard();
 
@@ -256,12 +287,15 @@
       storage.setItem('level_5', 0);
     }
     // レベル記憶
-    if (storage.getItem('level_save') !== undefined && storage.getItem('level_save') !== 'undefined') {
-      $('#level').val([parseInt(storage.getItem('level_save'))]);
+    if (storage.getItem('level_save') !== undefined && storage.getItem('level_save') !== 'undefined' && storage.getItem('level_save') !== null) {
+      document.querySelector('#level').value=parseInt(storage.getItem('level_save'));
     } else {
-      storage.setItem('level_save', 2);
-      $('#level').val([2]);
+      storage.setItem('level_save', 1);
+      document.querySelector('#level').value=1;
     }
+
+    //document.querySelector('#canv').classList.add("hue-rotate1");
+
 
     // パラメータを取得
     var paramObj = getParam();
@@ -279,26 +313,26 @@
     }
     // レベル取得
     if (paramObj.lv) {
-      $('#level').val([parseInt(paramObj.lv)]);
+      document.querySelector('#level').value=parseInt(paramObj.lv);
     }
 
     if (logArray.length !== 0) {
-      $('#log').show();
-      $('#prevprev').show();
-      $('#prev').show();
-      $('#next').show();
-      $('#nextnext').show();
-      $('#span_replay').hide();
-      $('#span_tweetlog').hide();
-      $('#next').focus();
+      document.querySelector('#log').classList.remove("hide");
+      document.querySelector('#prevprev').classList.remove("hide");
+      document.querySelector('#prev').classList.remove("hide");
+      document.querySelector('#next').classList.remove("hide");
+      document.querySelector('#nextnext').classList.remove("hide");
+      document.querySelector('#span_replay').classList.add("hide");
+      document.querySelector('#span_tweetlog').classList.add("hide");
+      document.querySelector('#next').focus();
     } else {
-      $('#log').hide();
-      $('#prevprev').hide();
-      $('#prev').hide();
-      $('#next').hide();
-      $('#nextnext').hide();
-      $('#span_replay').hide();
-      $('#span_tweetlog').hide();
+      document.querySelector('#log').classList.add("hide");
+      document.querySelector('#prevprev').classList.add("hide");
+      document.querySelector('#prev').classList.add("hide");
+      document.querySelector('#next').classList.add("hide");
+      document.querySelector('#nextnext').classList.add("hide");
+      document.querySelector('#span_replay').classList.add("hide");
+      document.querySelector('#span_tweetlog').classList.add("hide");
     }
 
     // 画像読み込み成功時
@@ -324,14 +358,22 @@
     }, 2500);
     updateMessage();
     setTweet(); // ツイートボタンを生成
-    setPocket(); // pocketボタンを生成
 
     if (logArray.length === 0) {
-      intervalID = window.setInterval(playDemo, 1000);
-      playDemo();
+      // if(isBot()==false){
+      //   window.setTimeout(function(){
+      //     if(demo==true){
+      //       intervalID = window.setInterval(playDemo, 100);
+      //       playDemo();
+      //     }
+      //   },2000);
+      // }
     } else {
       demo = false;
+      autoLog=true;
+      intervalID_log = window.setInterval(playLog, 1000);      
     }
+    goaled=false;
     flush(true, false);
   }
 
@@ -339,19 +381,38 @@
    * Demoを再生
    */
   function playDemo() {
-    if (Math.random() > 0.3) {
-      ai(2);
-    } else {
-      ai(1);
+    if (intervalID !==null) {
+      if (Math.random() > 0.3) {
+        ai(2);
+      } else {
+        ai(1);
+      }
     }
+    demo_inc++;
     calcScore();
     flush(false, false);
     if (winner === 1 || winner === -1 || winner === 0) {
+      goaled=true;
       winner = null;
+      flush(false, false);
+      shuffleBoard();
+    }
+    if(demo_inc>42){
       window.clearInterval(intervalID);
     }
   }
 
+  /** 
+   * Logを再生
+   */
+  function playLog() {
+
+    if (intervalID_log !==null&&autoLog==true) {
+      move_next();
+    }else{
+      clearInterval(intervalID_log);
+    }
+  }
 
   /** 
    * 小さい画面ではViewportを固定化
@@ -421,8 +482,10 @@
       logArray2 = [];
       flush(false, false);
       winner = null;
+      goaled=false;
       turn_player = 1;
       window.clearInterval(intervalID);
+      flush(false, false);
       return true;
     }
 
@@ -439,6 +502,16 @@
       var canm = Aijs.getCanMovePanelX(hover_piece, thisMap);
       if (canm.indexOf(target) >= 0) {
         flush(false, true);
+        if(isGoaled(thisMap,target,turn_player)){
+            goaled=true;
+            flush(false, true);
+            setTimeout(function(){
+              goaled=false;
+              flush(false, false);
+            },3000);
+        }
+
+
         thisMap[target] = thisMap[hover_piece];
         thisMap[hover_piece] = 0;
         turn_player = turn_player * -1;
@@ -455,7 +528,7 @@
         updateMessage();
         if (winner === null) {
           window.setTimeout(function () {
-            ai($('#level option:selected').val());
+            ai(document.querySelector('#level').value);
             message = '';
             updateMessage();
             flush(false, false);
@@ -470,12 +543,12 @@
    * ラジオボタン変更時処理
    */
   function ev_radioChange() {
-    var num = $('#level option:selected').val();
+    var num = document.querySelector('#level').value;
     storage.setItem('level_save', num);
     if (storage.getItem('level_' + num) > 0) {
-      $('#wins')[0].innerHTML = storage.getItem('level_' + num) + ' win!';
+      document.querySelector('#wins').innerHTML = storage.getItem('level_' + num) + ' win!';
     } else {
-      $('#wins')[0].innerHTML = '';
+      document.querySelector('#wins').innerHTML = '';
     }
     thisMap = Aijs.copyMap(startMap);
     thisHand = [];
@@ -533,11 +606,30 @@
           plus++;
         }
         break;
+      case 6:
+        if (count > 16) {
+          plus--;
+        }
+        if (count <= 12) {
+          plus++;
+        }
+        if (count <= 8) {
+          plus++;
+        }
+        break;
     }
 
     hand = Aijs.thinkAI(thisMap, turn_player, level + plus + 1)[0];
     thisHand = hand;
     if (hand) {
+      if(isGoaled(thisMap,hand[1],turn_player)){
+          goaled=true;
+          flush(false, true);
+          setTimeout(function(){
+            goaled=false;
+            flush(false, false);
+          },3000);
+      }
       thisMap[hand[1]] = thisMap[hand[0]];
       thisMap[hand[0]] = 0;
       logArray2.push([hand[0], hand[1]]);
@@ -549,7 +641,22 @@
     endTime = new Date();
     thinktime = (endTime - startTime) / 1000;
   }
+  /** 
+   * ゴールしたか
+   */
+  function isGoaled(map,afterHand,turn){
+      if(turn>0){
+        if(afterHand%10===0){
+            return true;
+        }
+      }else if(turn<0){
+        if(afterHand%10===5){
+            return true;
+        }
+      }
 
+      return false;
+  }
   /** 
    * 盤面をシャッフル。
    */
@@ -579,11 +686,14 @@
    * マウス位置取得
    */
   function getMousePosition(e) {
+    if(e==null){
+      return;
+    }
     if (!e.clientX) { // SmartPhone
       if (e.touches) {
-        e = e.originalEvent.touches[0];
-      } else if (e.originalEvent.touches) {
-        e = e.originalEvent.touches[0];
+        e = e.touches[0];
+      } else if (e.touches) {
+        e = e.touches[0];
       } else {
         e = event.touches[0];
       }
@@ -591,14 +701,16 @@
     var rect = e.target.getBoundingClientRect();
     mouse_x = e.clientX - rect.left;
     mouse_y = e.clientY - rect.top;
+    mouse_x = mouse_x *  RATIO;
+    mouse_y = mouse_y *  RATIO;
   }
 
   /** 
    * 画面描画。
    */
   function flush(initflg, cache_flg) {
-    var wkMap = $.extend(true, {}, thisMap);
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.width);
+    var wkMap = new Int8Array(thisMap);
+    ctx.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
 
     if (cache_flg === false) {
       cache_on = false;
@@ -606,10 +718,10 @@
     // キャッシュに保存
     if (cache_flg === false || cache_on === false) {
       // 盤面を描画
-      ctx.drawImage(drawBoard(initflg), 0, 0, ctx.canvas.width, ctx.canvas.height);
+      ctx.drawImage(drawBoard(initflg), 0, 0, CANV_SIZE, CANV_SIZE);
 
       // テカリを描画
-      ctx.drawImage(drawBoard2(initflg), 0, 0, ctx.canvas.width, ctx.canvas.height);
+      ctx.drawImage(drawBoard2(initflg), 0, 0, CANV_SIZE, CANV_SIZE);
 
       // 選択したコマを除外
       if (hover_piece !== null) {
@@ -617,38 +729,46 @@
       }
 
       // 残像を表示
-      ctx.drawImage(drawShadow(wkMap, thisHand), 0, 0, ctx.canvas.width, ctx.canvas.height);
+      ctx.drawImage(drawShadow(wkMap, thisHand), 0, 0, CANV_SIZE, CANV_SIZE);
 
 
       // コマを表示
-      ctx.drawImage(drawPieceAll(wkMap), 0, 0, ctx.canvas.width, ctx.canvas.height);
+      ctx.drawImage(drawPieceAll(wkMap), 0, 0, CANV_SIZE, CANV_SIZE);
 
       // キャッシュに保存
       var ctx_canv = canv_cache.getContext('2d');
-      ctx_canv.clearRect(0, 0, ctx.canvas.width, ctx.canvas.width);
-      ctx_canv.drawImage(ctx.canvas, 0, 0, ctx.canvas.width, ctx.canvas.height);
+      ctx_canv.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
+      ctx_canv.drawImage(ctx.canvas, 0, 0, CANV_SIZE, CANV_SIZE);
       // キャッシュ有効化
       cache_on = true;
     } else {
       // キャッシュから描画
-      ctx.drawImage(canv_cache, 0, 0, ctx.canvas.width, ctx.canvas.height);
+      ctx.drawImage(canv_cache, 0, 0, CANV_SIZE, CANV_SIZE);
     }
 
     // 選択したコマを表示
-    ctx.drawImage(drawHoverPiece(), 0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.drawImage(drawHoverPiece(), 0, 0, CANV_SIZE, CANV_SIZE);
 
     if ((mouse_x !== 0 || mouse_y !== 0) && demo === false) {
       // フォーカスを描画
-      ctx.drawImage(drawFocus(), 0, 0, ctx.canvas.width, ctx.canvas.height);
+      ctx.drawImage(drawFocus(), 0, 0, CANV_SIZE, CANV_SIZE);
     }
 
+    //スコアを表示
+    if(goaled||winner!==null){
+      if(demo===false&&autoLog==false){
+        ctx.drawImage(drawScore(), 0, 0, CANV_SIZE, CANV_SIZE);
+      }
+    }
     // メッセージを描画
-    ctx.drawImage(drawOverlay(), 0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx.drawImage(drawOverlay(), 0, 0, CANV_SIZE, CANV_SIZE);
 
     // カバーを描画
     if (demo === true) {
-      ctx.drawImage(drawCover(), 0, 0, ctx.canvas.width, ctx.canvas.height);
+      ctx.drawImage(drawCover(), 0, 0, CANV_SIZE, CANV_SIZE);
     }
+
+
   }
 
   /** 
@@ -657,7 +777,7 @@
   function drawBk() {
     var ctx_bk = canv_bk.getContext('2d');
     if (img_bk_loaded) {
-      ctx_bk.drawImage(img_bk, 0, 0, ctx.canvas.width, ctx.canvas.height, 0, 0, 500, 500);
+      ctx_bk.drawImage(img_bk, 0, 0, CANV_SIZE/RATIO, CANV_SIZE/RATIO, 0, 0, CANV_SIZE, CANV_SIZE);
     }
     return canv_bk;
   }
@@ -667,10 +787,10 @@
   function drawCover() {
     // 背景
     var ctx_cover = canv_cover.getContext('2d');
-    ctx_cover.clearRect(0, 0, ctx.canvas.width, ctx.canvas.width);
-    ctx_cover.globalAlpha = 0.60;
+    ctx_cover.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
+    ctx_cover.globalAlpha = 0.50;
     ctx_cover.fillStyle = '#000000';
-    ctx_cover.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    ctx_cover.fillRect(0, 0, CANV_SIZE, CANV_SIZE);
 
     // 枠
     var x = cellSize * 2;
@@ -682,8 +802,7 @@
     ctx_cover.globalAlpha = 0.8;
     ctx_cover.fillStyle = COLOR_WHITE;
     ctx_cover.beginPath();
-    ctx_cover.fillRect(x, y, cellSize * 2, cellSize * 1);
-    ctx_cover.fill();
+    fillRoundRect(ctx_cover, x, y, cellSize * 2, cellSize * 1, cellSize/20);
     ctx_cover.shadowColor = 'rgba(0, 0, 0, 0)';
     ctx_cover.shadowBlur = 0;
     ctx_cover.shadowOffsetX = 0;
@@ -695,11 +814,12 @@
     // 文字
     var fontsize = Math.round(cellSize * 0.5);
     var message = 'Play';
+    message+=(demo_inc%10==0)?" ":"";
     ctx_cover.shadowBlur = 0;
     ctx_cover.shadowOffsetX = 0;
     ctx_cover.shadowOffsetY = 0;
     ctx_cover.shadowColor = 'rgba(0, 0, 0, 0)';
-    ctx_cover.font = 'bold ' + fontsize + 'px sans-serif';
+    ctx_cover.font = 'bold ' + fontsize + 'px Play,sans-serif';
     ctx_cover.globalAlpha = 1;
     ctx_cover.fillStyle = COLOR_LINE;
     ctx_cover.textBaseline = 'middle';
@@ -709,14 +829,78 @@
     // 文字２
     message = 'colamone';
     fontsize = Math.round(cellSize * 1);
-    ctx_cover.font = 'bold ' + fontsize + 'px sans-serif';
+    ctx_cover.font = 'bold ' + fontsize + 'px Play,sans-serif';
     ctx_cover.fillStyle = COLOR_WHITE;
+    ctx_cover.shadowBlur = 0;
     ctx_cover.beginPath();
     ctx_cover.fillText(message, cellSize * 3, cellSize * 2);
 
 
     return canv_cover;
   }
+
+  /** 
+   * スコア描画
+   */
+  function drawScore() {
+    // 背景
+    var ctx_score = canv_score.getContext('2d');
+    var message ="";
+    var fontsize = Math.round(cellSize *1.5);
+    var blue=COLOR_BLUE2;
+    var red=COLOR_RED2;
+    ctx_score.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
+
+    ctx_score.globalAlpha = 0.4;
+    ctx_score.textBaseline = 'middle';
+    ctx_score.textAlign = 'center';
+    ctx_score.shadowBlur = 10;
+    ctx_score.shadowColor = 'rgba(0, 0, 0, 0.5)';
+    ctx_score.font = 'bold ' + fontsize + 'px Play,sans-serif';
+
+    // 文字
+    ctx_score.globalAlpha = 0.3;
+    ctx_score.shadowBlur = 2;
+    ctx_score.shadowColor = 'rgba(255, 255, 255, 1)';
+    ctx_score.fillStyle = red;
+    message = redScore;
+    ctx_score.beginPath();
+    ctx_score.fillText(message, cellSize * 1, cellSize * 3.8);
+    // 文字
+    message = "8";
+    ctx_score.beginPath();
+    ctx_score.fillText(message, cellSize * 2, cellSize * 5.3);
+    //線
+    ctx_score.lineWidth=cellSize*0.2;
+    ctx_score.strokeStyle = red;
+    ctx_score.beginPath();
+    ctx_score.moveTo(cellSize * 0.4, cellSize * 5.55);
+    ctx_score.lineTo(cellSize * 2.6, cellSize * 3.55);
+    ctx_score.closePath();
+    ctx_score.stroke();
+
+
+    // 文字
+    message = blueScore;
+    ctx_score.fillStyle = blue;
+    ctx_score.beginPath();
+    ctx_score.fillText(message, cellSize * 4, cellSize * 0.7);
+    // 文字
+    message = "8";
+    ctx_score.beginPath();
+    ctx_score.fillText(message, cellSize * 5, cellSize * 2.3);
+    // 文字
+    ctx_score.lineWidth=cellSize*0.2;
+    ctx_score.strokeStyle = blue;
+    ctx_score.beginPath();
+    ctx_score.moveTo(cellSize * 3.4, cellSize * 2.55);
+    ctx_score.lineTo(cellSize * 5.6, cellSize * 0.55);
+    ctx_score.closePath();
+    ctx_score.stroke();
+    return canv_score;
+  }
+
+
 
   /** 
    * フォーカスを描画
@@ -726,13 +910,16 @@
     var x = mouse_x - (mouse_x % cellSize);
     var y = mouse_y - (mouse_y % cellSize);
     var ctx_focus = canv_focus.getContext('2d');
-    ctx_focus.clearRect(0, 0, ctx.canvas.width, ctx.canvas.width);
+    var grad = ctx_focus.createRadialGradient(x, y, 0, x,y, cellSize);
+    grad.addColorStop(0.3, COLOR_SELECT);
+    grad.addColorStop(1, COLOR_SELECT2);
+    ctx_focus.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
     ctx_focus.globalAlpha = 0.35;
-    ctx_focus.fillStyle = COLOR_SELECT;
+    ctx_focus.fillStyle = grad;
     ctx_focus.lineWidth = 1;
     ctx_focus.beginPath();
     ctx_focus.fillRect(x, y, cellSize, cellSize);
-    ctx_focus.globalAlpha = 0.6;
+
 
     if (isTouch === true && hover_piece === null) {
       return canv_focus;
@@ -747,10 +934,10 @@
         y = Math.floor(canm[i] % 10);
         ctx_focus.globalAlpha = 0.6;
         ctx_focus.strokeStyle = COLOR_SELECT;
-        ctx_focus.lineWidth = 5;
+        ctx_focus.lineWidth = cellSize/20;
         ctx_focus.beginPath();
         ctx_focus.arc(x * cellSize + (cellSize / 2), y * cellSize + (cellSize / 2),
-         (cellSize / 2) - 10, 0, Math.PI * 2, false);
+         (cellSize / 2) - (cellSize/10), 0, Math.PI * 2, false);
         ctx_focus.stroke();
       }
     }
@@ -765,9 +952,9 @@
       return canv_board;
     }
     var ctx_board = canv_board.getContext('2d');
-    ctx_board.clearRect(0, 0, ctx.canvas.width, ctx.canvas.width);
+    ctx_board.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
 
-    var grad = ctx_board.createLinearGradient(0, 0, ctx.canvas.width, ctx.canvas.width);
+    var grad = ctx_board.createLinearGradient(0, 0, CANV_SIZE, CANV_SIZE);
     grad.addColorStop(0, COLOR_PANEL_6);
     grad.addColorStop(0.3, COLOR_PANEL_5);
     grad.addColorStop(1, COLOR_PANEL_4);
@@ -803,7 +990,7 @@
       return canv_board2;
     }
     var ctx_board2 = canv_board2.getContext('2d');
-    ctx_board2.clearRect(0, 0, ctx.canvas.width, ctx.canvas.width);
+    ctx_board2.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
     ctx_board2.globalAlpha = 0.07;
     ctx_board2.fillStyle = COLOR_WHITE;
     ctx_board2.beginPath();
@@ -819,7 +1006,7 @@
    */
   function drawHoverPiece() {
     var ctx_hover = canv_hover_piece.getContext('2d');
-    ctx_hover.clearRect(0, 0, ctx.canvas.width, ctx.canvas.width);
+    ctx_hover.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
     var x = mouse_x - (cellSize / 2);
     var y = mouse_y - (cellSize / 2);
     if (hover_piece !== null) {
@@ -854,8 +1041,7 @@
     wkCtx.shadowOffsetY = 2;
     wkCtx.fillStyle = grad;
     wkCtx.beginPath();
-    // wkCtx.fillRect(x+cellSize/10,y+cellSize/10,cellSize-1*cellSize/5,cellSize-1*cellSize/5)
-    fillRoundRect(wkCtx, x + cellSize / 10, y + cellSize / 10, cellSize - 1 * cellSize / 5, cellSize - 1 * cellSize / 5, 5);
+    fillRoundRect(wkCtx, x + cellSize / 10, y + cellSize / 10, cellSize - 1 * cellSize / 5, cellSize - 1 * cellSize / 5, cellSize/20);
 
     wkCtx.shadowColor = 'rgba(0, 0, 0, 0)';
     wkCtx.shadowBlur = 0;
@@ -873,16 +1059,12 @@
     }
 
     // 文字を描画。
-    if (goal) {
-      wkCtx.fillStyle = COLOR_GOLD;
-    } else {
-      wkCtx.fillStyle = COLOR_WHITE;
-    }
-
+    wkCtx.fillStyle = COLOR_WHITE;
+    
     var fontsize = Math.round(cellSize * 0.18);
     wkCtx.textBaseline = 'middle';
     wkCtx.textAlign = 'center';
-    wkCtx.font = fontsize + 'pt Arial';
+    wkCtx.font = fontsize + "pt 'Play',Arial";
     wkCtx.beginPath();
 
     // 数字を印字
@@ -896,11 +1078,8 @@
       var x_dot = x + cellSize / 4.16 + (Math.floor(cellSize - 1 * cellSize / 5) / 3) * Math.floor(i % 3.0);
       var y_dot = y + cellSize / 4.16 + (Math.floor(cellSize - 1 * cellSize / 5) / 3) * Math.floor(i / 3.0);
 
-      if (goal) {
-        wkCtx.fillStyle = COLOR_GOLD;
-      } else {
-        wkCtx.fillStyle = COLOR_WHITE;
-      }
+      wkCtx.fillStyle = COLOR_WHITE;
+
       wkCtx.beginPath();
       wkCtx.arc(x_dot, y_dot, cellSize * 0.06, 0, Math.PI * 2, false);
       wkCtx.fill();
@@ -914,7 +1093,7 @@
       fontsize = Math.round(cellSize * 0.5);
       wkCtx.textBaseline = 'middle';
       wkCtx.textAlign = 'center';
-      wkCtx.font = 'bolder ' + fontsize + 'pt Arial ';
+      wkCtx.font = 'bolder ' + fontsize + 'pt Play,Arial ';
       wkCtx.beginPath();
       wkCtx.fillText(Math.abs(number), x + (cellSize / 2), y + (cellSize / 2));
       wkCtx.globalAlpha = 1;
@@ -945,7 +1124,7 @@
    */
   function drawPieceAll(wkMap) {
     var ctx_pieces = canv_pieces.getContext('2d');
-    ctx_pieces.clearRect(0, 0, ctx.canvas.width, ctx.canvas.width);
+    ctx_pieces.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
     for (var x = 0; x < 6; x++) {
       for (var y = 0; y < 6; y++) {
         if (wkMap[x * 10 + y] !== 0) {
@@ -966,7 +1145,7 @@
    */
   function drawShadow(wkMap, hand) {
     var ctx_shadow = canv_shadow.getContext('2d');
-    ctx_shadow.clearRect(0, 0, ctx.canvas.width, ctx.canvas.width);
+    ctx_shadow.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
     var x0 = (hand[0] / 10 | 0);
     var y0 = hand[0] % 10;
     var x1 = (hand[1] / 10 | 0);
@@ -1108,7 +1287,7 @@
     var x = cellSize * 1.3;
     var y = cellSize * 2.5;
 
-    ctx_overlay.clearRect(0, 0, ctx.canvas.width, ctx.canvas.width);
+    ctx_overlay.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
 
     if (message === '') {
       return canv_overlay;
@@ -1120,16 +1299,14 @@
 
     ctx_overlay.globalAlpha = 0.9;
     ctx_overlay.fillStyle = COLOR_WHITE;
-    ctx_overlay.beginPath();
-    ctx_overlay.fillRect(x, y, cellSize * 3.4, cellSize * 1);
-    ctx_overlay.fill();
+    fillRoundRect(ctx_overlay, x, y, cellSize * 3.4, cellSize * 1, cellSize/20);
 
     var fontsize = Math.round(cellSize * 0.36);
     ctx_overlay.shadowBlur = 0;
     ctx_overlay.shadowOffsetX = 0;
     ctx_overlay.shadowOffsetY = 0;
     ctx_overlay.shadowColor = 'rgba(0, 0, 0, 0)';
-    ctx_overlay.font = 'bold ' + fontsize + 'px sans-serif';
+    ctx_overlay.font = 'bold ' + fontsize + 'px Play,sans-serif';
     ctx_overlay.globalAlpha = 1;
     ctx_overlay.fillStyle = COLOR_LINE;
     ctx_overlay.textBaseline = 'middle';
@@ -1146,18 +1323,18 @@
   function updateMessage() {
     calcScore();
     var Block = '';
-    $('#blue')[0].innerHTML = 'Blue: ' + blueScore + '/8';
-    $('#red')[0].innerHTML = 'Red: ' + redScore + '/8';
-    $('#time')[0].innerHTML = '(' + (thinktime) + 'sec)';
+    document.querySelector('#blue').innerHTML = 'Blue: ' + blueScore + '/8';
+    document.querySelector('#red').innerHTML = ' Red: ' + redScore + '/8';
+    document.querySelector('#time').innerHTML = '(' + (thinktime.toFixed(3)) + 'sec)';
     if (logArray.length === 0) {
       if (winner == 1) {
         message = 'You win!';
-        storage.setItem('level_' + $('#level option:selected').val(),
-          parseInt(storage.getItem('level_' + $('#level option:selected').val())) + 1);
+        storage.setItem('level_' + document.querySelector('#level').value,
+          parseInt(storage.getItem('level_' + document.querySelector('#level').value)) + 1);
         endgame();
       } else if (winner == -1) {
         message = 'You lose...';
-        storage.setItem('level_' + $('#level option:selected').val(), 0);
+        storage.setItem('level_' + document.querySelector('#level').value, 0);
         endgame();
       } else if (winner === 0) {
         if (map_list[JSON.stringify(thisMap)] >= LIMIT_1000DAY) {
@@ -1169,10 +1346,10 @@
       }
     }
 
-    if (storage.getItem('level_' + $('#level option:selected').val()) > 0) {
-      $('#wins')[0].innerHTML = storage.getItem('level_' + $('#level option:selected').val()) + ' win!';
+    if (storage.getItem('level_' + document.querySelector('#level').value) > 0) {
+      document.querySelector('#wins').innerHTML = storage.getItem('level_' + document.querySelector('#level').value) + ' win!';
     } else {
-      $('#wins')[0].innerHTML = '';
+      document.querySelector('#wins').innerHTML = '';
     }
   }
 
@@ -1181,9 +1358,8 @@
    */
   function endgame() {
     if (logArray.length === 0) {
-      // $("#tweet").show()
-      $('#span_replay').show();
-      $('#span_tweetlog').show();
+      document.querySelector('#span_replay').classList.remove("hide");
+      document.querySelector('#span_tweetlog').classList.remove("hide");
     }
   }
   /** 
@@ -1396,9 +1572,12 @@
    */
   function move_start() {
     logPointer = 0;
+    autoLog=false;    
     thisMap = Aijs.copyMap(logArray[logPointer]);
-    flush(false, false);
+    winner=null;
+    goaled=false;
     updateMessage();
+    flush(false, false);
   }
 
   /** 
@@ -1406,10 +1585,13 @@
    */
   function move_prev() {
     if (logPointer <= 0) { return; }
+    autoLog=false;    
     logPointer -= 1;
     thisMap = Aijs.copyMap(logArray[logPointer]);
-    flush(false, false);
+    winner=null;
+    goaled=false;
     updateMessage();
+    flush(false, false);
   }
 
   /** 
@@ -1419,8 +1601,8 @@
     if (logPointer + 1 > logArray.length - 1) { return; }
     logPointer += 1;
     thisMap = Aijs.copyMap(logArray[logPointer]);
-    flush(false, false);
     updateMessage();
+    flush(false, false);
   }
 
   /** 
@@ -1428,9 +1610,10 @@
    */
   function move_end() {
     logPointer = logArray.length - 1;
+    autoLog=false;    
     thisMap = Aijs.copyMap(logArray[logPointer]);
-    flush(false, false);
     updateMessage();
+    flush(false, false);
   }
 
   /** 
@@ -1438,6 +1621,13 @@
    */
   function reloadnew() {
     var url = document.location.href.split('?')[0];
+
+    //demo中ならdemoを終了
+    if(demo===true){
+      ev_mouseClick(null);
+      return;
+    }
+
     // パラメータを取得
     var paramObj = getParam();
     if (paramObj.lang) {
@@ -1470,7 +1660,7 @@
      startMap[44] + ','+
      startMap[14];
     var log = '&log=' + encodeLog(logArray2);
-    log += '&lv=' + $('#level option:selected').val();
+    log += '&lv=' + document.querySelector('#level').value;
     location.href = url + init + log;
   }
   /** 
@@ -1487,7 +1677,7 @@
      startMap[44] + ','+
      startMap[14];
     var log = '%26log=' + encodeLog(logArray2);
-    log += '%26lv=' + $('#level option:selected').val();
+    log += '%26lv=' + document.querySelector('#level').value;
     window.open('https://twitter.com/intent/tweet?text=' + url + init + log + '%20%23colamone');
   }
   /** 
@@ -1500,21 +1690,24 @@
       if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.async = true; js.src = 'https://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); }
     } (document, 'script', 'twitter-wjs');
   }
-  function setPocket() {
-    /*jshint -W030 */
-    !function (d, i) {
-      if (!d.getElementById(i)) {
-        var j = d.createElement('script');
-        j.id = i; j.src = 'https://widgets.getpocket.com/v1/j/btn.js?v=1'; var w = d.getElementById(i);
-        d.body.appendChild(j);
-      }
-    } (document, 'pocket-btn-js');
+  /** 
+   * botかどうか判定
+   */
+  function isBot(){
+    var ua = window.navigator.userAgent.toLowerCase();
+    if (ua.indexOf('bot') != -1 ||
+    ua.indexOf('lighthouse') != -1||
+    ua.indexOf('headless') != -1) {
+      return true;
+    }
+    return false;
   }
+
 })((this || 0).self || global);
 
 /** 
  * init 
  */
-$(function () {
+document.addEventListener('DOMContentLoaded', function() {
   BoardGamejs.init();
 });
