@@ -1,4 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const fs = require('fs');
 const date=require('date-utils');
 const timestamp = (new Date()).toFormat("YYYYMMDDHH24MI");
@@ -38,6 +39,16 @@ plugins.push(new HtmlWebpackPlugin({
   templateParameters: {'TIMESTAMP': timestamp},
   inject: false,
 }));
+//　Serviceworker
+plugins.push(new CopyWebpackPlugin([
+  {
+      from: 'src/sw.js',
+      to: 'sw.js',
+      transform: function (content, path) {
+        return content.toString().replace("TIMESTAMP",timestamp);
+      }
+  }
+]));
 module.exports = {
     // メインとなるJavaScriptファイル（エントリーポイント）
     entry: `./src/boardgame.js`,
