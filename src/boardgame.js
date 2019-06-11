@@ -16,57 +16,57 @@ import { Aijs } from "./ai";
 
 
   // Body ---------------------------------------
-  var ctx = null;
-  var isTouch = true;
-  var goaled=false;
-  var canv_board = null;
-  var canv_board2 = null;
-  var canv_focus = null;
-  var canv_pieces = null;
-  var canv_shadow = null;
-  var canv_hover_piece = null;
-  var canv_overlay = null;
-  var canv_bk = null;
-  var canv_cover = null;
-  var canv_score = null;
-  var canv_cache = null;
-  var cache_on = false;
-  var img_bk_loaded = false;
-  var hover_piece = null;
-  var cellSize = null;
-  var turn_player = null;
-  var blueScore = 0;
-  var redScore = 0;
-  var winner = null;
-  var message = '';
-  var thinktime = 0.0;
-  var demo = true;
-  var autoLog=false;
-  var intervalID = null;
-  var intervalID_log = null;  
-  var thisHand = [];
-  var demo_inc=0;
-  var COLOR_LINE = '#333333';
-  var COLOR_PANEL_1 = '#660033';
-  var COLOR_PANEL_2 = '#004466';
-  var COLOR_PANEL_3 = '#FFFFFF';
-  var COLOR_PANEL_4 = '#111111';
-  var COLOR_PANEL_5 = '#444444';
-  var COLOR_PANEL_6 = '#888888';
-  var COLOR_SELECT = '#7fed7f';
-  var COLOR_SELECT2='#148d14';
-  var COLOR_RED = '#E60073';
-  var COLOR_BLUE = '#0099E6';
-  var COLOR_RED2 = '#E60073';
-  var COLOR_BLUE2 = '#0099E6';
-  var COLOR_WHITE = '#FFFFFF';
-  var RATIO=1;
+  let ctx = null;
+  let isTouch = true;
+  let goaled=false;
+  let canv_board = null;
+  let canv_board2 = null;
+  let canv_focus = null;
+  let canv_pieces = null;
+  let canv_shadow = null;
+  let canv_hover_piece = null;
+  let canv_overlay = null;
+  let canv_bk = null;
+  let canv_cover = null;
+  let canv_score = null;
+  let canv_cache = null;
+  let cache_on = false;
+  let img_bk_loaded = false;
+  let hover_piece = null;
+  let cellSize = null;
+  let turn_player = null;
+  let blueScore = 0;
+  let redScore = 0;
+  let winner = null;
+  let message = '';
+  let thinktime = 0.0;
+  let demo = true;
+  let autoLog=false;
+  let intervalID = null;
+  let intervalID_log = null;  
+  let thisHand = [];
+  let demo_inc=0;
+  const COLOR_LINE = '#333333';
+  const COLOR_PANEL_1 = '#660033';
+  const COLOR_PANEL_2 = '#004466';
+  const COLOR_PANEL_3 = '#FFFFFF';
+  const COLOR_PANEL_4 = '#111111';
+  const COLOR_PANEL_5 = '#444444';
+  const COLOR_PANEL_6 = '#888888';
+  const COLOR_SELECT = '#7fed7f';
+  const COLOR_SELECT2='#148d14';
+  const COLOR_RED = '#E60073';
+  const COLOR_BLUE = '#0099E6';
+  const COLOR_RED2 = '#E60073';
+  const COLOR_BLUE2 = '#0099E6';
+  const COLOR_WHITE = '#FFFFFF';
+  let RATIO=1;
   if( window.devicePixelRatio!==undefined&& window.devicePixelRatio!=1){
     RATIO = window.devicePixelRatio;
   }
-  var CANV_SIZE=500*RATIO;
+  let CANV_SIZE=500*RATIO;
 
-  var PIECES = {
+  const PIECES = {
     '1': [1, 1, 1,
       1, 0, 1,
       1, 1, 1],
@@ -117,7 +117,7 @@ import { Aijs } from "./ai";
       0, 1, 0]
   };
 
-/*  var thisMap = {
+/*  let thisMap = {
     0: -1, 10: -2, 20: -3, 30: -4, 40: -5, 50: -6,
     1: 0, 11: -8, 21: 0, 31: 0, 41: -7, 51: 0,
     2: 0, 12: 0, 22: 0, 32: 0, 42: 0, 52: 0,
@@ -125,7 +125,7 @@ import { Aijs } from "./ai";
     4: 0, 14: 7, 24: 0, 34: 0, 44: 8, 54: 0,
     5: 6, 15: 5, 25: 4, 35: 3, 45: 2, 55: 1
   };*/
-  var thisMap =[
+  let thisMap =[
     -1,0,0,0,0,6,0,0,0,0,-2,-8,
     0,0,7,5,0,0,0,0,-3,0,0,0,
     0,4,0,0,0,0,-4,0,0,0,0,
@@ -133,17 +133,17 @@ import { Aijs } from "./ai";
     0,0,0,0,-6,0,0,0,0,1
   ]
 
-  var map_list = {};
-  var LIMIT_1000DAY = 3;
-  var mouse_x = 0;
-  var mouse_y = 0;
-  var startMap;
-  var logPointer = 0;
-  var logArray = [];
-  var logArray2 = [];
-  var img_bk = null;
+  let map_list = {};
+  const LIMIT_1000DAY = 3;
+  let mouse_x = 0;
+  let mouse_y = 0;
+  let startMap;
+  let logPointer = 0;
+  let logArray = [];
+  let logArray2 = [];
+  let img_bk = null;
   img_bk = new Image(); img_bk.src = 'bk.gif';
-  var storage = null;
+  let storage = null;
   try {
     if (window == parent && ('localStorage' in window) && window.localStorage !== null) {
       storage = localStorage;
@@ -298,7 +298,7 @@ import { Aijs } from "./ai";
 
 
     // パラメータを取得
-    var paramObj = getParam();
+    let paramObj = getParam();
 
     // 盤面を初期化
     if (paramObj.init) {
@@ -418,7 +418,7 @@ import { Aijs } from "./ai";
    * 小さい画面ではViewportを固定化
    */
   function zoom() {
-    var viewport = document.querySelector('meta[name=viewport]');
+    let viewport = document.querySelector('meta[name=viewport]');
     if (screen.width < 500 && screen.height < 500) {
       if (screen.width < screen.height) {
         viewport.setAttribute('content', 'width=500,user-scalable=no');
@@ -432,13 +432,13 @@ import { Aijs } from "./ai";
     }
     // iOS9のViewportはなぜか機能してくれない。
     if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
-      var w = screen.width;
-      var w2 = 520;
+      let w = screen.width;
+      let w2 = 520;
       if (Math.abs(window.orientation) !== 0) {
         w = screen.height;
         w2 = 900;
       }
-      var rate = Math.round((w / w2) * 1000) / 1000.0;
+      let rate = Math.round((w / w2) * 1000) / 1000.0;
       if (rate == Math.round(rate)) { // iOS 9のViewportは整数指定すると機能しない
         rate += 0.0001;
       }
@@ -470,7 +470,7 @@ import { Aijs } from "./ai";
    */
   function ev_mouseClick(e) {
     getMousePosition(e);
-    var target = Math.floor(mouse_x / cellSize) * 10+ Math.floor(mouse_y / cellSize);
+    let target = Math.floor(mouse_x / cellSize) * 10+ Math.floor(mouse_y / cellSize);
     if (winner !== null || logArray.length !== 0) {
       reloadnew();
       return true;
@@ -499,7 +499,7 @@ import { Aijs } from "./ai";
         flush(false, false);
         return;
       }
-      var canm = Aijs.getCanMovePanelX(hover_piece, thisMap);
+      let canm = Aijs.getCanMovePanelX(hover_piece, thisMap);
       if (canm.indexOf(target) >= 0) {
         flush(false, true);
         if(isGoaled(thisMap,target,turn_player)){
@@ -508,7 +508,7 @@ import { Aijs } from "./ai";
             setTimeout(function(){
               goaled=false;
               flush(false, false);
-            },3000);
+            },2000);
         }
 
 
@@ -543,7 +543,7 @@ import { Aijs } from "./ai";
    * ラジオボタン変更時処理
    */
   function ev_radioChange() {
-    var num = document.querySelector('#level').value;
+    let num = document.querySelector('#level').value;
     storage.setItem('level_save', num);
     if (storage.getItem('level_' + num) > 0) {
       document.querySelector('#wins').innerHTML = storage.getItem('level_' + num) + ' win!';
@@ -561,12 +561,12 @@ import { Aijs } from "./ai";
    * AIに考えてもらう。
    */
   function ai(level) {
-    var hand;
-    var startTime = new Date();
-    var endTime;
+    let hand;
+    let startTime = new Date();
+    let endTime;
     // 終盤になったら長考してみる。
-    var count = getNodeCount(thisMap) / 2;
-    var plus = 0;
+    let count = getNodeCount(thisMap) / 2;
+    let plus = 0;
     level = parseInt(level);
     switch (level) {
       case 1:
@@ -628,7 +628,7 @@ import { Aijs } from "./ai";
           setTimeout(function(){
             goaled=false;
             flush(false, false);
-          },3000);
+          },2000);
       }
       thisMap[hand[1]] = thisMap[hand[0]];
       thisMap[hand[0]] = 0;
@@ -662,22 +662,22 @@ import { Aijs } from "./ai";
    */
   function shuffleBoard() {
     // クリア
-    for (var num in thisMap) {
+    for (let num in thisMap) {
       thisMap[num] = 0;
     }
-    var arr = [1, 2, 3, 4, 5, 6, 7, 8];
-    var red_num = [0, 10, 20, 30, 40, 50, 11, 41];
-    var blue_num = [55, 45, 35, 25, 15, 5, 44, 14];
-    for (var i = arr.length - 1; i >= 0; i--) {
-      var r = Math.floor(Math.random() * (i + 1));
-      var tmp = arr[i];
+    let arr = [1, 2, 3, 4, 5, 6, 7, 8];
+    let red_num = [0, 10, 20, 30, 40, 50, 11, 41];
+    let blue_num = [55, 45, 35, 25, 15, 5, 44, 14];
+    for (let i = arr.length - 1; i >= 0; i--) {
+      let r = Math.floor(Math.random() * (i + 1));
+      let tmp = arr[i];
       arr[i] = arr[r];
       arr[r] = tmp;
     }
-    for (num in blue_num) {
+    for (let num in blue_num) {
       thisMap[blue_num[num]] = arr[num];
     }
-    for (num in red_num) {
+    for (let num in red_num) {
       thisMap[red_num[num]] = -1 * arr[num];
     }
   }
@@ -698,7 +698,7 @@ import { Aijs } from "./ai";
         e = event.touches[0];
       }
     }
-    var rect = e.target.getBoundingClientRect();
+    let rect = e.target.getBoundingClientRect();
     mouse_x = e.clientX - rect.left;
     mouse_y = e.clientY - rect.top;
     mouse_x = mouse_x *  RATIO;
@@ -709,7 +709,7 @@ import { Aijs } from "./ai";
    * 画面描画。
    */
   function flush(initflg, cache_flg) {
-    var wkMap = new Int8Array(thisMap);
+    let wkMap = new Int8Array(thisMap);
     ctx.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
 
     if (cache_flg === false) {
@@ -736,7 +736,7 @@ import { Aijs } from "./ai";
       ctx.drawImage(drawPieceAll(wkMap), 0, 0, CANV_SIZE, CANV_SIZE);
 
       // キャッシュに保存
-      var ctx_canv = canv_cache.getContext('2d');
+      let ctx_canv = canv_cache.getContext('2d');
       ctx_canv.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
       ctx_canv.drawImage(ctx.canvas, 0, 0, CANV_SIZE, CANV_SIZE);
       // キャッシュ有効化
@@ -775,7 +775,7 @@ import { Aijs } from "./ai";
    * 背景描画
    */
   function drawBk() {
-    var ctx_bk = canv_bk.getContext('2d');
+    let ctx_bk = canv_bk.getContext('2d');
     if (img_bk_loaded) {
       ctx_bk.drawImage(img_bk, 0, 0, CANV_SIZE/RATIO, CANV_SIZE/RATIO, 0, 0, CANV_SIZE, CANV_SIZE);
     }
@@ -786,15 +786,15 @@ import { Aijs } from "./ai";
    */
   function drawCover() {
     // 背景
-    var ctx_cover = canv_cover.getContext('2d');
+    let ctx_cover = canv_cover.getContext('2d');
     ctx_cover.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
     ctx_cover.globalAlpha = 0.50;
     ctx_cover.fillStyle = '#000000';
     ctx_cover.fillRect(0, 0, CANV_SIZE, CANV_SIZE);
 
     // 枠
-    var x = cellSize * 2;
-    var y = cellSize * 3.5;
+    let x = cellSize * 2;
+    let y = cellSize * 3.5;
     ctx_cover.shadowBlur = 20;
     ctx_cover.shadowColor = 'rgba(0, 0, 0, 0.3)';
     ctx_cover.shadowOffsetX = 5;
@@ -812,8 +812,8 @@ import { Aijs } from "./ai";
 
 
     // 文字
-    var fontsize = Math.round(cellSize * 0.5);
-    var message = 'Play';
+    let fontsize = Math.round(cellSize * 0.5);
+    let message = 'Play';
     message+=(demo_inc%10==0)?" ":"";
     ctx_cover.shadowBlur = 0;
     ctx_cover.shadowOffsetX = 0;
@@ -844,11 +844,11 @@ import { Aijs } from "./ai";
    */
   function drawScore() {
     // 背景
-    var ctx_score = canv_score.getContext('2d');
-    var message ="";
-    var fontsize = Math.round(cellSize *1.5);
-    var blue=COLOR_BLUE2;
-    var red=COLOR_RED2;
+    let ctx_score = canv_score.getContext('2d');
+    let message ="";
+    let fontsize = Math.round(cellSize *1.5);
+    let blue=COLOR_BLUE2;
+    let red=COLOR_RED2;
     ctx_score.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
 
     ctx_score.globalAlpha = 0.4;
@@ -907,10 +907,10 @@ import { Aijs } from "./ai";
    */
   function drawFocus() {
     // 選択マスを強調
-    var x = mouse_x - (mouse_x % cellSize);
-    var y = mouse_y - (mouse_y % cellSize);
-    var ctx_focus = canv_focus.getContext('2d');
-    var grad = ctx_focus.createRadialGradient(x, y, 0, x,y, cellSize);
+    let x = mouse_x - (mouse_x % cellSize);
+    let y = mouse_y - (mouse_y % cellSize);
+    let ctx_focus = canv_focus.getContext('2d');
+    let grad = ctx_focus.createRadialGradient(x, y, 0, x,y, cellSize);
     grad.addColorStop(0.3, COLOR_SELECT);
     grad.addColorStop(1, COLOR_SELECT2);
     ctx_focus.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
@@ -926,10 +926,10 @@ import { Aijs } from "./ai";
     }
 
     // 移動可能マスを強調
-    var target = (x / cellSize) * 10 + (y / cellSize);
+    let target = (x / cellSize) * 10 + (y / cellSize);
     if (thisMap[target] * turn_player > 0) {
-      var canm = Aijs.getCanMovePanelX(target, thisMap);
-      for (var i = 0; i <= canm.length - 1; i++) {
+      let canm = Aijs.getCanMovePanelX(target, thisMap);
+      for (let i = 0; i <= canm.length - 1; i++) {
         x = Math.floor(canm[i] / 10);
         y = Math.floor(canm[i] % 10);
         ctx_focus.globalAlpha = 0.6;
@@ -951,16 +951,16 @@ import { Aijs } from "./ai";
     if (initflg === false) {
       return canv_board;
     }
-    var ctx_board = canv_board.getContext('2d');
+    let ctx_board = canv_board.getContext('2d');
     ctx_board.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
 
-    var grad = ctx_board.createLinearGradient(0, 0, CANV_SIZE, CANV_SIZE);
+    let grad = ctx_board.createLinearGradient(0, 0, CANV_SIZE, CANV_SIZE);
     grad.addColorStop(0, COLOR_PANEL_6);
     grad.addColorStop(0.3, COLOR_PANEL_5);
     grad.addColorStop(1, COLOR_PANEL_4);
 
-    for (var x = 0; x < 6; x++) {
-      for (var y = 0; y < 6; y++) {
+    for (let x = 0; x < 6; x++) {
+      for (let y = 0; y < 6; y++) {
         // パネル描画
         ctx_board.strokeStyle = COLOR_LINE;
         if (y === 0) {
@@ -989,7 +989,7 @@ import { Aijs } from "./ai";
     if (initflg === false) {
       return canv_board2;
     }
-    var ctx_board2 = canv_board2.getContext('2d');
+    let ctx_board2 = canv_board2.getContext('2d');
     ctx_board2.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
     ctx_board2.globalAlpha = 0.07;
     ctx_board2.fillStyle = COLOR_WHITE;
@@ -1005,10 +1005,10 @@ import { Aijs } from "./ai";
    * 浮遊しているコマを描画する。
    */
   function drawHoverPiece() {
-    var ctx_hover = canv_hover_piece.getContext('2d');
+    let ctx_hover = canv_hover_piece.getContext('2d');
     ctx_hover.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
-    var x = mouse_x - (cellSize / 2);
-    var y = mouse_y - (cellSize / 2);
+    let x = mouse_x - (cellSize / 2);
+    let y = mouse_y - (cellSize / 2);
     if (hover_piece !== null) {
       drawPiece(ctx_hover, x, y, thisMap[hover_piece], false);
     }
@@ -1019,7 +1019,7 @@ import { Aijs } from "./ai";
    * コマを描画する。
    */
   function drawPiece(wkCtx, x, y, number, goal) {
-    var wkColor;
+    let wkColor;
 
     // 外枠を描画
     if (number === 0) {
@@ -1030,7 +1030,7 @@ import { Aijs } from "./ai";
       wkColor = COLOR_RED;
     }
 
-    var grad = ctx.createLinearGradient(x, y, x + cellSize, y + cellSize);
+    let grad = ctx.createLinearGradient(x, y, x + cellSize, y + cellSize);
     grad.addColorStop(0, 'rgb(255, 255, 255)');
     grad.addColorStop(0.4, wkColor);
     grad.addColorStop(1, wkColor);
@@ -1061,7 +1061,7 @@ import { Aijs } from "./ai";
     // 文字を描画。
     wkCtx.fillStyle = COLOR_WHITE;
     
-    var fontsize = Math.round(cellSize * 0.18);
+    let fontsize = Math.round(cellSize * 0.18);
     wkCtx.textBaseline = 'middle';
     wkCtx.textAlign = 'center';
     wkCtx.font = fontsize + "pt 'Play',Arial";
@@ -1071,12 +1071,12 @@ import { Aijs } from "./ai";
     wkCtx.fillText(Math.abs(number), x + (cellSize / 2), y + (cellSize / 2));
 
     // 点を描画
-    for (var i = 0; i <= PIECES[number].length - 1; i++) {
+    for (let i = 0; i <= PIECES[number].length - 1; i++) {
       if (PIECES[number][i] === 0) {
         continue;
       }
-      var x_dot = x + cellSize / 4.16 + (Math.floor(cellSize - 1 * cellSize / 5) / 3) * Math.floor(i % 3.0);
-      var y_dot = y + cellSize / 4.16 + (Math.floor(cellSize - 1 * cellSize / 5) / 3) * Math.floor(i / 3.0);
+      let x_dot = x + cellSize / 4.16 + (Math.floor(cellSize - 1 * cellSize / 5) / 3) * Math.floor(i % 3.0);
+      let y_dot = y + cellSize / 4.16 + (Math.floor(cellSize - 1 * cellSize / 5) / 3) * Math.floor(i / 3.0);
 
       wkCtx.fillStyle = COLOR_WHITE;
 
@@ -1123,12 +1123,12 @@ import { Aijs } from "./ai";
    * コマをすべて描画
    */
   function drawPieceAll(wkMap) {
-    var ctx_pieces = canv_pieces.getContext('2d');
+    let ctx_pieces = canv_pieces.getContext('2d');
     ctx_pieces.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
-    for (var x = 0; x < 6; x++) {
-      for (var y = 0; y < 6; y++) {
+    for (let x = 0; x < 6; x++) {
+      for (let y = 0; y < 6; y++) {
         if (wkMap[x * 10 + y] !== 0) {
-          var goal = false;
+          let goal = false;
           if (wkMap[x * 10 + y] > 0 && y === 0) {
             goal = true;
           } else if (wkMap[x * 10 + y] < 0 && y == 5) {
@@ -1144,24 +1144,24 @@ import { Aijs } from "./ai";
    * 残像を描画する。
    */
   function drawShadow(wkMap, hand) {
-    var ctx_shadow = canv_shadow.getContext('2d');
+    let ctx_shadow = canv_shadow.getContext('2d');
     ctx_shadow.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
-    var x0 = (hand[0] / 10 | 0);
-    var y0 = hand[0] % 10;
-    var x1 = (hand[1] / 10 | 0);
-    var y1 = hand[1] % 10;
-    var h = cellSize - 1 * cellSize / 5;
-    var w = cellSize - 1 * cellSize / 5;
-    var x = x1 * cellSize + cellSize / 10;
-    var y = y1 * cellSize + cellSize / 10;
-    var shadow_start_x = x + w / 2;
-    var shadow_start_y = y + h / 2;
-    var shadow_end_x = shadow_start_x;
-    var shadow_end_y = shadow_start_y;
-    var number = wkMap[hand[1]];
-    var wkColor = '';
-    var center = 0;
-    var grad;
+    let x0 = (hand[0] / 10 | 0);
+    let y0 = hand[0] % 10;
+    let x1 = (hand[1] / 10 | 0);
+    let y1 = hand[1] % 10;
+    let h = cellSize - 1 * cellSize / 5;
+    let w = cellSize - 1 * cellSize / 5;
+    let x = x1 * cellSize + cellSize / 10;
+    let y = y1 * cellSize + cellSize / 10;
+    let shadow_start_x = x + w / 2;
+    let shadow_start_y = y + h / 2;
+    let shadow_end_x = shadow_start_x;
+    let shadow_end_y = shadow_start_y;
+    let number = wkMap[hand[1]];
+    let wkColor = '';
+    let center = 0;
+    let grad;
     if (hand.length != 2) {
       return canv_shadow;
     }
@@ -1205,7 +1205,7 @@ import { Aijs } from "./ai";
       } else {
         center = 0.5;
       }
-      var px1, py1, px2, py2, px3, py3, px4, py4;
+      let px1, py1, px2, py2, px3, py3, px4, py4;
       if (x0 < x1 && y0 < y1) {
         px1 = x;
         py1 = y - h;
@@ -1283,9 +1283,9 @@ import { Aijs } from "./ai";
    * メッセージを描画
    */
   function drawOverlay() {
-    var ctx_overlay = canv_overlay.getContext('2d');
-    var x = cellSize * 1.3;
-    var y = cellSize * 2.5;
+    let ctx_overlay = canv_overlay.getContext('2d');
+    let x = cellSize * 1.3;
+    let y = cellSize * 2.5;
 
     ctx_overlay.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
 
@@ -1301,7 +1301,7 @@ import { Aijs } from "./ai";
     ctx_overlay.fillStyle = COLOR_WHITE;
     fillRoundRect(ctx_overlay, x, y, cellSize * 3.4, cellSize * 1, cellSize/20);
 
-    var fontsize = Math.round(cellSize * 0.36);
+    let fontsize = Math.round(cellSize * 0.36);
     ctx_overlay.shadowBlur = 0;
     ctx_overlay.shadowOffsetX = 0;
     ctx_overlay.shadowOffsetY = 0;
@@ -1322,7 +1322,7 @@ import { Aijs } from "./ai";
    */
   function updateMessage() {
     calcScore();
-    var Block = '';
+    let Block = '';
     document.querySelector('#blue').innerHTML = 'Blue: ' + blueScore + '/8';
     document.querySelector('#red').innerHTML = ' Red: ' + redScore + '/8';
     document.querySelector('#time').innerHTML = '(' + (thinktime.toFixed(3)) + 'sec)';
@@ -1366,17 +1366,17 @@ import { Aijs } from "./ai";
    * 得点計算。
    */
   function calcScore() {
-    var sum1 = 0;
-    var sum2 = 0;
-    var GoalTop = [0, 10, 20, 30, 40, 50];
-    var GoalBottom = [5, 15, 25, 35, 45, 55];
+    let sum1 = 0;
+    let sum2 = 0;
+    let GoalTop = [0, 10, 20, 30, 40, 50];
+    let GoalBottom = [5, 15, 25, 35, 45, 55];
     // 点数勝利        
-    for (var i in GoalTop) {
+    for (let i in GoalTop) {
       if (thisMap[GoalTop[i]] * 1 > 0) {
         sum1 += thisMap[GoalTop[i]];
       }
     }
-    for (i in GoalBottom) {
+    for (let i in GoalBottom) {
       if (thisMap[GoalBottom[i]] * -1 > 0) {
         sum2 += thisMap[GoalBottom[i]];
       }
@@ -1409,13 +1409,13 @@ import { Aijs } from "./ai";
    * 手詰まり判定。
    */
   function isNoneNode(wkMap) {
-    var flag1 = false;
-    var flag2 = false;
-    for (var panel_num in wkMap) {
+    let flag1 = false;
+    let flag2 = false;
+    for (let panel_num in wkMap) {
       if (wkMap[panel_num] === 0) {
         continue;
       }
-      var canMove = Aijs.getCanMovePanelX(panel_num, wkMap);
+      let canMove = Aijs.getCanMovePanelX(panel_num, wkMap);
       if (canMove.length !== 0) {
         if (wkMap[panel_num] > 0) {
           flag1 = true;
@@ -1435,7 +1435,7 @@ import { Aijs } from "./ai";
    * 千日手
    */
   function is1000day(wkMap) {
-    var map_json = JSON.stringify(wkMap);
+    let map_json = JSON.stringify(wkMap);
     if (map_list[map_json] === undefined) {
       map_list[map_json] = 1;
       return false;
@@ -1452,12 +1452,12 @@ import { Aijs } from "./ai";
    * 手の数を取得
    */
   function getNodeCount(wkMap) {
-    var count = 0;
-    for (var panel_num in wkMap) {
+    let count = 0;
+    for (let panel_num in wkMap) {
       if (wkMap[panel_num] === 0) {
         continue;
       }
-      var canMove = Aijs.getCanMovePanelX(panel_num, wkMap);
+      let canMove = Aijs.getCanMovePanelX(panel_num, wkMap);
       count += canMove.length;
     }
     return count;
@@ -1468,13 +1468,13 @@ import { Aijs } from "./ai";
    * パラメータ取得
    */
   function getParam() {
-    var obj = {};
+    let obj = {};
     if (1 < document.location.search.length) {
-      var paramstr = document.location.search.substring(1).split('&');
-      for (var i = 0; i < paramstr.length; i++) {
-        var entry = paramstr[i].split('=');
-        var key = decodeURIComponent(entry[0]);
-        var value = decodeURIComponent(entry[1]);
+      let paramstr = document.location.search.substring(1).split('&');
+      for (let i = 0; i < paramstr.length; i++) {
+        let entry = paramstr[i].split('=');
+        let key = decodeURIComponent(entry[0]);
+        let value = decodeURIComponent(entry[1]);
         obj[key] = decodeURIComponent(value);
       }
     }
@@ -1485,24 +1485,24 @@ import { Aijs } from "./ai";
    * パタメータから初期配置を取得
    */
   function getMapByParam(initString) {
-    var wkMap;
+    let wkMap;
     if (initString) {
       wkMap = Aijs.copyMap(thisMap);
       // クリア
-      for (var num in wkMap) {
+      for (let num in wkMap) {
         wkMap[num] = 0;
       }
-      var arr = initString.split(',');
+      let arr = initString.split(',');
       if (arr.length < 8) {
         arr = [1, 2, 3, 4, 5, 6, 7, 8];
       }
-      var red_num = [0, 10, 20, 30, 40, 50, 11, 41];
-      var blue_num = [55, 45, 35, 25, 15, 5, 44, 14];
+      let red_num = [0, 10, 20, 30, 40, 50, 11, 41];
+      let blue_num = [55, 45, 35, 25, 15, 5, 44, 14];
 
-      for (num in blue_num) {
+      for (let num in blue_num) {
         wkMap[blue_num[num]] = parseInt(arr[num]);
       }
-      for (num in red_num) {
+      for (let num in red_num) {
         wkMap[red_num[num]] = -1 * parseInt(arr[num]);
       }
     }
@@ -1513,9 +1513,9 @@ import { Aijs } from "./ai";
    * ログをデコード。
    */
   function decodeLog(logstr, wkInitMap) {
-    var wklogArray = [];
-    var wkMap = Aijs.copyMap(wkInitMap);
-    var arrow = {
+    let wklogArray = [];
+    let wkMap = Aijs.copyMap(wkInitMap);
+    let arrow = {
       'q': 0, 'w': 1, 'e': 2,
       'a': 3, 's': 4, 'd': 5,
       'z': 6, 'x': 7, 'c': 8
@@ -1523,14 +1523,14 @@ import { Aijs } from "./ai";
     logstr = logstr.replace(/q/g, 'q,').replace(/w/g, 'w,').replace(/e/g, 'e,');
     logstr = logstr.replace(/a/g, 'a,').replace(/s/g, 's,').replace(/d/g, 'd,');
     logstr = logstr.replace(/z/g, 'z,').replace(/x/g, 'x,').replace(/c/g, 'c,');
-    var logArr = logstr.split(',');
+    let logArr = logstr.split(',');
 
     wklogArray.push(wkMap);
-    for (var i = 0; i < logArr.length; i++) {
+    for (let i = 0; i < logArr.length; i++) {
       if (logArr[i] === '') { continue; }
-      var arw = arrow[logArr[i].match(/[qweasdzxc]/)[0]];
-      var from = parseInt(logArr[i].match(/\d*/)[0]);
-      var to = (Math.floor(from / 10) + Math.floor(arw % 3) - 1) * 10 +
+      let arw = arrow[logArr[i].match(/[qweasdzxc]/)[0]];
+      let from = parseInt(logArr[i].match(/\d*/)[0]);
+      let to = (Math.floor(from / 10) + Math.floor(arw % 3) - 1) * 10 +
        (Math.floor(from % 10) + Math.floor(arw / 3) - 1);
       wkMap = Aijs.copyMap(wkMap);
       wkMap[to] = parseInt(wkMap[from]);
@@ -1543,16 +1543,16 @@ import { Aijs } from "./ai";
    * ログをエンコード
    */
   function encodeLog(wklogArray) {
-    var logstr = '';
-    var arrow = ['q', 'w', 'e',
+    let logstr = '';
+    let arrow = ['q', 'w', 'e',
       'a', 's', 'd',
       'z', 'x', 'c'];
-    for (var i in wklogArray) {
-      var from = wklogArray[i][0];
-      var to = wklogArray[i][1];
-      var x_vec = ((Math.floor(to / 10)) - Math.floor(from / 10));
-      var y_vec = ((Math.floor(to % 10)) - Math.floor(from % 10));
-      var arw = '';
+    for (let i in wklogArray) {
+      let from = wklogArray[i][0];
+      let to = wklogArray[i][1];
+      let x_vec = ((Math.floor(to / 10)) - Math.floor(from / 10));
+      let y_vec = ((Math.floor(to % 10)) - Math.floor(from % 10));
+      let arw = '';
       if (x_vec === -1 && y_vec === -1) { arw = 'q'; }
       if (x_vec === 0 && y_vec === -1) { arw = 'w' ;}
       if (x_vec === 1 && y_vec === -1) { arw = 'e' ;}
@@ -1620,7 +1620,7 @@ import { Aijs } from "./ai";
    * リセット
    */
   function reloadnew() {
-    var url = document.location.href.split('?')[0];
+    let url = document.location.href.split('?')[0];
 
     //demo中ならdemoを終了
     if(demo===true){
@@ -1629,7 +1629,7 @@ import { Aijs } from "./ai";
     }
 
     // パラメータを取得
-    var paramObj = getParam();
+    let paramObj = getParam();
     if (paramObj.lang) {
       url += '?lang=' + paramObj.lang;
     }
@@ -1650,8 +1650,8 @@ import { Aijs } from "./ai";
    * 検討画面に飛ぶ
    */
   function jumpkento() {
-    var url = document.location.href.split('?')[0];
-    var init = '?init=' + startMap[55] + ','+
+    let url = document.location.href.split('?')[0];
+    let init = '?init=' + startMap[55] + ','+
      startMap[45] + ','+
      startMap[35] + ','+
      startMap[25] + ','+
@@ -1659,7 +1659,7 @@ import { Aijs } from "./ai";
      startMap[5] + ','+
      startMap[44] + ','+
      startMap[14];
-    var log = '&log=' + encodeLog(logArray2);
+    let log = '&log=' + encodeLog(logArray2);
     log += '&lv=' + document.querySelector('#level').value;
     location.href = url + init + log;
   }
@@ -1667,8 +1667,8 @@ import { Aijs } from "./ai";
    * ログをツイートする。
    */
   function tweetlog() {
-    var url = document.location.href.split('?')[0];
-    var init = '?init=' + startMap[55] + ','+
+    let url = document.location.href.split('?')[0];
+    let init = '?init=' + startMap[55] + ','+
      startMap[45] + ','+
      startMap[35] + ','+
      startMap[25] + ','+
@@ -1676,7 +1676,7 @@ import { Aijs } from "./ai";
      startMap[5] + ','+
      startMap[44] + ','+
      startMap[14];
-    var log = '%26log=' + encodeLog(logArray2);
+    let log = '%26log=' + encodeLog(logArray2);
     log += '%26lv=' + document.querySelector('#level').value;
     window.open('https://twitter.com/intent/tweet?text=' + url + init + log + '%20%23colamone');
   }
@@ -1686,7 +1686,7 @@ import { Aijs } from "./ai";
   function setTweet() {
     /*jshint -W030 */
     !function (d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0];
+      let js, fjs = d.getElementsByTagName(s)[0];
       if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.async = true; js.src = 'https://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); }
     } (document, 'script', 'twitter-wjs');
   }
@@ -1694,7 +1694,7 @@ import { Aijs } from "./ai";
    * botかどうか判定
    */
   function isBot(){
-    var ua = window.navigator.userAgent.toLowerCase();
+    let ua = window.navigator.userAgent.toLowerCase();
     if (ua.indexOf('bot') != -1 ||
     ua.indexOf('lighthouse') != -1||
     ua.indexOf('headless') != -1) {
