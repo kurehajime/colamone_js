@@ -1,5 +1,5 @@
 /* @license Copyright (c) @kurehajime / source code: https://github.com/kurehajime/colamone_js */
-var version = '201906112227';
+var version = '201906122056';
 self.addEventListener('install', function(event) {
   caches.keys().then(function(names) {
     for (var i in names){

@@ -103,46 +103,8 @@ const DEFAULT_EVALPARAM = {
  * @param  {Object.<number, number>}  wkMap
  * @return {Object.<number, number>} 
  */
-function copyMap(wkMap) {
-  let rtnMap = new Int8Array(56);
-  // 不格好だがループするより高速。
-  rtnMap[0] = wkMap[0];
-  rtnMap[10] = wkMap[10];
-  rtnMap[20] = wkMap[20];
-  rtnMap[30] = wkMap[30];
-  rtnMap[40] = wkMap[40];
-  rtnMap[50] = wkMap[50];
-  rtnMap[1] = wkMap[1];
-  rtnMap[11] = wkMap[11];
-  rtnMap[21] = wkMap[21];
-  rtnMap[31] = wkMap[31];
-  rtnMap[41] = wkMap[41];
-  rtnMap[51] = wkMap[51];
-  rtnMap[2] = wkMap[2];
-  rtnMap[12] = wkMap[12];
-  rtnMap[22] = wkMap[22];
-  rtnMap[32] = wkMap[32];
-  rtnMap[42] = wkMap[42];
-  rtnMap[52] = wkMap[52];
-  rtnMap[3] = wkMap[3];
-  rtnMap[13] = wkMap[13];
-  rtnMap[23] = wkMap[23];
-  rtnMap[33] = wkMap[33];
-  rtnMap[43] = wkMap[43];
-  rtnMap[53] = wkMap[53];
-  rtnMap[4] = wkMap[4];
-  rtnMap[14] = wkMap[14];
-  rtnMap[24] = wkMap[24];
-  rtnMap[34] = wkMap[34];
-  rtnMap[44] = wkMap[44];
-  rtnMap[54] = wkMap[54];
-  rtnMap[5] = wkMap[5];
-  rtnMap[15] = wkMap[15];
-  rtnMap[25] = wkMap[25];
-  rtnMap[35] = wkMap[35];
-  rtnMap[45] = wkMap[45];
-  rtnMap[55] = wkMap[55];    
-  return rtnMap;
+function copyMap(wkMap) {   
+  return new Int8Array(wkMap);
 }
 
 /** 
