@@ -313,7 +313,7 @@ function getNodeMap(wkMap, turn_player) {
     }
     let canMove = getCanMovePanelX(panel_num, wkMap);
     for (let num = 0; num < canMove.length; num++) {
-      let nodeMap = copyMap(wkMap);
+      let nodeMap = new Int8Array(wkMap);
       nodeMap[canMove[num]] = nodeMap[panel_num];
       nodeMap[panel_num] = 0;
       nodeList.push([[panel_num, canMove[num]], nodeMap]);
@@ -427,7 +427,7 @@ function deepThinkAllAB(map, turn_player, depth, a, b, nearwin, evalparam) {
 function thinkAI(map, turn_player, depth, a, b, evalparam) {
   let nearwin = false;
   let hand = [null, null];
-  let wkMap = copyMap(map);
+  let wkMap = new Int8Array(map);
   if (!evalparam) {
     evalparam = DEFAULT_EVALPARAM;
   }
