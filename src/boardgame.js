@@ -360,14 +360,14 @@ import { Aijs } from "./ai";
     setTweet(); // ツイートボタンを生成
 
     if (logArray.length === 0) {
-      // if(isBot()==false){
-      //   window.setTimeout(function(){
-      //     if(demo==true){
-      //       intervalID = window.setInterval(playDemo, 100);
-      //       playDemo();
-      //     }
-      //   },2000);
-      // }
+      if(isBot()==false){
+        window.setTimeout(function(){
+          if(demo==true){
+            intervalID = window.setInterval(playDemo, 100);
+            playDemo();
+          }
+        },2000);
+      }
     } else {
       demo = false;
       autoLog=true;
