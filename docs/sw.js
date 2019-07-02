@@ -1,8 +1,8 @@
 /* @license Copyright (c) @kurehajime / source code: https://github.com/kurehajime/colamone_js */
-var version = '201906172132';
+let version = '201907022202';
 self.addEventListener('install', function(event) {
   caches.keys().then(function(names) {
-    for (var i in names){
+    for (let i in names){
       if(names[i]!==version){
         caches.delete(names[i]);
       }
@@ -17,7 +17,7 @@ self.addEventListener('fetch', function(event) {
         return response;
       } else {
         return fetch(event.request).then(function (response) {
-          var responseClone = response.clone();        
+          let responseClone = response.clone();        
           caches.open(version).then(function (cache) {
             if((event.request.url.indexOf('http') === 0)){
               cache.put(event.request, responseClone);
