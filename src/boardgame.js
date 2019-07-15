@@ -363,10 +363,10 @@ import { Aijs } from "./ai";
       if(isBot()==false){
         window.setTimeout(function(){
           if(demo==true){
-            intervalID = window.setInterval(playDemo, 100);
+            intervalID = window.setInterval(playDemo, 400);
             playDemo();
           }
-        },2000);
+        },500);
       }
     } else {
       demo = false;
