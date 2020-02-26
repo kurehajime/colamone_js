@@ -8,6 +8,8 @@ Colamoneはチェスや将棋に似たオリジナルのボードゲームです
 こちらのサイトであそべます。(You can play here now.)    
 https://xiidec.appspot.com/colamone/colamone.html
 
+English  
+https://xiidec.appspot.com/colamone/colamone-en.html    
 日本語  
 https://xiidec.appspot.com/colamone/colamone-ja.html  
 中文(简体)  
