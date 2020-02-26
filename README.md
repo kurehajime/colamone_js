@@ -12,7 +12,7 @@ https://xiidec.appspot.com/colamone/colamone.html
 https://xiidec.appspot.com/colamone/colamone-ja.html  
 中文(简体)  
 https://xiidec.appspot.com/colamone/colamone-zh-hans.html  
-中文（繁體）  
+中文(繁體）  
 https://xiidec.appspot.com/colamone/colamone-zh-hant.html  
 한국  
 https://xiidec.appspot.com/colamone/colamone-kr.html  
