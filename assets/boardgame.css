@@ -403,6 +403,19 @@ body{
     .howtoplay{
         line-height: 40px;
         text-align: center;
+        color: darkblue;
+        animation: opblink 2s infinite alternate;
+    }
+    @keyframes opblink {
+        0% {
+            opacity:0.2;
+        }
+        50% {
+            opacity:0.8;
+        }
+        100% {
+            opacity:1.0;
+        }
     }
     #level{
         width: 260px !important;
@@ -414,7 +427,6 @@ body{
     .manual{
         font-size: 18px !important;
         max-width: 495px;
-        display: none;   
     }
     #footer{
         display: none;   
