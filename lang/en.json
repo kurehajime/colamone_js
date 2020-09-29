@@ -4,5 +4,5 @@
     "replay":" View log ",
     "tweetlog":" Tweet result ",
     "howtoplay":"How to play Colamone",
-    "manual":"(1) Colamone is kinda like chess. \n    Only some loose similarities. \n(2) Each piece can move 1 tile in the direction \n    of any of it's dots. \n(3) If a piece gets to the other side, \n    you get how many ever points it's worth. \n(4) If you get 8 points, you win.\n(5) When a piece gets to the other side, you can \n    no longer move it and the enemy cannot take it. \n(6) When a player can't make any more moves, \n    whoever has the highest score wins.\n(7) if the current position on the board\n    appeared 3 times then the result is a draw."
+    "manual":"(1) Colamone is similar to chess. \n    But there's some differences. \n(2) Each piece can move 1 tile in the direction \n    of any of it's dots. \n(3) If a piece reaches the other side, \n    you get how many ever points it's worth. \n(4) If you reach 8 points, you win.\n(5) When a piece reaches the other side, you can \n    no longer move it and the enemy cannot take it. \n(6) When there's no more available movements to a player, \n    whoever has the highest score wins.\n(7) if the current position on the board\n    appeared 3 times then the result is a draw."
 }
