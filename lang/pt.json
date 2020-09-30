@@ -1,0 +1,9 @@
+
+{
+    "title":"colamone",
+    "description":"Colamone é um jogo de tabuleiro, semelhante ao Xadrez.",
+    "replay":"Ver replay",
+    "tweetlog":"Tweetar resultado",
+    "howtoplay":"Como jogar Colamone",
+    "manual":"(1) Colamone é semelhante ao Xadrez. \n    Porém, há algumas diferenças. \n(2) Cada peça pode ser movida 1 casa na direção \n de qualquer um dos seus pontos. \n(3) Se uma peça alcançar o outro lado, \n   você ganha a pontuação que ela representa. \n(4) Se alcançar 8 pontos, você ganha.\n(5) Quando uma peça alcança o outro lado, você não pode \n  mais movê-la e o adversário não pode capturá-la. \n(6) Quando um jogador não pode mais realizar movimentos, \n    quem estiver com a maior pontuação ganha.\n(7) Se a posição atual no tabuleiro\n    aparecer 3 vezes, é decretado empate."
+}
