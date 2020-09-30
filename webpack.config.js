@@ -5,7 +5,7 @@ const date = require("date-utils");
 const timestamp = new Date().toFormat("YYYYMMDDHH24MI");
 
 // html
-let langs = ["ja", "en", "kr", "zh-hans", "zh-hant", "hi"];
+let langs = ["ja", "en", "kr", "zh-hans", "zh-hant", "hi", "pt"];
 let plugins = [];
 for (let i = 0; i < langs.length; i++) {
   let jsonObject = JSON.parse(
