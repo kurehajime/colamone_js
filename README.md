@@ -20,6 +20,8 @@ https://xiidec.appspot.com/colamone/colamone-zh-hant.html
 https://xiidec.appspot.com/colamone/colamone-kr.html  
 हिन्दी  
 https://xiidec.appspot.com/colamone/colamone-hi.html  
+Português do Brasil    
+https://xiidec.appspot.com/colamone/colamone-pt.html  
 
 [![Colamone](https://cloud.githubusercontent.com/assets/4569916/21293734/1ef09862-c570-11e6-9cd7-5e294bd15245.gif)](https://xiidec.appspot.com/colamone/colamone.html
 )
