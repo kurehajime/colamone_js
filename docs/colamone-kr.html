@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<HTML>
-    <HEAD>
+<html>
+    <head>
         <title>colamone</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width,user-scalable=no">
@@ -11,51 +11,51 @@
         <meta property="og:url" content="https://xiidec.appspot.com/colamone/colamone.html">
         <meta property="og:image" content="https://xiidec.appspot.com/img/colamone.png">
         <meta property="og:site_name" content="Colamone">
-        <meta property="fb:app_id" content="1687146941532105" />
-        <meta name="twitter:card" content="summary" />
-        <meta name="twitter:site" content="@kurehajime" />
-        <meta name="twitter:creator" content="@kurehajime" />
+        <meta property="fb:app_id" content="1687146941532105">
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:site" content="@kurehajime">
+        <meta name="twitter:creator" content="@kurehajime">
         <meta name="theme-color" content="#F9F9F9">
         <link rel="apple-touch-icon" href="https://xiidec.appspot.com/apple-touch-icon.png">
-        <link rel="alternate" hreflang="x-default" href="https://xiidec.appspot.com/colamone/colamone.html" />
-        <link rel="alternate" hreflang="ja" href="https://xiidec.appspot.com/colamone/colamone-ja.html" />
-        <link rel="alternate" hreflang="en" href="https://xiidec.appspot.com/colamone/colamone-en.html" />
-        <link rel="alternate" hreflang="ko" href="https://xiidec.appspot.com/colamone/colamone-kr.html" />                        
-        <link rel="alternate" hreflang="zh-Hant" href="https://xiidec.appspot.com/colamone/colamone-zh-hant.html" />        
-        <link rel="alternate" hreflang="zh-Hans" href="https://xiidec.appspot.com/colamone/colamone-zh-hans.html" />        
-        <link rel="alternate" hreflang="hi" href="https://xiidec.appspot.com/colamone/colamone-hi.html" />        
-        <link rel="alternate" hreflang="pt" href="https://xiidec.appspot.com/colamone/colamone-pt.html" />        
+        <link rel="alternate" hreflang="x-default" href="https://xiidec.appspot.com/colamone/colamone.html">
+        <link rel="alternate" hreflang="ja" href="https://xiidec.appspot.com/colamone/colamone-ja.html">
+        <link rel="alternate" hreflang="en" href="https://xiidec.appspot.com/colamone/colamone-en.html">
+        <link rel="alternate" hreflang="ko" href="https://xiidec.appspot.com/colamone/colamone-kr.html">                        
+        <link rel="alternate" hreflang="zh-Hant" href="https://xiidec.appspot.com/colamone/colamone-zh-hant.html">        
+        <link rel="alternate" hreflang="zh-Hans" href="https://xiidec.appspot.com/colamone/colamone-zh-hans.html">        
+        <link rel="alternate" hreflang="hi" href="https://xiidec.appspot.com/colamone/colamone-hi.html">        
+        <link rel="alternate" hreflang="pt" href="https://xiidec.appspot.com/colamone/colamone-pt.html">        
         <link rel="manifest" href="./manifest.json">
-        <link rel="stylesheet" type="text/css" href="boardgame.css?202010111443" inline>
-    </HEAD>
-    <BODY onLoad="">
+        <link rel="stylesheet" type="text/css" href="boardgame.css?202010111521" inline>
+    </head>
+    <body onload="">
 <span id="dialogue"></span>
 <span id="dialogue2"></span>
-<div  id="page">
-        <div id="main"  >
+<div id="page">
+        <div id="main">
             <canvas id="canv" width="500" height="500"></canvas>
             <div id="message">
                 <div id="head">
-                    <span id="gamename">colamone</span> by <A Href="https://twitter.com/kurehajime">@kurehajime</A><br/>
+                    <span id="gamename">colamone</span> by <a href="https://twitter.com/kurehajime">@kurehajime</a><br>
                     <span id="blue" class="score">Blue: 0/8</span> - <span id="red" class="score"> Red: 0/8</span>　<span id="wins"></span>
                  </div>
-                <div  id="lvs">
-                    <select id="level"   >
+                <div id="lvs">
+                    <select id="level">
                         <option value="1" class="lv" selected="selected">Lv.1</option>
-                        <option value="2"  class="lv">Lv.2</option>
+                        <option value="2" class="lv">Lv.2</option>
                         <option value="3" class="lv">Lv.3</option>
-                        <option value="4"  class="lv">Lv.4</option>
-                        <option value="5"  class="lv">Lv.5</option>
-                        <option value="6"  class="lv">Lv.6</option>                        
+                        <option value="4" class="lv">Lv.4</option>
+                        <option value="5" class="lv">Lv.5</option>
+                        <option value="6" class="lv">Lv.6</option>                        
                     </select>
-                    <button type="button" id="newgame" >New Game</button>
+                    <button type="button" id="newgame">New Game</button>
                 </div>
-<span id="log" class="hide" ><button type="button" id="prevprev"  class="hide" onclick="" > |&lt; </button><button type="button" id="prev"  class="hide" onclick=""  > &lt; </button><button type="button" id="next"  class="hide" onclick=""  > &gt; </button><button type="button" id="nextnext" class="hide"  onclick="" > &gt;|</button></span>
-<span id="span_replay" class="hide" ><button type="button" id="replay" onclick="" >  View log  </button></span>
-<span id="span_tweetlog" class="hide" ><button type="button" id="tweetlog" onclick=""  >  Tweet result  </button></span>
-<div  id="collapsible" >
-    <h5 class="howtoplay"><span id="htp" >게임 방법</span></h5>
-<div class="manual" ><p id="manual">① Colamone 체스 와 비슷한 보드 게임입니다.
+<span id="log" class="hide"><button type="button" id="prevprev" class="hide" onclick=""> |&lt; </button><button type="button" id="prev" class="hide" onclick=""> &lt; </button><button type="button" id="next" class="hide" onclick=""> &gt; </button><button type="button" id="nextnext" class="hide" onclick=""> &gt;|</button></span>
+<span id="span_replay" class="hide"><button type="button" id="replay" onclick="">  View log  </button></span>
+<span id="span_tweetlog" class="hide"><button type="button" id="tweetlog" onclick="">  Tweet result  </button></span>
+<div id="collapsible">
+    <h5 class="howtoplay"><span id="htp">게임 방법</span></h5>
+<div class="manual"><p id="manual">① Colamone 체스 와 비슷한 보드 게임입니다.
     ② 각각의 패널은 포인트가 가리키는 방향으로 진행합니다.
     ③ 자신의 패널을 상대 패널로 이동하면 제거 할 수 있습니다.
     ④ 안쪽의 진지까지 진행하면 패널의 숫자가 점수가됩니다.
@@ -66,16 +66,16 @@
     ⑧ 동일한 국면이 3 번 나타날 때는 무승부입니다.</p>
 </div>
                 </div>
-                <span id="sns"> <a href="https://twitter.com/share" class="twitter-share-button" data-url="https://xiidec.appspot.com/colamone/colamone.html" data-hashtags="colamone, boardgames" data-lang="en"  data-size="default"></a>
+                <span id="sns"> <a href="https://twitter.com/share" class="twitter-share-button" data-url="https://xiidec.appspot.com/colamone/colamone.html" data-hashtags="colamone, boardgames" data-lang="en" data-size="default"></a>
                 </span>
                 </div>
         </div>
-    <IMG src="bk.gif" class="preload" style="display:none" alt="bk" loading="eager">
-  <div  id="footer">
-    <p  style="text-align:center;font-size:10px;">(c)2014–<script type=text/javascript> document.write(new Date().getFullYear()); </script> <A Href="https://twitter.com/kurehajime">@kurehajime</A>. All Rights Reserved. / Ver.<a href="https://github.com/kurehajime/colamone_js"  TARGET="_blank" >202010111443</a>/<span id="time"></span></p>
+    <img src="bk.gif" class="preload" style="display:none" alt="bk" loading="eager">
+  <div id="footer">
+    <p style="text-align:center;font-size:10px;">(c)2014–<script type="text/javascript"> document.write(new Date().getFullYear()); </script> <a href="https://twitter.com/kurehajime">@kurehajime</a>. All Rights Reserved. / Ver.<a href="https://github.com/kurehajime/colamone_js" target="_blank">202010111521</a>/<span id="time"></span></p>
   </div>
 </div>
-<script type="text/javascript" src="main.js?202010111443" defer></script>
+<script type="text/javascript" src="main.js?202010111521" defer="defer"></script>
 <script type="text/javascript">
     /** 
      * 国際化
@@ -140,5 +140,5 @@
         });
     };
  </script>
- </BODY>
-</HTML>
+ </body>
+</html>

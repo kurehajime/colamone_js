@@ -16,7 +16,8 @@ for (let i = 0; i < langs.length; i++) {
       filename: "colamone-" + langs[i] + ".html",
       template: "src/template.html",
       templateParameters: Object.assign({ TIMESTAMP: timestamp }, jsonObject),
-      inject: false
+      inject: false,
+      minify: { collapseWhitespace: false }
     })
   );
 }
@@ -25,7 +26,8 @@ plugins.push(
     filename: "colamone.html",
     template: "src/colamone.html",
     templateParameters: { TIMESTAMP: timestamp },
-    inject: false
+    inject: false,
+    minify: { collapseWhitespace: false }
   })
 );
 plugins.push(
@@ -33,7 +35,8 @@ plugins.push(
     filename: "index.html",
     template: "src/colamone.html",
     templateParameters: { TIMESTAMP: timestamp },
-    inject: false
+    inject: false,
+    minify: { collapseWhitespace: false }
   })
 );
 plugins.push(
@@ -41,29 +44,35 @@ plugins.push(
     filename: "colamone-mogera.html",
     template: "src/colamone-mogera.html",
     templateParameters: { TIMESTAMP: timestamp },
-    inject: false
+    inject: false,
+    minify: { collapseWhitespace: false }
   })
 );
 //　Serviceworker
 plugins.push(
-  new CopyWebpackPlugin([
+  new CopyWebpackPlugin(
     {
-      from: "src/sw.js",
-      to: "sw.js",
-      transform: function(content, path) {
-        return content.toString().replace("TIMESTAMP", timestamp);
-      }
-    }
-  ])
+      patterns: [
+        {
+          from: "src/sw.js",
+          to: "sw.js",
+          transform: function (content, path) {
+            return content.toString().replace("TIMESTAMP", timestamp);
+          }
+        }
+      ]
+    })
 );
 // assets
 plugins.push(
-  new CopyWebpackPlugin([
-    {
-      from: "assets",
-      to: ""
-    }
-  ])
+  new CopyWebpackPlugin({
+    patterns: [
+      {
+        from: "assets",
+        to: ""
+      }
+    ]
+  })
 );
 module.exports = {
   // メインとなるJavaScriptファイル（エントリーポイント）
