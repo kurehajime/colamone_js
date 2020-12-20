@@ -116,8 +116,8 @@ function copyMap(wkMap: Int8Array):Int8Array {
  * @return {number} 0:引き分け,1:先手勝利,-1:後手勝利
  */
 function isEndX(wkMap: Int8Array, nearwin: boolean):number {
-  let sum1 = 0;
-  let sum2 = 0;
+  let sum1:number = 0;
+  let sum2:number = 0;
   // ループだと遅いので展開
   if (wkMap[0] > 0) { sum1 += wkMap[0]; }
   if (wkMap[10] > 0) { sum1 += wkMap[10]; }
@@ -150,10 +150,10 @@ function isEndX(wkMap: Int8Array, nearwin: boolean):number {
   }
   // 実質的判定勝利
   if (nearwin === false && (sum1 !== 0 || sum2 !== 0)) {
-    let live1 = 0;
-    let live2 = 0;
-    for (let i = 0; i <= 35; i++) {
-      let num = NUMBERS[i] | 0;
+    let live1:number = 0;
+    let live2:number = 0;
+    for (let i:number = 0; i <= 35; i++) {
+      let num:number = NUMBERS[i] | 0;
       if (wkMap[num] > 0) {
         live1 += wkMap[num];
       } else if (wkMap[num] < 0) {
@@ -175,8 +175,8 @@ function isEndX(wkMap: Int8Array, nearwin: boolean):number {
  * @return {boolean} 
  */
 function isDraw(wkMap: Int8Array):boolean {
-  let sum1 = 0;
-  let sum2 = 0;
+  let sum1:number = 0;
+  let sum2:number = 0;
   // ループだと遅いので展開
   if (wkMap[0] > 0) { sum1 += wkMap[0]; }
   if (wkMap[10] > 0) { sum1 += wkMap[10]; }
@@ -205,14 +205,14 @@ function isDraw(wkMap: Int8Array):boolean {
  * @return {boolean} 
  */
 function isNoneNode(wkMap: Int8Array):boolean {
-  let flag1 = false;
-  let flag2 = false;
-  for (let i = 0; i <= 35; i++) {
-    let panel_num = NUMBERS[i] | 0;
+  let flag1:boolean = false;
+  let flag2:boolean = false;
+  for (let i :number= 0; i <= 35; i++) {
+    let panel_num:number = NUMBERS[i] | 0;
     if (wkMap[panel_num] === 0) {
       continue;
     }
-    let canMove = hasCanMovePanelX(panel_num, wkMap);
+    let canMove:boolean = hasCanMovePanelX(panel_num, wkMap);
     if (canMove === true) {
       if (wkMap[panel_num] > 0) {
         flag1 = true;
@@ -233,26 +233,26 @@ function isNoneNode(wkMap: Int8Array):boolean {
  * @return {boolean} 
  */
 function hasCanMovePanelX(panel_num: number, wkMap: Int8Array) :boolean{
-  let number = wkMap[panel_num] | 0;
-  let x = ~~(panel_num / 10); // [~~]=Math.floor 
-  let y = ~~(panel_num % 10);
+  let number:number = wkMap[panel_num] | 0;
+  let x :number= ~~(panel_num / 10); // [~~]=Math.floor 
+  let y :number= ~~(panel_num % 10);
 
   // アガリのコマは動かしたらダメ。何も無いマスも動かしようがない。
   if ((number > 0 && y === 0) || (number < 0 && y === 5) || number === 0) {
     return false;
   }
-  for (let i = 0; i < 9; i++) {
+  for (let i:number = 0; i < 9; i++) {
     if (PIECES[number + 8][i] === 0) {
       continue;
     }
-    let target_x = x + ~~(i % 3) - 1;
-    let target_y = y + ~~(i / 3) - 1;
+    let target_x :number= x + ~~(i % 3) - 1;
+    let target_y :number= y + ~~(i / 3) - 1;
     if (target_y < 0 || target_y > 5 || target_x > 5 || target_x < 0) {
       continue;
     }
 
-    let idx = target_x * 10 + target_y;
-    let target_number = wkMap[idx];
+    let idx :number= target_x * 10 + target_y;
+    let target_number:number = wkMap[idx];
 
     // 自コマとアガリのコマはとったらダメ。
     if ((target_number * number > 0) || (target_number > 0 && target_y === 0) || (target_number < 0 && target_y === 5)) {
@@ -269,27 +269,27 @@ function hasCanMovePanelX(panel_num: number, wkMap: Int8Array) :boolean{
  * @return {Array.<number, number>} 
  */
 function getCanMovePanelX(panel_num: number, wkMap: Int8Array): number[] {
-  let number = wkMap[panel_num] | 0;
-  let x = ~~(panel_num / 10); // [~~]=Math.floor 
-  let y = ~~(panel_num % 10);
+  let number :number= wkMap[panel_num] | 0;
+  let x :number= ~~(panel_num / 10); // [~~]=Math.floor 
+  let y :number= ~~(panel_num % 10);
   let canMove :number[] = [];
 
   // アガリのコマは動かしたらダメ。何も無いマスも動かしようがない。
   if ((number > 0 && y === 0) || (number < 0 && y === 5) || number === 0) {
     return canMove;
   }
-  for (let i = 0; i < 9; i++) {
+  for (let i:number = 0; i < 9; i++) {
     if (PIECES[number + 8][i] === 0) {
       continue;
     }
-    let target_x = x + ~~(i % 3) - 1;
-    let target_y = y + ~~(i / 3) - 1;
+    let target_x :number= x + ~~(i % 3) - 1;
+    let target_y :number= y + ~~(i / 3) - 1;
     if (target_y < 0 || target_y > 5 || target_x > 5 || target_x < 0) {
       continue;
     }
 
-    let idx = target_x * 10 + target_y;
-    let target_number = wkMap[idx]|0;
+    let idx :number= target_x * 10 + target_y;
+    let target_number:number = wkMap[idx]|0;
 
     // 自コマとアガリのコマはとったらダメ。
     if ((target_number * number > 0) || (target_number > 0 && target_y === 0) || (target_number < 0 && target_y === 5)) {
@@ -308,14 +308,14 @@ function getCanMovePanelX(panel_num: number, wkMap: Int8Array): number[] {
  */
 function getNodeMap(wkMap: Int8Array, turn_player: number):any {
   let nodeList:(number[] | Int8Array)[][] = [];
-  for (let i = 0; i <= 35; i++) {
-    let panel_num = NUMBERS[i] | 0;
+  for (let i :number= 0; i <= 35; i++) {
+    let panel_num:number = NUMBERS[i] | 0;
     if (wkMap[panel_num] * turn_player <= 0 || wkMap[panel_num] === 0) {
       continue;
     }
-    let canMove = getCanMovePanelX(panel_num, wkMap);
-    for (let num = 0; num < canMove.length; num++) {
-      let nodeMap = new Int8Array(wkMap);
+    let canMove:number[] = getCanMovePanelX(panel_num, wkMap);
+    for (let num :number= 0; num < canMove.length; num++) {
+      let nodeMap:Int8Array = new Int8Array(wkMap);
       nodeMap[canMove[num]] = nodeMap[panel_num];
       nodeMap[panel_num] = 0;
       nodeList.push([[panel_num, canMove[num]], nodeMap]);
@@ -332,25 +332,25 @@ function getNodeMap(wkMap: Int8Array, turn_player: number):any {
  * @return {number} 
  */
 function evalMap(wkMap: Int8Array, nearwin: boolean, evalparam: number[][]):number {
-  let ev = 0;
+  let ev:number = 0;
 
   // 引き分け判定
   if (isDraw(wkMap)) {
     return 0;
   }
   // 終局判定
-  let end = isEndX(wkMap, nearwin);
+  let end :number= isEndX(wkMap, nearwin);
   if (end === 1) {
     return +9999999;
   } else if (end === -1) {
     return -9999999;
   }
   // 評価
-  for (let i = 0; i <= 35; i++) {
-    let panel_num = NUMBERS[i] | 0;
-    let cell_p = 0;
-    let p = wkMap[panel_num];
-    let line;
+  for (let i:number = 0; i <= 35; i++) {
+    let panel_num :number= NUMBERS[i] | 0;
+    let cell_p:number = 0;
+    let p :number= wkMap[panel_num];
+    let line:number;
     // コマの評価値を加算
     if (p > 0) {
       line = 5 - (panel_num % 10);
@@ -369,7 +369,7 @@ function evalMap(wkMap: Int8Array, nearwin: boolean, evalparam: number[][]):numb
  * よく考える
  */
 function deepThinkAllAB(map: Int8Array, turn_player: number, depth: number, a: number, b: number, nearwin: boolean, evalparam: number[][]): any {
-  let best_score = turn_player * 9999999 * -1;
+  let best_score :number= turn_player * 9999999 * -1;
   let besthand;
   if (depth === 0) {
     best_score = evalMap(map, nearwin, evalparam);
@@ -381,12 +381,12 @@ function deepThinkAllAB(map: Int8Array, turn_player: number, depth: number, a: n
   }
 
   let nodeList = getNodeMap(map, turn_player);
-  for (let i = 0; i < nodeList.length; i++) {
+  for (let i :number= 0; i < nodeList.length; i++) {
     let hand = nodeList[i][0];
     let map0 = nodeList[i][1];
-    let sc = 0;
+    let sc :number= 0;
     // 必勝            
-    let end = isEndX(map0, nearwin);
+    let end :number= isEndX(map0, nearwin);
     if (end === turn_player) {
       return [hand, 999999 * turn_player];
     }
@@ -427,7 +427,7 @@ function deepThinkAllAB(map: Int8Array, turn_player: number, depth: number, a: n
  * 考える
  */
 function thinkAI(map: Int8Array, turn_player: number, depth: number, a: number, b: number, evalparam: number[][]): any {
-  let nearwin = false;
+  let nearwin:boolean = false;
   let hand = [null, null];
   let wkMap = new Int8Array(map);
   if (!evalparam) {
