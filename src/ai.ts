@@ -10,6 +10,8 @@ Aijs.isEndX = isEndX;
 Aijs.isDraw = isDraw;
 
 export type MapArray = Int8Array;
+type Hand = [number,number];
+type HandNode =[Hand,MapArray];
 
 // Body ---------------------------------------
 
@@ -308,8 +310,8 @@ function getCanMovePanelX(panel_num: number, wkMap: MapArray): number[] {
  * @param  {number}  turn_player
  * @return {Array.<number,Array.<Array.<number, number>, Object.<number, number>>>} 
  */
-function getNodeMap(wkMap: MapArray, turn_player: number):any {
-  let nodeList:(number[] | MapArray)[][] = [];
+function getNodeMap(wkMap: MapArray, turn_player: number):HandNode[] {
+  let nodeList:HandNode[]  = [];
   for (let i :number= 0; i <= 35; i++) {
     let panel_num:number = NUMBERS[i] | 0;
     if (wkMap[panel_num] * turn_player <= 0 || wkMap[panel_num] === 0) {
@@ -370,7 +372,7 @@ function evalMap(wkMap: MapArray, nearwin: boolean, evalparam: number[][]):numbe
 /** 
  * よく考える
  */
-function deepThinkAllAB(map: MapArray, turn_player: number, depth: number, a: number|undefined, b: number|undefined, nearwin: boolean, evalparam: number[][]): any {
+function deepThinkAllAB(map: MapArray, turn_player: number, depth: number, a: number|undefined, b: number|undefined, nearwin: boolean, evalparam: number[][]): [Hand|undefined,number] {
   let best_score :number= turn_player * 9999999 * -1;
   let besthand;
   if (depth === 0) {
@@ -382,9 +384,9 @@ function deepThinkAllAB(map: MapArray, turn_player: number, depth: number, a: nu
     b = 9999999 * turn_player;
   }
 
-  let nodeList = getNodeMap(map, turn_player);
+  let nodeList:HandNode[] = getNodeMap(map, turn_player);
   for (let i :number= 0; i < nodeList.length; i++) {
-    let hand = nodeList[i][0];
+    let hand :Hand = nodeList[i][0];
     let map0 = nodeList[i][1];
     let sc :number= 0;
     // 必勝            
@@ -428,9 +430,9 @@ function deepThinkAllAB(map: MapArray, turn_player: number, depth: number, a: nu
 /** 
  * 考える
  */
-function thinkAI(map: MapArray, turn_player: number, depth: number, a: number|undefined, b: number|undefined, evalparam: number[][]|undefined): any {
+function thinkAI(map: MapArray, turn_player: number, depth: number, a: number|undefined, b: number|undefined, evalparam: number[][]|undefined): [Hand|undefined,number] {
   let nearwin:boolean = false;
-  let hand = [null, null];
+  let hand:[Hand|undefined,number] = [undefined, 0];
   let wkMap = new Int8Array(map);
   if (!evalparam) {
     evalparam = DEFAULT_EVALPARAM;

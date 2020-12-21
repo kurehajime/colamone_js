@@ -161,8 +161,10 @@ test('終局時に同じ局面になるか確認する(レベル2)', () => {
             break;
         }
         let hand = Aijs.thinkAI(map, turn_player, 3,undefined,undefined,undefined)[0];
-        map[hand[1]] = map[hand[0]];
-        map[hand[0]] = 0;
+        if(hand!==void 0){
+            map[hand[1]] = map[hand[0]];
+            map[hand[0]] = 0;
+        }
         if (Aijs.isDraw(map) === true) {
             end = 0;
             break;
