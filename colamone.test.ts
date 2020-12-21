@@ -1,10 +1,10 @@
-import { Aijs } from "./src/ai";
-let thisMap;
+import { Aijs, MapArray } from "./src/ai";
+let thisMap:any;
 
-function convMap(map) {
+function convMap(map:any):MapArray {
     let rtn = new Int8Array(54);
     for (const i in map) {
-        rtn[i] = map[i];
+        rtn[parseInt(i)] = map[i];
     }
     return rtn;
 }
@@ -160,7 +160,7 @@ test('終局時に同じ局面になるか確認する(レベル2)', () => {
         if (count > 255) {
             break;
         }
-        let hand = Aijs.thinkAI(map, turn_player, 3)[0];
+        let hand = Aijs.thinkAI(map, turn_player, 3,undefined,undefined,undefined)[0];
         map[hand[1]] = map[hand[0]];
         map[hand[0]] = 0;
         if (Aijs.isDraw(map) === true) {

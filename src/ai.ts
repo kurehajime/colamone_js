@@ -9,7 +9,7 @@ Aijs.getCanMovePanelX = getCanMovePanelX;
 Aijs.isEndX = isEndX;
 Aijs.isDraw = isDraw;
 
-type Map = Int8Array
+export type MapArray = Int8Array;
 
 // Body ---------------------------------------
 
@@ -107,7 +107,7 @@ const DEFAULT_EVALPARAM =
  * @param  {Object.<number, number>}  wkMap
  * @return {Object.<number, number>} 
  */
-function copyMap(wkMap: Map):Map {   
+function copyMap(wkMap: MapArray):MapArray {   
   return new Int8Array(wkMap);
 }
 
@@ -117,7 +117,7 @@ function copyMap(wkMap: Map):Map {
  * @param  {boolean}  nearwin
  * @return {number} 0:引き分け,1:先手勝利,-1:後手勝利
  */
-function isEndX(wkMap: Map, nearwin: boolean):number {
+function isEndX(wkMap: MapArray, nearwin: boolean):number {
   let sum1:number = 0;
   let sum2:number = 0;
   // ループだと遅いので展開
@@ -176,7 +176,7 @@ function isEndX(wkMap: Map, nearwin: boolean):number {
  * @param  {Object.<number, number>}  wkMap
  * @return {boolean} 
  */
-function isDraw(wkMap: Map):boolean {
+function isDraw(wkMap: MapArray):boolean {
   let sum1:number = 0;
   let sum2:number = 0;
   // ループだと遅いので展開
@@ -206,7 +206,7 @@ function isDraw(wkMap: Map):boolean {
  * @param  {Object.<number, number>}  wkMap
  * @return {boolean} 
  */
-function isNoneNode(wkMap: Map):boolean {
+function isNoneNode(wkMap: MapArray):boolean {
   let flag1:boolean = false;
   let flag2:boolean = false;
   for (let i :number= 0; i <= 35; i++) {
@@ -234,7 +234,7 @@ function isNoneNode(wkMap: Map):boolean {
  * @param  {Object.<number, number>}  wkMap
  * @return {boolean} 
  */
-function hasCanMovePanelX(panel_num: number, wkMap: Map) :boolean{
+function hasCanMovePanelX(panel_num: number, wkMap: MapArray) :boolean{
   let number:number = wkMap[panel_num] | 0;
   let x :number= ~~(panel_num / 10); // [~~]=Math.floor 
   let y :number= ~~(panel_num % 10);
@@ -270,7 +270,7 @@ function hasCanMovePanelX(panel_num: number, wkMap: Map) :boolean{
  * @param  {Object.<number, number>}  wkMap
  * @return {Array.<number, number>} 
  */
-function getCanMovePanelX(panel_num: number, wkMap: Map): number[] {
+function getCanMovePanelX(panel_num: number, wkMap: MapArray): number[] {
   let number :number= wkMap[panel_num] | 0;
   let x :number= ~~(panel_num / 10); // [~~]=Math.floor 
   let y :number= ~~(panel_num % 10);
@@ -308,8 +308,8 @@ function getCanMovePanelX(panel_num: number, wkMap: Map): number[] {
  * @param  {number}  turn_player
  * @return {Array.<number,Array.<Array.<number, number>, Object.<number, number>>>} 
  */
-function getNodeMap(wkMap: Map, turn_player: number):any {
-  let nodeList:(number[] | Map)[][] = [];
+function getNodeMap(wkMap: MapArray, turn_player: number):any {
+  let nodeList:(number[] | MapArray)[][] = [];
   for (let i :number= 0; i <= 35; i++) {
     let panel_num:number = NUMBERS[i] | 0;
     if (wkMap[panel_num] * turn_player <= 0 || wkMap[panel_num] === 0) {
@@ -317,7 +317,7 @@ function getNodeMap(wkMap: Map, turn_player: number):any {
     }
     let canMove:number[] = getCanMovePanelX(panel_num, wkMap);
     for (let num :number= 0; num < canMove.length; num++) {
-      let nodeMap:Map = new Int8Array(wkMap);
+      let nodeMap:MapArray = new Int8Array(wkMap);
       nodeMap[canMove[num]] = nodeMap[panel_num];
       nodeMap[panel_num] = 0;
       nodeList.push([[panel_num, canMove[num]], nodeMap]);
@@ -333,7 +333,7 @@ function getNodeMap(wkMap: Map, turn_player: number):any {
  * @param  {Object.<number, Array.<number>>}  evalparam
  * @return {number} 
  */
-function evalMap(wkMap: Map, nearwin: boolean, evalparam: number[][]):number {
+function evalMap(wkMap: MapArray, nearwin: boolean, evalparam: number[][]):number {
   let ev:number = 0;
 
   // 引き分け判定
@@ -370,7 +370,7 @@ function evalMap(wkMap: Map, nearwin: boolean, evalparam: number[][]):number {
 /** 
  * よく考える
  */
-function deepThinkAllAB(map: Map, turn_player: number, depth: number, a: number, b: number, nearwin: boolean, evalparam: number[][]): any {
+function deepThinkAllAB(map: MapArray, turn_player: number, depth: number, a: number|undefined, b: number|undefined, nearwin: boolean, evalparam: number[][]): any {
   let best_score :number= turn_player * 9999999 * -1;
   let besthand;
   if (depth === 0) {
@@ -428,7 +428,7 @@ function deepThinkAllAB(map: Map, turn_player: number, depth: number, a: number,
 /** 
  * 考える
  */
-function thinkAI(map: Map, turn_player: number, depth: number, a: number, b: number, evalparam: number[][]): any {
+function thinkAI(map: MapArray, turn_player: number, depth: number, a: number|undefined, b: number|undefined, evalparam: number[][]|undefined): any {
   let nearwin:boolean = false;
   let hand = [null, null];
   let wkMap = new Int8Array(map);
