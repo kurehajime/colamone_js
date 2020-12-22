@@ -1,7 +1,7 @@
 /* @license Copyright (c) @kurehajime / source code: https://github.com/kurehajime/colamone_js */
 'use strict';
 export type MapArray = Int8Array;
-type Hand = [number,number];
+export type Hand = [number,number];
 type HandNode =[Hand,MapArray];
 
 export class Aijs {

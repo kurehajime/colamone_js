@@ -76,7 +76,7 @@ plugins.push(
 );
 module.exports = {
   // メインとなるJavaScriptファイル（エントリーポイント）
-  entry: `./src/boardgame.js`,
+  entry: `./src/boardgame.ts`,
   // production or development
   mode: "production",
   devtool: "source-map",
