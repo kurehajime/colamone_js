@@ -3,66 +3,57 @@ import { Aijs, MapArray } from "./ai";
 import { Hand } from "./ai";
 
 // Class ------------------------------------------------
-export function BoardGamejs() { }
-
-
-
-  // Header -----------------------------------------------
-  BoardGamejs.init = init;
-
+export class BoardGamejs{
 
   // Body ---------------------------------------
-  let ctx:(CanvasRenderingContext2D|null) = null;
-  let isTouch = true;
-  let goaled=false;
-  let canv_board:(HTMLCanvasElement|null) = null;
-  let canv_board2:(HTMLCanvasElement|null) = null;
-  let canv_focus:(HTMLCanvasElement|null) = null;
-  let canv_pieces:(HTMLCanvasElement|null) = null;
-  let canv_shadow:(HTMLCanvasElement|null) = null;
-  let canv_hover_piece:(HTMLCanvasElement|null) = null;
-  let canv_overlay:(HTMLCanvasElement|null) = null;
-  let canv_bk :(HTMLCanvasElement|null) = null;
-  let canv_cover:(HTMLCanvasElement|null) = null;
-  let canv_score:(HTMLCanvasElement|null) = null;
-  let canv_cache:(HTMLCanvasElement|null) = null;
-  let cache_on = false;
-  let img_bk_loaded = false;
-  let hover_piece:(number|null) = null;
-  let cellSize:number = 0;
-  let turn_player:number = 0;
-  let blueScore = 0;
-  let redScore = 0;
-  let winner:(number|null) = null;
-  let message = '';
-  let thinktime = 0.0;
-  let demo = true;
-  let autoLog=false;
-  let intervalID:(number|null) = null;
-  let intervalID_log:(number|null) = null;  
-  let thisHand:(Hand|undefined) = undefined;
-  let demo_inc=0;
-  const COLOR_LINE = '#333333';
-  const COLOR_PANEL_1 = '#660033';
-  const COLOR_PANEL_2 = '#004466';
-  const COLOR_PANEL_3 = '#FFFFFF';
-  const COLOR_PANEL_4 = '#111111';
-  const COLOR_PANEL_5 = '#444444';
-  const COLOR_PANEL_6 = '#888888';
-  const COLOR_SELECT = '#7fed7f';
-  const COLOR_SELECT2='#148d14';
-  const COLOR_RED = '#E60073';
-  const COLOR_BLUE = '#0099E6';
-  const COLOR_RED2 = '#E60073';
-  const COLOR_BLUE2 = '#0099E6';
-  const COLOR_WHITE = '#FFFFFF';
-  let RATIO=1;
-  if( window.devicePixelRatio!==undefined&& window.devicePixelRatio!=1){
-    RATIO = window.devicePixelRatio;
-  }
-  let CANV_SIZE=500*RATIO;
+  private ctx:(CanvasRenderingContext2D|null) = null;
+  private  isTouch = true;
+  private  goaled=false;
+  private  canv_board:(HTMLCanvasElement|null) = null;
+  private  canv_board2:(HTMLCanvasElement|null) = null;
+  private  canv_focus:(HTMLCanvasElement|null) = null;
+  private  canv_pieces:(HTMLCanvasElement|null) = null;
+  private  canv_shadow:(HTMLCanvasElement|null) = null;
+  private  canv_hover_piece:(HTMLCanvasElement|null) = null;
+  private  canv_overlay:(HTMLCanvasElement|null) = null;
+  private  canv_bk :(HTMLCanvasElement|null) = null;
+  private  canv_cover:(HTMLCanvasElement|null) = null;
+  private  canv_score:(HTMLCanvasElement|null) = null;
+  private  canv_cache:(HTMLCanvasElement|null) = null;
+  private  cache_on = false;
+  private  img_bk_loaded = false;
+  private  hover_piece:(number|null) = null;
+  private  cellSize:number = 0;
+  private  turn_player:number = 0;
+  private  blueScore = 0;
+  private  redScore = 0;
+  private  winner:(number|null) = null;
+  private  message = '';
+  private  thinktime = 0.0;
+  private  demo = true;
+  private  autoLog=false;
+  private  intervalID:(number|null) = null;
+  private  intervalID_log:(number|null) = null;  
+  private  thisHand:(Hand|undefined) = undefined;
+  private  demo_inc=0;
+  private readonly  COLOR_LINE = '#333333';
+  private readonly COLOR_PANEL_1 = '#660033';
+  private readonly  COLOR_PANEL_2 = '#004466';
+  private readonly  COLOR_PANEL_3 = '#FFFFFF';
+  private readonly  COLOR_PANEL_4 = '#111111';
+  private readonly  COLOR_PANEL_5 = '#444444';
+  private readonly  COLOR_PANEL_6 = '#888888';
+  private readonly  COLOR_SELECT = '#7fed7f';
+  private readonly  COLOR_SELECT2='#148d14';
+  private readonly  COLOR_RED = '#E60073';
+  private readonly  COLOR_BLUE = '#0099E6';
+  private readonly  COLOR_RED2 = '#E60073';
+  private readonly  COLOR_BLUE2 = '#0099E6';
+  private readonly  COLOR_WHITE = '#FFFFFF';
+  private RATIO=1;
+  private  CANV_SIZE=500*this.RATIO;
 
-  const PIECES:{ [index: string]: number[]; } = {
+  private readonly PIECES:{ [index: string]: number[]; } = {
     '1': [1, 1, 1,
       1, 0, 1,
       1, 1, 1],
@@ -121,7 +112,7 @@ export function BoardGamejs() { }
     4: 0, 14: 7, 24: 0, 34: 0, 44: 8, 54: 0,
     5: 6, 15: 5, 25: 4, 35: 3, 45: 2, 55: 1
   };*/
-  let thisMap:MapArray = new Int8Array([
+  private thisMap:MapArray = new Int8Array([
     -1,0,0,0,0,6,0,0,0,0,-2,-8,
     0,0,7,5,0,0,0,0,-3,0,0,0,
     0,4,0,0,0,0,-4,0,0,0,0,
@@ -129,135 +120,142 @@ export function BoardGamejs() { }
     0,0,0,0,-6,0,0,0,0,1
   ]);
 
-  let map_list:{ [index: string]: number; }  = {};
-  const LIMIT_1000DAY = 3;
-  let mouse_x = 0;
-  let mouse_y = 0;
-  let startMap:MapArray;
-  let logPointer = 0;
-  let logArray:Array<MapArray> = [];
-  let logArray2:Array<Hand>  = [];
-  let img_bk:(HTMLImageElement|null) = null;
-  img_bk = new Image(); img_bk.src = 'bk.gif';
-  let storage:any = null;
-  try {
-    if (window == parent && ('localStorage' in window) && window.localStorage !== null) {
-      storage = localStorage;
-      storage.setItem('test', 0); // Safariのプライベートモードは、できないのにできるって言うからかまをかけてみる。
-    }
-  } catch (e) {
-    storage = null;
-  }
-  if (storage === null) {
-    // localStorageが使えない場合
-    storage = {}; // ダミー
-    storage.getItem = function () { return undefined; };
-    storage.setItem = function () { return undefined; };
-
-    if (navigator.cookieEnabled) {
-      storage.hasItem = function (sKey:string) {
-        return (new RegExp('(?:^|;\\s*)' + escape(sKey).replace(/[\-\.\+\*]/g, '\\$&') + '\\s*\\=')).test(document.cookie);
-      };
-      storage.getItem = function (sKey:string) {
-        if (!sKey || !(new RegExp('(?:^|;\\s*)' + escape(sKey).replace(/[\-\.\+\*]/g, '\\$&') + '\\s*\\=')).test(document.cookie)) { return null; }
-        return unescape(document.cookie.replace(new RegExp('(?:^|.*;\\s*)' + escape(sKey).replace(/[\-\.\+\*]/g, '\\$&') + '\\s*\\=\\s*((?:[^;](?!;))*[^;]?).*'), '$1'));
-      };
-      storage.setItem = function (sKey:string, sValue:any) {
-        if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) { return; }
-        document.cookie = escape(sKey) + '=' + escape(sValue);
-      };
-    }
-  }
+  private map_list:{ [index: string]: number; }  = {};
+  private readonly LIMIT_1000DAY = 3;
+  private mouse_x = 0;
+  private mouse_y = 0;
+  private startMap:MapArray =new Int8Array();
+  private logPointer = 0;
+  private logArray:Array<MapArray> = [];
+  private logArray2:Array<Hand>  = [];
+  private img_bk:(HTMLImageElement|null) = null;
+  private storage:any = null;
+  
 
   /** 
    * 初期化
    */
-  function init() {
-    zoom(); // 小さい端末でズーム
+  public Run() {
+    if( window.devicePixelRatio!==undefined&& window.devicePixelRatio!=1){
+      this.RATIO = window.devicePixelRatio;
+    }
+
+    this.img_bk = new Image(); this.img_bk.src = 'bk.gif';
+    try {
+      if (window == parent && ('localStorage' in window) && window.localStorage !== null) {
+        this.storage = localStorage;
+        this.storage.setItem('test', 0); // Safariのプライベートモードは、できないのにできるって言うからかまをかけてみる。
+      }
+    } catch (e) {
+      this.storage = null;
+    }
+    if (this.storage === null) {
+      // localStorageが使えない場合
+      this.storage = {}; // ダミー
+      this.storage.getItem = function () { return undefined; };
+      this.storage.setItem = function () { return undefined; };
+  
+      if (navigator.cookieEnabled) {
+        this.storage.hasItem = function (sKey:string) {
+          return (new RegExp('(?:^|;\\s*)' + escape(sKey).replace(/[\-\.\+\*]/g, '\\$&') + '\\s*\\=')).test(document.cookie);
+        };
+        this.storage.getItem = function (sKey:string) {
+          if (!sKey || !(new RegExp('(?:^|;\\s*)' + escape(sKey).replace(/[\-\.\+\*]/g, '\\$&') + '\\s*\\=')).test(document.cookie)) { return null; }
+          return unescape(document.cookie.replace(new RegExp('(?:^|.*;\\s*)' + escape(sKey).replace(/[\-\.\+\*]/g, '\\$&') + '\\s*\\=\\s*((?:[^;](?!;))*[^;]?).*'), '$1'));
+        };
+        this.storage.setItem = function (sKey:string, sValue:any) {
+          if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) { return; }
+          document.cookie = escape(sKey) + '=' + escape(sValue);
+        };
+      }
+    }
+  
+
+    this.zoom(); // 小さい端末でズーム
     if (window.innerHeight < window.innerWidth) {
       document.querySelector('.manual')?.classList.remove("hide");
     } else {
       document.querySelector('.manual')?.classList.add("hide");
     }
-    ctx = (<HTMLCanvasElement>document.querySelector('#canv'))?.getContext('2d');
+    this.ctx = (<HTMLCanvasElement>document.querySelector('#canv'))?.getContext('2d');
 
-    canv_board = document.createElement('canvas');
-    canv_board.width = CANV_SIZE;
-    canv_board.height = CANV_SIZE;
+    this.canv_board = document.createElement('canvas');
+    this.canv_board.width = this.CANV_SIZE;
+    this.canv_board.height = this.CANV_SIZE;
 
 
-    canv_board2 = document.createElement('canvas');
-    canv_board2.width = CANV_SIZE;
-    canv_board2.height = CANV_SIZE;
+    this.canv_board2 = document.createElement('canvas');
+    this.canv_board2.width = this.CANV_SIZE;
+    this.canv_board2.height = this.CANV_SIZE;
 
-    canv_focus = document.createElement('canvas');
-    canv_focus.width = CANV_SIZE;
-    canv_focus.height = CANV_SIZE;
+    this.canv_focus = document.createElement('canvas');
+    this.canv_focus.width = this.CANV_SIZE;
+    this.canv_focus.height = this.CANV_SIZE;
 
-    canv_pieces = document.createElement('canvas');
-    canv_pieces.width = CANV_SIZE;
-    canv_pieces.height = CANV_SIZE;
+    this.canv_pieces = document.createElement('canvas');
+    this.canv_pieces.width = this.CANV_SIZE;
+    this.canv_pieces.height = this.CANV_SIZE;
 
-    canv_shadow = document.createElement('canvas');
-    canv_shadow.width = CANV_SIZE;
-    canv_shadow.height = CANV_SIZE;
+    this.canv_shadow = document.createElement('canvas');
+    this.canv_shadow.width = this.CANV_SIZE;
+    this.canv_shadow.height = this.CANV_SIZE;
 
-    canv_hover_piece = document.createElement('canvas');
-    canv_hover_piece.width = CANV_SIZE;
-    canv_hover_piece.height = CANV_SIZE;
+    this.canv_hover_piece = document.createElement('canvas');
+    this.canv_hover_piece.width = this.CANV_SIZE;
+    this.canv_hover_piece.height = this.CANV_SIZE;
 
-    canv_overlay = document.createElement('canvas');
-    canv_overlay.width = CANV_SIZE;
-    canv_overlay.height = CANV_SIZE;
+    this.canv_overlay = document.createElement('canvas');
+    this.canv_overlay.width = this.CANV_SIZE;
+    this.canv_overlay.height = this.CANV_SIZE;
 
-    canv_bk = document.createElement('canvas');
-    canv_bk.width = CANV_SIZE;
-    canv_bk.height = CANV_SIZE;
+    this.canv_bk = document.createElement('canvas');
+    this.canv_bk.width = this.CANV_SIZE;
+    this.canv_bk.height = this.CANV_SIZE;
 
-    canv_cover = document.createElement('canvas');
-    canv_cover.width = CANV_SIZE;
-    canv_cover.height = CANV_SIZE;
+    this.canv_cover = document.createElement('canvas');
+    this.canv_cover.width = this.CANV_SIZE;
+    this.canv_cover.height = this.CANV_SIZE;
 
-    canv_score = document.createElement('canvas');
-    canv_score.width = CANV_SIZE;
-    canv_score.height = CANV_SIZE;
+    this.canv_score = document.createElement('canvas');
+    this.canv_score.width = this.CANV_SIZE;
+    this.canv_score.height = this.CANV_SIZE;
 
-    canv_cache = document.createElement('canvas');
-    canv_cache.width = CANV_SIZE;
-    canv_cache.height = CANV_SIZE;
+    this.canv_cache = document.createElement('canvas');
+    this.canv_cache.width = this.CANV_SIZE;
+    this.canv_cache.height = this.CANV_SIZE;
 
-    cellSize = CANV_SIZE / 6;
-    turn_player = 1;
-    demo = true;
+    this.cellSize = this.CANV_SIZE / 6;
+    this.turn_player = 1;
+    this.demo = true;
 
     //retina対応
-    ctx!.canvas.style.width = CANV_SIZE/RATIO + "px";
-    ctx!.canvas.style.height = CANV_SIZE/RATIO + "px";
-    ctx!.canvas.width = CANV_SIZE ;
-    ctx!.canvas.height = CANV_SIZE ;
+    this.ctx!.canvas.style.width = this.CANV_SIZE/this.RATIO + "px";
+    this.ctx!.canvas.style.height = this.CANV_SIZE/this.RATIO + "px";
+    this.ctx!.canvas.width = this.CANV_SIZE ;
+    this.ctx!.canvas.height = this.CANV_SIZE ;
 
     if ('ontouchstart' in window) {
-      isTouch = true;
+      this.isTouch = true;
     } else {
-      isTouch = false;
+      this.isTouch = false;
     }
     // イベントを設定
-    if (isTouch) {
-      (<HTMLElement>document.querySelector('#canv')).addEventListener('touchstart', ev_mouseClick);
-      (<HTMLElement>document.querySelector('#canv')).addEventListener('touchmove', ev_touchMove);
+    if (this.isTouch) {
+      (<HTMLElement>document.querySelector('#canv')).addEventListener('touchstart', this.ev_mouseClick);
+      (<HTMLElement>document.querySelector('#canv')).addEventListener('touchmove', this.ev_touchMove);
     } else {
-      (<HTMLElement>document.querySelector('#canv')).addEventListener('mousemove', ev_mouseMove);
-      (<HTMLElement>document.querySelector('#canv')).addEventListener('mouseup', ev_mouseClick);
+      (<HTMLElement>document.querySelector('#canv')).addEventListener('mousemove', this.ev_mouseMove);
+      (<HTMLElement>document.querySelector('#canv')).addEventListener('mouseup', this.ev_mouseClick);
     }
-    (<HTMLElement>document.querySelector('#level')).addEventListener('change', ev_radioChange);
-    (<HTMLElement>document.querySelector('#prevprev')).addEventListener('click', move_start);
-    (<HTMLElement>document.querySelector('#prev')).addEventListener('click', move_prev);
-    (<HTMLElement>document.querySelector('#next')).addEventListener('click', move_next);
-    (<HTMLElement>document.querySelector('#nextnext')).addEventListener('click', move_end);
-    (<HTMLElement>document.querySelector('#replay')).addEventListener('click', jumpkento);
-    (<HTMLElement>document.querySelector('#tweetlog')).addEventListener('click', tweetlog);
-    (<HTMLElement>document.querySelector('#newgame')).addEventListener('click', reloadnew);
-    (<HTMLElement>document.querySelector('#collapsible')).addEventListener('click', function () {
+    (<HTMLElement>document.querySelector('#level')).addEventListener('change', this.ev_radioChange);
+    (<HTMLElement>document.querySelector('#prevprev')).addEventListener('click',()=>{ this.move_start()});
+    (<HTMLElement>document.querySelector('#prev')).addEventListener('click',()=>{ this.move_prev()});
+    (<HTMLElement>document.querySelector('#next')).addEventListener('click', ()=>{this.move_next()});
+    (<HTMLElement>document.querySelector('#nextnext')).addEventListener('click', ()=>{this.move_end()});
+    (<HTMLElement>document.querySelector('#replay')).addEventListener('click', ()=>{this.jumpkento()});
+    (<HTMLElement>document.querySelector('#tweetlog')).addEventListener('click',()=>{ this.tweetlog()});
+    (<HTMLElement>document.querySelector('#newgame')).addEventListener('click',()=>{ this.reloadnew()});
+    (<HTMLElement>document.querySelector('#collapsible')).addEventListener('click',  ()=> {
       (<HTMLElement>document.querySelector('.manual')).classList.toggle("hide");
       if (window.innerHeight > window.innerWidth) {
         var element = document.documentElement;
@@ -267,31 +265,31 @@ export function BoardGamejs() { }
     });
 
 
-    window.addEventListener('orientationchange', zoom);
+    window.addEventListener('orientationchange', this.zoom);
 
-    shuffleBoard();
+    this.shuffleBoard();
 
     // 連勝記録初期化
-    if (!storage.getItem('level_1')) {
-      storage.setItem('level_1', 0);
+    if (!this.storage.getItem('level_1')) {
+      this.storage.setItem('level_1', 0);
     }
-    if (!storage.getItem('level_2')) {
-      storage.setItem('level_2', 0);
+    if (!this.storage.getItem('level_2')) {
+      this.storage.setItem('level_2', 0);
     }
-    if (!storage.getItem('level_3')) {
-      storage.setItem('level_3', 0);
+    if (!this.storage.getItem('level_3')) {
+      this.storage.setItem('level_3', 0);
     }
-    if (!storage.getItem('level_4')) {
-      storage.setItem('level_4', 0);
+    if (!this.storage.getItem('level_4')) {
+      this.storage.setItem('level_4', 0);
     }
-    if (!storage.getItem('level_5')) {
-      storage.setItem('level_5', 0);
+    if (!this.storage.getItem('level_5')) {
+      this.storage.setItem('level_5', 0);
     }
     // レベル記憶
-    if (storage.getItem('level_save') !== undefined && storage.getItem('level_save') !== 'undefined' && storage.getItem('level_save') !== null) {
-      (<HTMLInputElement>document.querySelector('#level')).value=String(parseInt(storage.getItem('level_save')));
+    if (this.storage.getItem('level_save') !== undefined && this.storage.getItem('level_save') !== 'undefined' && this.storage.getItem('level_save') !== null) {
+      (<HTMLInputElement>document.querySelector('#level')).value=String(parseInt(this.storage.getItem('level_save')));
     } else {
-      storage.setItem('level_save', 1);
+      this.storage.setItem('level_save', 1);
       (<HTMLInputElement>document.querySelector('#level')).value= String(1);
     }
 
@@ -299,25 +297,25 @@ export function BoardGamejs() { }
 
 
     // パラメータを取得
-    let paramObj = getParam();
+    let paramObj = this.getParam();
 
     // 盤面を初期化
     if (paramObj.init) {
-      startMap = getMapByParam(paramObj.init);
-      thisMap = Aijs.copyMap(startMap);
+      this.startMap = this.getMapByParam(paramObj.init);
+      this.thisMap = Aijs.copyMap(this.startMap);
     } else {
-      startMap = Aijs.copyMap(thisMap);
+      this.startMap = Aijs.copyMap(this.thisMap);
     }
     // ログをデコード
     if (paramObj.log) {
-      logArray = decodeLog(paramObj.log, startMap);
+      this.logArray = this.decodeLog(paramObj.log, this.startMap);
     }
     // レベル取得
     if (paramObj.lv) {
       (<HTMLSelectElement>document.querySelector('#level')).value=String(parseInt(paramObj.lv));
     }
 
-    if (logArray.length !== 0) {
+    if (this.logArray.length !== 0) {
       (<HTMLElement>document.querySelector('#log')).classList.remove("hide");
       (<HTMLElement>document.querySelector('#prevprev')).classList.remove("hide");
       (<HTMLElement>document.querySelector('#prev')).classList.remove("hide");
@@ -337,88 +335,88 @@ export function BoardGamejs() { }
     }
 
     // 画像読み込み成功時
-    img_bk!.onload = function () {
-      img_bk_loaded = true;
-      flush(true, false);
+    this.img_bk!.onload =  () => {
+      this.img_bk_loaded = true;
+      this.flush(true, false);
     };
     // 画像読み込み失敗時
-    img_bk!.onerror = function () {
-      flush(true, false);
+    this.img_bk!.onerror =  () => {
+      this.flush(true, false);
     };
     // もう既に読み込み終わってた時
-    if (img_bk!.width !== 0) {
-      img_bk_loaded = true;
-      flush(true, false);
+    if (this.img_bk!.width !== 0) {
+      this.img_bk_loaded = true;
+      this.flush(true, false);
     }
     // 2.5秒後に強制描画※Googleの検索結果から飛ぶとなぜか描画が走らない事があるので。
-    setTimeout(function () {
-      if (img_bk!.width !== 0) {
-        img_bk_loaded = true;
+    setTimeout( () => {
+      if (this.img_bk!.width !== 0) {
+        this.img_bk_loaded = true;
       }
-      flush(true, false);
+      this.flush(true, false);
     }, 2500);
-    updateMessage();
-    setTweet(); // ツイートボタンを生成
+    this.updateMessage();
+    this.setTweet(); // ツイートボタンを生成
 
-    if (logArray.length === 0) {
-      if(isBot()==false){
-        window.setTimeout(function(){
-          if(demo==true){
-            intervalID = window.setInterval(playDemo, 400);
-            playDemo();
+    if (this.logArray.length === 0) {
+      if(this.isBot()==false){
+        window.setTimeout(()=>{
+          if(this.demo==true){
+            this.intervalID = window.setInterval(()=>{this.playDemo()}, 400);
+            this.playDemo();
           }
         },500);
       }
     } else {
-      demo = false;
-      autoLog=true;
-      intervalID_log = window.setInterval(playLog, 1000);      
+      this.demo = false;
+      this.autoLog=true;
+      this.intervalID_log = window.setInterval(()=>{this.playLog()}, 1000);      
     }
-    goaled=false;
-    flush(true, false);
+    this.goaled=false;
+    this.flush(true, false);
   }
 
   /** 
    * Demoを再生
    */
-  function playDemo() {
-    if (intervalID !==null) {
+  private playDemo() {
+    if (this.intervalID !==null) {
       if (Math.random() > 0.3) {
-        ai(2);
+        this.ai(2);
       } else {
-        ai(1);
+        this.ai(1);
       }
     }
-    demo_inc++;
-    calcScore();
-    flush(false, false);
-    if (winner === 1 || winner === -1 || winner === 0) {
-      goaled=true;
-      winner = null;
-      flush(false, false);
-      shuffleBoard();
+    this.demo_inc++;
+    this.calcScore();
+    this.flush(false, false);
+    if (this.winner === 1 || this.winner === -1 || this.winner === 0) {
+      this.goaled=true;
+      this.winner = null;
+      this.flush(false, false);
+      this.shuffleBoard();
     }
-    if(demo_inc>42){
-      window.clearInterval(intervalID as number);
+    if(this.demo_inc>42){
+      window.clearInterval(this.intervalID as number);
     }
   }
 
   /** 
    * Logを再生
    */
-  function playLog() {
+  private playLog() {
 
-    if (intervalID_log !==null&&autoLog==true) {
-      move_next();
+    if (this.intervalID_log !==null&&this.autoLog==true) {
+      this.move_next();
     }else{
-      clearInterval(intervalID_log as number);
+      clearInterval(this.intervalID_log as number);
     }
   }
 
   /** 
    * 小さい画面ではViewportを固定化
    */
-  function zoom() {
+  private zoom() {
     let viewport = document.querySelector('meta[name=viewport]');
     if (screen.width < 500 && screen.height < 500) {
       if (screen.width < screen.height) {
@@ -454,14 +452,14 @@ export function BoardGamejs() { }
   /** 
    * マウス移動時処理
    */
-  function ev_mouseMove(e:Event) {
-    getMousePosition(e);
-    flush(false, true);
-  }
+  private ev_mouseMove = (e:Event) => {
+    this.getMousePosition(e);
+    this.flush(false, true);
+  };
   /** 
    * タッチ移動時処理
    */
-  function ev_touchMove(e:Event) {
+  private ev_touchMove = (e:Event) => {
     e.preventDefault();
     e.stopPropagation();
   }
@@ -469,104 +467,106 @@ export function BoardGamejs() { }
   /** 
    * マウスクリック時処理
    */
-  function ev_mouseClick(e:Event|null) {
-    getMousePosition(e);
-    let target = Math.floor(mouse_x / cellSize) * 10+ Math.floor(mouse_y / cellSize);
-    if (winner !== null || logArray.length !== 0) {
-      reloadnew();
+  private ev_mouseClick = (e:Event|null):boolean => {
+    this.getMousePosition(e);
+    let target = Math.floor(this.mouse_x / this.cellSize) * 10+ Math.floor(this.mouse_y / this.cellSize);
+    if (this.winner !== null || this.logArray.length !== 0) {
+      this.reloadnew();
       return true;
     }
-    if (demo === true) {
-      demo = false;
-      thisHand = undefined;
-      thisMap = Aijs.copyMap(startMap);
-      logArray2 = [];
-      flush(false, false);
-      winner = null;
-      goaled=false;
-      turn_player = 1;
-      window.clearInterval(intervalID as number);
-      flush(false, false);
+    if (this.demo === true) {
+      this.demo = false;
+      this.thisHand = undefined;
+      this.thisMap = Aijs.copyMap(this.startMap);
+      this.logArray2 = [];
+      this.flush(false, false);
+      this.winner = null;
+      this.goaled=false;
+      this.turn_player = 1;
+      window.clearInterval(this.intervalID as number);
+      this.flush(false, false);
       return true;
     }
 
-    if (hover_piece === null) {
-      if (thisMap[target] * turn_player > 0) {
-        hover_piece = target;
+    if (this.hover_piece === null) {
+      if (this.thisMap[target] * this.turn_player > 0) {
+        this.hover_piece = target;
       }
     } else {
-      if (target == hover_piece) {
-        hover_piece = null;
-        flush(false, false);
-        return;
+      if (target == this.hover_piece) {
+        this.hover_piece = null;
+        this.flush(false, false);
+        return true;
       }
-      let canm = Aijs.getCanMovePanelX(hover_piece, thisMap);
+      let canm = Aijs.getCanMovePanelX(this.hover_piece, this.thisMap);
       if (canm.indexOf(target) >= 0) {
-        flush(false, true);
-        if(isGoaled(thisMap,target,turn_player)){
-            goaled=true;
-            flush(false, true);
-            setTimeout(function(){
-              goaled=false;
-              flush(false, false);
+        this.flush(false, true);
+        if(this.isGoaled(this.thisMap,target,this.turn_player)){
+            this.goaled=true;
+            this.flush(false, true);
+            setTimeout(()=>{
+              this.goaled=false;
+              this.flush(false, false);
             },2000);
         }
 
 
-        thisMap[target] = thisMap[hover_piece];
-        thisMap[hover_piece] = 0;
-        turn_player = turn_player * -1;
-        logArray2.push([hover_piece, target]);
-        thisHand = [hover_piece, target];
-        hover_piece = null;
+        this.thisMap[target] = this.thisMap[this.hover_piece];
+        this.thisMap[this.hover_piece] = 0;
+        this.turn_player = this.turn_player * -1;
+        this.logArray2.push([this.hover_piece, target]);
+        this.thisHand = [this.hover_piece, target];
+        this.hover_piece = null;
 
 
         // AIが考える。
-        message = 'thinking...';
-        window.setTimeout(function () {
-          flush(false, false);
+        this.message = 'thinking...';
+        window.setTimeout( ()=> {
+          this.flush(false, false);
         }, 50);
-        updateMessage();
-        if (winner === null) {
-          window.setTimeout(function () {
-            ai(parseInt((<HTMLSelectElement>document.querySelector('#level')).value));
-            message = '';
-            updateMessage();
-            flush(false, false);
+        this.updateMessage();
+        if (this.winner === null) {
+          window.setTimeout( ()=> {
+            this.ai(parseInt((<HTMLSelectElement>document.querySelector('#level')).value));
+            this.message = '';
+            this.updateMessage();
+            this.flush(false, false);
           }, 250);
         }
       }
     }
-    flush(false, false);
+    this.flush(false, false);
+
+    return true;
   }
 
   /** 
    * ラジオボタン変更時処理
    */
-  function ev_radioChange() {
+  private ev_radioChange =() => {
     let num = (<HTMLSelectElement>document.querySelector('#level')).value;
-    storage.setItem('level_save', num);
-    if (storage.getItem('level_' + num) > 0) {
-      document.querySelector('#wins')!.innerHTML = storage.getItem('level_' + num) + ' win!';
+    this.storage.setItem('level_save', num);
+    if (this.storage.getItem('level_' + num) > 0) {
+      document.querySelector('#wins')!.innerHTML = this.storage.getItem('level_' + num) + ' win!';
     } else {
       document.querySelector('#wins')!.innerHTML = '';
     }
-    thisMap = Aijs.copyMap(startMap);
-    thisHand = undefined;
-    map_list = {};
-    logArray2 = [];
-    flush(false, false);
+    this.thisMap = Aijs.copyMap(this.startMap);
+    this.thisHand = undefined;
+    this.map_list = {};
+    this.logArray2 = [];
+    this.flush(false, false);
   }
 
   /** 
    * AIに考えてもらう。
    */
-  function ai(level:number) {
+  private ai(level:number) {
     let hand;
     let startTime = new Date();
     let endTime;
     // 終盤になったら長考してみる。
-    let count = getNodeCount(thisMap) / 2;
+    let count = this.getNodeCount(this.thisMap) / 2;
     let plus = 0;
     switch (level) {
       case 1:
@@ -619,32 +619,32 @@ export function BoardGamejs() { }
         break;
     }
 
-    hand = Aijs.thinkAI(thisMap, turn_player, level + plus + 1,undefined,undefined,undefined)[0];
-    thisHand = hand;
+    hand = Aijs.thinkAI(this.thisMap, this.turn_player, level + plus + 1,undefined,undefined,undefined)[0];
+    this.thisHand = hand;
     if (hand) {
-      if(isGoaled(thisMap,hand[1],turn_player)){
-          goaled=true;
-          flush(false, true);
-          setTimeout(function(){
-            goaled=false;
-            flush(false, false);
+      if(this.isGoaled(this.thisMap,hand[1],this.turn_player)){
+          this.goaled=true;
+          this.flush(false, true);
+          setTimeout(()=>{
+            this.goaled=false;
+            this.flush(false, false);
           },2000);
       }
-      thisMap[hand[1]] = thisMap[hand[0]];
-      thisMap[hand[0]] = 0;
-      logArray2.push([hand[0], hand[1]]);
+      this.thisMap[hand[1]] = this.thisMap[hand[0]];
+      this.thisMap[hand[0]] = 0;
+      this.logArray2.push([hand[0], hand[1]]);
       // //フォーカス座標を移す。
       // mouse_x = Math.floor(hand[1] / 10)*cellSize+1
       // mouse_y = Math.floor(hand[1] % 10)*cellSize+1
     }
-    turn_player = turn_player * -1;
+    this.turn_player = this.turn_player * -1;
     endTime = new Date();
-    thinktime = (endTime.getTime() - startTime.getTime()) / 1000;
+    this.thinktime = (endTime.getTime() - startTime.getTime()) / 1000;
   }
   /** 
    * ゴールしたか
    */
-  function isGoaled(map:MapArray,afterHand:number,turn:number){
+  private isGoaled(map:MapArray,afterHand:number,turn:number){
       if(turn>0){
         if(afterHand%10===0){
             return true;
@@ -660,10 +660,10 @@ export function BoardGamejs() { }
   /** 
    * 盤面をシャッフル。
    */
-  function shuffleBoard() {
+  private shuffleBoard() {
     // クリア
-    for (let num in thisMap) {
-      thisMap[num] = 0;
+    for (let num in this.thisMap) {
+      this.thisMap[num] = 0;
     }
     let arr = [1, 2, 3, 4, 5, 6, 7, 8];
     let red_num = [0, 10, 20, 30, 40, 50, 11, 41];
@@ -675,17 +675,17 @@ export function BoardGamejs() { }
       arr[r] = tmp;
     }
     for (let num in blue_num) {
-      thisMap[blue_num[num]] = arr[num];
+      this.thisMap[blue_num[num]] = arr[num];
     }
     for (let num in red_num) {
-      thisMap[red_num[num]] = -1 * arr[num];
+      this.thisMap[red_num[num]] = -1 * arr[num];
     }
   }
 
   /** 
    * マウス位置取得
    */
-  function getMousePosition(e:any) {
+  private getMousePosition(e:any) {
     if(e==null){
       return;
     }
@@ -699,73 +699,73 @@ export function BoardGamejs() { }
       }
     }
     let rect = e.target.getBoundingClientRect();
-    mouse_x = e.clientX - rect.left;
-    mouse_y = e.clientY - rect.top;
-    mouse_x = mouse_x *  RATIO;
-    mouse_y = mouse_y *  RATIO;
+    this.mouse_x = e.clientX - rect.left;
+    this.mouse_y = e.clientY - rect.top;
+    this.mouse_x = this.mouse_x *  this.RATIO;
+    this.mouse_y = this.mouse_y *  this.RATIO;
   }
 
   /** 
    * 画面描画。
    */
-  function flush(initflg:boolean, cache_flg:boolean) {
-    let wkMap = new Int8Array(thisMap);
-    ctx!.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
+  private flush(initflg:boolean, cache_flg:boolean) {
+    let wkMap = new Int8Array(this.thisMap);
+    this.ctx!.clearRect(0, 0, this.CANV_SIZE, this.CANV_SIZE);
 
     if (cache_flg === false) {
-      cache_on = false;
+      this.cache_on = false;
     }
     // キャッシュに保存
-    if (cache_flg === false || cache_on === false) {
+    if (cache_flg === false || this.cache_on === false) {
       // 盤面を描画
-      ctx!.drawImage(drawBoard(initflg) as HTMLCanvasElement, 0, 0, CANV_SIZE, CANV_SIZE);
+      this.ctx!.drawImage(this.drawBoard(initflg) as HTMLCanvasElement, 0, 0, this.CANV_SIZE, this.CANV_SIZE);
 
       // テカリを描画
-      ctx!.drawImage(drawBoard2(initflg) as HTMLCanvasElement, 0, 0, CANV_SIZE, CANV_SIZE);
+      this.ctx!.drawImage(this.drawBoard2(initflg) as HTMLCanvasElement, 0, 0, this.CANV_SIZE, this.CANV_SIZE);
 
       // 選択したコマを除外
-      if (hover_piece !== null) {
-        wkMap[hover_piece] = 0;
+      if (this.hover_piece !== null) {
+        wkMap[this.hover_piece] = 0;
       }
 
       // 残像を表示
-      ctx!.drawImage(drawShadow(wkMap, thisHand) as HTMLCanvasElement, 0, 0, CANV_SIZE, CANV_SIZE);
+      this.ctx!.drawImage(this.drawShadow(wkMap, this.thisHand) as HTMLCanvasElement, 0, 0, this.CANV_SIZE, this.CANV_SIZE);
 
 
       // コマを表示
-      ctx!.drawImage(drawPieceAll(wkMap) as HTMLCanvasElement, 0, 0, CANV_SIZE, CANV_SIZE);
+      this.ctx!.drawImage(this.drawPieceAll(wkMap) as HTMLCanvasElement, 0, 0, this.CANV_SIZE, this.CANV_SIZE);
 
       // キャッシュに保存
-      let ctx_canv = canv_cache!.getContext('2d');
-      ctx_canv!.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
-      ctx_canv!.drawImage(ctx!.canvas, 0, 0, CANV_SIZE, CANV_SIZE);
+      let ctx_canv = this.canv_cache!.getContext('2d');
+      ctx_canv!.clearRect(0, 0, this.CANV_SIZE, this.CANV_SIZE);
+      ctx_canv!.drawImage(this.ctx!.canvas, 0, 0, this.CANV_SIZE, this.CANV_SIZE);
       // キャッシュ有効化
-      cache_on = true;
+      this.cache_on = true;
     } else {
       // キャッシュから描画
-      ctx!.drawImage(canv_cache as HTMLCanvasElement, 0, 0, CANV_SIZE, CANV_SIZE);
+      this.ctx!.drawImage(this.canv_cache as HTMLCanvasElement, 0, 0, this.CANV_SIZE, this.CANV_SIZE);
     }
 
     // 選択したコマを表示
-    ctx!.drawImage(drawHoverPiece() as HTMLCanvasElement, 0, 0, CANV_SIZE, CANV_SIZE);
+    this.ctx!.drawImage(this.drawHoverPiece() as HTMLCanvasElement, 0, 0, this.CANV_SIZE, this.CANV_SIZE);
 
-    if ((mouse_x !== 0 || mouse_y !== 0) && demo === false) {
+    if ((this.mouse_x !== 0 || this.mouse_y !== 0) && this.demo === false) {
       // フォーカスを描画
-      ctx!.drawImage(drawFocus() as HTMLCanvasElement, 0, 0, CANV_SIZE, CANV_SIZE);
+      this.ctx!.drawImage(this.drawFocus() as HTMLCanvasElement, 0, 0, this.CANV_SIZE, this.CANV_SIZE);
     }
 
     //スコアを表示
-    if(goaled||winner!==null){
-      if(demo===false&&autoLog==false){
-        ctx!.drawImage(drawScore() as HTMLCanvasElement, 0, 0, CANV_SIZE, CANV_SIZE);
+    if(this.goaled||this.winner!==null){
+      if(this.demo===false&&this.autoLog==false){
+        this.ctx!.drawImage(this.drawScore() as HTMLCanvasElement, 0, 0, this.CANV_SIZE, this.CANV_SIZE);
       }
     }
     // メッセージを描画
-    ctx!.drawImage(drawOverlay() as HTMLCanvasElement, 0, 0, CANV_SIZE, CANV_SIZE);
+    this.ctx!.drawImage(this.drawOverlay() as HTMLCanvasElement, 0, 0, this.CANV_SIZE, this.CANV_SIZE);
 
     // カバーを描画
-    if (demo === true) {
-      ctx!.drawImage(drawCover() as HTMLCanvasElement, 0, 0, CANV_SIZE, CANV_SIZE);
+    if (this.demo === true) {
+      this.ctx!.drawImage(this.drawCover() as HTMLCanvasElement, 0, 0, this.CANV_SIZE, this.CANV_SIZE);
     }
 
 
@@ -774,35 +774,35 @@ export function BoardGamejs() { }
   /** 
    * 背景描画
    */
-  function drawBk() {
-    let ctx_bk = canv_bk!.getContext('2d');
-    if (img_bk_loaded) {
-      ctx_bk!.drawImage(img_bk as HTMLImageElement, 0, 0, CANV_SIZE/RATIO, CANV_SIZE/RATIO, 0, 0, CANV_SIZE, CANV_SIZE);
+  private drawBk() {
+    let ctx_bk = this.canv_bk!.getContext('2d');
+    if (this.img_bk_loaded) {
+      ctx_bk!.drawImage(this.img_bk as HTMLImageElement, 0, 0, this.CANV_SIZE/this.RATIO, this.CANV_SIZE/this.RATIO, 0, 0, this.CANV_SIZE, this.CANV_SIZE);
     }
-    return canv_bk;
+    return this.canv_bk;
   }
   /** 
    * カバー描画
    */
-  function drawCover() {
+  private drawCover() {
     // 背景
-    let ctx_cover = canv_cover!.getContext('2d');
-    ctx_cover!.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
+    let ctx_cover = this.canv_cover!.getContext('2d');
+    ctx_cover!.clearRect(0, 0, this.CANV_SIZE, this.CANV_SIZE);
     ctx_cover!.globalAlpha = 0.50;
     ctx_cover!.fillStyle = '#000000';
-    ctx_cover!.fillRect(0, 0, CANV_SIZE, CANV_SIZE);
+    ctx_cover!.fillRect(0, 0, this.CANV_SIZE, this.CANV_SIZE);
 
     // 枠
-    let x = cellSize * 2;
-    let y = cellSize * 3.5;
+    let x = this.cellSize * 2;
+    let y = this.cellSize * 3.5;
     ctx_cover!.shadowBlur = 20;
     ctx_cover!.shadowColor = 'rgba(0, 0, 0, 0.3)';
     ctx_cover!.shadowOffsetX = 5;
     ctx_cover!.shadowOffsetY = 5;
     ctx_cover!.globalAlpha = 0.8;
-    ctx_cover!.fillStyle = COLOR_WHITE;
+    ctx_cover!.fillStyle = this.COLOR_WHITE;
     ctx_cover!.beginPath();
-    fillRoundRect(ctx_cover as CanvasRenderingContext2D, x, y, cellSize * 2, cellSize * 1, cellSize/20);
+    this.fillRoundRect(ctx_cover as CanvasRenderingContext2D, x, y, this.cellSize * 2, this.cellSize * 1, this.cellSize/20);
     ctx_cover!.shadowColor = 'rgba(0, 0, 0, 0)';
     ctx_cover!.shadowBlur = 0;
     ctx_cover!.shadowOffsetX = 0;
@@ -812,44 +812,44 @@ export function BoardGamejs() { }
 
 
     // 文字
-    let fontsize = Math.round(cellSize * 0.5);
+    let fontsize = Math.round(this.cellSize * 0.5);
     let message = 'Play';
-    message+=(demo_inc%10==0)?" ":"";
+    message+=(this.demo_inc%10==0)?" ":"";
     ctx_cover!.shadowBlur = 0;
     ctx_cover!.shadowOffsetX = 0;
     ctx_cover!.shadowOffsetY = 0;
     ctx_cover!.shadowColor = 'rgba(0, 0, 0, 0)';
     ctx_cover!.font = 'bold ' + fontsize + 'px Play,sans-serif';
     ctx_cover!.globalAlpha = 1;
-    ctx_cover!.fillStyle = COLOR_LINE;
+    ctx_cover!.fillStyle = this.COLOR_LINE;
     ctx_cover!.textBaseline = 'middle';
     ctx_cover!.textAlign = 'center';
     ctx_cover!.beginPath();
-    ctx_cover!.fillText(message, cellSize * 3, cellSize * 4);
+    ctx_cover!.fillText(message, this.cellSize * 3, this.cellSize * 4);
     // 文字２
     message = 'colamone';
-    fontsize = Math.round(cellSize * 1);
+    fontsize = Math.round(this.cellSize * 1);
     ctx_cover!.font = 'bold ' + fontsize + 'px Play,sans-serif';
-    ctx_cover!.fillStyle = COLOR_WHITE;
+    ctx_cover!.fillStyle = this.COLOR_WHITE;
     ctx_cover!.shadowBlur = 0;
     ctx_cover!.beginPath();
-    ctx_cover!.fillText(message, cellSize * 3, cellSize * 2);
+    ctx_cover!.fillText(message, this.cellSize * 3, this.cellSize * 2);
 
 
-    return canv_cover;
+    return this.canv_cover;
   }
 
   /** 
    * スコア描画
    */
-  function drawScore() {
+  private drawScore() {
     // 背景
-    let ctx_score = canv_score!.getContext('2d');
+    let ctx_score = this.canv_score!.getContext('2d');
     let message ="";
-    let fontsize = Math.round(cellSize *1.5);
-    let blue=COLOR_BLUE2;
-    let red=COLOR_RED2;
-    ctx_score!.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
+    let fontsize = Math.round(this.cellSize *1.5);
+    let blue=this.COLOR_BLUE2;
+    let red=this.COLOR_RED2;
+    ctx_score!.clearRect(0, 0, this.CANV_SIZE, this.CANV_SIZE);
 
     ctx_score!.globalAlpha = 0.4;
     ctx_score!.textBaseline = 'middle';
@@ -863,41 +863,41 @@ export function BoardGamejs() { }
     ctx_score!.shadowBlur = 2;
     ctx_score!.shadowColor = 'rgba(255, 255, 255, 1)';
     ctx_score!.fillStyle = red;
-    message = String(redScore);
+    message = String(this.redScore);
     ctx_score!.beginPath();
-    ctx_score!.fillText(message, cellSize * 1, cellSize * 3.8);
+    ctx_score!.fillText(message, this.cellSize * 1, this.cellSize * 3.8);
     // 文字
     message = "8";
     ctx_score!.beginPath();
-    ctx_score!.fillText(message, cellSize * 2, cellSize * 5.3);
+    ctx_score!.fillText(message, this.cellSize * 2, this.cellSize * 5.3);
     //線
-    ctx_score!.lineWidth=cellSize*0.2;
+    ctx_score!.lineWidth=this.cellSize*0.2;
     ctx_score!.strokeStyle = red;
     ctx_score!.beginPath();
-    ctx_score!.moveTo(cellSize * 0.4, cellSize * 5.55);
-    ctx_score!.lineTo(cellSize * 2.6, cellSize * 3.55);
+    ctx_score!.moveTo(this.cellSize * 0.4, this.cellSize * 5.55);
+    ctx_score!.lineTo(this.cellSize * 2.6, this.cellSize * 3.55);
     ctx_score!.closePath();
     ctx_score!.stroke();
 
 
     // 文字
-    message = String(blueScore);
+    message = String(this.blueScore);
     ctx_score!.fillStyle = blue;
     ctx_score!.beginPath();
-    ctx_score!.fillText(message, cellSize * 4, cellSize * 0.7);
+    ctx_score!.fillText(message, this.cellSize * 4, this.cellSize * 0.7);
     // 文字
     message = "8";
     ctx_score!.beginPath();
-    ctx_score!.fillText(message, cellSize * 5, cellSize * 2.3);
+    ctx_score!.fillText(message, this.cellSize * 5, this.cellSize * 2.3);
     // 文字
-    ctx_score!.lineWidth=cellSize*0.2;
+    ctx_score!.lineWidth=this.cellSize*0.2;
     ctx_score!.strokeStyle = blue;
     ctx_score!.beginPath();
-    ctx_score!.moveTo(cellSize * 3.4, cellSize * 2.55);
-    ctx_score!.lineTo(cellSize * 5.6, cellSize * 0.55);
+    ctx_score!.moveTo(this.cellSize * 3.4, this.cellSize * 2.55);
+    ctx_score!.lineTo(this.cellSize * 5.6, this.cellSize * 0.55);
     ctx_score!.closePath();
     ctx_score!.stroke();
-    return canv_score;
+    return this.canv_score;
   }
 
 
@@ -905,132 +905,132 @@ export function BoardGamejs() { }
   /** 
    * フォーカスを描画
    */
-  function drawFocus() {
+  private drawFocus() {
     // 選択マスを強調
-    let x = mouse_x - (mouse_x % cellSize);
-    let y = mouse_y - (mouse_y % cellSize);
-    let ctx_focus = canv_focus!.getContext('2d');
-    let grad = ctx_focus!.createRadialGradient(x, y, 0, x,y, cellSize);
-    grad.addColorStop(0.3, COLOR_SELECT);
-    grad.addColorStop(1, COLOR_SELECT2);
-    ctx_focus!.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
+    let x = this.mouse_x - (this.mouse_x % this.cellSize);
+    let y = this.mouse_y - (this.mouse_y % this.cellSize);
+    let ctx_focus = this.canv_focus!.getContext('2d');
+    let grad = ctx_focus!.createRadialGradient(x, y, 0, x,y, this.cellSize);
+    grad.addColorStop(0.3, this.COLOR_SELECT);
+    grad.addColorStop(1, this.COLOR_SELECT2);
+    ctx_focus!.clearRect(0, 0, this.CANV_SIZE, this.CANV_SIZE);
     ctx_focus!.globalAlpha = 0.35;
     ctx_focus!.fillStyle = grad;
     ctx_focus!.lineWidth = 1;
     ctx_focus!.beginPath();
-    ctx_focus!.fillRect(x, y, cellSize, cellSize);
+    ctx_focus!.fillRect(x, y, this.cellSize, this.cellSize);
 
 
-    if (isTouch === true && hover_piece === null) {
-      return canv_focus;
+    if (this.isTouch === true && this.hover_piece === null) {
+      return this.canv_focus;
     }
 
     // 移動可能マスを強調
-    let target = (x / cellSize) * 10 + (y / cellSize);
-    if (thisMap[target] * turn_player > 0) {
-      let canm = Aijs.getCanMovePanelX(target, thisMap);
+    let target = (x / this.cellSize) * 10 + (y / this.cellSize);
+    if (this.thisMap[target] * this.turn_player > 0) {
+      let canm = Aijs.getCanMovePanelX(target, this.thisMap);
       for (let i = 0; i <= canm.length - 1; i++) {
         x = Math.floor(canm[i] / 10);
         y = Math.floor(canm[i] % 10);
         ctx_focus!.globalAlpha = 0.6;
-        ctx_focus!.strokeStyle = COLOR_SELECT;
-        ctx_focus!.lineWidth = cellSize/20;
+        ctx_focus!.strokeStyle = this.COLOR_SELECT;
+        ctx_focus!.lineWidth = this.cellSize/20;
         ctx_focus!.beginPath();
-        ctx_focus!.arc(x * cellSize + (cellSize / 2), y * cellSize + (cellSize / 2),
-         (cellSize / 2) - (cellSize/10), 0, Math.PI * 2, false);
+        ctx_focus!.arc(x * this.cellSize + (this.cellSize / 2), y * this.cellSize + (this.cellSize / 2),
+         (this.cellSize / 2) - (this.cellSize/10), 0, Math.PI * 2, false);
         ctx_focus!.stroke();
       }
     }
-    return canv_focus;
+    return this.canv_focus;
   }
 
   /** 
    * 盤面を描画してCANVASを返す。
    */
-  function drawBoard(initflg:boolean) {
+  private drawBoard(initflg:boolean) {
     if (initflg === false) {
-      return canv_board;
+      return this.canv_board;
     }
-    let ctx_board = canv_board!.getContext('2d');
-    ctx_board!.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
+    let ctx_board = this.canv_board!.getContext('2d');
+    ctx_board!.clearRect(0, 0, this.CANV_SIZE, this.CANV_SIZE);
 
-    let grad = ctx_board!.createLinearGradient(0, 0, CANV_SIZE, CANV_SIZE);
-    grad.addColorStop(0, COLOR_PANEL_6);
-    grad.addColorStop(0.3, COLOR_PANEL_5);
-    grad.addColorStop(1, COLOR_PANEL_4);
+    let grad = ctx_board!.createLinearGradient(0, 0, this.CANV_SIZE, this.CANV_SIZE);
+    grad.addColorStop(0, this.COLOR_PANEL_6);
+    grad.addColorStop(0.3, this.COLOR_PANEL_5);
+    grad.addColorStop(1, this.COLOR_PANEL_4);
 
     for (let x = 0; x < 6; x++) {
       for (let y = 0; y < 6; y++) {
         // パネル描画
-        ctx_board!.strokeStyle = COLOR_LINE;
+        ctx_board!.strokeStyle = this.COLOR_LINE;
         if (y === 0) {
-          ctx_board!.fillStyle = COLOR_PANEL_1;
+          ctx_board!.fillStyle = this.COLOR_PANEL_1;
         } else if (y == 5) {
-          ctx_board!.fillStyle = COLOR_PANEL_2;
+          ctx_board!.fillStyle = this.COLOR_PANEL_2;
         } else if ((x + y) % 2 === 0) {
-          ctx_board!.fillStyle = COLOR_PANEL_3;
+          ctx_board!.fillStyle = this.COLOR_PANEL_3;
         } else {
-          ctx_board!.fillStyle = COLOR_PANEL_4;
+          ctx_board!.fillStyle = this.COLOR_PANEL_4;
           ctx_board!.fillStyle = grad;
         }
         ctx_board!.beginPath();
-        ctx_board!.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
-        ctx_board!.strokeRect(x * cellSize, y * cellSize, cellSize, cellSize);
+        ctx_board!.fillRect(x * this.cellSize, y * this.cellSize, this.cellSize, this.cellSize);
+        ctx_board!.strokeRect(x * this.cellSize, y * this.cellSize, this.cellSize, this.cellSize);
       }
     }
 
-    return canv_board;
+    return this.canv_board;
   }
 
   /** 
    * 盤面をテカテカにする。
    */
-  function drawBoard2(initflg:boolean) {
+  private drawBoard2(initflg:boolean) {
     if (initflg === false) {
-      return canv_board2;
+      return this.canv_board2;
     }
-    let ctx_board2 = canv_board2!.getContext('2d');
-    ctx_board2!.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
+    let ctx_board2 = this.canv_board2!.getContext('2d');
+    ctx_board2!.clearRect(0, 0, this.CANV_SIZE, this.CANV_SIZE);
     ctx_board2!.globalAlpha = 0.07;
-    ctx_board2!.fillStyle = COLOR_WHITE;
+    ctx_board2!.fillStyle = this.COLOR_WHITE;
     ctx_board2!.beginPath();
-    ctx_board2!.arc(cellSize * 1, -3 * cellSize, 7 * cellSize, 0, Math.PI * 2, false);
+    ctx_board2!.arc(this.cellSize * 1, -3 * this.cellSize, 7 * this.cellSize, 0, Math.PI * 2, false);
     ctx_board2!.fill();
 
-    return canv_board2;
+    return this.canv_board2;
   }
 
 
   /** 
    * 浮遊しているコマを描画する。
    */
-  function drawHoverPiece() {
-    let ctx_hover = canv_hover_piece!.getContext('2d');
-    ctx_hover!.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
-    let x = mouse_x - (cellSize / 2);
-    let y = mouse_y - (cellSize / 2);
-    if (hover_piece !== null) {
-      drawPiece(ctx_hover as CanvasRenderingContext2D, x, y, thisMap[hover_piece], false);
+  private drawHoverPiece() {
+    let ctx_hover = this.canv_hover_piece!.getContext('2d');
+    ctx_hover!.clearRect(0, 0, this.CANV_SIZE, this.CANV_SIZE);
+    let x = this.mouse_x - (this.cellSize / 2);
+    let y = this.mouse_y - (this.cellSize / 2);
+    if (this.hover_piece !== null) {
+      this.drawPiece(ctx_hover as CanvasRenderingContext2D, x, y, this.thisMap[this.hover_piece], false);
     }
-    return canv_hover_piece;
+    return this.canv_hover_piece;
   }
 
   /** 
    * コマを描画する。
    */
-  function drawPiece(wkCtx:CanvasRenderingContext2D, x:number, y:number, number:number, goal:boolean) {
+  private drawPiece(wkCtx:CanvasRenderingContext2D, x:number, y:number, number:number, goal:boolean) {
     let wkColor;
 
     // 外枠を描画
     if (number === 0) {
       return wkCtx;
     } else if (number > 0) {
-      wkColor = COLOR_BLUE;
+      wkColor = this.COLOR_BLUE;
     } else {
-      wkColor = COLOR_RED;
+      wkColor = this.COLOR_RED;
     }
 
-    let grad = ctx!.createLinearGradient(x, y, x + cellSize, y + cellSize);
+    let grad = this.ctx!.createLinearGradient(x, y, x + this.cellSize, y + this.cellSize);
     grad.addColorStop(0, 'rgb(255, 255, 255)');
     grad.addColorStop(0.4, wkColor);
     grad.addColorStop(1, wkColor);
@@ -1041,7 +1041,7 @@ export function BoardGamejs() { }
     wkCtx.shadowOffsetY = 2;
     wkCtx.fillStyle = grad;
     wkCtx.beginPath();
-    fillRoundRect(wkCtx, x + cellSize / 10, y + cellSize / 10, cellSize - 1 * cellSize / 5, cellSize - 1 * cellSize / 5, cellSize/20);
+    this.fillRoundRect(wkCtx, x + this.cellSize / 10, y + this.cellSize / 10, this.cellSize - 1 * this.cellSize / 5, this.cellSize - 1 * this.cellSize / 5, this.cellSize/20);
 
     wkCtx.shadowColor = 'rgba(0, 0, 0, 0)';
     wkCtx.shadowBlur = 0;
@@ -1049,39 +1049,39 @@ export function BoardGamejs() { }
     wkCtx.shadowOffsetY = 0;
 
     // 曇りエフェクト
-    if (img_bk_loaded) {
+    if (this.img_bk_loaded) {
       wkCtx.globalAlpha = 0.35;
       wkCtx.save();
       wkCtx.clip();
-      wkCtx.drawImage(drawBk() as HTMLCanvasElement, x + cellSize / 10, y + cellSize / 10, cellSize - 1 * cellSize / 5, cellSize - 1 * cellSize / 5);
+      wkCtx.drawImage(this.drawBk() as HTMLCanvasElement, x + this.cellSize / 10, y + this.cellSize / 10, this.cellSize - 1 * this.cellSize / 5, this.cellSize - 1 * this.cellSize / 5);
       wkCtx.restore();
       wkCtx.globalAlpha = 1;
     }
 
     // 文字を描画。
-    wkCtx.fillStyle = COLOR_WHITE;
+    wkCtx.fillStyle = this.COLOR_WHITE;
     
-    let fontsize = Math.round(cellSize * 0.18);
+    let fontsize = Math.round(this.cellSize * 0.18);
     wkCtx.textBaseline = 'middle';
     wkCtx.textAlign = 'center';
     wkCtx.font = fontsize + "pt 'Play',Arial";
     wkCtx.beginPath();
 
     // 数字を印字
-    wkCtx.fillText(String(Math.abs(number)), x + (cellSize / 2), y + (cellSize / 2));
+    wkCtx.fillText(String(Math.abs(number)), x + (this.cellSize / 2), y + (this.cellSize / 2));
 
     // 点を描画
-    for (let i = 0; i <= PIECES[number].length - 1; i++) {
-      if (PIECES[number][i] === 0) {
+    for (let i = 0; i <= this.PIECES[number].length - 1; i++) {
+      if (this.PIECES[number][i] === 0) {
         continue;
       }
-      let x_dot = x + cellSize / 4.16 + (Math.floor(cellSize - 1 * cellSize / 5) / 3) * Math.floor(i % 3.0);
-      let y_dot = y + cellSize / 4.16 + (Math.floor(cellSize - 1 * cellSize / 5) / 3) * Math.floor(i / 3.0);
+      let x_dot = x + this.cellSize / 4.16 + (Math.floor(this.cellSize - 1 * this.cellSize / 5) / 3) * Math.floor(i % 3.0);
+      let y_dot = y + this.cellSize / 4.16 + (Math.floor(this.cellSize - 1 * this.cellSize / 5) / 3) * Math.floor(i / 3.0);
 
-      wkCtx.fillStyle = COLOR_WHITE;
+      wkCtx.fillStyle = this.COLOR_WHITE;
 
       wkCtx.beginPath();
-      wkCtx.arc(x_dot, y_dot, cellSize * 0.06, 0, Math.PI * 2, false);
+      wkCtx.arc(x_dot, y_dot, this.cellSize * 0.06, 0, Math.PI * 2, false);
       wkCtx.fill();
     }
 
@@ -1089,13 +1089,13 @@ export function BoardGamejs() { }
       wkCtx.shadowBlur = 10;
       wkCtx.shadowColor = 'rgba(0, 0, 0, 1)';
       wkCtx.globalAlpha = 1;
-      wkCtx.fillStyle = COLOR_WHITE;
-      fontsize = Math.round(cellSize * 0.5);
+      wkCtx.fillStyle = this.COLOR_WHITE;
+      fontsize = Math.round(this.cellSize * 0.5);
       wkCtx.textBaseline = 'middle';
       wkCtx.textAlign = 'center';
       wkCtx.font = 'bolder ' + fontsize + 'pt Play,Arial ';
       wkCtx.beginPath();
-      wkCtx.fillText(String(Math.abs(number)), x + (cellSize / 2), y + (cellSize / 2));
+      wkCtx.fillText(String(Math.abs(number)), x + (this.cellSize / 2), y + (this.cellSize / 2));
       wkCtx.globalAlpha = 1;
       wkCtx.shadowColor = 'rgba(0, 0, 0, 0)';
       wkCtx.shadowBlur = 0;
@@ -1104,7 +1104,7 @@ export function BoardGamejs() { }
     return wkCtx;
   }
   // 角丸
-  function fillRoundRect(ctx:CanvasRenderingContext2D, x:number, y:number, w:number, h:number, r:number) {
+  private fillRoundRect(ctx:CanvasRenderingContext2D, x:number, y:number, w:number, h:number, r:number) {
     ctx.beginPath();
     ctx.moveTo(x + r, y);
     ctx.lineTo(x + w - r, y);
@@ -1122,9 +1122,9 @@ export function BoardGamejs() { }
   /** 
    * コマをすべて描画
    */
-  function drawPieceAll(wkMap:MapArray) {
-    let ctx_pieces = canv_pieces!.getContext('2d');
-    ctx_pieces!.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
+  private drawPieceAll(wkMap:MapArray) {
+    let ctx_pieces = this.canv_pieces!.getContext('2d');
+    ctx_pieces!.clearRect(0, 0, this.CANV_SIZE, this.CANV_SIZE);
     for (let x = 0; x < 6; x++) {
       for (let y = 0; y < 6; y++) {
         if (wkMap[x * 10 + y] !== 0) {
@@ -1134,29 +1134,29 @@ export function BoardGamejs() { }
           } else if (wkMap[x * 10 + y] < 0 && y == 5) {
             goal = true;
           }
-          ctx_pieces = drawPiece(ctx_pieces as CanvasRenderingContext2D, x * cellSize, y * cellSize, wkMap[x * 10 + y], goal);
+          ctx_pieces = this.drawPiece(ctx_pieces as CanvasRenderingContext2D, x * this.cellSize, y * this.cellSize, wkMap[x * 10 + y], goal);
         }
       }
     }
-    return canv_pieces;
+    return this.canv_pieces;
   }
   /** 
    * 残像を描画する。
    */
-  function drawShadow(wkMap:MapArray, hand:Hand|undefined) {
-    let ctx_shadow = canv_shadow!.getContext('2d');
-    ctx_shadow!.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
+  private drawShadow(wkMap:MapArray, hand:Hand|undefined) {
+    let ctx_shadow = this.canv_shadow!.getContext('2d');
+    ctx_shadow!.clearRect(0, 0, this.CANV_SIZE, this.CANV_SIZE);
     if(hand ===undefined){
-      return canv_shadow;
+      return this.canv_shadow;
     }
     let x0 = (hand[0] / 10 | 0);
     let y0 = hand[0] % 10;
     let x1 = (hand[1] / 10 | 0);
     let y1 = hand[1] % 10;
-    let h = cellSize - 1 * cellSize / 5;
-    let w = cellSize - 1 * cellSize / 5;
-    let x = x1 * cellSize + cellSize / 10;
-    let y = y1 * cellSize + cellSize / 10;
+    let h = this.cellSize - 1 * this.cellSize / 5;
+    let w = this.cellSize - 1 * this.cellSize / 5;
+    let x = x1 * this.cellSize + this.cellSize / 10;
+    let y = y1 * this.cellSize + this.cellSize / 10;
     let shadow_start_x = x + w / 2;
     let shadow_start_y = y + h / 2;
     let shadow_end_x = shadow_start_x;
@@ -1166,12 +1166,12 @@ export function BoardGamejs() { }
     let center = 0;
     let grad;
     if (hand.length != 2) {
-      return canv_shadow;
+      return this.canv_shadow;
     }
     if (number > 0) {
-      wkColor = COLOR_BLUE; // "#EAEFFD";   
+      wkColor = this.COLOR_BLUE; // "#EAEFFD";   
     } else {
-      wkColor = COLOR_RED; // "#FDEAFA";           
+      wkColor = this.COLOR_RED; // "#FDEAFA";           
     }
     if (x0 == x1 || y0 == y1) { // 直角移動
       if ((x0 + y0) % 2 === 0 && y0 !== 0 && y0 != 5) {
@@ -1280,20 +1280,20 @@ export function BoardGamejs() { }
       ctx_shadow!.fill();
     }
 
-    return canv_shadow;
+    return this.canv_shadow;
   }
   /** 
    * メッセージを描画
    */
-  function drawOverlay() {
-    let ctx_overlay = canv_overlay!.getContext('2d');
-    let x = cellSize * 1.3;
-    let y = cellSize * 2.5;
+  private drawOverlay() {
+    let ctx_overlay = this.canv_overlay!.getContext('2d');
+    let x = this.cellSize * 1.3;
+    let y = this.cellSize * 2.5;
 
-    ctx_overlay!.clearRect(0, 0, CANV_SIZE, CANV_SIZE);
+    ctx_overlay!.clearRect(0, 0, this.CANV_SIZE, this.CANV_SIZE);
 
-    if (message === '') {
-      return canv_overlay;
+    if (this.message === '') {
+      return this.canv_overlay;
     }
     ctx_overlay!.shadowBlur = 10;
     ctx_overlay!.shadowColor = 'rgba(100, 100, 100, 0.5)';
@@ -1301,56 +1301,56 @@ export function BoardGamejs() { }
     ctx_overlay!.shadowOffsetY = 5;
 
     ctx_overlay!.globalAlpha = 0.9;
-    ctx_overlay!.fillStyle = COLOR_WHITE;
-    fillRoundRect(ctx_overlay as CanvasRenderingContext2D, x, y, cellSize * 3.4, cellSize * 1, cellSize/20);
+    ctx_overlay!.fillStyle = this.COLOR_WHITE;
+    this.fillRoundRect(ctx_overlay as CanvasRenderingContext2D, x, y, this.cellSize * 3.4, this.cellSize * 1, this.cellSize/20);
 
-    let fontsize = Math.round(cellSize * 0.36);
+    let fontsize = Math.round(this.cellSize * 0.36);
     ctx_overlay!.shadowBlur = 0;
     ctx_overlay!.shadowOffsetX = 0;
     ctx_overlay!.shadowOffsetY = 0;
     ctx_overlay!.shadowColor = 'rgba(0, 0, 0, 0)';
     ctx_overlay!.font = 'bold ' + fontsize + 'px Play,sans-serif';
     ctx_overlay!.globalAlpha = 1;
-    ctx_overlay!.fillStyle = COLOR_LINE;
+    ctx_overlay!.fillStyle = this.COLOR_LINE;
     ctx_overlay!.textBaseline = 'middle';
     ctx_overlay!.textAlign = 'center';
     ctx_overlay!.beginPath();
-    ctx_overlay!.fillText(message, cellSize * 3, cellSize * 3);
+    ctx_overlay!.fillText(this.message, this.cellSize * 3, this.cellSize * 3);
 
-    return canv_overlay;
+    return this.canv_overlay;
   }
 
   /** 
    * メッセージを更新
    */
-  function updateMessage() {
-    calcScore();
+  private updateMessage() {
+    this.calcScore();
     let Block = '';
-    document.querySelector('#blue')!.innerHTML = 'Blue: ' + blueScore + '/8';
-    document.querySelector('#red')!.innerHTML = ' Red: ' + redScore + '/8';
-    document.querySelector('#time')!.innerHTML = '(' + (thinktime.toFixed(3)) + 'sec)';
-    if (logArray.length === 0) {
-      if (winner == 1) {
-        message = 'You win!';
-        storage.setItem('level_' + (<HTMLSelectElement>document.querySelector('#level')).value,
-          parseInt(storage.getItem('level_' + (<HTMLSelectElement>document.querySelector('#level')).value)) + 1);
-        endgame();
-      } else if (winner == -1) {
-        message = 'You lose...';
-        storage.setItem('level_' +(<HTMLSelectElement> document.querySelector('#level')).value, 0);
-        endgame();
-      } else if (winner === 0) {
-        if (map_list[JSON.stringify(thisMap)] >= LIMIT_1000DAY) {
-          message = '3fold repetition';
+    document.querySelector('#blue')!.innerHTML = 'Blue: ' + this.blueScore + '/8';
+    document.querySelector('#red')!.innerHTML = ' Red: ' + this.redScore + '/8';
+    document.querySelector('#time')!.innerHTML = '(' + (this.thinktime.toFixed(3)) + 'sec)';
+    if (this.logArray.length === 0) {
+      if (this.winner == 1) {
+        this.message = 'You win!';
+        this.storage.setItem('level_' + (<HTMLSelectElement>document.querySelector('#level')).value,
+          parseInt(this.storage.getItem('level_' + (<HTMLSelectElement>document.querySelector('#level')).value)) + 1);
+        this.endgame();
+      } else if (this.winner == -1) {
+        this.message = 'You lose...';
+        this.storage.setItem('level_' +(<HTMLSelectElement> document.querySelector('#level')).value, 0);
+        this.endgame();
+      } else if (this.winner === 0) {
+        if (this.map_list[JSON.stringify(this.thisMap)] >= this.LIMIT_1000DAY) {
+          this.message = '3fold repetition';
         } else {
-          message = '-- Draw --';
+          this.message = '-- Draw --';
         }
-        endgame();
+        this.endgame();
       }
     }
 
-    if (storage.getItem('level_' + (<HTMLSelectElement> document.querySelector('#level')).value) > 0) {
-      document.querySelector('#wins')!.innerHTML = storage.getItem('level_' + (<HTMLSelectElement> document.querySelector('#level')).value) + ' win!';
+    if (this.storage.getItem('level_' + (<HTMLSelectElement> document.querySelector('#level')).value) > 0) {
+      document.querySelector('#wins')!.innerHTML = this.storage.getItem('level_' + (<HTMLSelectElement> document.querySelector('#level')).value) + ' win!';
     } else {
       document.querySelector('#wins')!.innerHTML = '';
     }
@@ -1359,8 +1359,8 @@ export function BoardGamejs() { }
   /** 
    * ゲーム終了
    */
-  function endgame() {
-    if (logArray.length === 0) {
+  private endgame() {
+    if (this.logArray.length === 0) {
       document.querySelector('#span_replay')!.classList.remove("hide");
       document.querySelector('#span_tweetlog')!.classList.remove("hide");
     }
@@ -1368,50 +1368,50 @@ export function BoardGamejs() { }
   /** 
    * 得点計算。
    */
-  function calcScore() {
+  private calcScore() {
     let sum1 = 0;
     let sum2 = 0;
     let GoalTop = [0, 10, 20, 30, 40, 50];
     let GoalBottom = [5, 15, 25, 35, 45, 55];
     // 点数勝利        
     for (let i in GoalTop) {
-      if (thisMap[GoalTop[i]] * 1 > 0) {
-        sum1 += thisMap[GoalTop[i]];
+      if (this.thisMap[GoalTop[i]] * 1 > 0) {
+        sum1 += this.thisMap[GoalTop[i]];
       }
     }
     for (let i in GoalBottom) {
-      if (thisMap[GoalBottom[i]] * -1 > 0) {
-        sum2 += thisMap[GoalBottom[i]];
+      if (this.thisMap[GoalBottom[i]] * -1 > 0) {
+        sum2 += this.thisMap[GoalBottom[i]];
       }
     }
     if (sum1 >= 8) {
-      winner = 1;
+      this.winner = 1;
     } else if (sum2 <= -8) {
-      winner = -1;
+      this.winner = -1;
     }
 
     // 手詰まりは判定
-    if (isNoneNode(thisMap)) {
+    if (this.isNoneNode(this.thisMap)) {
       if (Math.abs(sum1) > Math.abs(sum2)) {
-        winner = 1;
+        this.winner = 1;
       } else if (Math.abs(sum1) < Math.abs(sum2)) { // 引き分けは後攻勝利
-        winner = -1;
+        this.winner = -1;
       } else if (Math.abs(sum1) == Math.abs(sum2)) {
-        winner = 0;
+        this.winner = 0;
       }
     } else {
-      if (is1000day(thisMap) === true) {
-        winner = 0;
+      if (this.is1000day(this.thisMap) === true) {
+        this.winner = 0;
       }
     }
-    blueScore = Math.abs(sum1);
-    redScore = Math.abs(sum2);
+    this.blueScore = Math.abs(sum1);
+    this.redScore = Math.abs(sum2);
   }
 
   /** 
    * 手詰まり判定。
    */
-  function isNoneNode(wkMap:MapArray) {
+  private isNoneNode(wkMap:MapArray) {
     let flag1 = false;
     let flag2 = false;
     for (let panel_num in wkMap) {
@@ -1437,15 +1437,15 @@ export function BoardGamejs() { }
   /** 
    * 千日手
    */
-  function is1000day(wkMap:MapArray) {
+  private is1000day(wkMap:MapArray) {
     let map_json = JSON.stringify(wkMap);
-    if (map_list[map_json] === undefined) {
-      map_list[map_json] = 1;
+    if (this.map_list[map_json] === undefined) {
+      this.map_list[map_json] = 1;
       return false;
     } else {
-      map_list[map_json] += 1;
+      this.map_list[map_json] += 1;
     }
-    if (map_list[map_json] >= LIMIT_1000DAY) {
+    if (this.map_list[map_json] >= this.LIMIT_1000DAY) {
       return true;
     }
     return false;
@@ -1454,7 +1454,7 @@ export function BoardGamejs() { }
   /** 
    * 手の数を取得
    */
-  function getNodeCount(wkMap:MapArray) {
+  private getNodeCount(wkMap:MapArray) {
     let count = 0;
     for (let panel_num in wkMap) {
       if (wkMap[panel_num] === 0) {
@@ -1470,7 +1470,7 @@ export function BoardGamejs() { }
   /** 
    * パラメータ取得
    */
-  function getParam():any {
+  private getParam():any {
     let obj:any = {};
     if (1 < document.location.search.length) {
       let paramstr = document.location.search.substring(1).split('&');
@@ -1487,10 +1487,10 @@ export function BoardGamejs() { }
   /** 
    * パタメータから初期配置を取得
    */
-  function getMapByParam(initString:string):MapArray {
+  private getMapByParam(initString:string):MapArray {
     let wkMap;
     if (initString) {
-      wkMap = Aijs.copyMap(thisMap);
+      wkMap = Aijs.copyMap(this.thisMap);
       // クリア
       for (let num in wkMap) {
         wkMap[num] = 0;
@@ -1515,7 +1515,7 @@ export function BoardGamejs() { }
   /** 
    * ログをデコード。
    */
-  function decodeLog(logstr:string, wkInitMap:MapArray) {
+  private decodeLog(logstr:string, wkInitMap:MapArray) {
     let wklogArray = [];
     let wkMap = Aijs.copyMap(wkInitMap);
     let arrow:{ [index: string]: number; } = {
@@ -1545,7 +1545,7 @@ export function BoardGamejs() { }
   /** 
    * ログをエンコード
    */
-  function encodeLog(wklogArray:Hand[]) {
+  private encodeLog(wklogArray:Hand[]) {
     let logstr = '';
     let arrow = ['q', 'w', 'e',
       'a', 's', 'd',
@@ -1573,120 +1573,120 @@ export function BoardGamejs() { }
   /** 
    * ログを全部巻き戻す
    */
-  function move_start() {
-    logPointer = 0;
-    autoLog=false;    
-    thisMap = Aijs.copyMap(logArray[logPointer]);
-    winner=null;
-    goaled=false;
-    updateMessage();
-    flush(false, false);
+  private move_start() {
+    this.logPointer = 0;
+    this.autoLog=false;    
+    this.thisMap = Aijs.copyMap(this.logArray[this.logPointer]);
+    this.winner=null;
+    this.goaled=false;
+    this.updateMessage();
+    this.flush(false, false);
   }
 
   /** 
    * ログを戻す
    */
-  function move_prev() {
-    if (logPointer <= 0) { return; }
-    autoLog=false;    
-    logPointer -= 1;
-    thisMap = Aijs.copyMap(logArray[logPointer]);
-    winner=null;
-    goaled=false;
-    updateMessage();
-    flush(false, false);
+  private move_prev() {
+    if (this.logPointer <= 0) { return; }
+    this.autoLog=false;    
+    this.logPointer -= 1;
+    this.thisMap = Aijs.copyMap(this.logArray[this.logPointer]);
+    this.winner=null;
+    this.goaled=false;
+    this.updateMessage();
+    this.flush(false, false);
   }
 
   /** 
    * ログを進める
    */
-  function move_next() {
-    if (logPointer + 1 > logArray.length - 1) { return; }
-    logPointer += 1;
-    thisMap = Aijs.copyMap(logArray[logPointer]);
-    updateMessage();
-    flush(false, false);
+  private move_next() {
+    if (this.logPointer + 1 > this.logArray.length - 1) { return; }
+    this.logPointer += 1;
+    this.thisMap = Aijs.copyMap(this.logArray[this.logPointer]);
+    this.updateMessage();
+    this.flush(false, false);
   }
 
   /** 
    * ログを最後まで進める。
    */
-  function move_end() {
-    logPointer = logArray.length - 1;
-    autoLog=false;    
-    thisMap = Aijs.copyMap(logArray[logPointer]);
-    updateMessage();
-    flush(false, false);
+  private move_end() {
+    this.logPointer = this.logArray.length - 1;
+    this.autoLog=false;    
+    this.thisMap = Aijs.copyMap(this.logArray[this.logPointer]);
+    this.updateMessage();
+    this.flush(false, false);
   }
 
   /** 
    * リセット
    */
-  function reloadnew() {
+  private reloadnew() {
     let url = document.location.href.split('?')[0];
 
     //demo中ならdemoを終了
-    if(demo===true){
-      ev_mouseClick(null);
+    if(this.demo===true){
+      this.ev_mouseClick(null);
       return;
     }
 
     // パラメータを取得
-    let paramObj = getParam();
+    let paramObj = this.getParam();
     if (paramObj.lang) {
       url += '?lang=' + paramObj.lang;
     }
     if (navigator.onLine) {
       location.href = url;
     } else {
-      thisMap = Aijs.copyMap(startMap);
-      shuffleBoard();
-      logArray2 = [];
-      message = '';
-      winner = null;
-      turn_player = 1;
-      flush(false, false);
+      this.thisMap = Aijs.copyMap(this.startMap);
+      this.shuffleBoard();
+      this.logArray2 = [];
+      this.message = '';
+      this.winner = null;
+      this.turn_player = 1;
+      this.flush(false, false);
     }
   }
 
   /** 
    * 検討画面に飛ぶ
    */
-  function jumpkento() {
+  private jumpkento() {
     let url = document.location.href.split('?')[0];
-    let init = '?init=' + startMap[55] + ','+
-     startMap[45] + ','+
-     startMap[35] + ','+
-     startMap[25] + ','+
-     startMap[15] + ','+
-     startMap[5] + ','+
-     startMap[44] + ','+
-     startMap[14];
-    let log = '&log=' + encodeLog(logArray2);
+    let init = '?init=' + this.startMap[55] + ','+
+     this.startMap[45] + ','+
+     this.startMap[35] + ','+
+     this.startMap[25] + ','+
+     this.startMap[15] + ','+
+     this.startMap[5] + ','+
+     this.startMap[44] + ','+
+     this.startMap[14];
+    let log = '&log=' + this.encodeLog(this.logArray2);
     log += '&lv=' + (<HTMLSelectElement>document.querySelector('#level')).value;
     location.href = url + init + log;
   }
   /** 
    * ログをツイートする。
    */
-  function tweetlog() {
+  private tweetlog() {
     let url = document.location.href.split('?')[0];
-    let init = '?init=' + startMap[55] + ','+
-     startMap[45] + ','+
-     startMap[35] + ','+
-     startMap[25] + ','+
-     startMap[15] + ','+
-     startMap[5] + ','+
-     startMap[44] + ','+
-     startMap[14];
-    let log = '%26log=' + encodeLog(logArray2);
+    let init = '?init=' + this.startMap[55] + ','+
+     this.startMap[45] + ','+
+     this.startMap[35] + ','+
+     this.startMap[25] + ','+
+     this.startMap[15] + ','+
+     this.startMap[5] + ','+
+     this.startMap[44] + ','+
+     this.startMap[14];
+    let log = '%26log=' + this.encodeLog(this.logArray2);
     log += '%26lv=' + (<HTMLSelectElement>document.querySelector('#level')).value;
     window.open('https://twitter.com/intent/tweet?text=' + url + init + log + '%20%23colamone');
   }
   /** 
    * ツイートボタンを読み込む。
    */
-  function setTweet() {
+  private setTweet() {
     /*jshint -W030 */
     (function f(d:any, s:string, id:string) {
       let js, fjs = d.getElementsByTagName(s)[0];
@@ -1696,7 +1696,7 @@ export function BoardGamejs() { }
   /** 
    * botかどうか判定
    */
-  function isBot(){
+  private isBot(){
     let ua = window.navigator.userAgent.toLowerCase();
     if (ua.indexOf('bot') != -1 ||
     ua.indexOf('lighthouse') != -1||
@@ -1705,10 +1705,11 @@ export function BoardGamejs() { }
     }
     return false;
   }
-
+}
+const bg = new BoardGamejs();
 /** 
  * init 
  */
 document.addEventListener('DOMContentLoaded', function() {
-  BoardGamejs.init();
+  bg.Run();
 });
