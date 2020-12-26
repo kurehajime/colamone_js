@@ -244,7 +244,7 @@ constructor(){
     // イベントを設定
     if (this.isTouch) {
       (<HTMLElement>document.querySelector('#canv')).addEventListener('touchstart', this.ev_mouseClick);
-      (<HTMLElement>document.querySelector('#canv')).addEventListener('touchmove', this.ev_touchMove);
+      (<HTMLElement>document.querySelector('#canv')).addEventListener('touchmove', this.ev_touchMove, {passive: false});
     } else {
       (<HTMLElement>document.querySelector('#canv')).addEventListener('mousemove', this.ev_mouseMove);
       (<HTMLElement>document.querySelector('#canv')).addEventListener('mouseup', this.ev_mouseClick);
