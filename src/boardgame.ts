@@ -188,7 +188,7 @@ constructor(){
       if (this.view.Img_bk!.width !== 0) {
         this.view.Img_bk_loaded = true;
       }
-      this.view!.flush(this.gameState,true, false);
+      this.view.flush(this.gameState,true, false);
     }, 2500);
     this.updateMessage();
     this.setTweet(); // ツイートボタンを生成
@@ -304,7 +304,7 @@ constructor(){
    */
   private ev_mouseClick = (e:Event|null):boolean => {
     this.getMousePosition(e);
-    let target = Math.floor(this.gameState.mouse_x / this.view!.CellSize) * 10+ Math.floor(this.gameState.mouse_y / this.view!.CellSize);
+    let target = Math.floor(this.gameState.mouse_x / this.view.CellSize) * 10+ Math.floor(this.gameState.mouse_y / this.view.CellSize);
     if (this.gameState.winner !== null || this.logArray.length !== 0) {
       this.reloadnew();
       return true;
@@ -536,8 +536,8 @@ constructor(){
     let rect = e.target.getBoundingClientRect();
     this.gameState.mouse_x = e.clientX - rect.left;
     this.gameState.mouse_y = e.clientY - rect.top;
-    this.gameState.mouse_x = this.gameState.mouse_x *  this.view!.Ratio;
-    this.gameState.mouse_y = this.gameState.mouse_y *  this.view!.Ratio;
+    this.gameState.mouse_x = this.gameState.mouse_x *  this.view.Ratio;
+    this.gameState.mouse_y = this.gameState.mouse_y *  this.view.Ratio;
   }
 
   /** 
