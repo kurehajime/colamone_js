@@ -9,7 +9,7 @@
   "scripts": {
     "build": "webpack",
     "watch": "webpack --watch",
-    "lanch":"webpack serve --host 0.0.0.0",
+    "lanch": "webpack serve --host 0.0.0.0",
     "test": "jest"
   },
   "repository": {
@@ -25,6 +25,7 @@
   "homepage": "https://xiidec.appspot.com/colamone/colamone.html",
   "devDependencies": {
     "@types/jest": "^26.0.19",
+    "clean-css": "^4.2.3",
     "copy-webpack-plugin": "^6.4.1",
     "date-utils": "^1.2.21",
     "html-webpack-plugin": "^4.5.0",

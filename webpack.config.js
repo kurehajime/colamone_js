@@ -3,6 +3,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const fs = require("fs");
 const date = require("date-utils");
 const timestamp = new Date().toFormat("YYYYMMDDHH24MI");
+const CleanCSS = require('clean-css');
 
 // html
 let langs = ["ja", "en", "kr", "zh-hans", "zh-hant", "hi", "pt"];
@@ -58,6 +59,13 @@ plugins.push(
           to: "sw.js",
           transform: function (content, path) {
             return content.toString().replace("TIMESTAMP", timestamp);
+          }
+        },
+        {
+          from: "assets/boardgame.css",
+          to: "boardgame.css",
+          transform: function (content, path) {
+            return  new CleanCSS({}).minify(content).styles;
           }
         }
       ]
