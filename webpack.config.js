@@ -114,4 +114,8 @@ module.exports = {
       '.ts', '.js',
     ],
   },
+  devServer: {
+    open: true,//ブラウザを自動で開く
+    port: 80, // ポート番号
+  }
 };

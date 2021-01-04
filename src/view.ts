@@ -5,20 +5,20 @@ export class View{
     public  CellSize:number = 0;
     public Ratio=1;
     public  Img_bk_loaded = false;
-    public Img_bk:(HTMLImageElement|null) = null;
+    public Img_bk:(HTMLImageElement);
   
-    private ctx:(CanvasRenderingContext2D|null) = null;
-    private  canv_board:(HTMLCanvasElement|null) = null;
-    private  canv_board2:(HTMLCanvasElement|null) = null;
-    private  canv_focus:(HTMLCanvasElement|null) = null;
-    private  canv_pieces:(HTMLCanvasElement|null) = null;
-    private  canv_shadow:(HTMLCanvasElement|null) = null;
-    private  canv_hover_piece:(HTMLCanvasElement|null) = null;
-    private  canv_overlay:(HTMLCanvasElement|null) = null;
-    private  canv_bk :(HTMLCanvasElement|null) = null;
-    private  canv_cover:(HTMLCanvasElement|null) = null;
-    private  canv_score:(HTMLCanvasElement|null) = null;
-    private  canv_cache:(HTMLCanvasElement|null) = null;
+    private ctx:(CanvasRenderingContext2D|null)=null;
+    private  canv_board:(HTMLCanvasElement);
+    private  canv_board2:(HTMLCanvasElement);
+    private  canv_focus:(HTMLCanvasElement);
+    private  canv_pieces:(HTMLCanvasElement);
+    private  canv_shadow:(HTMLCanvasElement);
+    private  canv_hover_piece:(HTMLCanvasElement);
+    private  canv_overlay:(HTMLCanvasElement);
+    private  canv_bk :(HTMLCanvasElement);
+    private  canv_cover:(HTMLCanvasElement);
+    private  canv_score:(HTMLCanvasElement);
+    private  canv_cache:(HTMLCanvasElement);
     private  cache_on = false;
     private readonly  COLOR_LINE = '#333333';
     private readonly COLOR_PANEL_1 = '#660033';
@@ -94,54 +94,53 @@ export class View{
     
       this.CANV_SIZE=500*this.Ratio;
       this.Img_bk = new Image(); this.Img_bk.src = 'bk.gif';
+      this.canv_board = document.createElement('canvas');
+      this.canv_board2 = document.createElement('canvas');
+      this.canv_focus = document.createElement('canvas');
+      this.canv_pieces = document.createElement('canvas');
+      this.canv_shadow = document.createElement('canvas');
+      this.canv_hover_piece = document.createElement('canvas');
+      this.canv_overlay = document.createElement('canvas');
+      this.canv_bk = document.createElement('canvas');
+      this.canv_cover = document.createElement('canvas');
+      this.canv_score = document.createElement('canvas');
+      this.canv_cache = document.createElement('canvas');
     }
   
     public init(){
       
-      this.ctx = (<HTMLCanvasElement>document.querySelector('#canv'))?.getContext('2d');
+      this.ctx = (<HTMLCanvasElement>document.querySelector('#canv')).getContext('2d');
   
-      this.canv_board = document.createElement('canvas');
       this.canv_board.width = this.CANV_SIZE;
       this.canv_board.height = this.CANV_SIZE;
   
-  
-      this.canv_board2 = document.createElement('canvas');
       this.canv_board2.width = this.CANV_SIZE;
       this.canv_board2.height = this.CANV_SIZE;
   
-      this.canv_focus = document.createElement('canvas');
       this.canv_focus.width = this.CANV_SIZE;
       this.canv_focus.height = this.CANV_SIZE;
   
-      this.canv_pieces = document.createElement('canvas');
       this.canv_pieces.width = this.CANV_SIZE;
       this.canv_pieces.height = this.CANV_SIZE;
   
-      this.canv_shadow = document.createElement('canvas');
       this.canv_shadow.width = this.CANV_SIZE;
       this.canv_shadow.height = this.CANV_SIZE;
   
-      this.canv_hover_piece = document.createElement('canvas');
       this.canv_hover_piece.width = this.CANV_SIZE;
       this.canv_hover_piece.height = this.CANV_SIZE;
   
-      this.canv_overlay = document.createElement('canvas');
       this.canv_overlay.width = this.CANV_SIZE;
       this.canv_overlay.height = this.CANV_SIZE;
   
-      this.canv_bk = document.createElement('canvas');
       this.canv_bk.width = this.CANV_SIZE;
       this.canv_bk.height = this.CANV_SIZE;
   
-      this.canv_cover = document.createElement('canvas');
       this.canv_cover.width = this.CANV_SIZE;
       this.canv_cover.height = this.CANV_SIZE;
   
-      this.canv_score = document.createElement('canvas');
       this.canv_score.width = this.CANV_SIZE;
       this.canv_score.height = this.CANV_SIZE;
   
-      this.canv_cache = document.createElement('canvas');
       this.canv_cache.width = this.CANV_SIZE;
       this.canv_cache.height = this.CANV_SIZE;
   

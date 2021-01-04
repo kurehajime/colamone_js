@@ -287,14 +287,14 @@ constructor(){
   /** 
    * マウス移動時処理
    */
-  private ev_mouseMove = (e:Event) => {
+  private ev_mouseMove = (e:MouseEvent) => {
     this.getMousePosition(e);
     this.view?.flush(this.gameState,false, true);
   };
   /** 
    * タッチ移動時処理
    */
-  private ev_touchMove = (e:Event) => {
+  private ev_touchMove = (e:TouchEvent) => {
     e.preventDefault();
     e.stopPropagation();
   }
@@ -302,7 +302,7 @@ constructor(){
   /** 
    * マウスクリック時処理
    */
-  private ev_mouseClick = (e:Event|null):boolean => {
+  private ev_mouseClick = (e:MouseEvent|TouchEvent|null):boolean => {
     this.getMousePosition(e);
     let target = Math.floor(this.gameState.mouse_x / this.view.CellSize) * 10+ Math.floor(this.gameState.mouse_y / this.view.CellSize);
     if (this.gameState.winner !== null || this.logArray.length !== 0) {
