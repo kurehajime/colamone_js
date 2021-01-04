@@ -165,10 +165,10 @@ export class View{
       // キャッシュに保存
       if (cache_flg === false || this.cache_on === false) {
         // 盤面を描画
-        this.ctx!.drawImage(this.drawBoard(initflg) as HTMLCanvasElement, 0, 0, this.CANV_SIZE, this.CANV_SIZE);
+        this.ctx!.drawImage(this.drawBoard(initflg), 0, 0, this.CANV_SIZE, this.CANV_SIZE);
   
         // テカリを描画
-        this.ctx!.drawImage(this.drawBoard2(initflg) as HTMLCanvasElement, 0, 0, this.CANV_SIZE, this.CANV_SIZE);
+        this.ctx!.drawImage(this.drawBoard2(initflg), 0, 0, this.CANV_SIZE, this.CANV_SIZE);
   
         // 選択したコマを除外
         if (gameState.hover_piece !== null) {
@@ -176,11 +176,11 @@ export class View{
         }
   
         // 残像を表示
-        this.ctx!.drawImage(this.drawShadow(wkMap, gameState.thisHand) as HTMLCanvasElement, 0, 0, this.CANV_SIZE, this.CANV_SIZE);
+        this.ctx!.drawImage(this.drawShadow(wkMap, gameState.thisHand), 0, 0, this.CANV_SIZE, this.CANV_SIZE);
   
   
         // コマを表示
-        this.ctx!.drawImage(this.drawPieceAll(wkMap) as HTMLCanvasElement, 0, 0, this.CANV_SIZE, this.CANV_SIZE);
+        this.ctx!.drawImage(this.drawPieceAll(wkMap), 0, 0, this.CANV_SIZE, this.CANV_SIZE);
   
         // キャッシュに保存
         let ctx_canv = this.canv_cache!.getContext('2d');
@@ -190,29 +190,29 @@ export class View{
         this.cache_on = true;
       } else {
         // キャッシュから描画
-        this.ctx!.drawImage(this.canv_cache as HTMLCanvasElement, 0, 0, this.CANV_SIZE, this.CANV_SIZE);
+        this.ctx!.drawImage(this.canv_cache, 0, 0, this.CANV_SIZE, this.CANV_SIZE);
       }
   
       // 選択したコマを表示
-      this.ctx!.drawImage(this.drawHoverPiece(gameState) as HTMLCanvasElement, 0, 0, this.CANV_SIZE, this.CANV_SIZE);
+      this.ctx!.drawImage(this.drawHoverPiece(gameState), 0, 0, this.CANV_SIZE, this.CANV_SIZE);
   
       if ((gameState.mouse_x !== 0 || gameState.mouse_y !== 0) && gameState.demo === false) {
         // フォーカスを描画
-        this.ctx!.drawImage(this.drawFocus(gameState) as HTMLCanvasElement, 0, 0, this.CANV_SIZE, this.CANV_SIZE);
+        this.ctx!.drawImage(this.drawFocus(gameState), 0, 0, this.CANV_SIZE, this.CANV_SIZE);
       }
   
       //スコアを表示
       if(gameState.goaled||gameState.winner!==null){
         if(gameState.demo===false&&gameState.autoLog==false){
-          this.ctx!.drawImage(this.drawScore(gameState) as HTMLCanvasElement, 0, 0, this.CANV_SIZE, this.CANV_SIZE);
+          this.ctx!.drawImage(this.drawScore(gameState), 0, 0, this.CANV_SIZE, this.CANV_SIZE);
         }
       }
       // メッセージを描画
-      this.ctx!.drawImage(this.drawOverlay(gameState) as HTMLCanvasElement, 0, 0, this.CANV_SIZE, this.CANV_SIZE);
+      this.ctx!.drawImage(this.drawOverlay(gameState), 0, 0, this.CANV_SIZE, this.CANV_SIZE);
   
       // カバーを描画
       if (gameState.demo === true) {
-        this.ctx!.drawImage(this.drawCover(gameState) as HTMLCanvasElement, 0, 0, this.CANV_SIZE, this.CANV_SIZE);
+        this.ctx!.drawImage(this.drawCover(gameState), 0, 0, this.CANV_SIZE, this.CANV_SIZE);
       }
   
   
@@ -500,7 +500,7 @@ export class View{
         wkCtx.globalAlpha = 0.35;
         wkCtx.save();
         wkCtx.clip();
-        wkCtx.drawImage(this.drawBk() as HTMLCanvasElement, x + this.CellSize / 10, y + this.CellSize / 10, this.CellSize - 1 * this.CellSize / 5, this.CellSize - 1 * this.CellSize / 5);
+        wkCtx.drawImage(this.drawBk(), x + this.CellSize / 10, y + this.CellSize / 10, this.CellSize - 1 * this.CellSize / 5, this.CellSize - 1 * this.CellSize / 5);
         wkCtx.restore();
         wkCtx.globalAlpha = 1;
       }

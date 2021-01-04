@@ -172,11 +172,11 @@ constructor(){
     // 画像読み込み成功時
     this.view.Img_bk!.onload =  () => {
       this.view.Img_bk_loaded = true;
-      this.view?.flush(this.gameState,true, false);
+      this.view.flush(this.gameState,true, false);
     };
     // 画像読み込み失敗時
     this.view.Img_bk!.onerror =  () => {
-      this.view?.flush(this.gameState,true, false);
+      this.view.flush(this.gameState,true, false);
     };
     // もう既に読み込み終わってた時
     if (this.view.Img_bk!.width !== 0) {
@@ -224,11 +224,11 @@ constructor(){
     }
     this.gameState.demo_inc++;
     this.calcScore();
-    this.view?.flush(this.gameState,false, false);
+    this.view.flush(this.gameState,false, false);
     if (this.gameState.winner === 1 || this.gameState.winner === -1 || this.gameState.winner === 0) {
       this.gameState.goaled=true;
       this.gameState.winner = null;
-      this.view?.flush(this.gameState,false, false);
+      this.view.flush(this.gameState,false, false);
       this.shuffleBoard();
     }
     if(this.gameState.demo_inc>42){
@@ -289,7 +289,7 @@ constructor(){
    */
   private ev_mouseMove = (e:MouseEvent) => {
     this.getMousePosition(e);
-    this.view?.flush(this.gameState,false, true);
+    this.view.flush(this.gameState,false, true);
   };
   /** 
    * タッチ移動時処理
@@ -314,12 +314,12 @@ constructor(){
       this.gameState.thisHand = undefined;
       this.gameState.thisMap = Aijs.copyMap(this.startMap);
       this.logArray2 = [];
-      this.view?.flush(this.gameState,false, false);
+      this.view.flush(this.gameState,false, false);
       this.gameState.winner = null;
       this.gameState.goaled=false;
       this.gameState.turn_player = 1;
       window.clearInterval(this.intervalID as number);
-      this.view?.flush(this.gameState,false, false);
+      this.view.flush(this.gameState,false, false);
       return true;
     }
 
@@ -330,18 +330,18 @@ constructor(){
     } else {
       if (target == this.gameState.hover_piece) {
         this.gameState.hover_piece = null;
-        this.view?.flush(this.gameState,false, false);
+        this.view.flush(this.gameState,false, false);
         return true;
       }
       let canm = Aijs.getCanMovePanelX(this.gameState.hover_piece!, this.gameState.thisMap);
       if (canm.indexOf(target) >= 0) {
-        this.view?.flush(this.gameState,false, true);
+        this.view.flush(this.gameState,false, true);
         if(this.isGoaled(this.gameState.thisMap,target,this.gameState.turn_player)){
             this.gameState.goaled=true;
-            this.view?.flush(this.gameState,false, true);
+            this.view.flush(this.gameState,false, true);
             setTimeout(()=>{
               this.gameState.goaled=false;
-              this.view?.flush(this.gameState,false, false);
+              this.view.flush(this.gameState,false, false);
             },2000);
         }
 
@@ -357,7 +357,7 @@ constructor(){
         // AIが考える。
         this.gameState.message = 'thinking...';
         window.setTimeout( ()=> {
-          this.view?.flush(this.gameState,false, false);
+          this.view.flush(this.gameState,false, false);
         }, 50);
         this.updateMessage();
         if (this.gameState.winner === null) {
@@ -365,12 +365,12 @@ constructor(){
             this.ai(parseInt((<HTMLSelectElement>document.querySelector('#level')).value));
             this.gameState.message = '';
             this.updateMessage();
-            this.view?.flush(this.gameState,false, false);
+            this.view.flush(this.gameState,false, false);
           }, 250);
         }
       }
     }
-    this.view?.flush(this.gameState,false, false);
+    this.view.flush(this.gameState,false, false);
 
     return true;
   }
@@ -390,7 +390,7 @@ constructor(){
     this.gameState.thisHand = undefined;
     this.map_list = {};
     this.logArray2 = [];
-    this.view?.flush(this.gameState,false, false);
+    this.view.flush(this.gameState,false, false);
   }
 
   /** 
@@ -459,10 +459,10 @@ constructor(){
     if (hand) {
       if(this.isGoaled(this.gameState.thisMap,hand[1],this.gameState.turn_player)){
           this.gameState.goaled=true;
-          this.view?.flush(this.gameState,false, true);
+          this.view.flush(this.gameState,false, true);
           setTimeout(()=>{
             this.gameState.goaled=false;
-            this.view?.flush(this.gameState,false, false);
+            this.view.flush(this.gameState,false, false);
           },2000);
       }
       this.gameState.thisMap[hand[1]] = this.gameState.thisMap[hand[0]];
@@ -800,7 +800,7 @@ constructor(){
     this.gameState.winner=null;
     this.gameState.goaled=false;
     this.updateMessage();
-    this.view?.flush(this.gameState,false, false);
+    this.view.flush(this.gameState,false, false);
   }
 
   /** 
@@ -814,7 +814,7 @@ constructor(){
     this.gameState.winner=null;
     this.gameState.goaled=false;
     this.updateMessage();
-    this.view?.flush(this.gameState,false, false);
+    this.view.flush(this.gameState,false, false);
   }
 
   /** 
@@ -825,7 +825,7 @@ constructor(){
     this.logPointer += 1;
     this.gameState.thisMap = Aijs.copyMap(this.logArray[this.logPointer]);
     this.updateMessage();
-    this.view?.flush(this.gameState,false, false);
+    this.view.flush(this.gameState,false, false);
   }
 
   /** 
@@ -836,7 +836,7 @@ constructor(){
     this.gameState.autoLog=false;    
     this.gameState.thisMap = Aijs.copyMap(this.logArray[this.logPointer]);
     this.updateMessage();
-    this.view?.flush(this.gameState,false, false);
+    this.view.flush(this.gameState,false, false);
   }
 
   /** 
@@ -865,7 +865,7 @@ constructor(){
       this.gameState.message = '';
       this.gameState.winner = null;
       this.gameState.turn_player = 1;
-      this.view?.flush(this.gameState,false, false);
+      this.view.flush(this.gameState,false, false);
     }
   }
 
