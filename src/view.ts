@@ -7,7 +7,7 @@ export class View{
     public  Img_bk_loaded = false;
     public Img_bk:(HTMLImageElement);
   
-    private ctx:(CanvasRenderingContext2D|null)=null;
+    private  ctx:(CanvasRenderingContext2D|null)=null;
     private  canv_board:(HTMLCanvasElement);
     private  canv_board2:(HTMLCanvasElement);
     private  canv_focus:(HTMLCanvasElement);
