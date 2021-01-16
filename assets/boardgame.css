@@ -241,27 +241,6 @@ body{
     background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAGFBMVEUAAAAZJCYWISIYIyQYIiUWIiIYIyQYIiXh0rToAAAACHRSTlMA/hTRqiinvwFkb0sAAABCSURBVHjajchBDsAgDAPBOJDw/x+XVN0icQGfPGs3i+2GEqeiLCXWLENzvdzrDfP2ls/NjfKbgimYglfBq2Dm+LwHguMA235EdKYAAAAASUVORK5CYII=") 90% no-repeat;
 
 }
-#LauncherLogo{
-    display: none!important;
-
-}
-#WidgetLauncher{
-    height: 22px!important;
-    margin-top: 0px!important;
-    margin-bottom: 0px!important;
-    margin-left: 30px!important;
-}
-#MicrosoftTranslatorWidget{
-    height: 22px!important;
-    background-color: #555555;
-}
-#LauncherTranslatePhrase{
-    height: 16px!important;
-    border:none!important;
-    border-radius: 3px!important;
-    opacity: 0.5;
-}
-
 .hue-rotate1{
     filter: hue-rotate(130deg);
 }
@@ -271,7 +250,6 @@ body{
 .hue-rotate3{
     filter: hue-rotate(330deg);
 }
-
 
 @keyframes Flash{
   20%{
