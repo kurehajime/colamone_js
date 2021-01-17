@@ -251,13 +251,6 @@ body{
     filter: hue-rotate(330deg);
 }
 
-@keyframes Flash{
-  20%{
-    opacity: 0.6;
-  }
-}
-
-
 @media (orientation: landscape) {
     #main{
         display: table-cell; 
