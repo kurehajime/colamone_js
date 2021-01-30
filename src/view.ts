@@ -249,7 +249,7 @@ export class View{
       ctx_cover!.globalAlpha = 0.8;
       ctx_cover!.fillStyle = this.COLOR_WHITE;
       ctx_cover!.beginPath();
-      this.fillRoundRect(ctx_cover as CanvasRenderingContext2D, x, y, this.CellSize * 2, this.CellSize * 1, this.CellSize/20);
+      this.fillRoundRect(ctx_cover as CanvasRenderingContext2D, x, y, this.CellSize * 2, this.CellSize * 1, this.CellSize/7);
       ctx_cover!.shadowColor = 'rgba(0, 0, 0, 0)';
       ctx_cover!.shadowBlur = 0;
       ctx_cover!.shadowOffsetX = 0;
@@ -488,7 +488,7 @@ export class View{
       wkCtx.shadowOffsetY = 2;
       wkCtx.fillStyle = grad;
       wkCtx.beginPath();
-      this.fillRoundRect(wkCtx, x + this.CellSize / 10, y + this.CellSize / 10, this.CellSize - 1 * this.CellSize / 5, this.CellSize - 1 * this.CellSize / 5, this.CellSize/20);
+      this.fillRoundRect(wkCtx, x + this.CellSize / 10, y + this.CellSize / 10, this.CellSize - 1 * this.CellSize / 5, this.CellSize - 1 * this.CellSize / 5, this.CellSize/7);
   
       wkCtx.shadowColor = 'rgba(0, 0, 0, 0)';
       wkCtx.shadowBlur = 0;
@@ -555,15 +555,17 @@ export class View{
       ctx.beginPath();
       ctx.moveTo(x + r, y);
       ctx.lineTo(x + w - r, y);
-      ctx.arc(x + w - r, y + r, r, Math.PI * 1.5, 0, false);
+      
+      ctx.bezierCurveTo(x+w,y+0,x+w,y+0,x+w,y+r);
       ctx.lineTo(x + w, y + h - r);
-      ctx.arc(x + w - r, y + h - r, r, 0, Math.PI * 0.5, false);
+      ctx.bezierCurveTo(x+w,y+h,x+w,y+h,x+w-r,y+h);
       ctx.lineTo(x + r, y + h);
-      ctx.arc(x + r, y + h - r, r, Math.PI * 0.5, Math.PI, false);
+      ctx.bezierCurveTo(x+0,y+h,x+0,y+h,x+0,y+h-r);
       ctx.lineTo(x, y + r);
-      ctx.arc(x + r, y + r, r, Math.PI, Math.PI * 1.5, false);
+      ctx.bezierCurveTo(x+0,y+0,x+0,y+0,x + r, y);
       ctx.closePath();
       ctx.fill();
+      
     }
   
     /** 
@@ -749,7 +751,7 @@ export class View{
   
       ctx_overlay!.globalAlpha = 0.9;
       ctx_overlay!.fillStyle = this.COLOR_WHITE;
-      this.fillRoundRect(ctx_overlay as CanvasRenderingContext2D, x, y, this.CellSize * 3.4, this.CellSize * 1, this.CellSize/20);
+      this.fillRoundRect(ctx_overlay as CanvasRenderingContext2D, x, y, this.CellSize * 3.4, this.CellSize * 1, this.CellSize/7);
   
       let fontsize = Math.round(this.CellSize * 0.36);
       ctx_overlay!.shadowBlur = 0;
