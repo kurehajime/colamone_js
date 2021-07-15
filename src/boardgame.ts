@@ -1,54 +1,55 @@
 /* @license Copyright (c) @kurehajime / source code: https://github.com/kurehajime/colamone_js */
-import { Aijs, MapArray,Hand } from "./ai";
+import { Rule, MapArray, Hand } from "./rule";
+import { Aijs } from "./ai";
 import { GameState } from "./gamestate";
 import { View } from "./view";
 
-export class BoardGamejs{
+export class BoardGamejs {
 
   private gameState = new GameState();
   private view = new View();
 
-  private  thinktime = 0.0;
-  private  intervalID:(number|null) = null;
-  private  intervalID_log:(number|null) = null;  
-  private map_list:{ [index: string]: number; }  = {};
+  private thinktime = 0.0;
+  private intervalID: (number | null) = null;
+  private intervalID_log: (number | null) = null;
+  private map_list: { [index: string]: number; } = {};
   private readonly LIMIT_1000DAY = 3;
-  private startMap:MapArray =new Int8Array();
+  private startMap: MapArray = new Int8Array();
   private logPointer = 0;
-  private logArray:Array<MapArray> = [];
-  private logArray2:Array<Hand>  = [];
-  private storage:any = null;
-  
-constructor(){
-  try {
-    if (window == parent && ('localStorage' in window) && window.localStorage !== null) {
-      this.storage = localStorage;
-      this.storage.setItem('test', 0); // Safariのプライベートモードは、できないのにできるって言うからかまをかけてみる。
-    }
-  } catch (e) {
-    this.storage = null;
-  }
-  if (this.storage === null) {
-    // localStorageが使えない場合
-    this.storage = {}; // ダミー
-    this.storage.getItem = function () { return undefined; };
-    this.storage.setItem = function () { return undefined; };
+  private logArray: Array<MapArray> = [];
+  private logArray2: Array<Hand> = [];
+  private storage: any = null;
 
-    if (navigator.cookieEnabled) {
-      this.storage.hasItem = function (sKey:string) {
-        return (new RegExp('(?:^|;\\s*)' + escape(sKey).replace(/[\-\.\+\*]/g, '\\$&') + '\\s*\\=')).test(document.cookie);
-      };
-      this.storage.getItem = function (sKey:string) {
-        if (!sKey || !(new RegExp('(?:^|;\\s*)' + escape(sKey).replace(/[\-\.\+\*]/g, '\\$&') + '\\s*\\=')).test(document.cookie)) { return null; }
-        return unescape(document.cookie.replace(new RegExp('(?:^|.*;\\s*)' + escape(sKey).replace(/[\-\.\+\*]/g, '\\$&') + '\\s*\\=\\s*((?:[^;](?!;))*[^;]?).*'), '$1'));
-      };
-      this.storage.setItem = function (sKey:string, sValue:any) {
-        if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) { return; }
-        document.cookie = escape(sKey) + '=' + escape(sValue);
-      };
+  constructor() {
+    try {
+      if (window == parent && ('localStorage' in window) && window.localStorage !== null) {
+        this.storage = localStorage;
+        this.storage.setItem('test', 0); // Safariのプライベートモードは、できないのにできるって言うからかまをかけてみる。
+      }
+    } catch (e) {
+      this.storage = null;
+    }
+    if (this.storage === null) {
+      // localStorageが使えない場合
+      this.storage = {}; // ダミー
+      this.storage.getItem = function () { return undefined; };
+      this.storage.setItem = function () { return undefined; };
+
+      if (navigator.cookieEnabled) {
+        this.storage.hasItem = function (sKey: string) {
+          return (new RegExp('(?:^|;\\s*)' + escape(sKey).replace(/[\-\.\+\*]/g, '\\$&') + '\\s*\\=')).test(document.cookie);
+        };
+        this.storage.getItem = function (sKey: string) {
+          if (!sKey || !(new RegExp('(?:^|;\\s*)' + escape(sKey).replace(/[\-\.\+\*]/g, '\\$&') + '\\s*\\=')).test(document.cookie)) { return null; }
+          return unescape(document.cookie.replace(new RegExp('(?:^|.*;\\s*)' + escape(sKey).replace(/[\-\.\+\*]/g, '\\$&') + '\\s*\\=\\s*((?:[^;](?!;))*[^;]?).*'), '$1'));
+        };
+        this.storage.setItem = function (sKey: string, sValue: any) {
+          if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) { return; }
+          document.cookie = escape(sKey) + '=' + escape(sValue);
+        };
+      }
     }
   }
-}
 
   /** 
    * ゲーム開始
@@ -77,20 +78,20 @@ constructor(){
     // イベントを設定
     if (this.gameState.isTouch) {
       (<HTMLElement>document.querySelector('#canv')).addEventListener('touchstart', this.ev_mouseClick);
-      (<HTMLElement>document.querySelector('#canv')).addEventListener('touchmove', this.ev_touchMove, {passive: false});
+      (<HTMLElement>document.querySelector('#canv')).addEventListener('touchmove', this.ev_touchMove, { passive: false });
     } else {
       (<HTMLElement>document.querySelector('#canv')).addEventListener('mousemove', this.ev_mouseMove);
       (<HTMLElement>document.querySelector('#canv')).addEventListener('mouseup', this.ev_mouseClick);
     }
     (<HTMLElement>document.querySelector('#level')).addEventListener('change', this.ev_radioChange);
-    (<HTMLElement>document.querySelector('#prevprev')).addEventListener('click',()=>{ this.move_start()});
-    (<HTMLElement>document.querySelector('#prev')).addEventListener('click',()=>{ this.move_prev()});
-    (<HTMLElement>document.querySelector('#next')).addEventListener('click', ()=>{this.move_next()});
-    (<HTMLElement>document.querySelector('#nextnext')).addEventListener('click', ()=>{this.move_end()});
-    (<HTMLElement>document.querySelector('#replay')).addEventListener('click', ()=>{this.jumpkento()});
-    (<HTMLElement>document.querySelector('#tweetlog')).addEventListener('click',()=>{ this.tweetlog()});
-    (<HTMLElement>document.querySelector('#newgame')).addEventListener('click',()=>{ this.reloadnew()});
-    (<HTMLElement>document.querySelector('#collapsible')).addEventListener('click',  ()=> {
+    (<HTMLElement>document.querySelector('#prevprev')).addEventListener('click', () => { this.move_start() });
+    (<HTMLElement>document.querySelector('#prev')).addEventListener('click', () => { this.move_prev() });
+    (<HTMLElement>document.querySelector('#next')).addEventListener('click', () => { this.move_next() });
+    (<HTMLElement>document.querySelector('#nextnext')).addEventListener('click', () => { this.move_end() });
+    (<HTMLElement>document.querySelector('#replay')).addEventListener('click', () => { this.jumpkento() });
+    (<HTMLElement>document.querySelector('#tweetlog')).addEventListener('click', () => { this.tweetlog() });
+    (<HTMLElement>document.querySelector('#newgame')).addEventListener('click', () => { this.reloadnew() });
+    (<HTMLElement>document.querySelector('#collapsible')).addEventListener('click', () => {
       (<HTMLElement>document.querySelector('.manual')).classList.toggle("hide");
       if (window.innerHeight > window.innerWidth) {
         var element = document.documentElement;
@@ -122,10 +123,10 @@ constructor(){
     }
     // レベル記憶
     if (this.storage.getItem('level_save') !== undefined && this.storage.getItem('level_save') !== 'undefined' && this.storage.getItem('level_save') !== null) {
-      (<HTMLInputElement>document.querySelector('#level')).value=String(parseInt(this.storage.getItem('level_save')));
+      (<HTMLInputElement>document.querySelector('#level')).value = String(parseInt(this.storage.getItem('level_save')));
     } else {
       this.storage.setItem('level_save', 1);
-      (<HTMLInputElement>document.querySelector('#level')).value= String(1);
+      (<HTMLInputElement>document.querySelector('#level')).value = String(1);
     }
 
     //document.querySelector('#canv').classList.add("hue-rotate1");
@@ -137,9 +138,9 @@ constructor(){
     // 盤面を初期化
     if (paramObj.init) {
       this.startMap = this.getMapByParam(paramObj.init);
-      this.gameState.thisMap = Aijs.copyMap(this.startMap);
+      this.gameState.thisMap = Rule.copyMap(this.startMap);
     } else {
-      this.startMap = Aijs.copyMap(this.gameState.thisMap);
+      this.startMap = Rule.copyMap(this.gameState.thisMap);
     }
     // ログをデコード
     if (paramObj.log) {
@@ -147,7 +148,7 @@ constructor(){
     }
     // レベル取得
     if (paramObj.lv) {
-      (<HTMLSelectElement>document.querySelector('#level')).value=String(parseInt(paramObj.lv));
+      (<HTMLSelectElement>document.querySelector('#level')).value = String(parseInt(paramObj.lv));
     }
 
     if (this.logArray.length !== 0) {
@@ -170,52 +171,52 @@ constructor(){
     }
 
     // 画像読み込み成功時
-    this.view.Img_bk!.onload =  () => {
+    this.view.Img_bk!.onload = () => {
       this.view.Img_bk_loaded = true;
-      this.view.flush(this.gameState,true, false);
+      this.view.flush(this.gameState, true, false);
     };
     // 画像読み込み失敗時
-    this.view.Img_bk!.onerror =  () => {
-      this.view.flush(this.gameState,true, false);
+    this.view.Img_bk!.onerror = () => {
+      this.view.flush(this.gameState, true, false);
     };
     // もう既に読み込み終わってた時
     if (this.view.Img_bk!.width !== 0) {
       this.view.Img_bk_loaded = true;
-      this.view.flush(this.gameState,true, false);
+      this.view.flush(this.gameState, true, false);
     }
     // 2.5秒後に強制描画※Googleの検索結果から飛ぶとなぜか描画が走らない事があるので。
-    setTimeout( () => {
+    setTimeout(() => {
       if (this.view.Img_bk!.width !== 0) {
         this.view.Img_bk_loaded = true;
       }
-      this.view.flush(this.gameState,true, false);
+      this.view.flush(this.gameState, true, false);
     }, 2500);
     this.updateMessage();
     this.setTweet(); // ツイートボタンを生成
 
     if (this.logArray.length === 0) {
-      if(this.isBot()==false){
-        window.setTimeout(()=>{
-          if(this.gameState.demo==true){
-            this.intervalID = window.setInterval(()=>{this.playDemo()}, 400);
+      if (this.isBot() == false) {
+        window.setTimeout(() => {
+          if (this.gameState.demo == true) {
+            this.intervalID = window.setInterval(() => { this.playDemo() }, 400);
             this.playDemo();
           }
-        },500);
+        }, 500);
       }
     } else {
       this.gameState.demo = false;
-      this.gameState.autoLog=true;
-      this.intervalID_log = window.setInterval(()=>{this.playLog()}, 1000);      
+      this.gameState.autoLog = true;
+      this.intervalID_log = window.setInterval(() => { this.playLog() }, 1000);
     }
-    this.gameState.goaled=false;
-    this.view.flush(this.gameState,true, false);
+    this.gameState.goaled = false;
+    this.view.flush(this.gameState, true, false);
   }
 
   /** 
    * Demoを再生
    */
   private playDemo() {
-    if (this.intervalID !==null) {
+    if (this.intervalID !== null) {
       if (Math.random() > 0.3) {
         this.ai(2);
       } else {
@@ -224,14 +225,14 @@ constructor(){
     }
     this.gameState.demo_inc++;
     this.calcScore();
-    this.view.flush(this.gameState,false, false);
+    this.view.flush(this.gameState, false, false);
     if (this.gameState.winner === 1 || this.gameState.winner === -1 || this.gameState.winner === 0) {
-      this.gameState.goaled=true;
+      this.gameState.goaled = true;
       this.gameState.winner = null;
-      this.view.flush(this.gameState,false, false);
+      this.view.flush(this.gameState, false, false);
       this.shuffleBoard();
     }
-    if(this.gameState.demo_inc>42){
+    if (this.gameState.demo_inc > 42) {
       window.clearInterval(this.intervalID as number);
     }
   }
@@ -241,9 +242,9 @@ constructor(){
    */
   private playLog() {
 
-    if (this.intervalID_log !==null&&this.gameState.autoLog==true) {
+    if (this.intervalID_log !== null && this.gameState.autoLog == true) {
       this.move_next();
-    }else{
+    } else {
       clearInterval(this.intervalID_log as number);
     }
   }
@@ -287,14 +288,14 @@ constructor(){
   /** 
    * マウス移動時処理
    */
-  private ev_mouseMove = (e:MouseEvent) => {
+  private ev_mouseMove = (e: MouseEvent) => {
     this.getMousePosition(e);
-    this.view.flush(this.gameState,false, true);
+    this.view.flush(this.gameState, false, true);
   };
   /** 
    * タッチ移動時処理
    */
-  private ev_touchMove = (e:TouchEvent) => {
+  private ev_touchMove = (e: TouchEvent) => {
     e.preventDefault();
     e.stopPropagation();
   }
@@ -302,9 +303,9 @@ constructor(){
   /** 
    * マウスクリック時処理
    */
-  private ev_mouseClick = (e:MouseEvent|TouchEvent|null):boolean => {
+  private ev_mouseClick = (e: MouseEvent | TouchEvent | null): boolean => {
     this.getMousePosition(e);
-    let target = Math.floor(this.gameState.mouse_x / this.view.CellSize) * 10+ Math.floor(this.gameState.mouse_y / this.view.CellSize);
+    let target = Math.floor(this.gameState.mouse_x / this.view.CellSize) * 10 + Math.floor(this.gameState.mouse_y / this.view.CellSize);
     if (this.gameState.winner !== null || this.logArray.length !== 0) {
       this.reloadnew();
       return true;
@@ -312,14 +313,14 @@ constructor(){
     if (this.gameState.demo === true) {
       this.gameState.demo = false;
       this.gameState.thisHand = undefined;
-      this.gameState.thisMap = Aijs.copyMap(this.startMap);
+      this.gameState.thisMap = Rule.copyMap(this.startMap);
       this.logArray2 = [];
-      this.view.flush(this.gameState,false, false);
+      this.view.flush(this.gameState, false, false);
       this.gameState.winner = null;
-      this.gameState.goaled=false;
+      this.gameState.goaled = false;
       this.gameState.turn_player = 1;
       window.clearInterval(this.intervalID as number);
-      this.view.flush(this.gameState,false, false);
+      this.view.flush(this.gameState, false, false);
       return true;
     }
 
@@ -330,19 +331,19 @@ constructor(){
     } else {
       if (target == this.gameState.hover_piece) {
         this.gameState.hover_piece = null;
-        this.view.flush(this.gameState,false, false);
+        this.view.flush(this.gameState, false, false);
         return true;
       }
-      let canm = Aijs.getCanMovePanelX(this.gameState.hover_piece!, this.gameState.thisMap);
+      let canm = Rule.getCanMovePanelX(this.gameState.hover_piece!, this.gameState.thisMap);
       if (canm.indexOf(target) >= 0) {
-        this.view.flush(this.gameState,false, true);
-        if(this.isGoaled(this.gameState.thisMap,target,this.gameState.turn_player)){
-            this.gameState.goaled=true;
-            this.view.flush(this.gameState,false, true);
-            setTimeout(()=>{
-              this.gameState.goaled=false;
-              this.view.flush(this.gameState,false, false);
-            },2000);
+        this.view.flush(this.gameState, false, true);
+        if (this.isGoaled(this.gameState.thisMap, target, this.gameState.turn_player)) {
+          this.gameState.goaled = true;
+          this.view.flush(this.gameState, false, true);
+          setTimeout(() => {
+            this.gameState.goaled = false;
+            this.view.flush(this.gameState, false, false);
+          }, 2000);
         }
 
 
@@ -356,21 +357,21 @@ constructor(){
 
         // AIが考える。
         this.gameState.message = 'thinking...';
-        window.setTimeout( ()=> {
-          this.view.flush(this.gameState,false, false);
+        window.setTimeout(() => {
+          this.view.flush(this.gameState, false, false);
         }, 50);
         this.updateMessage();
         if (this.gameState.winner === null) {
-          window.setTimeout( ()=> {
+          window.setTimeout(() => {
             this.ai(parseInt((<HTMLSelectElement>document.querySelector('#level')).value));
             this.gameState.message = '';
             this.updateMessage();
-            this.view.flush(this.gameState,false, false);
+            this.view.flush(this.gameState, false, false);
           }, 250);
         }
       }
     }
-    this.view.flush(this.gameState,false, false);
+    this.view.flush(this.gameState, false, false);
 
     return true;
   }
@@ -378,7 +379,7 @@ constructor(){
   /** 
    * ラジオボタン変更時処理
    */
-  private ev_radioChange =() => {
+  private ev_radioChange = () => {
     let num = (<HTMLSelectElement>document.querySelector('#level')).value;
     this.storage.setItem('level_save', num);
     if (this.storage.getItem('level_' + num) > 0) {
@@ -386,17 +387,17 @@ constructor(){
     } else {
       document.querySelector('#wins')!.innerHTML = '';
     }
-    this.gameState.thisMap = Aijs.copyMap(this.startMap);
+    this.gameState.thisMap = Rule.copyMap(this.startMap);
     this.gameState.thisHand = undefined;
     this.map_list = {};
     this.logArray2 = [];
-    this.view.flush(this.gameState,false, false);
+    this.view.flush(this.gameState, false, false);
   }
 
   /** 
    * AIに考えてもらう。
    */
-  private ai(level:number) {
+  private ai(level: number) {
     let hand;
     let startTime = new Date();
     let endTime;
@@ -454,16 +455,16 @@ constructor(){
         break;
     }
 
-    hand = Aijs.thinkAI(this.gameState.thisMap, this.gameState.turn_player, level + plus + 1,undefined,undefined,undefined)[0];
+    hand = Aijs.thinkAI(this.gameState.thisMap, this.gameState.turn_player, level + plus + 1, undefined, undefined, undefined)[0];
     this.gameState.thisHand = hand;
     if (hand) {
-      if(this.isGoaled(this.gameState.thisMap,hand[1],this.gameState.turn_player)){
-          this.gameState.goaled=true;
-          this.view.flush(this.gameState,false, true);
-          setTimeout(()=>{
-            this.gameState.goaled=false;
-            this.view.flush(this.gameState,false, false);
-          },2000);
+      if (this.isGoaled(this.gameState.thisMap, hand[1], this.gameState.turn_player)) {
+        this.gameState.goaled = true;
+        this.view.flush(this.gameState, false, true);
+        setTimeout(() => {
+          this.gameState.goaled = false;
+          this.view.flush(this.gameState, false, false);
+        }, 2000);
       }
       this.gameState.thisMap[hand[1]] = this.gameState.thisMap[hand[0]];
       this.gameState.thisMap[hand[0]] = 0;
@@ -479,18 +480,18 @@ constructor(){
   /** 
    * ゴールしたか
    */
-  private isGoaled(map:MapArray,afterHand:number,turn:number){
-      if(turn>0){
-        if(afterHand%10===0){
-            return true;
-        }
-      }else if(turn<0){
-        if(afterHand%10===5){
-            return true;
-        }
+  private isGoaled(map: MapArray, afterHand: number, turn: number) {
+    if (turn > 0) {
+      if (afterHand % 10 === 0) {
+        return true;
       }
+    } else if (turn < 0) {
+      if (afterHand % 10 === 5) {
+        return true;
+      }
+    }
 
-      return false;
+    return false;
   }
   /** 
    * 盤面をシャッフル。
@@ -520,8 +521,8 @@ constructor(){
   /** 
    * マウス位置取得
    */
-  private getMousePosition(e:any) {
-    if(e==null){
+  private getMousePosition(e: any) {
+    if (e == null) {
       return;
     }
     if (!e.clientX) { // SmartPhone
@@ -536,8 +537,8 @@ constructor(){
     let rect = e.target.getBoundingClientRect();
     this.gameState.mouse_x = e.clientX - rect.left;
     this.gameState.mouse_y = e.clientY - rect.top;
-    this.gameState.mouse_x = this.gameState.mouse_x *  this.view.Ratio;
-    this.gameState.mouse_y = this.gameState.mouse_y *  this.view.Ratio;
+    this.gameState.mouse_x = this.gameState.mouse_x * this.view.Ratio;
+    this.gameState.mouse_y = this.gameState.mouse_y * this.view.Ratio;
   }
 
   /** 
@@ -557,7 +558,7 @@ constructor(){
         this.endgame();
       } else if (this.gameState.winner == -1) {
         this.gameState.message = 'You lose...';
-        this.storage.setItem('level_' +(<HTMLSelectElement> document.querySelector('#level')).value, 0);
+        this.storage.setItem('level_' + (<HTMLSelectElement>document.querySelector('#level')).value, 0);
         this.endgame();
       } else if (this.gameState.winner === 0) {
         if (this.map_list[JSON.stringify(this.gameState.thisMap)] >= this.LIMIT_1000DAY) {
@@ -569,8 +570,8 @@ constructor(){
       }
     }
 
-    if (this.storage.getItem('level_' + (<HTMLSelectElement> document.querySelector('#level')).value) > 0) {
-      document.querySelector('#wins')!.innerHTML = this.storage.getItem('level_' + (<HTMLSelectElement> document.querySelector('#level')).value) + ' win!';
+    if (this.storage.getItem('level_' + (<HTMLSelectElement>document.querySelector('#level')).value) > 0) {
+      document.querySelector('#wins')!.innerHTML = this.storage.getItem('level_' + (<HTMLSelectElement>document.querySelector('#level')).value) + ' win!';
     } else {
       document.querySelector('#wins')!.innerHTML = '';
     }
@@ -631,14 +632,14 @@ constructor(){
   /** 
    * 手詰まり判定。
    */
-  private isNoneNode(wkMap:MapArray) {
+  private isNoneNode(wkMap: MapArray) {
     let flag1 = false;
     let flag2 = false;
     for (let panel_num in wkMap) {
       if (wkMap[panel_num] === 0) {
         continue;
       }
-      let canMove = Aijs.getCanMovePanelX(parseInt(panel_num), wkMap);
+      let canMove = Rule.getCanMovePanelX(parseInt(panel_num), wkMap);
       if (canMove.length !== 0) {
         if (wkMap[panel_num] > 0) {
           flag1 = true;
@@ -657,7 +658,7 @@ constructor(){
   /** 
    * 千日手
    */
-  private is1000day(wkMap:MapArray) {
+  private is1000day(wkMap: MapArray) {
     let map_json = JSON.stringify(wkMap);
     if (this.map_list[map_json] === undefined) {
       this.map_list[map_json] = 1;
@@ -674,13 +675,13 @@ constructor(){
   /** 
    * 手の数を取得
    */
-  private getNodeCount(wkMap:MapArray) {
+  private getNodeCount(wkMap: MapArray) {
     let count = 0;
     for (let panel_num in wkMap) {
       if (wkMap[panel_num] === 0) {
         continue;
       }
-      let canMove = Aijs.getCanMovePanelX(parseInt(panel_num), wkMap);
+      let canMove = Rule.getCanMovePanelX(parseInt(panel_num), wkMap);
       count += canMove.length;
     }
     return count;
@@ -690,8 +691,8 @@ constructor(){
   /** 
    * パラメータ取得
    */
-  private getParam():any {
-    let obj:any = {};
+  private getParam(): any {
+    let obj: any = {};
     if (1 < document.location.search.length) {
       let paramstr = document.location.search.substring(1).split('&');
       for (let i = 0; i < paramstr.length; i++) {
@@ -707,10 +708,10 @@ constructor(){
   /** 
    * パタメータから初期配置を取得
    */
-  private getMapByParam(initString:string):MapArray {
+  private getMapByParam(initString: string): MapArray {
     let wkMap;
     if (initString) {
-      wkMap = Aijs.copyMap(this.gameState.thisMap);
+      wkMap = Rule.copyMap(this.gameState.thisMap);
       // クリア
       for (let num in wkMap) {
         wkMap[num] = 0;
@@ -735,10 +736,10 @@ constructor(){
   /** 
    * ログをデコード。
    */
-  private decodeLog(logstr:string, wkInitMap:MapArray) {
+  private decodeLog(logstr: string, wkInitMap: MapArray) {
     let wklogArray = [];
-    let wkMap = Aijs.copyMap(wkInitMap);
-    let arrow:{ [index: string]: number; } = {
+    let wkMap = Rule.copyMap(wkInitMap);
+    let arrow: { [index: string]: number; } = {
       'q': 0, 'w': 1, 'e': 2,
       'a': 3, 's': 4, 'd': 5,
       'z': 6, 'x': 7, 'c': 8
@@ -754,8 +755,8 @@ constructor(){
       let arw = arrow[logArr[i].match(/[qweasdzxc]/)![0]];
       let from = parseInt(logArr[i].match(/\d*/)![0]);
       let to = (Math.floor(from / 10) + Math.floor(arw % 3) - 1) * 10 +
-       (Math.floor(from % 10) + Math.floor(arw / 3) - 1);
-      wkMap = Aijs.copyMap(wkMap);
+        (Math.floor(from % 10) + Math.floor(arw / 3) - 1);
+      wkMap = Rule.copyMap(wkMap);
       wkMap[to] = wkMap[from];
       wkMap[from] = 0;
       wklogArray.push(wkMap);
@@ -765,7 +766,7 @@ constructor(){
   /** 
    * ログをエンコード
    */
-  private encodeLog(wklogArray:Hand[]) {
+  private encodeLog(wklogArray: Hand[]) {
     let logstr = '';
     let arrow = ['q', 'w', 'e',
       'a', 's', 'd',
@@ -777,13 +778,13 @@ constructor(){
       let y_vec = ((Math.floor(to % 10)) - Math.floor(from % 10));
       let arw = '';
       if (x_vec === -1 && y_vec === -1) { arw = 'q'; }
-      if (x_vec === 0 && y_vec === -1) { arw = 'w' ;}
-      if (x_vec === 1 && y_vec === -1) { arw = 'e' ;}
+      if (x_vec === 0 && y_vec === -1) { arw = 'w'; }
+      if (x_vec === 1 && y_vec === -1) { arw = 'e'; }
       if (x_vec === -1 && y_vec === 0) { arw = 'a'; }
-      if (x_vec === 0 && y_vec === 0) { arw = 's' ;}
-      if (x_vec === 1 && y_vec === 0) { arw = 'd' ;}
+      if (x_vec === 0 && y_vec === 0) { arw = 's'; }
+      if (x_vec === 1 && y_vec === 0) { arw = 'd'; }
       if (x_vec === -1 && y_vec === 1) { arw = 'z'; }
-      if (x_vec === 0 && y_vec === 1) { arw = 'x' ;}
+      if (x_vec === 0 && y_vec === 1) { arw = 'x'; }
       if (x_vec === 1 && y_vec === 1) { arw = 'c'; }
       logstr += from + arw;
     }
@@ -795,12 +796,12 @@ constructor(){
    */
   private move_start() {
     this.logPointer = 0;
-    this.gameState.autoLog=false;    
-    this.gameState.thisMap = Aijs.copyMap(this.logArray[this.logPointer]);
-    this.gameState.winner=null;
-    this.gameState.goaled=false;
+    this.gameState.autoLog = false;
+    this.gameState.thisMap = Rule.copyMap(this.logArray[this.logPointer]);
+    this.gameState.winner = null;
+    this.gameState.goaled = false;
     this.updateMessage();
-    this.view.flush(this.gameState,false, false);
+    this.view.flush(this.gameState, false, false);
   }
 
   /** 
@@ -808,13 +809,13 @@ constructor(){
    */
   private move_prev() {
     if (this.logPointer <= 0) { return; }
-    this.gameState.autoLog=false;    
+    this.gameState.autoLog = false;
     this.logPointer -= 1;
-    this.gameState.thisMap = Aijs.copyMap(this.logArray[this.logPointer]);
-    this.gameState.winner=null;
-    this.gameState.goaled=false;
+    this.gameState.thisMap = Rule.copyMap(this.logArray[this.logPointer]);
+    this.gameState.winner = null;
+    this.gameState.goaled = false;
     this.updateMessage();
-    this.view.flush(this.gameState,false, false);
+    this.view.flush(this.gameState, false, false);
   }
 
   /** 
@@ -823,9 +824,9 @@ constructor(){
   private move_next() {
     if (this.logPointer + 1 > this.logArray.length - 1) { return; }
     this.logPointer += 1;
-    this.gameState.thisMap = Aijs.copyMap(this.logArray[this.logPointer]);
+    this.gameState.thisMap = Rule.copyMap(this.logArray[this.logPointer]);
     this.updateMessage();
-    this.view.flush(this.gameState,false, false);
+    this.view.flush(this.gameState, false, false);
   }
 
   /** 
@@ -833,10 +834,10 @@ constructor(){
    */
   private move_end() {
     this.logPointer = this.logArray.length - 1;
-    this.gameState.autoLog=false;    
-    this.gameState.thisMap = Aijs.copyMap(this.logArray[this.logPointer]);
+    this.gameState.autoLog = false;
+    this.gameState.thisMap = Rule.copyMap(this.logArray[this.logPointer]);
     this.updateMessage();
-    this.view.flush(this.gameState,false, false);
+    this.view.flush(this.gameState, false, false);
   }
 
   /** 
@@ -846,7 +847,7 @@ constructor(){
     let url = document.location.href.split('?')[0];
 
     //demo中ならdemoを終了
-    if(this.gameState.demo===true){
+    if (this.gameState.demo === true) {
       this.ev_mouseClick(null);
       return;
     }
@@ -859,13 +860,13 @@ constructor(){
     if (navigator.onLine) {
       location.href = url;
     } else {
-      this.gameState.thisMap = Aijs.copyMap(this.startMap);
+      this.gameState.thisMap = Rule.copyMap(this.startMap);
       this.shuffleBoard();
       this.logArray2 = [];
       this.gameState.message = '';
       this.gameState.winner = null;
       this.gameState.turn_player = 1;
-      this.view.flush(this.gameState,false, false);
+      this.view.flush(this.gameState, false, false);
     }
   }
 
@@ -874,14 +875,14 @@ constructor(){
    */
   private jumpkento() {
     let url = document.location.href.split('?')[0];
-    let init = '?init=' + this.startMap[55] + ','+
-     this.startMap[45] + ','+
-     this.startMap[35] + ','+
-     this.startMap[25] + ','+
-     this.startMap[15] + ','+
-     this.startMap[5] + ','+
-     this.startMap[44] + ','+
-     this.startMap[14];
+    let init = '?init=' + this.startMap[55] + ',' +
+      this.startMap[45] + ',' +
+      this.startMap[35] + ',' +
+      this.startMap[25] + ',' +
+      this.startMap[15] + ',' +
+      this.startMap[5] + ',' +
+      this.startMap[44] + ',' +
+      this.startMap[14];
     let log = '&log=' + this.encodeLog(this.logArray2);
     log += '&lv=' + (<HTMLSelectElement>document.querySelector('#level')).value;
     location.href = url + init + log;
@@ -891,14 +892,14 @@ constructor(){
    */
   private tweetlog() {
     let url = document.location.href.split('?')[0];
-    let init = '?init=' + this.startMap[55] + ','+
-     this.startMap[45] + ','+
-     this.startMap[35] + ','+
-     this.startMap[25] + ','+
-     this.startMap[15] + ','+
-     this.startMap[5] + ','+
-     this.startMap[44] + ','+
-     this.startMap[14];
+    let init = '?init=' + this.startMap[55] + ',' +
+      this.startMap[45] + ',' +
+      this.startMap[35] + ',' +
+      this.startMap[25] + ',' +
+      this.startMap[15] + ',' +
+      this.startMap[5] + ',' +
+      this.startMap[44] + ',' +
+      this.startMap[14];
     let log = '%26log=' + this.encodeLog(this.logArray2);
     log += '%26lv=' + (<HTMLSelectElement>document.querySelector('#level')).value;
     window.open('https://twitter.com/intent/tweet?text=' + url + init + log + '%20%23colamone');
@@ -908,19 +909,19 @@ constructor(){
    */
   private setTweet() {
     /*jshint -W030 */
-    (function f(d:any, s:string, id:string) {
+    (function f(d: any, s: string, id: string) {
       let js, fjs = d.getElementsByTagName(s)[0];
       if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.async = true; js.src = 'https://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); }
-    }) (document, 'script', 'twitter-wjs');
+    })(document, 'script', 'twitter-wjs');
   }
   /** 
    * botかどうか判定
    */
-  private isBot(){
+  private isBot() {
     let ua = window.navigator.userAgent.toLowerCase();
     if (ua.indexOf('bot') != -1 ||
-    ua.indexOf('lighthouse') != -1||
-    ua.indexOf('headless') != -1) {
+      ua.indexOf('lighthouse') != -1 ||
+      ua.indexOf('headless') != -1) {
       return true;
     }
     return false;
@@ -930,6 +931,6 @@ const bg = new BoardGamejs();
 /** 
  * init 
  */
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   bg.Run();
 });
