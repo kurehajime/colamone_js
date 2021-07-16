@@ -1,5 +1,5 @@
-import { MapArray, Rule } from "./src/rule";
-import { Aijs } from "./src/ai";
+import { MapArray, Rule } from "./src/logic/rule";
+import { Aijs } from "./src/logic/ai";
 let thisMap: any;
 
 function convMap(map: any): MapArray {

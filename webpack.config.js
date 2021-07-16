@@ -65,7 +65,7 @@ plugins.push(
           from: "assets/boardgame.css",
           to: "boardgame.css",
           transform: function (content, path) {
-            return  new CleanCSS({}).minify(content).styles;
+            return new CleanCSS({}).minify(content).styles;
           }
         }
       ]
@@ -84,7 +84,7 @@ plugins.push(
 );
 module.exports = {
   // メインとなるJavaScriptファイル（エントリーポイント）
-  entry: `./src/boardgame.ts`,
+  entry: `./src/logic/boardgame.ts`,
   // production or development
   mode: "production",
   devtool: "source-map",
@@ -101,7 +101,7 @@ module.exports = {
       {
         test: /\.ts$/,
         exclude: /node_modules/,
-        use:[
+        use: [
           {
             loader: 'ts-loader'
           }
@@ -109,7 +109,7 @@ module.exports = {
       }
     ]
   }
-  ,resolve: {
+  , resolve: {
     extensions: [
       '.ts', '.js',
     ],

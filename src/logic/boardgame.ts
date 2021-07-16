@@ -2,7 +2,7 @@
 import { Rule, MapArray, Hand } from "./rule";
 import { Aijs } from "./ai";
 import { GameState } from "./gamestate";
-import { View } from "./view";
+import { View } from "../canvas/view";
 
 export class BoardGamejs {
 

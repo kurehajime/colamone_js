@@ -1,6 +1,12 @@
 
-import { GameState } from "./gamestate";
-import { Rule, MapArray, Hand } from "./rule";
+import { GameState } from "../logic/gamestate";
+import { Rule, MapArray, Hand } from "../logic/rule";
+import * as params from "./params";
+import { Utils } from "./utils";
+
+
+
+
 export class View {
   public CellSize: number = 0;
   public Ratio = 1;
@@ -20,71 +26,7 @@ export class View {
   private canv_score: (HTMLCanvasElement);
   private canv_cache: (HTMLCanvasElement);
   private cache_on = false;
-  private readonly COLOR_LINE = '#333333';
-  private readonly COLOR_PANEL_1 = '#660033';
-  private readonly COLOR_PANEL_2 = '#004466';
-  private readonly COLOR_PANEL_3 = '#FFFFFF';
-  private readonly COLOR_PANEL_4 = '#111111';
-  private readonly COLOR_PANEL_5 = '#444444';
-  private readonly COLOR_PANEL_6 = '#888888';
-  private readonly COLOR_SELECT = '#7fed7f';
-  private readonly COLOR_SELECT2 = '#148d14';
-  private readonly COLOR_RED = '#E60073';
-  private readonly COLOR_BLUE = '#0099E6';
-  private readonly COLOR_RED2 = '#E60073';
-  private readonly COLOR_BLUE2 = '#0099E6';
-  private readonly COLOR_WHITE = '#FFFFFF';
   private CANV_SIZE: number = 0;
-  private readonly PIECES: { [index: string]: number[]; } = {
-    '1': [1, 1, 1,
-      1, 0, 1,
-      1, 1, 1],
-    '2': [1, 1, 1,
-      1, 0, 1,
-      1, 0, 1],
-    '3': [1, 1, 1,
-      0, 0, 0,
-      1, 1, 1],
-    '4': [1, 1, 1,
-      0, 0, 0,
-      1, 0, 1],
-    '5': [1, 0, 1,
-      0, 0, 0,
-      1, 0, 1],
-    '6': [1, 0, 1,
-      0, 0, 0,
-      0, 1, 0],
-    '7': [0, 1, 0,
-      0, 0, 0,
-      0, 1, 0],
-    '8': [0, 1, 0,
-      0, 0, 0,
-      0, 0, 0],
-    '-1': [1, 1, 1,
-      1, 0, 1,
-      1, 1, 1],
-    '-2': [1, 0, 1,
-      1, 0, 1,
-      1, 1, 1],
-    '-3': [1, 1, 1,
-      0, 0, 0,
-      1, 1, 1],
-    '-4': [1, 0, 1,
-      0, 0, 0,
-      1, 1, 1],
-    '-5': [1, 0, 1,
-      0, 0, 0,
-      1, 0, 1],
-    '-6': [0, 1, 0,
-      0, 0, 0,
-      1, 0, 1],
-    '-7': [0, 1, 0,
-      0, 0, 0,
-      0, 1, 0],
-    '-8': [0, 0, 0,
-      0, 0, 0,
-      0, 1, 0]
-  };
 
 
   constructor() {
@@ -247,9 +189,9 @@ export class View {
     ctx_cover!.shadowOffsetX = 5;
     ctx_cover!.shadowOffsetY = 5;
     ctx_cover!.globalAlpha = 0.8;
-    ctx_cover!.fillStyle = this.COLOR_WHITE;
+    ctx_cover!.fillStyle = params.COLOR_WHITE;
     ctx_cover!.beginPath();
-    this.fillRoundRect(ctx_cover as CanvasRenderingContext2D, x, y, this.CellSize * 2, this.CellSize * 1, this.CellSize / 7);
+    Utils.FillRoundRect(ctx_cover as CanvasRenderingContext2D, x, y, this.CellSize * 2, this.CellSize * 1, this.CellSize / 7);
     ctx_cover!.shadowColor = 'rgba(0, 0, 0, 0)';
     ctx_cover!.shadowBlur = 0;
     ctx_cover!.shadowOffsetX = 0;
@@ -268,7 +210,7 @@ export class View {
     ctx_cover!.shadowColor = 'rgba(0, 0, 0, 0)';
     ctx_cover!.font = 'bold ' + fontsize + 'px Play,sans-serif';
     ctx_cover!.globalAlpha = 1;
-    ctx_cover!.fillStyle = this.COLOR_LINE;
+    ctx_cover!.fillStyle = params.COLOR_LINE;
     ctx_cover!.textBaseline = 'middle';
     ctx_cover!.textAlign = 'center';
     ctx_cover!.beginPath();
@@ -277,7 +219,7 @@ export class View {
     message = 'colamone';
     fontsize = Math.round(this.CellSize * 1);
     ctx_cover!.font = 'bold ' + fontsize + 'px Play,sans-serif';
-    ctx_cover!.fillStyle = this.COLOR_WHITE;
+    ctx_cover!.fillStyle = params.COLOR_WHITE;
     ctx_cover!.shadowBlur = 0;
     ctx_cover!.beginPath();
     ctx_cover!.fillText(message, this.CellSize * 3, this.CellSize * 2);
@@ -294,8 +236,8 @@ export class View {
     let ctx_score = this.canv_score!.getContext('2d');
     let message = "";
     let fontsize = Math.round(this.CellSize * 1.5);
-    let blue = this.COLOR_BLUE2;
-    let red = this.COLOR_RED2;
+    let blue = params.COLOR_BLUE2;
+    let red = params.COLOR_RED2;
     ctx_score!.clearRect(0, 0, this.CANV_SIZE, this.CANV_SIZE);
 
     ctx_score!.globalAlpha = 0.4;
@@ -358,8 +300,8 @@ export class View {
     let y = gameState.mouse_y - (gameState.mouse_y % this.CellSize);
     let ctx_focus = this.canv_focus!.getContext('2d');
     let grad = ctx_focus!.createRadialGradient(x, y, 0, x, y, this.CellSize);
-    grad.addColorStop(0.3, this.COLOR_SELECT);
-    grad.addColorStop(1, this.COLOR_SELECT2);
+    grad.addColorStop(0.3, params.COLOR_SELECT);
+    grad.addColorStop(1, params.COLOR_SELECT2);
     ctx_focus!.clearRect(0, 0, this.CANV_SIZE, this.CANV_SIZE);
     ctx_focus!.globalAlpha = 0.35;
     ctx_focus!.fillStyle = grad;
@@ -380,7 +322,7 @@ export class View {
         x = Math.floor(canm[i] / 10);
         y = Math.floor(canm[i] % 10);
         ctx_focus!.globalAlpha = 0.6;
-        ctx_focus!.strokeStyle = this.COLOR_SELECT;
+        ctx_focus!.strokeStyle = params.COLOR_SELECT;
         ctx_focus!.lineWidth = this.CellSize / 20;
         ctx_focus!.beginPath();
         ctx_focus!.arc(x * this.CellSize + (this.CellSize / 2), y * this.CellSize + (this.CellSize / 2),
@@ -402,22 +344,22 @@ export class View {
     ctx_board!.clearRect(0, 0, this.CANV_SIZE, this.CANV_SIZE);
 
     let grad = ctx_board!.createLinearGradient(0, 0, this.CANV_SIZE, this.CANV_SIZE);
-    grad.addColorStop(0, this.COLOR_PANEL_6);
-    grad.addColorStop(0.3, this.COLOR_PANEL_5);
-    grad.addColorStop(1, this.COLOR_PANEL_4);
+    grad.addColorStop(0, params.COLOR_PANEL_6);
+    grad.addColorStop(0.3, params.COLOR_PANEL_5);
+    grad.addColorStop(1, params.COLOR_PANEL_4);
 
     for (let x = 0; x < 6; x++) {
       for (let y = 0; y < 6; y++) {
         // パネル描画
-        ctx_board!.strokeStyle = this.COLOR_LINE;
+        ctx_board!.strokeStyle = params.COLOR_LINE;
         if (y === 0) {
-          ctx_board!.fillStyle = this.COLOR_PANEL_1;
+          ctx_board!.fillStyle = params.COLOR_PANEL_1;
         } else if (y == 5) {
-          ctx_board!.fillStyle = this.COLOR_PANEL_2;
+          ctx_board!.fillStyle = params.COLOR_PANEL_2;
         } else if ((x + y) % 2 === 0) {
-          ctx_board!.fillStyle = this.COLOR_PANEL_3;
+          ctx_board!.fillStyle = params.COLOR_PANEL_3;
         } else {
-          ctx_board!.fillStyle = this.COLOR_PANEL_4;
+          ctx_board!.fillStyle = params.COLOR_PANEL_4;
           ctx_board!.fillStyle = grad;
         }
         ctx_board!.beginPath();
@@ -439,7 +381,7 @@ export class View {
     let ctx_board2 = this.canv_board2!.getContext('2d');
     ctx_board2!.clearRect(0, 0, this.CANV_SIZE, this.CANV_SIZE);
     ctx_board2!.globalAlpha = 0.07;
-    ctx_board2!.fillStyle = this.COLOR_WHITE;
+    ctx_board2!.fillStyle = params.COLOR_WHITE;
     ctx_board2!.beginPath();
     ctx_board2!.arc(this.CellSize * 1, -3 * this.CellSize, 7 * this.CellSize, 0, Math.PI * 2, false);
     ctx_board2!.fill();
@@ -472,9 +414,9 @@ export class View {
     if (number === 0) {
       return wkCtx;
     } else if (number > 0) {
-      wkColor = this.COLOR_BLUE;
+      wkColor = params.COLOR_BLUE;
     } else {
-      wkColor = this.COLOR_RED;
+      wkColor = params.COLOR_RED;
     }
 
     let grad = this.ctx!.createLinearGradient(x, y, x + this.CellSize, y + this.CellSize);
@@ -488,7 +430,7 @@ export class View {
     wkCtx.shadowOffsetY = 2;
     wkCtx.fillStyle = grad;
     wkCtx.beginPath();
-    this.fillRoundRect(wkCtx, x + this.CellSize / 10, y + this.CellSize / 10, this.CellSize - 1 * this.CellSize / 5, this.CellSize - 1 * this.CellSize / 5, this.CellSize / 7);
+    Utils.FillRoundRect(wkCtx, x + this.CellSize / 10, y + this.CellSize / 10, this.CellSize - 1 * this.CellSize / 5, this.CellSize - 1 * this.CellSize / 5, this.CellSize / 7);
 
     wkCtx.shadowColor = 'rgba(0, 0, 0, 0)';
     wkCtx.shadowBlur = 0;
@@ -506,7 +448,7 @@ export class View {
     }
 
     // 文字を描画。
-    wkCtx.fillStyle = this.COLOR_WHITE;
+    wkCtx.fillStyle = params.COLOR_WHITE;
 
     let fontsize = Math.round(this.CellSize * 0.18);
     wkCtx.textBaseline = 'middle';
@@ -518,14 +460,14 @@ export class View {
     wkCtx.fillText(String(Math.abs(number)), x + (this.CellSize / 2), y + (this.CellSize / 2));
 
     // 点を描画
-    for (let i = 0; i <= this.PIECES[number].length - 1; i++) {
-      if (this.PIECES[number][i] === 0) {
+    for (let i = 0; i <= params.PIECES[number].length - 1; i++) {
+      if (params.PIECES[number][i] === 0) {
         continue;
       }
       let x_dot = x + this.CellSize / 4.16 + (Math.floor(this.CellSize - 1 * this.CellSize / 5) / 3) * Math.floor(i % 3.0);
       let y_dot = y + this.CellSize / 4.16 + (Math.floor(this.CellSize - 1 * this.CellSize / 5) / 3) * Math.floor(i / 3.0);
 
-      wkCtx.fillStyle = this.COLOR_WHITE;
+      wkCtx.fillStyle = params.COLOR_WHITE;
 
       wkCtx.beginPath();
       wkCtx.arc(x_dot, y_dot, this.CellSize * 0.06, 0, Math.PI * 2, false);
@@ -536,7 +478,7 @@ export class View {
       wkCtx.shadowBlur = 10;
       wkCtx.shadowColor = 'rgba(0, 0, 0, 1)';
       wkCtx.globalAlpha = 1;
-      wkCtx.fillStyle = this.COLOR_WHITE;
+      wkCtx.fillStyle = params.COLOR_WHITE;
       fontsize = Math.round(this.CellSize * 0.5);
       wkCtx.textBaseline = 'middle';
       wkCtx.textAlign = 'center';
@@ -550,23 +492,7 @@ export class View {
 
     return wkCtx;
   }
-  // 角丸
-  private fillRoundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
-    ctx.beginPath();
-    ctx.moveTo(x + r, y);
-    ctx.lineTo(x + w - r, y);
 
-    ctx.bezierCurveTo(x + w, y + 0, x + w, y + 0, x + w, y + r);
-    ctx.lineTo(x + w, y + h - r);
-    ctx.bezierCurveTo(x + w, y + h, x + w, y + h, x + w - r, y + h);
-    ctx.lineTo(x + r, y + h);
-    ctx.bezierCurveTo(x + 0, y + h, x + 0, y + h, x + 0, y + h - r);
-    ctx.lineTo(x, y + r);
-    ctx.bezierCurveTo(x + 0, y + 0, x + 0, y + 0, x + r, y);
-    ctx.closePath();
-    ctx.fill();
-
-  }
 
   /** 
    * コマをすべて描画
@@ -618,9 +544,9 @@ export class View {
       return this.canv_shadow;
     }
     if (number > 0) {
-      wkColor = this.COLOR_BLUE; // "#EAEFFD";   
+      wkColor = params.COLOR_BLUE; // "#EAEFFD";   
     } else {
-      wkColor = this.COLOR_RED; // "#FDEAFA";           
+      wkColor = params.COLOR_RED; // "#FDEAFA";           
     }
     if (x0 == x1 || y0 == y1) { // 直角移動
       if ((x0 + y0) % 2 === 0 && y0 !== 0 && y0 != 5) {
@@ -750,8 +676,8 @@ export class View {
     ctx_overlay!.shadowOffsetY = 5;
 
     ctx_overlay!.globalAlpha = 0.9;
-    ctx_overlay!.fillStyle = this.COLOR_WHITE;
-    this.fillRoundRect(ctx_overlay as CanvasRenderingContext2D, x, y, this.CellSize * 3.4, this.CellSize * 1, this.CellSize / 7);
+    ctx_overlay!.fillStyle = params.COLOR_WHITE;
+    Utils.FillRoundRect(ctx_overlay as CanvasRenderingContext2D, x, y, this.CellSize * 3.4, this.CellSize * 1, this.CellSize / 7);
 
     let fontsize = Math.round(this.CellSize * 0.36);
     ctx_overlay!.shadowBlur = 0;
@@ -760,7 +686,7 @@ export class View {
     ctx_overlay!.shadowColor = 'rgba(0, 0, 0, 0)';
     ctx_overlay!.font = 'bold ' + fontsize + 'px Play,sans-serif';
     ctx_overlay!.globalAlpha = 1;
-    ctx_overlay!.fillStyle = this.COLOR_LINE;
+    ctx_overlay!.fillStyle = params.COLOR_LINE;
     ctx_overlay!.textBaseline = 'middle';
     ctx_overlay!.textAlign = 'center';
     ctx_overlay!.beginPath();
@@ -768,6 +694,4 @@ export class View {
 
     return this.canv_overlay;
   }
-
-
 }
