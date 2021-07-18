@@ -1,7 +1,7 @@
 /* @license Copyright (c) @kurehajime / source code: https://github.com/kurehajime/colamone_js */
 import { Rule, MapArray, Hand } from "./rule";
 import { Aijs } from "./ai";
-import { GameState } from "./gamestate";
+import { GameState } from "./gameState";
 import { View } from "../canvas/view";
 
 export class BoardGamejs {
@@ -171,23 +171,23 @@ export class BoardGamejs {
     }
 
     // 画像読み込み成功時
-    this.view.Img_bk!.onload = () => {
-      this.view.Img_bk_loaded = true;
+    this.view.ViewState.Img_bk!.onload = () => {
+      this.view.ViewState.Img_bk_loaded = true;
       this.view.flush(this.gameState, true, false);
     };
     // 画像読み込み失敗時
-    this.view.Img_bk!.onerror = () => {
+    this.view.ViewState.Img_bk!.onerror = () => {
       this.view.flush(this.gameState, true, false);
     };
     // もう既に読み込み終わってた時
-    if (this.view.Img_bk!.width !== 0) {
-      this.view.Img_bk_loaded = true;
+    if (this.view.ViewState.Img_bk!.width !== 0) {
+      this.view.ViewState.Img_bk_loaded = true;
       this.view.flush(this.gameState, true, false);
     }
     // 2.5秒後に強制描画※Googleの検索結果から飛ぶとなぜか描画が走らない事があるので。
     setTimeout(() => {
-      if (this.view.Img_bk!.width !== 0) {
-        this.view.Img_bk_loaded = true;
+      if (this.view.ViewState.Img_bk!.width !== 0) {
+        this.view.ViewState.Img_bk_loaded = true;
       }
       this.view.flush(this.gameState, true, false);
     }, 2500);
@@ -305,7 +305,7 @@ export class BoardGamejs {
    */
   private ev_mouseClick = (e: MouseEvent | TouchEvent | null): boolean => {
     this.getMousePosition(e);
-    let target = Math.floor(this.gameState.mouse_x / this.view.CellSize) * 10 + Math.floor(this.gameState.mouse_y / this.view.CellSize);
+    let target = Math.floor(this.gameState.mouse_x / this.view.ViewState.CellSize) * 10 + Math.floor(this.gameState.mouse_y / this.view.ViewState.CellSize);
     if (this.gameState.winner !== null || this.logArray.length !== 0) {
       this.reloadnew();
       return true;
@@ -537,8 +537,8 @@ export class BoardGamejs {
     let rect = e.target.getBoundingClientRect();
     this.gameState.mouse_x = e.clientX - rect.left;
     this.gameState.mouse_y = e.clientY - rect.top;
-    this.gameState.mouse_x = this.gameState.mouse_x * this.view.Ratio;
-    this.gameState.mouse_y = this.gameState.mouse_y * this.view.Ratio;
+    this.gameState.mouse_x = this.gameState.mouse_x * this.view.ViewState.Ratio;
+    this.gameState.mouse_y = this.gameState.mouse_y * this.view.ViewState.Ratio;
   }
 
   /** 

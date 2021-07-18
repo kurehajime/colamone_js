@@ -1,17 +1,12 @@
 
-import { GameState } from "../logic/gamestate";
+import { GameState } from "../logic/gameState";
 import { Rule, MapArray, Hand } from "../logic/rule";
 import * as params from "./params";
 import { Utils } from "./utils";
-
-
-
+import { ViewState } from "./viewState";
 
 export class View {
-  public CellSize: number = 0;
-  public Ratio = 1;
-  public Img_bk_loaded = false;
-  public Img_bk: (HTMLImageElement);
+  public ViewState: ViewState;
 
   private ctx: (CanvasRenderingContext2D | null) = null;
   private canv_board: (HTMLCanvasElement);
@@ -30,12 +25,12 @@ export class View {
 
 
   constructor() {
+    this.ViewState = new ViewState;
     if (window.devicePixelRatio !== undefined && window.devicePixelRatio != 1) {
-      this.Ratio = window.devicePixelRatio;
+      this.ViewState.Ratio = window.devicePixelRatio;
     }
-
-    this.CANV_SIZE = 500 * this.Ratio;
-    this.Img_bk = new Image(); this.Img_bk.src = 'bk.gif';
+    this.CANV_SIZE = 500 * this.ViewState.Ratio;
+    this.ViewState.Img_bk.src = 'bk.gif';
     this.canv_board = document.createElement('canvas');
     this.canv_board2 = document.createElement('canvas');
     this.canv_focus = document.createElement('canvas');
@@ -86,10 +81,10 @@ export class View {
     this.canv_cache.width = this.CANV_SIZE;
     this.canv_cache.height = this.CANV_SIZE;
 
-    this.CellSize = this.CANV_SIZE / 6;
+    this.ViewState.CellSize = this.CANV_SIZE / 6;
     //retina対応
-    this.ctx!.canvas.style.width = this.CANV_SIZE / this.Ratio + "px";
-    this.ctx!.canvas.style.height = this.CANV_SIZE / this.Ratio + "px";
+    this.ctx!.canvas.style.width = this.CANV_SIZE / this.ViewState.Ratio + "px";
+    this.ctx!.canvas.style.height = this.CANV_SIZE / this.ViewState.Ratio + "px";
     this.ctx!.canvas.width = this.CANV_SIZE;
     this.ctx!.canvas.height = this.CANV_SIZE;
   }
@@ -165,8 +160,8 @@ export class View {
    */
   private drawBk() {
     let ctx_bk = this.canv_bk!.getContext('2d');
-    if (this.Img_bk_loaded) {
-      ctx_bk!.drawImage(this.Img_bk as HTMLImageElement, 0, 0, this.CANV_SIZE / this.Ratio, this.CANV_SIZE / this.Ratio, 0, 0, this.CANV_SIZE, this.CANV_SIZE);
+    if (this.ViewState.Img_bk_loaded) {
+      ctx_bk!.drawImage(this.ViewState.Img_bk as HTMLImageElement, 0, 0, this.CANV_SIZE / this.ViewState.Ratio, this.CANV_SIZE / this.ViewState.Ratio, 0, 0, this.CANV_SIZE, this.CANV_SIZE);
     }
     return this.canv_bk;
   }
@@ -182,8 +177,8 @@ export class View {
     ctx_cover!.fillRect(0, 0, this.CANV_SIZE, this.CANV_SIZE);
 
     // 枠
-    let x = this.CellSize * 2;
-    let y = this.CellSize * 3.5;
+    let x = this.ViewState.CellSize * 2;
+    let y = this.ViewState.CellSize * 3.5;
     ctx_cover!.shadowBlur = 20;
     ctx_cover!.shadowColor = 'rgba(0, 0, 0, 0.3)';
     ctx_cover!.shadowOffsetX = 5;
@@ -191,7 +186,7 @@ export class View {
     ctx_cover!.globalAlpha = 0.8;
     ctx_cover!.fillStyle = params.COLOR_WHITE;
     ctx_cover!.beginPath();
-    Utils.FillRoundRect(ctx_cover as CanvasRenderingContext2D, x, y, this.CellSize * 2, this.CellSize * 1, this.CellSize / 7);
+    Utils.FillRoundRect(ctx_cover as CanvasRenderingContext2D, x, y, this.ViewState.CellSize * 2, this.ViewState.CellSize * 1, this.ViewState.CellSize / 7);
     ctx_cover!.shadowColor = 'rgba(0, 0, 0, 0)';
     ctx_cover!.shadowBlur = 0;
     ctx_cover!.shadowOffsetX = 0;
@@ -201,7 +196,7 @@ export class View {
 
 
     // 文字
-    let fontsize = Math.round(this.CellSize * 0.5);
+    let fontsize = Math.round(this.ViewState.CellSize * 0.5);
     let message = 'Play';
     message += (gameState.demo_inc % 10 == 0) ? " " : "";
     ctx_cover!.shadowBlur = 0;
@@ -214,15 +209,15 @@ export class View {
     ctx_cover!.textBaseline = 'middle';
     ctx_cover!.textAlign = 'center';
     ctx_cover!.beginPath();
-    ctx_cover!.fillText(message, this.CellSize * 3, this.CellSize * 4);
+    ctx_cover!.fillText(message, this.ViewState.CellSize * 3, this.ViewState.CellSize * 4);
     // 文字２
     message = 'colamone';
-    fontsize = Math.round(this.CellSize * 1);
+    fontsize = Math.round(this.ViewState.CellSize * 1);
     ctx_cover!.font = 'bold ' + fontsize + 'px Play,sans-serif';
     ctx_cover!.fillStyle = params.COLOR_WHITE;
     ctx_cover!.shadowBlur = 0;
     ctx_cover!.beginPath();
-    ctx_cover!.fillText(message, this.CellSize * 3, this.CellSize * 2);
+    ctx_cover!.fillText(message, this.ViewState.CellSize * 3, this.ViewState.CellSize * 2);
 
 
     return this.canv_cover;
@@ -235,7 +230,7 @@ export class View {
     // 背景
     let ctx_score = this.canv_score!.getContext('2d');
     let message = "";
-    let fontsize = Math.round(this.CellSize * 1.5);
+    let fontsize = Math.round(this.ViewState.CellSize * 1.5);
     let blue = params.COLOR_BLUE2;
     let red = params.COLOR_RED2;
     ctx_score!.clearRect(0, 0, this.CANV_SIZE, this.CANV_SIZE);
@@ -254,17 +249,17 @@ export class View {
     ctx_score!.fillStyle = red;
     message = String(gameState.redScore);
     ctx_score!.beginPath();
-    ctx_score!.fillText(message, this.CellSize * 1, this.CellSize * 3.8);
+    ctx_score!.fillText(message, this.ViewState.CellSize * 1, this.ViewState.CellSize * 3.8);
     // 文字
     message = "8";
     ctx_score!.beginPath();
-    ctx_score!.fillText(message, this.CellSize * 2, this.CellSize * 5.3);
+    ctx_score!.fillText(message, this.ViewState.CellSize * 2, this.ViewState.CellSize * 5.3);
     //線
-    ctx_score!.lineWidth = this.CellSize * 0.2;
+    ctx_score!.lineWidth = this.ViewState.CellSize * 0.2;
     ctx_score!.strokeStyle = red;
     ctx_score!.beginPath();
-    ctx_score!.moveTo(this.CellSize * 0.4, this.CellSize * 5.55);
-    ctx_score!.lineTo(this.CellSize * 2.6, this.CellSize * 3.55);
+    ctx_score!.moveTo(this.ViewState.CellSize * 0.4, this.ViewState.CellSize * 5.55);
+    ctx_score!.lineTo(this.ViewState.CellSize * 2.6, this.ViewState.CellSize * 3.55);
     ctx_score!.closePath();
     ctx_score!.stroke();
 
@@ -273,17 +268,17 @@ export class View {
     message = String(gameState.blueScore);
     ctx_score!.fillStyle = blue;
     ctx_score!.beginPath();
-    ctx_score!.fillText(message, this.CellSize * 4, this.CellSize * 0.7);
+    ctx_score!.fillText(message, this.ViewState.CellSize * 4, this.ViewState.CellSize * 0.7);
     // 文字
     message = "8";
     ctx_score!.beginPath();
-    ctx_score!.fillText(message, this.CellSize * 5, this.CellSize * 2.3);
+    ctx_score!.fillText(message, this.ViewState.CellSize * 5, this.ViewState.CellSize * 2.3);
     // 文字
-    ctx_score!.lineWidth = this.CellSize * 0.2;
+    ctx_score!.lineWidth = this.ViewState.CellSize * 0.2;
     ctx_score!.strokeStyle = blue;
     ctx_score!.beginPath();
-    ctx_score!.moveTo(this.CellSize * 3.4, this.CellSize * 2.55);
-    ctx_score!.lineTo(this.CellSize * 5.6, this.CellSize * 0.55);
+    ctx_score!.moveTo(this.ViewState.CellSize * 3.4, this.ViewState.CellSize * 2.55);
+    ctx_score!.lineTo(this.ViewState.CellSize * 5.6, this.ViewState.CellSize * 0.55);
     ctx_score!.closePath();
     ctx_score!.stroke();
     return this.canv_score;
@@ -296,10 +291,10 @@ export class View {
    */
   private drawFocus(gameState: GameState) {
     // 選択マスを強調
-    let x = gameState.mouse_x - (gameState.mouse_x % this.CellSize);
-    let y = gameState.mouse_y - (gameState.mouse_y % this.CellSize);
+    let x = gameState.mouse_x - (gameState.mouse_x % this.ViewState.CellSize);
+    let y = gameState.mouse_y - (gameState.mouse_y % this.ViewState.CellSize);
     let ctx_focus = this.canv_focus!.getContext('2d');
-    let grad = ctx_focus!.createRadialGradient(x, y, 0, x, y, this.CellSize);
+    let grad = ctx_focus!.createRadialGradient(x, y, 0, x, y, this.ViewState.CellSize);
     grad.addColorStop(0.3, params.COLOR_SELECT);
     grad.addColorStop(1, params.COLOR_SELECT2);
     ctx_focus!.clearRect(0, 0, this.CANV_SIZE, this.CANV_SIZE);
@@ -307,7 +302,7 @@ export class View {
     ctx_focus!.fillStyle = grad;
     ctx_focus!.lineWidth = 1;
     ctx_focus!.beginPath();
-    ctx_focus!.fillRect(x, y, this.CellSize, this.CellSize);
+    ctx_focus!.fillRect(x, y, this.ViewState.CellSize, this.ViewState.CellSize);
 
 
     if (gameState.isTouch === true && gameState.hover_piece === null) {
@@ -315,7 +310,7 @@ export class View {
     }
 
     // 移動可能マスを強調
-    let target = (x / this.CellSize) * 10 + (y / this.CellSize);
+    let target = (x / this.ViewState.CellSize) * 10 + (y / this.ViewState.CellSize);
     if (gameState.thisMap[target] * gameState.turn_player > 0) {
       let canm = Rule.getCanMovePanelX(target, gameState.thisMap);
       for (let i = 0; i <= canm.length - 1; i++) {
@@ -323,10 +318,10 @@ export class View {
         y = Math.floor(canm[i] % 10);
         ctx_focus!.globalAlpha = 0.6;
         ctx_focus!.strokeStyle = params.COLOR_SELECT;
-        ctx_focus!.lineWidth = this.CellSize / 20;
+        ctx_focus!.lineWidth = this.ViewState.CellSize / 20;
         ctx_focus!.beginPath();
-        ctx_focus!.arc(x * this.CellSize + (this.CellSize / 2), y * this.CellSize + (this.CellSize / 2),
-          (this.CellSize / 2) - (this.CellSize / 10), 0, Math.PI * 2, false);
+        ctx_focus!.arc(x * this.ViewState.CellSize + (this.ViewState.CellSize / 2), y * this.ViewState.CellSize + (this.ViewState.CellSize / 2),
+          (this.ViewState.CellSize / 2) - (this.ViewState.CellSize / 10), 0, Math.PI * 2, false);
         ctx_focus!.stroke();
       }
     }
@@ -363,8 +358,8 @@ export class View {
           ctx_board!.fillStyle = grad;
         }
         ctx_board!.beginPath();
-        ctx_board!.fillRect(x * this.CellSize, y * this.CellSize, this.CellSize, this.CellSize);
-        ctx_board!.strokeRect(x * this.CellSize, y * this.CellSize, this.CellSize, this.CellSize);
+        ctx_board!.fillRect(x * this.ViewState.CellSize, y * this.ViewState.CellSize, this.ViewState.CellSize, this.ViewState.CellSize);
+        ctx_board!.strokeRect(x * this.ViewState.CellSize, y * this.ViewState.CellSize, this.ViewState.CellSize, this.ViewState.CellSize);
       }
     }
 
@@ -383,7 +378,7 @@ export class View {
     ctx_board2!.globalAlpha = 0.07;
     ctx_board2!.fillStyle = params.COLOR_WHITE;
     ctx_board2!.beginPath();
-    ctx_board2!.arc(this.CellSize * 1, -3 * this.CellSize, 7 * this.CellSize, 0, Math.PI * 2, false);
+    ctx_board2!.arc(this.ViewState.CellSize * 1, -3 * this.ViewState.CellSize, 7 * this.ViewState.CellSize, 0, Math.PI * 2, false);
     ctx_board2!.fill();
 
     return this.canv_board2;
@@ -396,8 +391,8 @@ export class View {
   private drawHoverPiece(gameState: GameState) {
     let ctx_hover = this.canv_hover_piece!.getContext('2d');
     ctx_hover!.clearRect(0, 0, this.CANV_SIZE, this.CANV_SIZE);
-    let x = gameState.mouse_x - (this.CellSize / 2);
-    let y = gameState.mouse_y - (this.CellSize / 2);
+    let x = gameState.mouse_x - (this.ViewState.CellSize / 2);
+    let y = gameState.mouse_y - (this.ViewState.CellSize / 2);
     if (gameState.hover_piece !== null) {
       this.drawPiece(ctx_hover as CanvasRenderingContext2D, x, y, gameState.thisMap[gameState.hover_piece!], false);
     }
@@ -419,7 +414,7 @@ export class View {
       wkColor = params.COLOR_RED;
     }
 
-    let grad = this.ctx!.createLinearGradient(x, y, x + this.CellSize, y + this.CellSize);
+    let grad = this.ctx!.createLinearGradient(x, y, x + this.ViewState.CellSize, y + this.ViewState.CellSize);
     grad.addColorStop(0, 'rgb(255, 255, 255)');
     grad.addColorStop(0.4, wkColor);
     grad.addColorStop(1, wkColor);
@@ -430,7 +425,7 @@ export class View {
     wkCtx.shadowOffsetY = 2;
     wkCtx.fillStyle = grad;
     wkCtx.beginPath();
-    Utils.FillRoundRect(wkCtx, x + this.CellSize / 10, y + this.CellSize / 10, this.CellSize - 1 * this.CellSize / 5, this.CellSize - 1 * this.CellSize / 5, this.CellSize / 7);
+    Utils.FillRoundRect(wkCtx, x + this.ViewState.CellSize / 10, y + this.ViewState.CellSize / 10, this.ViewState.CellSize - 1 * this.ViewState.CellSize / 5, this.ViewState.CellSize - 1 * this.ViewState.CellSize / 5, this.ViewState.CellSize / 7);
 
     wkCtx.shadowColor = 'rgba(0, 0, 0, 0)';
     wkCtx.shadowBlur = 0;
@@ -438,11 +433,11 @@ export class View {
     wkCtx.shadowOffsetY = 0;
 
     // 曇りエフェクト
-    if (this.Img_bk_loaded) {
+    if (this.ViewState.Img_bk_loaded) {
       wkCtx.globalAlpha = 0.35;
       wkCtx.save();
       wkCtx.clip();
-      wkCtx.drawImage(this.drawBk(), x + this.CellSize / 10, y + this.CellSize / 10, this.CellSize - 1 * this.CellSize / 5, this.CellSize - 1 * this.CellSize / 5);
+      wkCtx.drawImage(this.drawBk(), x + this.ViewState.CellSize / 10, y + this.ViewState.CellSize / 10, this.ViewState.CellSize - 1 * this.ViewState.CellSize / 5, this.ViewState.CellSize - 1 * this.ViewState.CellSize / 5);
       wkCtx.restore();
       wkCtx.globalAlpha = 1;
     }
@@ -450,27 +445,27 @@ export class View {
     // 文字を描画。
     wkCtx.fillStyle = params.COLOR_WHITE;
 
-    let fontsize = Math.round(this.CellSize * 0.18);
+    let fontsize = Math.round(this.ViewState.CellSize * 0.18);
     wkCtx.textBaseline = 'middle';
     wkCtx.textAlign = 'center';
     wkCtx.font = fontsize + "pt 'Play',Arial";
     wkCtx.beginPath();
 
     // 数字を印字
-    wkCtx.fillText(String(Math.abs(number)), x + (this.CellSize / 2), y + (this.CellSize / 2));
+    wkCtx.fillText(String(Math.abs(number)), x + (this.ViewState.CellSize / 2), y + (this.ViewState.CellSize / 2));
 
     // 点を描画
     for (let i = 0; i <= params.PIECES[number].length - 1; i++) {
       if (params.PIECES[number][i] === 0) {
         continue;
       }
-      let x_dot = x + this.CellSize / 4.16 + (Math.floor(this.CellSize - 1 * this.CellSize / 5) / 3) * Math.floor(i % 3.0);
-      let y_dot = y + this.CellSize / 4.16 + (Math.floor(this.CellSize - 1 * this.CellSize / 5) / 3) * Math.floor(i / 3.0);
+      let x_dot = x + this.ViewState.CellSize / 4.16 + (Math.floor(this.ViewState.CellSize - 1 * this.ViewState.CellSize / 5) / 3) * Math.floor(i % 3.0);
+      let y_dot = y + this.ViewState.CellSize / 4.16 + (Math.floor(this.ViewState.CellSize - 1 * this.ViewState.CellSize / 5) / 3) * Math.floor(i / 3.0);
 
       wkCtx.fillStyle = params.COLOR_WHITE;
 
       wkCtx.beginPath();
-      wkCtx.arc(x_dot, y_dot, this.CellSize * 0.06, 0, Math.PI * 2, false);
+      wkCtx.arc(x_dot, y_dot, this.ViewState.CellSize * 0.06, 0, Math.PI * 2, false);
       wkCtx.fill();
     }
 
@@ -479,12 +474,12 @@ export class View {
       wkCtx.shadowColor = 'rgba(0, 0, 0, 1)';
       wkCtx.globalAlpha = 1;
       wkCtx.fillStyle = params.COLOR_WHITE;
-      fontsize = Math.round(this.CellSize * 0.5);
+      fontsize = Math.round(this.ViewState.CellSize * 0.5);
       wkCtx.textBaseline = 'middle';
       wkCtx.textAlign = 'center';
       wkCtx.font = 'bolder ' + fontsize + 'pt Play,Arial ';
       wkCtx.beginPath();
-      wkCtx.fillText(String(Math.abs(number)), x + (this.CellSize / 2), y + (this.CellSize / 2));
+      wkCtx.fillText(String(Math.abs(number)), x + (this.ViewState.CellSize / 2), y + (this.ViewState.CellSize / 2));
       wkCtx.globalAlpha = 1;
       wkCtx.shadowColor = 'rgba(0, 0, 0, 0)';
       wkCtx.shadowBlur = 0;
@@ -509,7 +504,7 @@ export class View {
           } else if (wkMap[x * 10 + y] < 0 && y == 5) {
             goal = true;
           }
-          ctx_pieces = this.drawPiece(ctx_pieces as CanvasRenderingContext2D, x * this.CellSize, y * this.CellSize, wkMap[x * 10 + y], goal);
+          ctx_pieces = this.drawPiece(ctx_pieces as CanvasRenderingContext2D, x * this.ViewState.CellSize, y * this.ViewState.CellSize, wkMap[x * 10 + y], goal);
         }
       }
     }
@@ -528,10 +523,10 @@ export class View {
     let y0 = hand[0] % 10;
     let x1 = (hand[1] / 10 | 0);
     let y1 = hand[1] % 10;
-    let h = this.CellSize - 1 * this.CellSize / 5;
-    let w = this.CellSize - 1 * this.CellSize / 5;
-    let x = x1 * this.CellSize + this.CellSize / 10;
-    let y = y1 * this.CellSize + this.CellSize / 10;
+    let h = this.ViewState.CellSize - 1 * this.ViewState.CellSize / 5;
+    let w = this.ViewState.CellSize - 1 * this.ViewState.CellSize / 5;
+    let x = x1 * this.ViewState.CellSize + this.ViewState.CellSize / 10;
+    let y = y1 * this.ViewState.CellSize + this.ViewState.CellSize / 10;
     let shadow_start_x = x + w / 2;
     let shadow_start_y = y + h / 2;
     let shadow_end_x = shadow_start_x;
@@ -662,8 +657,8 @@ export class View {
    */
   private drawOverlay(gameState: GameState) {
     let ctx_overlay = this.canv_overlay!.getContext('2d');
-    let x = this.CellSize * 1.3;
-    let y = this.CellSize * 2.5;
+    let x = this.ViewState.CellSize * 1.3;
+    let y = this.ViewState.CellSize * 2.5;
 
     ctx_overlay!.clearRect(0, 0, this.CANV_SIZE, this.CANV_SIZE);
 
@@ -677,9 +672,9 @@ export class View {
 
     ctx_overlay!.globalAlpha = 0.9;
     ctx_overlay!.fillStyle = params.COLOR_WHITE;
-    Utils.FillRoundRect(ctx_overlay as CanvasRenderingContext2D, x, y, this.CellSize * 3.4, this.CellSize * 1, this.CellSize / 7);
+    Utils.FillRoundRect(ctx_overlay as CanvasRenderingContext2D, x, y, this.ViewState.CellSize * 3.4, this.ViewState.CellSize * 1, this.ViewState.CellSize / 7);
 
-    let fontsize = Math.round(this.CellSize * 0.36);
+    let fontsize = Math.round(this.ViewState.CellSize * 0.36);
     ctx_overlay!.shadowBlur = 0;
     ctx_overlay!.shadowOffsetX = 0;
     ctx_overlay!.shadowOffsetY = 0;
@@ -690,7 +685,7 @@ export class View {
     ctx_overlay!.textBaseline = 'middle';
     ctx_overlay!.textAlign = 'center';
     ctx_overlay!.beginPath();
-    ctx_overlay!.fillText(gameState.message, this.CellSize * 3, this.CellSize * 3);
+    ctx_overlay!.fillText(gameState.message, this.ViewState.CellSize * 3, this.ViewState.CellSize * 3);
 
     return this.canv_overlay;
   }
