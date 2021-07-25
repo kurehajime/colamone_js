@@ -6,7 +6,7 @@ const timestamp = new Date().toFormat("YYYYMMDDHH24MI");
 const CleanCSS = require('clean-css');
 
 // html
-let langs = ["ja", "en", "kr", "zh-hans", "zh-hant", "hi", "pt"];
+let langs = ["ja", "en", "kr", "zh-hans", "zh-hant", "hi", "pt", "de"];
 let plugins = [];
 for (let i = 0; i < langs.length; i++) {
   let jsonObject = JSON.parse(

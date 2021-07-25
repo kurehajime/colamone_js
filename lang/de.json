@@ -1,8 +1,8 @@
 {
-    "title":"colamone",
-    "description":"Colamone ist ein Brettspiel ähnlich zu Schach.",
-    "replay":" Log anzeigen ",
-    "tweetlog":" Tweet Ergebnis ",
-    "howtoplay":"Colamone Spielregeln",
-    "manual":"(1) Colamone ist ähnlich zu Schach.\n    Aber es gibt Unterschiede.\n(2) Jede Figur kann 1 Feld in die Richtung\n    eines beliebigen Punktes ziehen. \n(3) Wenn eine Figur die andere Seite erreicht,\n    erhält man entsprechende Punkte.\n(4) Man gewinnt, wenn man 8 Punkte erreicht.\n(5) Wenn eine Figur die andere Seite erreicht, kann sie\n    nicht länger bewegt werden und der Gegner kann sie nicht nehmen.\n(6) Wenn ein Spieler keinen Zug mehr hat,\n    gewinnt der mit der höheren Punktzahl.\n(7) Wenn eine Stellung auf dem Spielbrett\n    3 mal auftritt ist das Spiel unentschieden."
+    "title": "colamone",
+    "description": "Colamone ist ein Brettspiel ähnlich zu Schach.",
+    "replay": " Log anzeigen ",
+    "tweetlog": " Tweet Ergebnis ",
+    "howtoplay": "Colamone Spielregeln",
+    "manual": "(1) Colamone ist ähnlich zu Schach.\n    Aber es gibt Unterschiede.\n(2) Jede Figur kann 1 Feld in die Richtung\n    eines beliebigen Punktes ziehen. \n(3) Wenn eine Figur die andere Seite erreicht,\n    erhält man entsprechende Punkte.\n(4) Man gewinnt, wenn man 8 Punkte erreicht.\n(5) Wenn eine Figur die andere Seite erreicht,\n    kann sie nicht länger bewegt werden und der\n    Gegner kann sie nicht nehmen.\n(6) Wenn ein Spieler keinen Zug mehr hat,\n    gewinnt der mit der höheren Punktzahl.\n(7) Wenn eine Stellung auf dem Spielbrett\n    3 mal auftritt ist das Spiel unentschieden."
 }
