@@ -22,7 +22,7 @@ https://xiidec.appspot.com/colamone/colamone-kr.html
 https://xiidec.appspot.com/colamone/colamone-hi.html  
 Português do Brasil    
 https://xiidec.appspot.com/colamone/colamone-pt.html  
-Deutsche    
+Deutsch    
 https://xiidec.appspot.com/colamone/colamone-de.html  
 
 [![Colamone](https://cloud.githubusercontent.com/assets/4569916/21293734/1ef09862-c570-11e6-9cd7-5e294bd15245.gif)](https://xiidec.appspot.com/colamone/colamone.html
@@ -38,9 +38,9 @@ https://xiidec.appspot.com/colamone/colamone-de.html
 ### How to play Colamone
 * Colamone is a board game similar to chess.
 * Players will be able to advance in the direction of the point of each piece.
-* The number of a piece will be scoring if it advances to the position of the other side most. 
-* It is a victory of the player score became 8 or more points.
-* When the movable piece of one is lost, the player high score is winning at that point.
+* The number of a piece will be scoring if it advances to the other side. 
+* It is a victory for the player who scores 8 or more points.
+* When all movable pieces of a player are lost, the one with the highest score is winning the game.
 * However, it will be the victory of the red player in the case of a tie.
 
 ###解説記事
