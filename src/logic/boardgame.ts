@@ -1,7 +1,7 @@
 /* @license Copyright (c) @kurehajime / source code: https://github.com/kurehajime/colamone_js */
 import { Rule, MapArray, Hand } from "./rule";
 import { Aijs } from "./ai";
-import { GameState } from "./gameState";
+import { GameState } from "./gamestate";
 import { View } from "../canvas/view";
 
 export class BoardGamejs {
@@ -266,7 +266,7 @@ export class BoardGamejs {
       viewport!.setAttribute('content', 'height=500,user-scalable=no');
     }
     // iOS9のViewportはなぜか機能してくれない。
-    if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
+    if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
       let w = screen.width;
       let w2 = 520;
       if (Math.abs(window.orientation as number) !== 0) {

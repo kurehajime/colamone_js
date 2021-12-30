@@ -1,5 +1,5 @@
 
-import { GameState } from "../logic/gameState";
+import { GameState } from "../logic/gamestate";
 import { Rule, MapArray, Hand } from "../logic/rule";
 import * as params from "./params";
 import { Utils } from "./utils";
