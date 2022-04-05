@@ -337,7 +337,7 @@ export class BoardGamejs {
       let canm = Rule.getCanMovePanelX(this.gameState.hover_piece!, this.gameState.thisMap);
       if (canm.indexOf(target) >= 0) {
         this.view.flush(this.gameState, false, true);
-        if (this.isGoaled(this.gameState.thisMap, target, this.gameState.turn_player)) {
+        if (this.isGoaled(target, this.gameState.turn_player)) {
           this.gameState.goaled = true;
           this.view.flush(this.gameState, false, true);
           setTimeout(() => {
@@ -458,7 +458,7 @@ export class BoardGamejs {
     hand = Aijs.thinkAI(this.gameState.thisMap, this.gameState.turn_player, level + plus + 1, undefined, undefined, undefined)[0];
     this.gameState.thisHand = hand;
     if (hand) {
-      if (this.isGoaled(this.gameState.thisMap, hand[1], this.gameState.turn_player)) {
+      if (this.isGoaled(hand[1], this.gameState.turn_player)) {
         this.gameState.goaled = true;
         this.view.flush(this.gameState, false, true);
         setTimeout(() => {
@@ -480,7 +480,7 @@ export class BoardGamejs {
   /** 
    * ゴールしたか
    */
-  private isGoaled(map: MapArray, afterHand: number, turn: number) {
+  private isGoaled(afterHand: number, turn: number) {
     if (turn > 0) {
       if (afterHand % 10 === 0) {
         return true;
