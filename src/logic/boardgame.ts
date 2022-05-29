@@ -3,11 +3,13 @@ import { Rule, MapArray, Hand } from "./rule";
 import { Aijs } from "./ai";
 import { GameState } from "../state/gamestate";
 import { View } from "../canvas/view";
+import { UIController } from "./uiController";
 
 export class BoardGamejs {
 
   private gameState = new GameState();
   private view = new View();
+  private uiController = new UIController();
 
   private thinktime = 0.0;
   private intervalID: (number | null) = null;
@@ -54,12 +56,8 @@ export class BoardGamejs {
    */
   public Run() {
 
-    this.zoom(); // 小さい端末でズーム
-    if (window.innerHeight < window.innerWidth) {
-      document.querySelector('.manual')?.classList.remove("hide");
-    } else {
-      document.querySelector('.manual')?.classList.add("hide");
-    }
+    this.uiController.zoom(); // 小さい端末でズーム
+    this.uiController.manual(window.innerHeight < window.innerWidth);
 
     this.gameState.turn_player = 1;
     this.view.ViewState.demo = true;
@@ -86,8 +84,8 @@ export class BoardGamejs {
     (<HTMLElement>document.querySelector('#prev')).addEventListener('click', () => { this.move_prev() });
     (<HTMLElement>document.querySelector('#next')).addEventListener('click', () => { this.move_next() });
     (<HTMLElement>document.querySelector('#nextnext')).addEventListener('click', () => { this.move_end() });
-    (<HTMLElement>document.querySelector('#replay')).addEventListener('click', () => { this.jumpkento() });
-    (<HTMLElement>document.querySelector('#tweetlog')).addEventListener('click', () => { this.tweetlog() });
+    (<HTMLElement>document.querySelector('#replay')).addEventListener('click', () => { this.uiController.jumpkento(this.startMap, this.logArray2, this.gameState.level) });
+    (<HTMLElement>document.querySelector('#tweetlog')).addEventListener('click', () => { this.uiController.tweetlog(this.startMap, this.logArray2, this.gameState.level) });
     (<HTMLElement>document.querySelector('#newgame')).addEventListener('click', () => { this.reloadnew() });
     (<HTMLElement>document.querySelector('#collapsible')).addEventListener('click', () => {
       (<HTMLElement>document.querySelector('.manual')).classList.toggle("hide");
@@ -99,7 +97,7 @@ export class BoardGamejs {
     });
 
 
-    window.addEventListener('orientationchange', this.zoom);
+    window.addEventListener('orientationchange', this.uiController.zoom);
 
     this.shuffleBoard();
 
@@ -147,26 +145,9 @@ export class BoardGamejs {
       this.gameState.level = parseInt(paramObj.lv);
     }
 
-    (<HTMLInputElement>document.querySelector('#level')).value = this.gameState.level.toString();
+    this.uiController.setLevel(this.gameState.level);
 
-    if (this.logArray.length !== 0) {
-      (<HTMLElement>document.querySelector('#log')).classList.remove("hide");
-      (<HTMLElement>document.querySelector('#prevprev')).classList.remove("hide");
-      (<HTMLElement>document.querySelector('#prev')).classList.remove("hide");
-      (<HTMLElement>document.querySelector('#next')).classList.remove("hide");
-      (<HTMLElement>document.querySelector('#nextnext')).classList.remove("hide");
-      (<HTMLElement>document.querySelector('#span_replay')).classList.add("hide");
-      (<HTMLElement>document.querySelector('#span_tweetlog')).classList.add("hide");
-      (<HTMLElement>document.querySelector('#next')).focus();
-    } else {
-      (<HTMLElement>document.querySelector('#log')).classList.add("hide");
-      (<HTMLElement>document.querySelector('#prevprev')).classList.add("hide");
-      (<HTMLElement>document.querySelector('#prev')).classList.add("hide");
-      (<HTMLElement>document.querySelector('#next')).classList.add("hide");
-      (<HTMLElement>document.querySelector('#nextnext')).classList.add("hide");
-      (<HTMLElement>document.querySelector('#span_replay')).classList.add("hide");
-      (<HTMLElement>document.querySelector('#span_tweetlog')).classList.add("hide");
-    }
+    this.uiController.logMenu(this.logArray.length !== 0);
 
     // 画像読み込み成功時
     this.view.ViewState.Img_bk!.onload = () => {
@@ -190,7 +171,7 @@ export class BoardGamejs {
       this.view.flush(this.gameState, true, false);
     }, 2500);
     this.updateMessage();
-    this.setTweet(); // ツイートボタンを生成
+    this.uiController.setTweet(); // ツイートボタンを生成
 
     if (this.logArray.length === 0) {
       if (this.isBot() == false) {
@@ -247,41 +228,7 @@ export class BoardGamejs {
     }
   }
 
-  /** 
-   * 小さい画面ではViewportを固定化
-   */
-  private zoom() {
-    let viewport = document.querySelector('meta[name=viewport]');
-    if (screen.width < 500 && screen.height < 500) {
-      if (screen.width < screen.height) {
-        viewport!.setAttribute('content', 'width=500,user-scalable=no');
-      } else {
-        viewport!.setAttribute('content', 'height=500,user-scalable=no');
-      }
-    } else if (screen.width < 500) {
-      viewport!.setAttribute('content', 'width=500,user-scalable=no');
-    } else if (screen.height < 500) {
-      viewport!.setAttribute('content', 'height=500,user-scalable=no');
-    }
-    // iOS9のViewportはなぜか機能してくれない。
-    if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-      let w = screen.width;
-      let w2 = 520;
-      if (Math.abs(window.orientation as number) !== 0) {
-        w = screen.height;
-        w2 = 900;
-      }
-      let rate = Math.round((w / w2) * 1000) / 1000.0;
-      if (rate == Math.round(rate)) { // iOS 9のViewportは整数指定すると機能しない
-        rate += 0.0001;
-      }
 
-      viewport!.setAttribute(
-        'content',
-        'initial-scale=' + rate + ', minimum-scale=' + rate + ', maximum-scale=' + rate + ', user-scalable=no'
-      );
-    }
-  }
 
   /** 
    * マウス移動時処理
@@ -378,18 +325,18 @@ export class BoardGamejs {
    * ラジオボタン変更時処理
    */
   private ev_radioChange = () => {
+    let wins: number | null = null;
     this.gameState.level = parseInt((<HTMLSelectElement>document.querySelector('#level')).value);
     this.storage.setItem('level_save', this.gameState.level);
     if (this.storage.getItem('level_' + this.gameState.level) > 0) {
-      document.querySelector('#wins')!.innerHTML = this.storage.getItem('level_' + this.gameState.level) + ' win!';
-    } else {
-      document.querySelector('#wins')!.innerHTML = '';
+      wins = this.storage.getItem('level_' + this.gameState.level)
     }
     this.gameState.thisMap = Rule.copyMap(this.startMap);
     this.gameState.thisHand = undefined;
     this.gameState.map_list = {};
     this.logArray2 = [];
     this.view.flush(this.gameState, false, false);
+    this.uiController.updateScore(this.gameState.blueScore, this.gameState.redScore, null, wins)
   }
 
   /** 
@@ -543,46 +490,32 @@ export class BoardGamejs {
    * メッセージを更新
    */
   private updateMessage() {
+    let wins: number | null = null;
     this.calcScore();
-    let Block = '';
-    document.querySelector('#blue')!.innerHTML = 'Blue: ' + this.gameState.blueScore + '/8';
-    document.querySelector('#red')!.innerHTML = ' Red: ' + this.gameState.redScore + '/8';
-    document.querySelector('#time')!.innerHTML = '(' + (this.thinktime.toFixed(3)) + 'sec)';
     if (this.logArray.length === 0) {
       if (this.gameState.winner == 1) {
         this.view.ViewState.message = 'You win!';
         this.storage.setItem('level_' + this.gameState.level,
           parseInt(this.storage.getItem('level_' + this.gameState.level)) + 1);
-        this.endgame();
+        this.uiController.endgame(this.logArray);
       } else if (this.gameState.winner == -1) {
         this.view.ViewState.message = 'You lose...';
         this.storage.setItem('level_' + this.gameState.level, 0);
-        this.endgame();
+        this.uiController.endgame(this.logArray);
       } else if (this.gameState.winner === 0) {
         if (this.gameState.map_list[JSON.stringify(this.gameState.thisMap)] >= Rule.LIMIT_1000DAY) {
           this.view.ViewState.message = '3fold repetition';
         } else {
           this.view.ViewState.message = '-- Draw --';
         }
-        this.endgame();
+        this.uiController.endgame(this.logArray);
       }
     }
 
     if (this.storage.getItem('level_' + this.gameState.level) > 0) {
-      document.querySelector('#wins')!.innerHTML = this.storage.getItem('level_' + this.gameState.level) + ' win!';
-    } else {
-      document.querySelector('#wins')!.innerHTML = '';
+      wins = this.storage.getItem('level_' + this.gameState.level)
     }
-  }
-
-  /** 
-   * ゲーム終了
-   */
-  private endgame() {
-    if (this.logArray.length === 0) {
-      document.querySelector('#span_replay')!.classList.remove("hide");
-      document.querySelector('#span_tweetlog')!.classList.remove("hide");
-    }
+    this.uiController.updateScore(this.gameState.blueScore, this.gameState.redScore, this.thinktime, wins)
   }
   /** 
    * 得点計算。
@@ -619,7 +552,7 @@ export class BoardGamejs {
         this.gameState.winner = 0;
       }
     } else {
-      const [is1000day,map_list] = Rule.is1000day(this.gameState.thisMap,this.gameState.map_list)
+      const [is1000day, map_list] = Rule.is1000day(this.gameState.thisMap, this.gameState.map_list)
       this.gameState.map_list = map_list
       if (is1000day) {
         this.gameState.winner = 0;
@@ -747,33 +680,6 @@ export class BoardGamejs {
     }
     return wklogArray;
   }
-  /** 
-   * ログをエンコード
-   */
-  private encodeLog(wklogArray: Hand[]) {
-    let logstr = '';
-    let arrow = ['q', 'w', 'e',
-      'a', 's', 'd',
-      'z', 'x', 'c'];
-    for (let i in wklogArray) {
-      let from = wklogArray[i][0];
-      let to = wklogArray[i][1];
-      let x_vec = ((Math.floor(to / 10)) - Math.floor(from / 10));
-      let y_vec = ((Math.floor(to % 10)) - Math.floor(from % 10));
-      let arw = '';
-      if (x_vec === -1 && y_vec === -1) { arw = 'q'; }
-      if (x_vec === 0 && y_vec === -1) { arw = 'w'; }
-      if (x_vec === 1 && y_vec === -1) { arw = 'e'; }
-      if (x_vec === -1 && y_vec === 0) { arw = 'a'; }
-      if (x_vec === 0 && y_vec === 0) { arw = 's'; }
-      if (x_vec === 1 && y_vec === 0) { arw = 'd'; }
-      if (x_vec === -1 && y_vec === 1) { arw = 'z'; }
-      if (x_vec === 0 && y_vec === 1) { arw = 'x'; }
-      if (x_vec === 1 && y_vec === 1) { arw = 'c'; }
-      logstr += from + arw;
-    }
-    return logstr;
-  }
 
   /** 
    * ログを全部巻き戻す
@@ -854,50 +760,8 @@ export class BoardGamejs {
     }
   }
 
-  /** 
-   * 検討画面に飛ぶ
-   */
-  private jumpkento() {
-    let url = document.location.href.split('?')[0];
-    let init = '?init=' + this.startMap[55] + ',' +
-      this.startMap[45] + ',' +
-      this.startMap[35] + ',' +
-      this.startMap[25] + ',' +
-      this.startMap[15] + ',' +
-      this.startMap[5] + ',' +
-      this.startMap[44] + ',' +
-      this.startMap[14];
-    let log = '&log=' + this.encodeLog(this.logArray2);
-    log += '&lv=' + this.gameState.level;
-    location.href = url + init + log;
-  }
-  /** 
-   * ログをツイートする。
-   */
-  private tweetlog() {
-    let url = document.location.href.split('?')[0];
-    let init = '?init=' + this.startMap[55] + ',' +
-      this.startMap[45] + ',' +
-      this.startMap[35] + ',' +
-      this.startMap[25] + ',' +
-      this.startMap[15] + ',' +
-      this.startMap[5] + ',' +
-      this.startMap[44] + ',' +
-      this.startMap[14];
-    let log = '%26log=' + this.encodeLog(this.logArray2);
-    log += '%26lv=' + this.gameState.level;
-    window.open('https://twitter.com/intent/tweet?text=' + url + init + log + '%20%23colamone');
-  }
-  /** 
-   * ツイートボタンを読み込む。
-   */
-  private setTweet() {
-    /*jshint -W030 */
-    (function f(d: any, s: string, id: string) {
-      let js, fjs = d.getElementsByTagName(s)[0];
-      if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.async = true; js.src = 'https://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); }
-    })(document, 'script', 'twitter-wjs');
-  }
+
+
   /** 
    * botかどうか判定
    */
