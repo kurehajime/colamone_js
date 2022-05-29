@@ -121,13 +121,11 @@ export class BoardGamejs {
     }
     // レベル記憶
     if (this.storage.getItem('level_save') !== undefined && this.storage.getItem('level_save') !== 'undefined' && this.storage.getItem('level_save') !== null) {
-      (<HTMLInputElement>document.querySelector('#level')).value = String(parseInt(this.storage.getItem('level_save')));
+      this.gameState.level = parseInt(this.storage.getItem('level_save'));
     } else {
       this.storage.setItem('level_save', 1);
-      (<HTMLInputElement>document.querySelector('#level')).value = String(1);
+      this.gameState.level = 1;
     }
-
-    //document.querySelector('#canv').classList.add("hue-rotate1");
 
 
     // パラメータを取得
@@ -146,8 +144,10 @@ export class BoardGamejs {
     }
     // レベル取得
     if (paramObj.lv) {
-      (<HTMLSelectElement>document.querySelector('#level')).value = String(parseInt(paramObj.lv));
+      this.gameState.level = parseInt(paramObj.lv);
     }
+
+    (<HTMLInputElement>document.querySelector('#level')).value = this.gameState.level.toString();
 
     if (this.logArray.length !== 0) {
       (<HTMLElement>document.querySelector('#log')).classList.remove("hide");
@@ -361,7 +361,7 @@ export class BoardGamejs {
         this.updateMessage();
         if (this.gameState.winner === null) {
           window.setTimeout(() => {
-            this.ai(parseInt((<HTMLSelectElement>document.querySelector('#level')).value));
+            this.ai(this.gameState.level);
             this.view.ViewState.message = '';
             this.updateMessage();
             this.view.flush(this.gameState, false, false);
@@ -378,10 +378,10 @@ export class BoardGamejs {
    * ラジオボタン変更時処理
    */
   private ev_radioChange = () => {
-    let num = (<HTMLSelectElement>document.querySelector('#level')).value;
-    this.storage.setItem('level_save', num);
-    if (this.storage.getItem('level_' + num) > 0) {
-      document.querySelector('#wins')!.innerHTML = this.storage.getItem('level_' + num) + ' win!';
+    this.gameState.level = parseInt((<HTMLSelectElement>document.querySelector('#level')).value);
+    this.storage.setItem('level_save', this.gameState.level);
+    if (this.storage.getItem('level_' + this.gameState.level) > 0) {
+      document.querySelector('#wins')!.innerHTML = this.storage.getItem('level_' + this.gameState.level) + ' win!';
     } else {
       document.querySelector('#wins')!.innerHTML = '';
     }
@@ -551,12 +551,12 @@ export class BoardGamejs {
     if (this.logArray.length === 0) {
       if (this.gameState.winner == 1) {
         this.view.ViewState.message = 'You win!';
-        this.storage.setItem('level_' + (<HTMLSelectElement>document.querySelector('#level')).value,
-          parseInt(this.storage.getItem('level_' + (<HTMLSelectElement>document.querySelector('#level')).value)) + 1);
+        this.storage.setItem('level_' + this.gameState.level,
+          parseInt(this.storage.getItem('level_' + this.gameState.level)) + 1);
         this.endgame();
       } else if (this.gameState.winner == -1) {
         this.view.ViewState.message = 'You lose...';
-        this.storage.setItem('level_' + (<HTMLSelectElement>document.querySelector('#level')).value, 0);
+        this.storage.setItem('level_' + this.gameState.level, 0);
         this.endgame();
       } else if (this.gameState.winner === 0) {
         if (this.gameState.map_list[JSON.stringify(this.gameState.thisMap)] >= Rule.LIMIT_1000DAY) {
@@ -568,8 +568,8 @@ export class BoardGamejs {
       }
     }
 
-    if (this.storage.getItem('level_' + (<HTMLSelectElement>document.querySelector('#level')).value) > 0) {
-      document.querySelector('#wins')!.innerHTML = this.storage.getItem('level_' + (<HTMLSelectElement>document.querySelector('#level')).value) + ' win!';
+    if (this.storage.getItem('level_' + this.gameState.level) > 0) {
+      document.querySelector('#wins')!.innerHTML = this.storage.getItem('level_' + this.gameState.level) + ' win!';
     } else {
       document.querySelector('#wins')!.innerHTML = '';
     }
@@ -868,7 +868,7 @@ export class BoardGamejs {
       this.startMap[44] + ',' +
       this.startMap[14];
     let log = '&log=' + this.encodeLog(this.logArray2);
-    log += '&lv=' + (<HTMLSelectElement>document.querySelector('#level')).value;
+    log += '&lv=' + this.gameState.level;
     location.href = url + init + log;
   }
   /** 
@@ -885,7 +885,7 @@ export class BoardGamejs {
       this.startMap[44] + ',' +
       this.startMap[14];
     let log = '%26log=' + this.encodeLog(this.logArray2);
-    log += '%26lv=' + (<HTMLSelectElement>document.querySelector('#level')).value;
+    log += '%26lv=' + this.gameState.level;
     window.open('https://twitter.com/intent/tweet?text=' + url + init + log + '%20%23colamone');
   }
   /** 

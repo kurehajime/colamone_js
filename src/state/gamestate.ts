@@ -23,4 +23,5 @@ export class GameState {
   ]);
   public hover_piece: (number | null) = null;
   public map_list: { [index: string]: number; } = {};
+  public level : number = 1;
 }
