@@ -1,12 +1,10 @@
-import { MapArray, Hand } from "./rule";
+import { MapArray, Hand } from "../logic/rule";
 export class GameState {
   public goaled = false;
   public turn_player: number = 0;
   public blueScore = 0;
   public redScore = 0;
   public winner: (number | null) = null;
-  public message = '';
-  public demo = true;
   public thisHand: (Hand | undefined) = undefined;
   /*  let thisMap = {
       0: -1, 10: -2, 20: -3, 30: -4, 40: -5, 50: -6,
@@ -23,10 +21,6 @@ export class GameState {
     3, 0, 0, 0, 0, -5, -7, 0, 0, 8, 2,
     0, 0, 0, 0, -6, 0, 0, 0, 0, 1
   ]);
-  public mouse_x = 0;
-  public mouse_y = 0;
   public hover_piece: (number | null) = null;
-  public demo_inc = 0;
-  public autoLog = false;
-  public isTouch = true;
+  public map_list: { [index: string]: number; } = {};
 }

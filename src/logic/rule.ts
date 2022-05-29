@@ -4,6 +4,7 @@ export type Hand = [number, number];
 export type MapArray = Int8Array;
 export type HandNode = [Hand, MapArray];
 export class Rule {
+   public static LIMIT_1000DAY = 3;
     /** 
  * 駒の進める方向 
  * @const 
@@ -299,5 +300,22 @@ export class Rule {
             }
         }
         return nodeList;
+    }
+
+    /** 
+     * 千日手
+     */
+     static is1000day(wkMap: MapArray,map_list:{ [index: string]: number }):[boolean,{ [index: string]: number }] {
+        let map_json = JSON.stringify(wkMap);
+        if (map_list[map_json] === undefined) {
+            map_list[map_json] = 1;
+            return [false,map_list];
+        } else {
+            map_list[map_json] += 1;
+        }
+        if (map_list[map_json] >= this.LIMIT_1000DAY) {
+            return [true,map_list];
+        }
+        return [false,map_list];
     }
 }

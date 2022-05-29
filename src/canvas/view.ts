@@ -1,9 +1,9 @@
 
-import { GameState } from "../logic/gamestate";
+import { GameState } from "../state/gamestate";
 import { Rule, MapArray, Hand } from "../logic/rule";
 import * as params from "./params";
 import { Utils } from "./utils";
-import { ViewState } from "./viewState";
+import { ViewState } from "../state/viewState";
 
 export class View {
   public ViewState: ViewState;
@@ -133,26 +133,24 @@ export class View {
     // 選択したコマを表示
     this.ctx!.drawImage(this.drawHoverPiece(gameState), 0, 0, this.CANV_SIZE, this.CANV_SIZE);
 
-    if ((gameState.mouse_x !== 0 || gameState.mouse_y !== 0) && gameState.demo === false) {
+    if ((this.ViewState.mouse_x !== 0 || this.ViewState.mouse_y !== 0) && this.ViewState.demo === false) {
       // フォーカスを描画
       this.ctx!.drawImage(this.drawFocus(gameState), 0, 0, this.CANV_SIZE, this.CANV_SIZE);
     }
 
     //スコアを表示
     if (gameState.goaled || gameState.winner !== null) {
-      if (gameState.demo === false && gameState.autoLog == false) {
+      if (this.ViewState.demo === false && this.ViewState.autoLog == false) {
         this.ctx!.drawImage(this.drawScore(gameState), 0, 0, this.CANV_SIZE, this.CANV_SIZE);
       }
     }
     // メッセージを描画
-    this.ctx!.drawImage(this.drawOverlay(gameState), 0, 0, this.CANV_SIZE, this.CANV_SIZE);
+    this.ctx!.drawImage(this.drawOverlay(), 0, 0, this.CANV_SIZE, this.CANV_SIZE);
 
     // カバーを描画
-    if (gameState.demo === true) {
-      this.ctx!.drawImage(this.drawCover(gameState), 0, 0, this.CANV_SIZE, this.CANV_SIZE);
+    if (this.ViewState.demo === true) {
+      this.ctx!.drawImage(this.drawCover(), 0, 0, this.CANV_SIZE, this.CANV_SIZE);
     }
-
-
   }
 
   /** 
@@ -168,7 +166,7 @@ export class View {
   /** 
    * カバー描画
    */
-  private drawCover(gameState: GameState) {
+  private drawCover() {
     // 背景
     let ctx_cover = this.canv_cover!.getContext('2d');
     ctx_cover!.clearRect(0, 0, this.CANV_SIZE, this.CANV_SIZE);
@@ -198,7 +196,7 @@ export class View {
     // 文字
     let fontsize = Math.round(this.ViewState.CellSize * 0.5);
     let message = 'Play';
-    message += (gameState.demo_inc % 10 == 0) ? " " : "";
+    message += (this.ViewState.demo_inc % 10 == 0) ? " " : "";
     ctx_cover!.shadowBlur = 0;
     ctx_cover!.shadowOffsetX = 0;
     ctx_cover!.shadowOffsetY = 0;
@@ -291,8 +289,8 @@ export class View {
    */
   private drawFocus(gameState: GameState) {
     // 選択マスを強調
-    let x = gameState.mouse_x - (gameState.mouse_x % this.ViewState.CellSize);
-    let y = gameState.mouse_y - (gameState.mouse_y % this.ViewState.CellSize);
+    let x = this.ViewState.mouse_x - (this.ViewState.mouse_x % this.ViewState.CellSize);
+    let y = this.ViewState.mouse_y - (this.ViewState.mouse_y % this.ViewState.CellSize);
     let ctx_focus = this.canv_focus!.getContext('2d');
     let grad = ctx_focus!.createRadialGradient(x, y, 0, x, y, this.ViewState.CellSize);
     grad.addColorStop(0.3, params.COLOR_SELECT);
@@ -305,7 +303,7 @@ export class View {
     ctx_focus!.fillRect(x, y, this.ViewState.CellSize, this.ViewState.CellSize);
 
 
-    if (gameState.isTouch === true && gameState.hover_piece === null) {
+    if (this.ViewState.isTouch === true && gameState.hover_piece === null) {
       return this.canv_focus;
     }
 
@@ -391,8 +389,8 @@ export class View {
   private drawHoverPiece(gameState: GameState) {
     let ctx_hover = this.canv_hover_piece!.getContext('2d');
     ctx_hover!.clearRect(0, 0, this.CANV_SIZE, this.CANV_SIZE);
-    let x = gameState.mouse_x - (this.ViewState.CellSize / 2);
-    let y = gameState.mouse_y - (this.ViewState.CellSize / 2);
+    let x = this.ViewState.mouse_x - (this.ViewState.CellSize / 2);
+    let y = this.ViewState.mouse_y - (this.ViewState.CellSize / 2);
     if (gameState.hover_piece !== null) {
       this.drawPiece(ctx_hover as CanvasRenderingContext2D, x, y, gameState.thisMap[gameState.hover_piece!], false);
     }
@@ -655,14 +653,14 @@ export class View {
   /** 
    * メッセージを描画
    */
-  private drawOverlay(gameState: GameState) {
+  private drawOverlay() {
     let ctx_overlay = this.canv_overlay!.getContext('2d');
     let x = this.ViewState.CellSize * 1.3;
     let y = this.ViewState.CellSize * 2.5;
 
     ctx_overlay!.clearRect(0, 0, this.CANV_SIZE, this.CANV_SIZE);
 
-    if (gameState.message === '') {
+    if (this.ViewState.message === '') {
       return this.canv_overlay;
     }
     ctx_overlay!.shadowBlur = 10;
@@ -685,7 +683,7 @@ export class View {
     ctx_overlay!.textBaseline = 'middle';
     ctx_overlay!.textAlign = 'center';
     ctx_overlay!.beginPath();
-    ctx_overlay!.fillText(gameState.message, this.ViewState.CellSize * 3, this.ViewState.CellSize * 3);
+    ctx_overlay!.fillText(this.ViewState.message, this.ViewState.CellSize * 3, this.ViewState.CellSize * 3);
 
     return this.canv_overlay;
   }

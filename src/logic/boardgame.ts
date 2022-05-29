@@ -1,7 +1,7 @@
 /* @license Copyright (c) @kurehajime / source code: https://github.com/kurehajime/colamone_js */
 import { Rule, MapArray, Hand } from "./rule";
 import { Aijs } from "./ai";
-import { GameState } from "./gamestate";
+import { GameState } from "../state/gamestate";
 import { View } from "../canvas/view";
 
 export class BoardGamejs {
@@ -12,8 +12,6 @@ export class BoardGamejs {
   private thinktime = 0.0;
   private intervalID: (number | null) = null;
   private intervalID_log: (number | null) = null;
-  private map_list: { [index: string]: number; } = {};
-  private readonly LIMIT_1000DAY = 3;
   private startMap: MapArray = new Int8Array();
   private logPointer = 0;
   private logArray: Array<MapArray> = [];
@@ -64,19 +62,19 @@ export class BoardGamejs {
     }
 
     this.gameState.turn_player = 1;
-    this.gameState.demo = true;
+    this.view.ViewState.demo = true;
 
     this.view.init();
 
 
 
     if ('ontouchstart' in window) {
-      this.gameState.isTouch = true;
+      this.view.ViewState.isTouch = true;
     } else {
-      this.gameState.isTouch = false;
+      this.view.ViewState.isTouch = false;
     }
     // イベントを設定
-    if (this.gameState.isTouch) {
+    if (this.view.ViewState.isTouch) {
       (<HTMLElement>document.querySelector('#canv')).addEventListener('touchstart', this.ev_mouseClick);
       (<HTMLElement>document.querySelector('#canv')).addEventListener('touchmove', this.ev_touchMove, { passive: false });
     } else {
@@ -197,15 +195,15 @@ export class BoardGamejs {
     if (this.logArray.length === 0) {
       if (this.isBot() == false) {
         window.setTimeout(() => {
-          if (this.gameState.demo == true) {
+          if (this.view.ViewState.demo == true) {
             this.intervalID = window.setInterval(() => { this.playDemo() }, 400);
             this.playDemo();
           }
         }, 500);
       }
     } else {
-      this.gameState.demo = false;
-      this.gameState.autoLog = true;
+      this.view.ViewState.demo = false;
+      this.view.ViewState.autoLog = true;
       this.intervalID_log = window.setInterval(() => { this.playLog() }, 1000);
     }
     this.gameState.goaled = false;
@@ -223,7 +221,7 @@ export class BoardGamejs {
         this.ai(1);
       }
     }
-    this.gameState.demo_inc++;
+    this.view.ViewState.demo_inc++;
     this.calcScore();
     this.view.flush(this.gameState, false, false);
     if (this.gameState.winner === 1 || this.gameState.winner === -1 || this.gameState.winner === 0) {
@@ -232,7 +230,7 @@ export class BoardGamejs {
       this.view.flush(this.gameState, false, false);
       this.shuffleBoard();
     }
-    if (this.gameState.demo_inc > 42) {
+    if (this.view.ViewState.demo_inc > 42) {
       window.clearInterval(this.intervalID as number);
     }
   }
@@ -242,7 +240,7 @@ export class BoardGamejs {
    */
   private playLog() {
 
-    if (this.intervalID_log !== null && this.gameState.autoLog == true) {
+    if (this.intervalID_log !== null && this.view.ViewState.autoLog == true) {
       this.move_next();
     } else {
       clearInterval(this.intervalID_log as number);
@@ -305,13 +303,13 @@ export class BoardGamejs {
    */
   private ev_mouseClick = (e: MouseEvent | TouchEvent | null): boolean => {
     this.getMousePosition(e);
-    let target = Math.floor(this.gameState.mouse_x / this.view.ViewState.CellSize) * 10 + Math.floor(this.gameState.mouse_y / this.view.ViewState.CellSize);
+    let target = Math.floor(this.view.ViewState.mouse_x / this.view.ViewState.CellSize) * 10 + Math.floor(this.view.ViewState.mouse_y / this.view.ViewState.CellSize);
     if (this.gameState.winner !== null || this.logArray.length !== 0) {
       this.reloadnew();
       return true;
     }
-    if (this.gameState.demo === true) {
-      this.gameState.demo = false;
+    if (this.view.ViewState.demo === true) {
+      this.view.ViewState.demo = false;
       this.gameState.thisHand = undefined;
       this.gameState.thisMap = Rule.copyMap(this.startMap);
       this.logArray2 = [];
@@ -356,7 +354,7 @@ export class BoardGamejs {
 
 
         // AIが考える。
-        this.gameState.message = 'thinking...';
+        this.view.ViewState.message = 'thinking...';
         window.setTimeout(() => {
           this.view.flush(this.gameState, false, false);
         }, 50);
@@ -364,7 +362,7 @@ export class BoardGamejs {
         if (this.gameState.winner === null) {
           window.setTimeout(() => {
             this.ai(parseInt((<HTMLSelectElement>document.querySelector('#level')).value));
-            this.gameState.message = '';
+            this.view.ViewState.message = '';
             this.updateMessage();
             this.view.flush(this.gameState, false, false);
           }, 250);
@@ -389,7 +387,7 @@ export class BoardGamejs {
     }
     this.gameState.thisMap = Rule.copyMap(this.startMap);
     this.gameState.thisHand = undefined;
-    this.map_list = {};
+    this.gameState.map_list = {};
     this.logArray2 = [];
     this.view.flush(this.gameState, false, false);
   }
@@ -535,10 +533,10 @@ export class BoardGamejs {
       }
     }
     let rect = e.target.getBoundingClientRect();
-    this.gameState.mouse_x = e.clientX - rect.left;
-    this.gameState.mouse_y = e.clientY - rect.top;
-    this.gameState.mouse_x = this.gameState.mouse_x * this.view.ViewState.Ratio;
-    this.gameState.mouse_y = this.gameState.mouse_y * this.view.ViewState.Ratio;
+    this.view.ViewState.mouse_x = e.clientX - rect.left;
+    this.view.ViewState.mouse_y = e.clientY - rect.top;
+    this.view.ViewState.mouse_x = this.view.ViewState.mouse_x * this.view.ViewState.Ratio;
+    this.view.ViewState.mouse_y = this.view.ViewState.mouse_y * this.view.ViewState.Ratio;
   }
 
   /** 
@@ -552,19 +550,19 @@ export class BoardGamejs {
     document.querySelector('#time')!.innerHTML = '(' + (this.thinktime.toFixed(3)) + 'sec)';
     if (this.logArray.length === 0) {
       if (this.gameState.winner == 1) {
-        this.gameState.message = 'You win!';
+        this.view.ViewState.message = 'You win!';
         this.storage.setItem('level_' + (<HTMLSelectElement>document.querySelector('#level')).value,
           parseInt(this.storage.getItem('level_' + (<HTMLSelectElement>document.querySelector('#level')).value)) + 1);
         this.endgame();
       } else if (this.gameState.winner == -1) {
-        this.gameState.message = 'You lose...';
+        this.view.ViewState.message = 'You lose...';
         this.storage.setItem('level_' + (<HTMLSelectElement>document.querySelector('#level')).value, 0);
         this.endgame();
       } else if (this.gameState.winner === 0) {
-        if (this.map_list[JSON.stringify(this.gameState.thisMap)] >= this.LIMIT_1000DAY) {
-          this.gameState.message = '3fold repetition';
+        if (this.gameState.map_list[JSON.stringify(this.gameState.thisMap)] >= Rule.LIMIT_1000DAY) {
+          this.view.ViewState.message = '3fold repetition';
         } else {
-          this.gameState.message = '-- Draw --';
+          this.view.ViewState.message = '-- Draw --';
         }
         this.endgame();
       }
@@ -621,7 +619,9 @@ export class BoardGamejs {
         this.gameState.winner = 0;
       }
     } else {
-      if (this.is1000day(this.gameState.thisMap) === true) {
+      const [is1000day,map_list] = Rule.is1000day(this.gameState.thisMap,this.gameState.map_list)
+      this.gameState.map_list = map_list
+      if (is1000day) {
         this.gameState.winner = 0;
       }
     }
@@ -655,22 +655,6 @@ export class BoardGamejs {
   }
 
 
-  /** 
-   * 千日手
-   */
-  private is1000day(wkMap: MapArray) {
-    let map_json = JSON.stringify(wkMap);
-    if (this.map_list[map_json] === undefined) {
-      this.map_list[map_json] = 1;
-      return false;
-    } else {
-      this.map_list[map_json] += 1;
-    }
-    if (this.map_list[map_json] >= this.LIMIT_1000DAY) {
-      return true;
-    }
-    return false;
-  }
 
   /** 
    * 手の数を取得
@@ -796,7 +780,7 @@ export class BoardGamejs {
    */
   private move_start() {
     this.logPointer = 0;
-    this.gameState.autoLog = false;
+    this.view.ViewState.autoLog = false;
     this.gameState.thisMap = Rule.copyMap(this.logArray[this.logPointer]);
     this.gameState.winner = null;
     this.gameState.goaled = false;
@@ -809,7 +793,7 @@ export class BoardGamejs {
    */
   private move_prev() {
     if (this.logPointer <= 0) { return; }
-    this.gameState.autoLog = false;
+    this.view.ViewState.autoLog = false;
     this.logPointer -= 1;
     this.gameState.thisMap = Rule.copyMap(this.logArray[this.logPointer]);
     this.gameState.winner = null;
@@ -834,7 +818,7 @@ export class BoardGamejs {
    */
   private move_end() {
     this.logPointer = this.logArray.length - 1;
-    this.gameState.autoLog = false;
+    this.view.ViewState.autoLog = false;
     this.gameState.thisMap = Rule.copyMap(this.logArray[this.logPointer]);
     this.updateMessage();
     this.view.flush(this.gameState, false, false);
@@ -847,7 +831,7 @@ export class BoardGamejs {
     let url = document.location.href.split('?')[0];
 
     //demo中ならdemoを終了
-    if (this.gameState.demo === true) {
+    if (this.view.ViewState.demo === true) {
       this.ev_mouseClick(null);
       return;
     }
@@ -863,7 +847,7 @@ export class BoardGamejs {
       this.gameState.thisMap = Rule.copyMap(this.startMap);
       this.shuffleBoard();
       this.logArray2 = [];
-      this.gameState.message = '';
+      this.view.ViewState.message = '';
       this.gameState.winner = null;
       this.gameState.turn_player = 1;
       this.view.flush(this.gameState, false, false);
