@@ -326,7 +326,7 @@ export class BoardGamejs {
    */
   private ev_radioChange = () => {
     let wins: number | null = null;
-    this.gameState.level = parseInt((<HTMLSelectElement>document.querySelector('#level')).value);
+    this.gameState.level = this.uiController.getLevel()
     this.storage.setItem('level_save', this.gameState.level);
     if (this.storage.getItem('level_' + this.gameState.level) > 0) {
       wins = this.storage.getItem('level_' + this.gameState.level)
