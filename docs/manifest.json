@@ -10,5 +10,5 @@
     {"src": "https://xiidec.appspot.com/apple-touch-icon-512x512.png", "sizes": "512x512", "type": "image/png"}
     ],
   "display": "standalone",
-  "start_url": "https://xiidec.appspot.com/colamone/colamone.html"
+  "start_url": "https://colamone.com"
 }
