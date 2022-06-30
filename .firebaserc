@@ -1,5 +1,25 @@
 {
   "projects": {
     "default": "colamone-26f99"
-  }
+  },
+  "headers": [{
+    "source": "**/*.@(jpg|jpeg|gif|png)",
+    "headers": [ {
+      "key": "Cache-Control",
+      "value": "max-age=5184000"
+    }]
+  }, {
+    "source": "**/*.@(js)",
+    "headers": [ {
+      "key": "Cache-Control",
+      "value": "max-age=604800"
+    }]
+  },
+  {
+    "source": "**/*.@(css)",
+    "headers": [ {
+      "key": "Cache-Control",
+      "value": "max-age=1209600"
+    }]
+  }]
 }
