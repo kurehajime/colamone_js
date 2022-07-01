@@ -39,8 +39,9 @@ export default function Hover(props: Props) {
     }, [props.hover_piece])
 
     useEffect(() => {
-        setHoverX(props.clickedX)
-        setHoverY(props.clickedY)
+        const plus = (Params.CANV_SIZE / 6) / 2;
+        setHoverX(props.clickedX - plus)
+        setHoverY(props.clickedY - plus)
         setCellNumber(Util.pointToCellNumber(
             props.w,
             props.h,

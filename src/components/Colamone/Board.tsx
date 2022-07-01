@@ -76,9 +76,8 @@ export default function Board(props: Props) {
                 e.nativeEvent.offsetY
             );
             
-        const plus = (Params.CANV_SIZE / 6) / 2;
-            setHoverX(e.nativeEvent.offsetX - plus)
-            setHoverY(e.nativeEvent.offsetY - plus)
+            setHoverX(e.nativeEvent.offsetX)
+            setHoverY(e.nativeEvent.offsetY)
             props.clickCell(cellNumber)
         }
     }
