@@ -75,7 +75,7 @@ export default function Background(props: Props) {
             drawBoard(bg1.current, canvas);
             drawBoard2(bg2.current, canvas);
         }
-    })
+    },[])
 
     return (<g>
         <image ref={bg1} x={props.x} y={props.y} width={props.w} height={props.h} />
