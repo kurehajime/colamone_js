@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { ReactElement, useCallback, useEffect, useRef, useState } from "react";
 import { Piece } from "../../model/Piece";
 import Params from "../../static/Params";
 import { Rule } from "../../static/Rule";
@@ -75,7 +75,7 @@ export default function Hover(props: Props) {
         return []
     },[props.map,props.touch,props.hover_piece,cellNumber])
 
-    const getSelectPiece = useCallback(() =>{
+    const getSelectPiece = useCallback(():ReactElement[] =>{
         const canvSize = Params.CANV_SIZE ;
         const cellSize = canvSize / 6;
         const plus = (Params.CANV_SIZE / 6) / 2;
@@ -84,8 +84,9 @@ export default function Hover(props: Props) {
         let x = hx - (hx % cellSize);
         let y = hy - (hy % cellSize);
         if(hoverX + plus !==0 && hoverY + plus !==0){
-            return (<rect key ={10000}  x={x} y={y} width={cellSize} height={cellSize} fill="#7fed7f" fillOpacity="0.3" />)
+            return [<rect key ={10000}  x={x} y={y} width={cellSize} height={cellSize} fill="#7fed7f" fillOpacity="0.3" />]
         }
+        return []
     },[cellNumber])
 
     return (<g className="hover"  onMouseMove={mouseMove}> 
@@ -118,7 +119,7 @@ export default function Hover(props: Props) {
                 }
                 )
             ).concat(
-                [getSelectPiece()]
+                getSelectPiece()
             )
         }
     </g >)
