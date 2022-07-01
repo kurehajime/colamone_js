@@ -10,27 +10,27 @@
       "source": "**/*.@(jpg|jpeg|gif|png)",
       "headers": [ {
         "key": "Cache-Control",
-        "value": "max-age=5184000"
+        "value": "max-age=31536000"
       }]
     }, {
       "source": "**/*.@(js)",
       "headers": [ {
         "key": "Cache-Control",
-        "value": "max-age=604800"
+        "value": "max-age=31536000"
       }]
     },
     {
       "source": "**/*.@(css)",
       "headers": [ {
         "key": "Cache-Control",
-        "value": "max-age=1209600"
+        "value": "max-age=31536000"
       }]
     },
     {
       "source": "**/*.@(woff|woff2)",
       "headers": [ {
         "key": "Cache-Control",
-        "value": "max-age=10368000"
+        "value": "max-age=31536000"
       }]
     }]
   }

@@ -67,7 +67,7 @@ export default function Panel(props: Props) {
 
         </div>
         <span id="sns"> <a href="https://twitter.com/share" className="twitter-share-button" data-dnt="true"
-            data-url="https://colamone.com" data-hashtags="colamone, boardgames"
+            data-url="https://colamone.com" data-hashtags="colamone,boardgames"
             data-lang="en" data-size="default"></a>
         </span>
     </div >)

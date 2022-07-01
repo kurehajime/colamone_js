@@ -1,7 +1,6 @@
 {
   "name": "colamone",
   "version": "1.0.0",
-  "private": true,
   "homepage": "./",
   "dependencies": {
     "@types/node": "^16.11.38",
