@@ -98,7 +98,9 @@ export default function Hover(props: Props) {
                     const cy = y * cellSize + (cellSize / 2)
                     const r = (cellSize / 5) - (cellSize / 10)
                     return (   
-                        <circle className='canPut' cx={cx} cy={cy} r={r} fill="#7fed7f" fill-opacity="0.5"></circle>
+                        <circle 
+                        key={1000+p}
+                        className='canPut' cx={cx} cy={cy} r={r} fill="#7fed7f" fillOpacity="0.5"></circle>
                     )
                 }
                 )

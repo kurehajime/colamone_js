@@ -69,7 +69,7 @@ export default function Board(props: Props) {
 
 
 
-    const mouseClick = (e: React.MouseEvent<SVGSVGElement>) => {
+    const mouseClick = (e: React.PointerEvent<SVGSVGElement>) => {
         if (svg.current) {
             const cellNumber = Util.pointToCellNumber(
                 svg.current.getBoundingClientRect().width,
@@ -78,7 +78,7 @@ export default function Board(props: Props) {
                 e.nativeEvent.offsetY
             );
 
-            setTouch(e.nativeEvent instanceof TouchEvent)
+            setTouch((e.nativeEvent as PointerEvent)?.pointerType=== 'touch')
             setHoverX(e.nativeEvent.offsetX)
             setHoverY(e.nativeEvent.offsetY)
             props.clickCell(cellNumber)
@@ -93,7 +93,7 @@ export default function Board(props: Props) {
         hover_piece.push(hp)
     }
 
-    return (<svg ref={svg} width={Params.CANV_SIZE} height={Params.CANV_SIZE} onMouseDown={mouseClick} >
+    return (<svg ref={svg} width={Params.CANV_SIZE} height={Params.CANV_SIZE} onPointerDown={mouseClick} >
         <Background x={0} y={0} w={Params.CANV_SIZE} h={Params.CANV_SIZE} />
         {
             pieces.filter(p => { return p.number !== props.hover }).map(p => {
