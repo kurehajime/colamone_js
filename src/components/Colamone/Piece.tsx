@@ -154,20 +154,23 @@ export default function Piece(props: Props) {
             return canv_bk;
         };
 
-        img_bk.src = bg;
         if (piece1.current && piece2.current) {
             drawPiece1(piece1.current, canvas, props.number, props.goal);
             drawPiece2(piece2.current, canvas, props.number, props.goal);
             // 背景画像の読み込みが完了したら再実行
-            img_bk.onload = () => {
-                if (piece1.current) {
-                    drawPiece1(piece1.current, canvas, props.number, props.goal, img_bk);
-                }
-            };
+            if(!img_bk.src){
+                img_bk.onload = () => {
+                    if (piece1.current) {
+                        drawPiece1(piece1.current, canvas, props.number, props.goal, img_bk);
+                    }
+                };
+                img_bk.src = bg;
+            }
             if (img_bk.width !== 0) {
                 drawPiece1(piece1.current, canvas, props.number, props.goal, img_bk);
             }
         }
+        
     }, [props.display, props.goal, props.number])
 
     return (<g>

@@ -86,7 +86,6 @@ export default function Hover(props: Props) {
         if(hoverX + plus !==0 && hoverY + plus !==0){
             return (<rect key ={10000}  x={x} y={y} width={cellSize} height={cellSize} fill="#7fed7f" fillOpacity="0.3" />)
         }
-        return <></>
     },[cellNumber])
 
     return (<g className="hover"  onMouseMove={mouseMove}> 
