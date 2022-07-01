@@ -1,0 +1,8 @@
+{
+    "title":"colamone",
+    "description":"Colamone is a board game similar to chess.",
+    "replay":" View log ",
+    "tweetlog":" Tweet result ",
+    "howtoplay":"如何玩Colamone",
+    "manual":"（1）Colamone有點像象棋。\n（2）每個棋子可以向點的方向移動1個棋子。\n（3）如果棋子到達另一邊，你會得到積分。\n（4）如果你得到8分，你就贏了。\n（5）當一個棋子到達另一側時，\n    　　　你不能再移動它而敵人也不能剥夺。\n（6）當一名棋手不能再進行任何動作時，\n    　　　得分最高的棋手將獲勝。\n（7）如果棋盤上的當前位置出現3次，則結果為平局。"
+}
