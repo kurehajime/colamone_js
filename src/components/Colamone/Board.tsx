@@ -7,6 +7,7 @@ import Cover from "./Cover";
 import Message from "./Message";
 import { Hand } from "../../static/Rule";
 import Hover from "./Hover";
+import { Util } from "../../static/Util";
 type Props = {
     map: number[]
     hover: number | null
@@ -64,14 +65,11 @@ export default function Board(props: Props) {
         return pieces;
     }
 
-    const pointToCellNumber = (width: number, height: number, x: number, y: number) => {
-        const cellSize = width / 6;
-        return Math.floor(x / cellSize) * 10 + Math.floor(y / cellSize);
-    }
+
 
     const mouseClick = (e: React.MouseEvent<SVGSVGElement>) => {
         if (svg.current) {
-            const cellNumber = pointToCellNumber(
+            const cellNumber = Util.pointToCellNumber(
                 svg.current.getBoundingClientRect().width,
                 svg.current.getBoundingClientRect().height,
                 e.nativeEvent.offsetX,
@@ -118,7 +116,7 @@ export default function Board(props: Props) {
             clickedX={hoverX}
             clickedY={hoverY}
             hover_piece={hover_piece}
-
+            map={props.map}
        ></Hover>
         <Message
             x={0}

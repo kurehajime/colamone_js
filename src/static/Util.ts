@@ -239,4 +239,8 @@ export class Util {
     
         return 'en';
     }
+    static pointToCellNumber (width: number, height: number, x: number, y: number) :number {
+        const cellSize = width / 6;
+        return Math.floor(x / cellSize) * 10 + Math.floor(y / cellSize);
+    }
 }
