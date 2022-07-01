@@ -20,6 +20,8 @@ export default function Board(props: Props) {
     const svg = useRef<SVGSVGElement>(null)
     const [hoverX, setHoverX] = useState(0)
     const [hoverY, setHoverY] = useState(0)
+    const [touch, setTouch] = useState(false)
+
 
     const makePiece = (number: number): Piece => {
         return {
@@ -75,7 +77,8 @@ export default function Board(props: Props) {
                 e.nativeEvent.offsetX,
                 e.nativeEvent.offsetY
             );
-            
+
+            setTouch(e.nativeEvent instanceof TouchEvent)
             setHoverX(e.nativeEvent.offsetX)
             setHoverY(e.nativeEvent.offsetY)
             props.clickCell(cellNumber)
@@ -114,6 +117,7 @@ export default function Board(props: Props) {
             h={Params.CANV_SIZE}
             clickedX={hoverX}
             clickedY={hoverY}
+            touch={touch}
             hover_piece={hover_piece}
             map={props.map}
        ></Hover>

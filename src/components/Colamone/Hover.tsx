@@ -13,6 +13,7 @@ type Props = {
     map:number[]
     clickedX:number
     clickedY:number
+    touch:boolean
     hover_piece: Piece[]
 }
 export default function Hover(props: Props) {
@@ -63,13 +64,16 @@ export default function Hover(props: Props) {
     }
 
     const canput = useCallback(():number[] =>{
+        if (props.hover_piece.length === 0 && props.touch) {
+            return []
+        }
         if(cellNumber){
             if(props.map[cellNumber]>0){
                 return Rule.getCanMovePanelX(cellNumber, new Int8Array(props.map));
             }
         }
         return []
-    },[props.map,cellNumber])
+    },[props.map,props.touch,props.hover_piece,cellNumber])
 
     return (<g className="hover"  onMouseMove={mouseMove}> 
         <image ref={bg1} x={props.x} y={props.y} width={props.w} height={props.h} />
