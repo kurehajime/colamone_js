@@ -165,9 +165,10 @@ export default function Piece(props: Props) {
                     }
                 };
                 img_bk.src = bg;
-            }
-            if (img_bk.width !== 0) {
-                drawPiece1(piece1.current, canvas, props.number, props.goal, img_bk);
+                
+                if (img_bk.width !== 0) {
+                    drawPiece1(piece1.current, canvas, props.number, props.goal, img_bk);
+                }
             }
         }
         
