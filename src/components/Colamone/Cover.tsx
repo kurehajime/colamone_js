@@ -75,7 +75,7 @@ export default function Cover(props: Props) {
             const canvas = document.createElement("canvas");
             drawCover(bg1.current, canvas, props.demo_inc);
         }
-    }, [props.demo_inc, props.show])
+    }, [props.demo_inc])
 
     return (<g display={props.show ? "inline" : "none"}>
         <image ref={bg1} x={props.x} y={props.y} width={props.w} height={props.h} />
