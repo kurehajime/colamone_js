@@ -179,24 +179,6 @@ export class Util {
         } else if (screen.height < 500) {
             viewport?.setAttribute('content', 'height=500,user-scalable=no');
         }
-        // iOS9のViewportはなぜか機能してくれない。
-        if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-            let w = screen.width;
-            let w2 = 520;
-            if (Math.abs(window.orientation as number) !== 0) {
-                w = screen.height;
-                w2 = 900;
-            }
-            let rate = Math.round((w / w2) * 1000) / 1000.0;
-            if (rate == Math.round(rate)) { // iOS 9のViewportは整数指定すると機能しない
-                rate += 0.0001;
-            }
-
-            viewport?.setAttribute(
-                'content',
-                'initial-scale=' + rate + ', minimum-scale=' + rate + ', maximum-scale=' + rate + ', user-scalable=no'
-            );
-        }
     }
     static getLang():string{
         const paramObj :{ [name: string]: string } = {};
