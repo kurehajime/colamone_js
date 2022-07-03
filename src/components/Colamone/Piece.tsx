@@ -166,11 +166,11 @@ export default function Piece(props: Props) {
                 
             }else{
                 drawPiece1(piece1.current, canvas, props.number, props.goal);
-                drawPiece2(piece2.current, canvas, props.number, props.goal);
             }
             if (img_bk.width !== 0) {
                 drawPiece1(piece1.current, canvas, props.number, props.goal, img_bk);
             }
+            drawPiece2(piece2.current, canvas, props.number, props.goal);
         }
         
     }, [props.display, props.goal, props.number])
