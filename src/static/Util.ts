@@ -172,12 +172,12 @@ export class Util {
             if (screen.width < screen.height) {
                 viewport?.setAttribute('content', 'width=500,user-scalable=no');
             } else {
-                viewport?.setAttribute('content', 'height=500');
+                viewport?.setAttribute('content', 'height=500,user-scalable=no');
             }
         } else if (screen.width < 500) {
             viewport?.setAttribute('content', 'width=500,user-scalable=no');
         } else if (screen.height < 500) {
-            viewport?.setAttribute('content', 'height=500');
+            viewport?.setAttribute('content', 'height=500,user-scalable=no');
         }
 
     }
