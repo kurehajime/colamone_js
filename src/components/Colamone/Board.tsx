@@ -83,6 +83,7 @@ export default function Board(props: Props) {
             setHoverY(e.nativeEvent.offsetY)
             props.clickCell(cellNumber)
         }
+        e.preventDefault()
     }
 
     const pieces = mapToPieces(Params.CANV_SIZE, Params.CANV_SIZE, props.map);
