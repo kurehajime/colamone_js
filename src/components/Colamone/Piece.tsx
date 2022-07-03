@@ -155,8 +155,6 @@ export default function Piece(props: Props) {
         };
 
         if (piece1.current && piece2.current) {
-            drawPiece1(piece1.current, canvas, props.number, props.goal);
-            drawPiece2(piece2.current, canvas, props.number, props.goal);
             // 背景画像の読み込みが完了したら再実行
             if(!img_bk.src){
                 img_bk.onload = () => {
@@ -166,9 +164,12 @@ export default function Piece(props: Props) {
                 };
                 img_bk.src = bg;
                 
-                if (img_bk.width !== 0) {
-                    drawPiece1(piece1.current, canvas, props.number, props.goal, img_bk);
-                }
+            }else{
+                drawPiece1(piece1.current, canvas, props.number, props.goal);
+                drawPiece2(piece2.current, canvas, props.number, props.goal);
+            }
+            if (img_bk.width !== 0) {
+                drawPiece1(piece1.current, canvas, props.number, props.goal, img_bk);
             }
         }
         
