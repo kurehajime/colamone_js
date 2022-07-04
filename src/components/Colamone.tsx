@@ -177,6 +177,15 @@ export default function Colamone() {
     ></Panel>
     },[gameState.blueScore,gameState.redScore,gameState.level,gameState.manual,gameState.mode])
 
+    const head = useMemo(() => {
+        return <Header></Header>
+    },[])
+
+    const footer = useMemo(() => {
+        return <Footer></Footer>
+    },[])
+
+
     //------------------------------------
 
     useEffect(() => {
@@ -194,7 +203,7 @@ export default function Colamone() {
 
     return (
         <span>
-            <Header></Header>
+            {head}
             <div id="page">
                 <div id="main">
                     <div id="canv">
@@ -212,7 +221,7 @@ export default function Colamone() {
                     {panel}
                 </div>
             </div>
-            <Footer></Footer>
+            {footer}
         </span >
     );
 }
