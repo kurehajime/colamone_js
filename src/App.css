@@ -6,8 +6,7 @@
   font-weight: 400;
   font-display: swap;
   src: local('Play Regular'), local('Play-Regular'),
-    url('./assets/play-v8-latin-regular.woff2') format('woff2'),
-    url('./assets/play-v8-latin-regular.woff') format('woff');
+    url('./assets/play-v8-latin-regular.woff2') format('woff2');
 }
 
 /* play-700 - latin */
@@ -17,8 +16,7 @@
   font-weight: 700;
   font-display: swap;
   src: local('Play Bold'), local('Play-Bold'),
-    url('./assets/play-v8-latin-700.woff2') format('woff2'),
-    url('./assets/play-v8-latin-700.woff') format('woff');
+    url('./assets/play-v8-latin-700.woff2') format('woff2');
 }
 
 body {
