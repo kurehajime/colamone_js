@@ -7,10 +7,11 @@ import { Rule } from '../static/Rule';
 import { Util } from '../static/Util';
 import { Mode } from '../model/Mode';
 import GameState from '../model/GameState';
+import { useTimer } from 'use-timer';
 
 export default function Colamone() {
-    const [intervalID, setIntervalID] = useState<number>(-1);
     const [originalGameState, _setGameState] = useState<GameState>(new GameState(null))
+    const { time, start, pause } = useTimer({endTime:99});
     let gameState = originalGameState.clone();
 
 
@@ -23,18 +24,19 @@ export default function Colamone() {
      * Logを再生
      */
     const playLog = () => {
-        const _intervalID = window.setInterval(() => {
-            if (gameState.auto_log == true) {
+
+    }
+    useEffect(() => {
+        if (gameState.auto_log) {
+            if(time >=1){
                 gameState.move_next();
                 setGameState(gameState)
-            } else {
-                gameState.auto_log = false;
-                clearInterval(intervalID);
-                setGameState(gameState)
             }
-        }, 1500);
-        setIntervalID(_intervalID)
-    }
+        } else {
+            pause()
+            setGameState(gameState)
+        }
+    }, [time,gameState.auto_log])
 
     /** 
      * マウスクリック時処理
@@ -184,7 +186,7 @@ export default function Colamone() {
             gameState.demo = false
             gameState.auto_log = true
             gameState.mode = Mode.log
-            playLog()
+            start()
         }
         setGameState(gameState)
 
