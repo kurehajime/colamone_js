@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
-import Params from "../../static/Params";
-import { DrawUtil } from "../../static/DrawUtil";
+import Params from "../../../static/Params";
+import { DrawUtil } from "../../../static/DrawUtil";
 type Props = {
     show: boolean
     x: number

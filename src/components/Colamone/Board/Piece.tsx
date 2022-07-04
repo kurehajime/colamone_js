@@ -1,7 +1,7 @@
 import { useEffect, useRef} from "react";
-import Params from "../../static/Params";
-import bg from '../../assets/bk.gif';
-import { DrawUtil } from "../../static/DrawUtil";
+import Params from "../../../static/Params";
+import bg from '../../../assets/bk.gif';
+import { DrawUtil } from "../../../static/DrawUtil";
 import './Piece.css';
 
 type Props = {

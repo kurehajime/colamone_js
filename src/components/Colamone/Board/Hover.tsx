@@ -1,8 +1,8 @@
 import { ReactElement, useCallback, useEffect, useRef, useState } from "react";
-import { Piece } from "../../model/Piece";
-import Params from "../../static/Params";
-import { Rule } from "../../static/Rule";
-import { Util } from "../../static/Util";
+import { Piece } from "../../../model/Piece";
+import Params from "../../../static/Params";
+import { Rule } from "../../../static/Rule";
+import { Util } from "../../../static/Util";
 import PieceElement from './Piece';
 import './Hover.css';
 type Props = {

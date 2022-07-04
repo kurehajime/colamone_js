@@ -1,12 +1,12 @@
 import Params from "../../static/Params";
-import Background from './Background';
-import PieceElement from './Piece';
+import Background from './Board/Background';
+import PieceElement from './Board/Piece';
 import { useRef, useState } from "react";
 import { Piece } from "../../model/Piece";
-import Cover from "./Cover";
-import Message from "./Message";
+import Cover from "./Board/Cover";
+import Message from "./Board/Message";
 import { Hand } from "../../static/Rule";
-import Hover from "./Hover";
+import Hover from "./Board/Hover";
 import { Util } from "../../static/Util";
 type Props = {
     map: number[]

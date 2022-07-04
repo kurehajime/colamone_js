@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import Params from "../../static/Params";
+import Params from "../../../static/Params";
 type Props = {
     x: number
     y: number
