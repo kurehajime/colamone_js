@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Board from './Colamone/Board';
 import Panel from './Colamone/Panel';
 import Footer from './Colamone/Footer';
@@ -134,6 +134,47 @@ export default function Colamone() {
         _setGameState(gs.clone())
     }
 
+    const panel = useMemo(() => {
+        return                     <Panel
+        blueScore={Math.abs(gameState.blueScore)}
+        redScore={Math.abs(gameState.redScore)}
+        level={gameState.level}
+        manual={gameState.manual}
+        toggleManual={() => {
+            gameState.manual = !gameState.manual
+            setGameState(gameState)
+        }}
+        setLevel={
+            (x) => {
+                gameState.changeLevel(x)
+                setGameState(gameState)
+            }
+        }
+        mode={gameState.mode}
+        newGame={() => { reloadnew() }}
+        prevprev={() => {
+            gameState.move_start()
+            setGameState(gameState)
+        }}
+        prev={() => {
+            gameState.move_prev()
+            setGameState(gameState)
+        }}
+        next={() => {
+            gameState.move_next()
+            setGameState(gameState)
+        }}
+        nextnext={() => {
+            gameState.move_end()
+            setGameState(gameState)
+        }}
+        replay={() => {
+            Util.jumpkento(gameState.startMap, gameState.logArray2, gameState.level)
+        }}
+        tweet={() => { Util.tweetlog(gameState.startMap, gameState.logArray2, gameState.level) }}
+    ></Panel>
+    },[gameState.blueScore,gameState.redScore,gameState.level,gameState.manual,gameState.mode])
+
     //------------------------------------
 
     useEffect(() => {
@@ -166,45 +207,7 @@ export default function Colamone() {
                             }}
                         ></Board>
                     </div>
-                    <Panel
-                        blueScore={Math.abs(gameState.blueScore)}
-                        redScore={Math.abs(gameState.redScore)}
-                        level={gameState.level}
-                        manual={gameState.manual}
-                        toggleManual={() => {
-                            gameState.manual = !gameState.manual
-                            setGameState(gameState)
-                        }}
-                        setLevel={
-                            (x) => {
-                                gameState.changeLevel(x)
-                                setGameState(gameState)
-                            }
-                        }
-                        mode={gameState.mode}
-                        newGame={() => { reloadnew() }}
-                        prevprev={() => {
-                            gameState.move_start()
-                            setGameState(gameState)
-                        }}
-                        prev={() => {
-                            gameState.move_prev()
-                            setGameState(gameState)
-                        }}
-                        next={() => {
-                            gameState.move_next()
-                            setGameState(gameState)
-                        }}
-                        nextnext={() => {
-                            gameState.move_end()
-                            setGameState(gameState)
-                        }}
-                        replay={() => {
-                            Util.jumpkento(gameState.startMap, gameState.logArray2, gameState.level)
-                        }}
-                        tweet={() => { Util.tweetlog(gameState.startMap, gameState.logArray2, gameState.level) }}
-                    ></Panel>
-
+                    {panel}
                 </div>
             </div>
             <Footer></Footer>
