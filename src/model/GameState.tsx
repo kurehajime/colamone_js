@@ -276,6 +276,88 @@ export default class GameState {
         this.calcWinner()
     }
 
+    public aiTurn(setGameState:(gs:GameState)=>void) {
+        window.setTimeout(() => {
+            this.ai();
+            setGameState(this)
+        }, 250);
+    }
+
+    public resetMap () {
+        this.demo = false
+        this.hand = null
+        this.map = this.startMap
+        this.logArray2 = []
+        this.winner = null
+        this.mode = Mode.game
+        this.turnPlayer = 1
+    }
+
+    public reloadnew() {
+        let url = document.location.href.split('?')[0];
+
+        //demo中ならdemoを終了
+        if (this.demo === true) {
+            this.resetMap()
+            return;
+        }
+
+        // パラメータを取得
+        const paramObj = Util.getParam();
+        if (paramObj.lang) {
+            url += '?lang=' + paramObj.lang;
+        }
+        if (navigator.onLine) {
+            location.href = url;
+        } else {
+            this.resetMap()
+        }
+    }
+
+    
+    public panelSelect (target: number):boolean{
+        if (this.winner !== null || this.logArray.length !== 0) {
+            this.reloadnew();
+            return false;
+        }
+        if (this.demo === true) {
+            this.resetMap()
+            return false;
+        }
+
+        if (this.hover === null) {
+            if (this.map[target] * this.turnPlayer > 0) {
+                this.hover = target
+            }
+        } else {
+            if (target == this.hover) {
+                this.hover = null
+                return false;
+            }
+            const canm = Rule.getCanMovePanelX(this.hover, this.map);
+            if (canm.indexOf(target) >= 0) {
+                const _map = this.map.slice()
+                _map[target] = this.map[this.hover];
+                _map[this.hover] = 0;
+                this.map = _map
+                this.turnPlayer = this.turnPlayer * -1
+                this.logArray2 = this.logArray2.concat([[this.hover, target]])
+                this.hand = [this.hover, target]
+                this.hover = null
+
+                // AIが考える。
+                this.message = 'thinking...'
+                this.mapList = Rule.add1000day(this.map, this.mapList)
+                this.calcWinner()
+                if (this.winner === null) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
     /** 
     * ラジオボタン変更時処理
     */

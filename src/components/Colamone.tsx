@@ -3,7 +3,6 @@ import Board from './Colamone/Board';
 import Panel from './Colamone/Panel';
 import Footer from './Colamone/Footer';
 import Header from './Colamone/Header';
-import { Rule } from '../static/Rule';
 import { Util } from '../static/Util';
 import { Mode } from '../model/Mode';
 import GameState from '../model/GameState';
@@ -20,114 +19,26 @@ export default function Colamone() {
         window.addEventListener('orientationchange', Util.zoom);
     }
 
-    /** 
-     * Logを再生
-     */
-    const playLog = () => {
-
-    }
-    useEffect(() => {
-        if (gameState.auto_log) {
-            if(time >=1){
-                gameState.move_next();
-                setGameState(gameState)
-            }
-        } else {
-            pause()
-            setGameState(gameState)
-        }
-    }, [time,gameState.auto_log])
 
     /** 
      * マウスクリック時処理
      */
-    const ev_mouseClick = (target: number): boolean => {
-
-        if (gameState.winner !== null || gameState.logArray.length !== 0) {
-            reloadnew();
-            return true;
-        }
-        if (gameState.demo === true) {
-            gameState.demo = false
-            gameState.hand = null
-            gameState.map = gameState.startMap
-            gameState.logArray2 = []
-            gameState.winner = null
-            gameState.turnPlayer = 1
+    const ev_mouseClick = (target: number)  => {
+        if(gameState.panelSelect(target)){
             setGameState(gameState)
-            return true;
+            gameState.aiTurn((gs)=>{setGameState(gs)})
         }
-
-        if (gameState.hover === null) {
-            if (gameState.map[target] * gameState.turnPlayer > 0) {
-                gameState.hover = target
-                setGameState(gameState)
-            }
-        } else {
-            if (target == gameState.hover) {
-                gameState.hover = null
-                setGameState(gameState)
-                return true;
-            }
-            const canm = Rule.getCanMovePanelX(gameState.hover, gameState.map);
-            if (canm.indexOf(target) >= 0) {
-                const _map = gameState.map.slice()
-                _map[target] = gameState.map[gameState.hover];
-                _map[gameState.hover] = 0;
-                gameState.map = _map
-                gameState.turnPlayer = gameState.turnPlayer * -1
-                gameState.logArray2 = gameState.logArray2.concat([[gameState.hover, target]])
-                gameState.hand = [gameState.hover, target]
-                gameState.hover = null
-
-                // AIが考える。
-                gameState.message = 'thinking...'
-                gameState.mapList = Rule.add1000day(gameState.map, gameState.mapList)
-                gameState.calcWinner()
-                setGameState(gameState)
-                if (gameState.winner === null) {
-                    window.setTimeout(() => {
-                        gameState.ai();
-                        setGameState(gameState)
-                    }, 250);
-                } else {
-                    // TODO:勝敗
-                }
-            }
-        }
-
-        return true;
+        setGameState(gameState)
     }
 
     /** 
      * リセット
      */
     const reloadnew = () => {
-        let url = document.location.href.split('?')[0];
-
-        //demo中ならdemoを終了
-        if (gameState.demo === true) {
-            ev_mouseClick(0);
-            return;
-        }
-
-        // パラメータを取得
-        const paramObj = Util.getParam();
-        if (paramObj.lang) {
-            url += '?lang=' + paramObj.lang;
-        }
-        if (navigator.onLine) {
-            location.href = url;
-        } else {
-            gameState.map = Rule.copyMap(gameState.startMap)
-            gameState.map = Rule.shuffleBoard();
-            gameState.logArray2 = []
-            gameState.message = ''
-            gameState.winner = null
-            gameState.turnPlayer = 1
-        }
+        gameState.reloadnew()
         setGameState(gameState)
     }
+
 
     /** 
      * ゲーム終了
@@ -188,6 +99,21 @@ export default function Colamone() {
 
     //------------------------------------
 
+    /** 
+     * 自動再生モードならログを再生
+     */
+     useEffect(() => {
+        if (gameState.auto_log) {
+            if(time >=1){
+                gameState.move_next();
+                setGameState(gameState)
+            }
+        } else {
+            pause()
+            setGameState(gameState)
+        }
+    }, [time,gameState.auto_log])
+    
     useEffect(() => {
         initDom()
         gameState.initGame()
