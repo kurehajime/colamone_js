@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useReducer, useState } from 'react';
+import { useEffect, useMemo, useReducer } from 'react';
 import Board from './Colamone/Board';
 import Panel from './Colamone/Panel';
 import Footer from './Colamone/Footer';
