@@ -276,12 +276,7 @@ export default class GameState {
         this.calcWinner()
     }
 
-    public aiTurn(setGameState:(gs:GameState)=>void) {
-        window.setTimeout(() => {
-            this.ai();
-            setGameState(this)
-        }, 250);
-    }
+
 
     public resetMap () {
         this.demo = false

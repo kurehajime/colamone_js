@@ -24,10 +24,7 @@ export default function Colamone() {
      * マウスクリック時処理
      */
     const ev_mouseClick = (target: number)  => {
-        if(gameState.panelSelect(target)){
-            setGameState(gameState)
-            gameState.aiTurn((gs)=>{setGameState(gs)})
-        }
+        gameState.panelSelect(target)
         setGameState(gameState)
     }
 
@@ -114,6 +111,25 @@ export default function Colamone() {
         }
     }, [time,gameState.auto_log])
     
+    /** 
+     * AIのターン
+     */
+    useEffect(() => {
+        if (!gameState.auto_log
+            && !gameState.demo 
+            && gameState.winner === null 
+            && gameState.mode === Mode.game 
+            && gameState.turnPlayer === -1) {
+                window.setTimeout(() => {
+                    gameState.ai();
+                    setGameState(gameState)
+                }, 500);
+        }
+    }, [gameState])
+    
+    /**
+     * 初期化
+     */
     useEffect(() => {
         initDom()
         gameState.initGame()
