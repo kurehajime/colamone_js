@@ -417,4 +417,12 @@ export default class GameState {
         this.mapList = Rule.add1000day(this.map, this.mapList)
         this.calcWinner()
     }
+
+    public startDemo() {
+        this.initGame()
+        this.map = Rule.copyMap(this.startMap)
+        this.demo = false
+        this.auto_log = true
+        this.mode = Mode.log
+    }
 }
