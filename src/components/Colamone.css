@@ -16,11 +16,7 @@
 
 @media (orientation: landscape) {
     #main {
-        display: table-cell;
-        vertical-align: middle;
-        padding: 10px 10px;
         background-color: rgba(51, 68, 85, 0) !important;
-
     }
 }
 

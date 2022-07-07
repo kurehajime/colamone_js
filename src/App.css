@@ -19,11 +19,6 @@
     url('./assets/play-v8-latin-700.woff2') format('woff2');
 }
 
-body {
-  color: #202020;
-  font-family: 'Play', sans-serif;
-}
-
 button {
   font-family: 'Play', sans-serif;
 }
@@ -36,22 +31,14 @@ html {
 }
 
 body {
+  color: #202020;
+  font-family: 'Play', sans-serif;
   -webkit-text-size-adjust: 100%;
-}
-
-body {
   background-size: 10px 10px;
-  background-color: #F3F3F3 !important;
+  background-color: #F3F3F3;
   background-image: linear-gradient(-45deg, #F9F9F9 25%, transparent 25%,
       transparent 50%, #F9F9F9 50%, #F9F9F9 75%,
       transparent 75%, transparent);
-}
-
-@media (orientation: landscape) {
-  body {
-    background-color: rgba(51, 68, 85, 0) !important;
-    background-image: none;
-  }
 }
 
 @media (orientation: portrait) {

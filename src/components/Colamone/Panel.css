@@ -80,8 +80,7 @@
 }
 
 #replay,
-#tweetlog,
-#suma {
+#tweetlog {
     width: 350px;
     height: 40px;
     margin-top: 5px;
@@ -92,15 +91,6 @@
     border-radius: 3px;
     box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.2);
     transition: box-shadow 0.4s;
-}
-
-#suma {
-    line-height: 40px;
-    text-align: center;
-}
-
-#suma_a {
-    text-decoration: none !important;
 }
 
 .howtoplay a {
