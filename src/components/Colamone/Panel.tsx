@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Mode } from "../../model/Mode"
+import './Panel.css'
 
 type Props = {
     level: number

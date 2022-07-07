@@ -8,6 +8,7 @@ import { Mode } from '../model/Mode';
 import GameState from '../model/GameState';
 import { useTimer } from 'use-timer';
 import GameStateManager from '../reducer/GameStateManager';
+import './Colamone.css'
 
 export default function Colamone() {
     const [gameState, dispatch] = useReducer(GameStateManager, new GameState(null));

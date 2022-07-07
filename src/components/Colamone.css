@@ -1,0 +1,39 @@
+#main {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 10px 0px;
+}
+
+#canv {
+    height: 500px;
+    width: 500px;
+    float: left;
+    border-radius: 5px;
+    box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.4);
+    background-color: rgba(0, 0, 0, 0.85);
+    user-select: none;
+}
+
+@media (orientation: landscape) {
+    #main {
+        display: table-cell;
+        vertical-align: middle;
+        padding: 10px 10px;
+        background-color: rgba(51, 68, 85, 0) !important;
+
+    }
+}
+
+@media (orientation: portrait) {
+    #page {
+        text-align: center !important;
+        width: 500px;
+    }
+
+    #main {
+        display: block !important;
+        width: 500px !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+}

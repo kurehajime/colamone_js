@@ -1,0 +1,33 @@
+#footer {
+    border-radius: 5px;
+    background: rgba(99, 99, 99, 0.1) !important;
+    border-style: solid;
+    border-color: rgba(233, 233, 233, 1) !important;
+    border-width: 1px;
+    height: 33px;
+    color: #555555;
+    z-index: -1;
+    position: absolute;
+    top: calc(100vh - 33px);
+    left: 0px;
+    width: calc(100vw - 2px);
+    margin: 0px;
+    height: 31px;
+}
+
+#footer a {
+    color: #555555;
+}
+
+#footer>p {
+    line-height: 30px;
+    margin: 0px;
+    text-align: center;
+    font-size: 10px;
+}
+
+@media (orientation: portrait) {
+    #footer {
+        display: none;
+    }
+}

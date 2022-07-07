@@ -1,0 +1,291 @@
+#message {
+    float: left;
+    font-size: 14px;
+    max-width: 360px;
+    margin-left: 10px;
+}
+
+#wins {
+    color: #16b1db;
+}
+
+#gamename {
+    font-size: 38px;
+}
+
+.score {
+    font-size: 15px;
+    letter-spacing: 3px;
+}
+
+#blue {
+    color: #1e90ff;
+}
+
+#red {
+    color: #ff1493;
+}
+
+#wins,
+#gamename,
+.score,
+#prevprev,
+#prev,
+#next,
+#nextnext,
+.howtoplay a,
+.lv {
+    font-weight: bold;
+}
+
+.manual {
+    font-size: 12px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow: auto;
+    max-width: 340px;
+    padding: 0px 10px;
+    line-height: 20px;
+}
+
+#prevprev,
+#prev,
+#next,
+#nextnext {
+    width: 80px;
+    height: 40px;
+    margin-top: 5px;
+    margin-right: 10px;
+    font-size: 15px;
+    color: #FFFFFF;
+    background-color: rgba(30, 144, 255, 1);
+    border: none;
+    border-radius: 3px;
+    box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.4s;
+}
+
+#nextnext {
+    margin-right: 0px;
+}
+
+#prevprev:hover,
+#prev:hover,
+#next:hover,
+#nextnext:hover,
+#newgame:hover,
+#replay:hover,
+#tweetlog:hover {
+    background: linear-gradient(0deg, #66b3ff, #1E90FF);
+}
+
+#replay,
+#tweetlog,
+#suma {
+    width: 350px;
+    height: 40px;
+    margin-top: 5px;
+    font-size: 15px;
+    color: #FFFFFF;
+    background: linear-gradient(-60deg, #66b3ff, #1E90FF);
+    border: none;
+    border-radius: 3px;
+    box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.4s;
+}
+
+#suma {
+    line-height: 40px;
+    text-align: center;
+}
+
+#suma_a {
+    text-decoration: none !important;
+}
+
+.howtoplay a {
+    text-align: center !important;
+    padding-right: 2.5em !important;
+}
+
+#newgame {
+    width: 160px;
+}
+
+#lvs {
+    margin: 0px !important;
+}
+
+.lv {
+    width: 110px;
+}
+
+#sns {
+    margin-left: 5px;
+    display: flex;
+    flex-direction: row;
+}
+
+#twitter-widget-0,
+#pocket-button-0 {
+    padding-left: 7px;
+}
+
+#collapsible {
+    width: 340px;
+    color: rgba(44, 44, 44, 1);
+    padding: 5px;
+    margin: 10px 0px;
+    background-color: rgba(255, 255, 255, 1);
+    border: none;
+    border-radius: 3px;
+    box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.2);
+}
+
+#level {
+    width: 180px;
+    height: 40px;
+    font-size: 15px;
+    color: #333333;
+    border: none;
+    border-radius: 3px;
+    box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.2);
+    margin-right: 8px;
+    transition: box-shadow 0.4s;
+    padding: 0px 20px;
+    text-align: center;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAGFBMVEUAAAAZJCYWISIYIyQYIiUWIiIYIyQYIiXh0rToAAAACHRSTlMA/hTRqiinvwFkb0sAAABCSURBVHjajchBDsAgDAPBOJDw/x+XVN0icQGfPGs3i+2GEqeiLCXWLENzvdzrDfP2ls/NjfKbgimYglfBq2Dm+LwHguMA235EdKYAAAAASUVORK5CYII=") 95% no-repeat;
+    background-color: rgba(255, 255, 255, 1);
+}
+
+#newgame {
+    width: 158px;
+    height: 40px;
+    font-size: 15px;
+    color: #FFFFFF;
+    background: linear-gradient(-60deg, #66b3ff, #1E90FF);
+    border: none;
+    border-radius: 3px;
+    box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.4s;
+}
+
+
+.howtoplay {
+    margin: 0px;
+    color: #777777;
+    font-size: 20px;
+    padding: 0px 10px;
+    font-weight: normal;
+    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAGFBMVEUAAAAZJCYWISIYIyQYIiUWIiIYIyQYIiXh0rToAAAACHRSTlMA/hTRqiinvwFkb0sAAABCSURBVHjajchBDsAgDAPBOJDw/x+XVN0icQGfPGs3i+2GEqeiLCXWLENzvdzrDfP2ls/NjfKbgimYglfBq2Dm+LwHguMA235EdKYAAAAASUVORK5CYII=") 90% no-repeat;
+
+}
+
+@media (orientation: landscape) {
+
+    #gamename {
+        color: rgb(255, 255, 255);
+        text-shadow: 0px 0px 10px rgba(10, 10, 10, 0.3);
+    }
+
+    #head {
+        height: 76px;
+    }
+
+    .score {
+        line-height: 22px;
+    }
+
+    #blue {
+        color: #FFFFFF;
+        text-shadow: 0px 0px 5px rgba(0, 0, 255, 0.5);
+    }
+
+    #red {
+        color: #FFFFFF;
+        text-shadow: 0px 0px 5px rgba(255, 0, 0, 0.5);
+    }
+
+    #wins {
+        color: #FFFFFF;
+        text-shadow: 0px 0px 5px rgba(255, 255, 0, 0.5);
+    }
+
+    #message {
+        color: white;
+        text-shadow: 0px 0px 30px rgba(51, 68, 85, 0.3);
+    }
+}
+
+@media (orientation: portrait) {
+
+    #replay,
+    #tweetlog,
+    #lvs {
+        width: 500px !important;
+    }
+
+    .howtoplay,
+    #collapsible {
+        width: 495px !important;
+        padding: 0px !important;
+    }
+
+    #prevprev,
+    #prev,
+    #next,
+    #nextnext {
+        width: 116px;
+    }
+
+    #message {
+        width: 495px !important;
+        font-size: 20px !important;
+        margin-left: 0px;
+        max-width: 495px;
+        text-align: left;
+
+    }
+
+    .howtoplay {
+        line-height: 40px;
+        text-align: center;
+        color: darkblue;
+        animation: opblink 2s infinite alternate;
+    }
+
+    @keyframes opblink {
+        0% {
+            opacity: 0.2;
+        }
+
+        50% {
+            opacity: 0.8;
+        }
+
+        100% {
+            opacity: 1.0;
+        }
+    }
+
+    #level {
+        width: 260px !important;
+    }
+
+    #newgame {
+        width: 225px !important;
+    }
+
+    .manual {
+        font-size: 18px !important;
+        max-width: 495px;
+    }
+
+    .score {
+        font-size: 20px;
+    }
+}
