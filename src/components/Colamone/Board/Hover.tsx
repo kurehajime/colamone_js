@@ -89,7 +89,20 @@ export default function Hover(props: Props) {
         return []
     },[cellNumber])
 
-    return (<g className="hover"  onMouseMove={mouseMove}> 
+    const puts = canput()
+    let cursor = ''
+    switch (true) {
+        case props.hover_piece.length > 0:
+            cursor = 'grabbing'
+            break;
+        case puts.length > 0:
+            cursor = 'grab'
+            break;
+        default:
+            break;
+    } 
+
+    return (<g className={"hover " + cursor}  onMouseMove={mouseMove}> 
         <image ref={bg1} x={props.x} y={props.y} width={props.w} height={props.h} />
         {
             props.hover_piece.map(p => {
@@ -103,7 +116,7 @@ export default function Hover(props: Props) {
                     isHover={true}
                 />)
             }).concat(
-                canput().map(p => {        
+                puts.map(p => {        
                     const canvSize = Params.CANV_SIZE ;
                     const cellSize = canvSize / 6;
                     const x = Math.floor(p / 10);
