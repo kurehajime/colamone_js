@@ -7,6 +7,7 @@ import "./i18n/configs";
 import { Util } from './static/Util';
 
 Util.zoom(); // 小さい端末でズーム
+window.addEventListener('orientationchange', Util.zoom);
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

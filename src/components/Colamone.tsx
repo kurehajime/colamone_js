@@ -14,11 +14,6 @@ export default function Colamone() {
     const [gameState, dispatch] = useReducer(GameStateManager, new GameState(null));
     const { time, start, pause } = useTimer({endTime:99});
 
-    const initDom = () => {
-        Util.zoom(); // 小さい端末でズーム
-        window.addEventListener('orientationchange', Util.zoom);
-    }
-
     /** 
      * マウスクリック時処理
      */
@@ -66,7 +61,6 @@ export default function Colamone() {
      * 初期化
      */
     useEffect(() => {
-        initDom()
         const paramObj = Util.getParam();
         if (paramObj.log) {
             dispatch({ type: 'demo', value: 0 });
