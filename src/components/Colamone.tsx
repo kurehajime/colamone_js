@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useReducer } from 'react';
+import { useCallback, useEffect, useMemo, useReducer } from 'react';
 import Board from './Colamone/Board';
 import Panel from './Colamone/Panel';
 import Footer from './Colamone/Footer';
@@ -17,9 +17,9 @@ export default function Colamone() {
     /** 
      * マウスクリック時処理
      */
-    const ev_mouseClick = (target: number)  => {
+    const mouseClick = useCallback((target: number)  => {
         dispatch({ type: 'panelSelect', value: target });
-    }
+    },[])
 
     /** 
      * リセット
@@ -127,7 +127,7 @@ export default function Colamone() {
                             hand={gameState.hand}
                             message={gameState.message}
                             clickCell={(cellNumber: number) => {
-                                ev_mouseClick(cellNumber)
+                                mouseClick(cellNumber)
                             }}
                         ></Board>
                     </div>
