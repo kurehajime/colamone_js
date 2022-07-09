@@ -16,9 +16,12 @@ type Props = {
 export default function Piece(props: Props) {
     const piece1 = useRef<SVGImageElement>(null)
     const piece2 = useRef<SVGImageElement>(null)
+    const img_bk = new Image()
 
     useEffect(() => {
-        const img_bk = new Image()
+        if(props.display ==="none"){
+            return
+        }
         const canv_bk = document.createElement("canvas");
         const canvas = document.createElement("canvas");
         const drawPiece1 = (element: SVGImageElement, canvas: HTMLCanvasElement, number: number, goal: boolean, img_bk: HTMLImageElement | null = null) => {
