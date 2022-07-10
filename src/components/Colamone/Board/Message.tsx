@@ -57,7 +57,7 @@ export default function Message(props: Props) {
     }
 
     useEffect(() => {
-        if (bg1.current) {
+        if (bg1.current && props.message !== '') {
             const canvas = document.createElement("canvas");
             drawMessage(bg1.current, canvas);
         }
