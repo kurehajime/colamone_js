@@ -3,13 +3,13 @@
   "version": "1.0.0",
   "homepage": "./",
   "dependencies": {
-    "@types/node": "^18.0.0",
-    "@types/react": "^18.0.14",
-    "@types/react-dom": "^18.0.5",
-    "i18next": "^21.8.11",
+    "@types/node": "^18.0.3",
+    "@types/react": "^18.0.15",
+    "@types/react-dom": "^18.0.6",
+    "i18next": "^21.8.13",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-i18next": "^11.17.4",
+    "react-i18next": "^11.18.0",
     "typescript": "^4.7.4",
     "use-timer": "^2.0.1",
     "web-vitals": "^2.1.4"
@@ -18,7 +18,8 @@
     "start": "vite",
     "build": "node ./update-date.js && tsc --noEmit && vite build",
     "serve": "vite preview",
-    "test": "vitest run"
+    "test": "vitest run",
+    "update":"npx npm-check-updates -u && npm i"
   },
   "eslintConfig": {
     "extends": [
@@ -26,12 +27,12 @@
     ]
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.30.3",
-    "@typescript-eslint/parser": "^5.30.3",
+    "@typescript-eslint/eslint-plugin": "^5.30.5",
+    "@typescript-eslint/parser": "^5.30.5",
     "@vitejs/plugin-react": "^1.3.2",
     "eslint": "^8.19.0",
     "eslint-plugin-react": "^7.30.1",
-    "vite": "^2.9.13",
-    "vitest": "^0.16.0"
+    "vite": "^2.9.14",
+    "vitest": "^0.18.0"
   }
 }
