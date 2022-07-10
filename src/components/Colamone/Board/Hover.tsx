@@ -1,4 +1,4 @@
-import { ReactElement, useCallback, useEffect, useRef, useState } from "react";
+import { ReactElement, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Piece } from "../../../model/Piece";
 import Params from "../../../static/Params";
 import { Rule } from "../../../static/Rule";
@@ -102,20 +102,23 @@ export default function Hover(props: Props) {
             break;
     } 
 
+    const hover = useMemo(()=>{
+        const p = props.hover_piece[0]
+        return ([<PieceElement
+            key={0}
+            x={hoverX}
+            y={hoverY}
+            number={props.hover_piece.length > 0 ? p.number:0}
+            goal={false}
+            display={props.hover_piece.length > 0 ? p.display:"none"}
+            isHover={true}
+        />])
+    },[props.hover_piece,hoverX,hoverY])
+
     return (<g className={"hover " + cursor}  onMouseMove={mouseMove}> 
         <image ref={bg1} x={props.x} y={props.y} width={props.w} height={props.h} />
         {
-            props.hover_piece.map(p => {
-                return (<PieceElement
-                    key={0}
-                    x={hoverX}
-                    y={hoverY}
-                    number={p.number}
-                    goal={p.goal}
-                    display={p.display}
-                    isHover={true}
-                />)
-            }).concat(
+            hover.concat(
                 puts.map(p => {        
                     const canvSize = Params.CANV_SIZE ;
                     const cellSize = canvSize / 6;

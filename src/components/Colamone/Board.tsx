@@ -97,7 +97,7 @@ export default function Board(props: Props) {
     return (<svg ref={svg} width={Params.CANV_SIZE} height={Params.CANV_SIZE} onPointerDown={mouseClick} >
         <Background x={0} y={0} w={Params.CANV_SIZE} h={Params.CANV_SIZE} />
         {
-            pieces.filter(p => { return p.number !== props.hover }).map(p => {
+            pieces.map(p => {
                 return (
                     <PieceElement
                         key={p.number}
@@ -106,7 +106,7 @@ export default function Board(props: Props) {
                         number={p.number}
                         goal={p.goal}
                         isHover={false}
-                        display={p.display}
+                        display={p.number !== props.hover ? p.display:"none"}
                     />
                 )
             })

@@ -16,9 +16,12 @@ type Props = {
 export default function Piece(props: Props) {
     const piece1 = useRef<SVGImageElement>(null)
     const piece2 = useRef<SVGImageElement>(null)
+    const img_bk = useRef<HTMLImageElement>(new Image())
 
     useEffect(() => {
-        const img_bk = new Image()
+        if(props.display ==="none"){
+            return
+        }
         const canv_bk = document.createElement("canvas");
         const canvas = document.createElement("canvas");
         const drawPiece1 = (element: SVGImageElement, canvas: HTMLCanvasElement, number: number, goal: boolean, img_bk: HTMLImageElement | null = null) => {
@@ -153,21 +156,21 @@ export default function Piece(props: Props) {
             return canv_bk;
         };
 
-        if (piece1.current && piece2.current) {
+        if (piece1.current && piece2.current&&img_bk.current) {
             // 背景画像の読み込みが完了したら再実行
-            if(!img_bk.src){
-                img_bk.onload = () => {
+            if(!img_bk.current.src){
+                img_bk.current.onload = () => {
                     if (piece1.current) {
-                        drawPiece1(piece1.current, canvas, props.number, props.goal, img_bk);
+                        drawPiece1(piece1.current, canvas, props.number, props.goal, img_bk.current);
                     }
                 };
-                img_bk.src = bg;
+                img_bk.current.src = bg;
                 
             }else{
                 drawPiece1(piece1.current, canvas, props.number, props.goal);
             }
-            if (img_bk.width !== 0) {
-                drawPiece1(piece1.current, canvas, props.number, props.goal, img_bk);
+            if (img_bk.current.width !== 0) {
+                drawPiece1(piece1.current, canvas, props.number, props.goal, img_bk.current);
             }
             drawPiece2(piece2.current, canvas, props.number, props.goal);
         }
