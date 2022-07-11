@@ -19,7 +19,7 @@
     "build": "node ./update-date.js && tsc --noEmit && vite build",
     "serve": "vite preview",
     "test": "vitest run",
-    "update":"npx npm-check-updates -u && npm i"
+    "uplib":"npx npm-check-updates -u && npm i"
   },
   "eslintConfig": {
     "extends": [
