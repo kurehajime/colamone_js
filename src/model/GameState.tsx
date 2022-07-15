@@ -1,11 +1,11 @@
-import { Mode } from "./Mode";
-import { Aijs } from "../static/Ai";
-import Cookie from "../static/Cookie";
-import { Hand, MapArray, Rule } from "../static/Rule";
-import { Util } from "../static/Util";
+import { Mode } from "./Mode"
+import { Aijs } from "../static/Ai"
+import Cookie from "../static/Cookie"
+import { Hand, MapArray, Rule } from "../static/Rule"
+import { Util } from "../static/Util"
 
 export default class GameState {
-    public turnPlayer: number = 0
+    public turnPlayer = 0
     public map: Int8Array = new Int8Array([
         -1, 0, 0, 0, 0, 6, 0, 0, 0, 0, -2, -8,
         0, 0, 7, 5, 0, 0, 0, 0, -3, 0, 0, 0,
@@ -15,23 +15,23 @@ export default class GameState {
     ])
     public startMap: Int8Array = new Int8Array()
     public hover: number | null = null
-    public demo: boolean = false
-    public auto_log: boolean = false
+    public demo = false
+    public auto_log = false
     public hand: Hand | null = null
-    public message: string = ''
-    public blueScore: number = 0
-    public redScore: number = 0
-    public level: number = 0
-    public wins: number = 0
-    public log_pointer: number = 0
+    public message = ''
+    public blueScore = 0
+    public redScore = 0
+    public level = 0
+    public wins = 0
+    public log_pointer = 0
     public thinktime: number | null = null
     public winner: number | null = null
     public mapList: { [index: string]: number; } = {}
     public mode: Mode = 'game'
     public logArray: Array<MapArray> = []
     public logArray2: Array<Hand> = []
-    public logPointer: number = 0
-    public manual: boolean = false
+    public logPointer = 0
+    public manual = false
 
     public constructor(_gameState: GameState | null) {
         if (_gameState) {
@@ -75,31 +75,31 @@ export default class GameState {
 
         // 連勝記録初期化
         if (!Cookie.getItem('level_1')) {
-            Cookie.setItem('level_1', 0);
+            Cookie.setItem('level_1', 0)
         }
         if (!Cookie.getItem('level_2')) {
-            Cookie.setItem('level_2', 0);
+            Cookie.setItem('level_2', 0)
         }
         if (!Cookie.getItem('level_3')) {
-            Cookie.setItem('level_3', 0);
+            Cookie.setItem('level_3', 0)
         }
         if (!Cookie.getItem('level_4')) {
-            Cookie.setItem('level_4', 0);
+            Cookie.setItem('level_4', 0)
         }
         if (!Cookie.getItem('level_5')) {
-            Cookie.setItem('level_5', 0);
+            Cookie.setItem('level_5', 0)
         }
         // レベル記憶
         if (Cookie.getItem('level_save') !== undefined && Cookie.getItem('level_save') !== 'undefined' && Cookie.getItem('level_save') !== null) {
             this.level = parseInt(Cookie.getItem('level_save'))
         } else {
-            Cookie.setItem('level_save', 1);
+            Cookie.setItem('level_save', 1)
             this.level = 1
         }
 
 
         // パラメータを取得
-        const paramObj = Util.getParam();
+        const paramObj = Util.getParam()
 
         // 盤面を初期化
         if (paramObj.init) {
@@ -122,7 +122,7 @@ export default class GameState {
         }
 
         this.mapList = Rule.add1000day(this.map, this.mapList)
-        Util.setTweet(); // ツイートボタンを生成
+        Util.setTweet() // ツイートボタンを生成
 
 
         this.manual = window.innerHeight < window.innerWidth
@@ -134,19 +134,19 @@ export default class GameState {
      * 得点計算。
      */
     public calcScore() {
-        let sum1 = 0;
-        let sum2 = 0;
-        const GoalTop = [0, 10, 20, 30, 40, 50];
-        const GoalBottom = [5, 15, 25, 35, 45, 55];
+        let sum1 = 0
+        let sum2 = 0
+        const GoalTop = [0, 10, 20, 30, 40, 50]
+        const GoalBottom = [5, 15, 25, 35, 45, 55]
         // 点数勝利        
         for (const i in GoalTop) {
             if (this.map[GoalTop[i]] * 1 > 0) {
-                sum1 += this.map[GoalTop[i]];
+                sum1 += this.map[GoalTop[i]]
             }
         }
         for (const i in GoalBottom) {
             if (this.map[GoalBottom[i]] * -1 > 0) {
-                sum2 += this.map[GoalBottom[i]];
+                sum2 += this.map[GoalBottom[i]]
             }
         }
         if (sum1 >= 8) {
@@ -182,19 +182,19 @@ export default class GameState {
             if (this.winner == 1) {
                 this.message = 'You win!'
                 Cookie.setItem('level_' + this.level,
-                    parseInt(Cookie.getItem('level_' + this.level)) + 1);
-                this.endgame();
+                    parseInt(Cookie.getItem('level_' + this.level)) + 1)
+                this.endgame()
             } else if (this.winner == -1) {
                 this.message = 'You lose...'
-                Cookie.setItem('level_' + this.level, 0);
-                this.endgame();
+                Cookie.setItem('level_' + this.level, 0)
+                this.endgame()
             } else if (this.winner === 0) {
                 if (this.mapList[JSON.stringify(this.map)] >= Rule.LIMIT_1000DAY) {
                     this.message = '3fold repetition'
                 } else {
                     this.message = '-- Draw --'
                 }
-                this.endgame();
+                this.endgame()
             }
         }
 
@@ -207,69 +207,69 @@ export default class GameState {
     }
 
     public ai() {
-        const startTime = new Date();
-        let endTime = null;
+        const startTime = new Date()
+        let endTime = null
         // 終盤になったら長考してみる。
-        const count = Rule.getNodeCount(this.map) / 2;
-        let plus = 0;
+        const count = Rule.getNodeCount(this.map) / 2
+        let plus = 0
         switch (this.level) {
             case 1:
-                break;
+                break
             case 2:
                 if (count <= 8) {
-                    plus++;
+                    plus++
                 }
-                break;
+                break
             case 3:
                 if (count <= 10) {
-                    plus++;
+                    plus++
                 }
                 if (count <= 6) {
-                    plus++;
+                    plus++
                 }
-                break;
+                break
             case 4:
                 if (count <= 11) {
-                    plus++;
+                    plus++
                 }
                 if (count <= 7) {
-                    plus++;
+                    plus++
                 }
-                break;
+                break
             case 5:
                 if (count > 16) {
-                    plus--;
+                    plus--
                 }
                 if (count <= 12) {
-                    plus++;
+                    plus++
                 }
                 if (count <= 8) {
-                    plus++;
+                    plus++
                 }
-                break;
+                break
             case 6:
                 if (count > 16) {
-                    plus--;
+                    plus--
                 }
                 if (count <= 12) {
-                    plus++;
+                    plus++
                 }
                 if (count <= 8) {
-                    plus++;
+                    plus++
                 }
-                break;
+                break
         }
 
-        const _hand = Aijs.thinkAI(this.map, this.turnPlayer, this.level + plus + 1, undefined, undefined, undefined)[0];
+        const _hand = Aijs.thinkAI(this.map, this.turnPlayer, this.level + plus + 1, undefined, undefined, undefined)[0]
         if (_hand) {
             const _map = this.map.slice()
-            _map[_hand[1]] = this.map[_hand[0]];
-            _map[_hand[0]] = 0;
+            _map[_hand[1]] = this.map[_hand[0]]
+            _map[_hand[0]] = 0
             this.map = _map
             this.logArray2 = this.logArray2.concat([[_hand[0], _hand[1]]])
         }
         this.turnPlayer = (this.turnPlayer * -1)
-        endTime = new Date();
+        endTime = new Date()
         this.thinktime = ((endTime.getTime() - startTime.getTime()) / 1000)
         this.message = ''
         this.mapList = Rule.add1000day(this.map, this.mapList)
@@ -289,21 +289,21 @@ export default class GameState {
     }
 
     public reloadnew() {
-        let url = document.location.href.split('?')[0];
+        let url = document.location.href.split('?')[0]
 
         //demo中ならdemoを終了
         if (this.demo === true) {
             this.resetMap()
-            return;
+            return
         }
 
         // パラメータを取得
-        const paramObj = Util.getParam();
+        const paramObj = Util.getParam()
         if (paramObj.lang) {
-            url += '?lang=' + paramObj.lang;
+            url += '?lang=' + paramObj.lang
         }
         if (navigator.onLine) {
-            location.href = url;
+            location.href = url
         } else {
             this.resetMap()
         }
@@ -312,12 +312,12 @@ export default class GameState {
     
     public panelSelect (target: number):boolean{
         if (this.winner !== null || this.logArray.length !== 0) {
-            this.reloadnew();
-            return false;
+            this.reloadnew()
+            return false
         }
         if (this.demo === true) {
             this.resetMap()
-            return false;
+            return false
         }
 
         if (this.hover === null) {
@@ -327,13 +327,13 @@ export default class GameState {
         } else {
             if (target == this.hover) {
                 this.hover = null
-                return false;
+                return false
             }
-            const canm = Rule.getCanMovePanelX(this.hover, this.map);
+            const canm = Rule.getCanMovePanelX(this.hover, this.map)
             if (canm.indexOf(target) >= 0) {
                 const _map = this.map.slice()
-                _map[target] = this.map[this.hover];
-                _map[this.hover] = 0;
+                _map[target] = this.map[this.hover]
+                _map[this.hover] = 0
                 this.map = _map
                 this.turnPlayer = this.turnPlayer * -1
                 this.logArray2 = this.logArray2.concat([[this.hover, target]])
@@ -345,11 +345,11 @@ export default class GameState {
                 this.mapList = Rule.add1000day(this.map, this.mapList)
                 this.calcWinner()
                 if (this.winner === null) {
-                    return true;
+                    return true
                 }
             }
         }
-        return false;
+        return false
     }
 
 
@@ -358,14 +358,14 @@ export default class GameState {
     */
     public changeLevel(level: number) {
         this.level = level
-        Cookie.setItem('level_save', this.level);
+        Cookie.setItem('level_save', this.level)
         if (Cookie.getItem('level_' + this.level) > 0) {
             this.wins = (Cookie.getItem('level_' + this.level))
         }
         this.map = Rule.copyMap(this.startMap)
         this.hand = null
-        this.mapList = {};
-        this.logArray2 = [];
+        this.mapList = {}
+        this.logArray2 = []
         this.blueScore = 0
         this.redScore = 0
     }
@@ -387,7 +387,7 @@ export default class GameState {
      * ログを戻す
      */
     public move_prev() {
-        if (this.logPointer <= 0) { return; }
+        if (this.logPointer <= 0) { return }
         this.auto_log = false
         this.logPointer = this.logPointer - 1
         this.map = Rule.copyMap(this.logArray[this.logPointer])
@@ -400,7 +400,7 @@ export default class GameState {
      * ログを進める
      */
     public move_next() {
-        if (this.logPointer + 1 > this.logArray.length - 1) { return; }
+        if (this.logPointer + 1 > this.logArray.length - 1) { return }
         this.logPointer = (this.logPointer + 1)
         this.map = Rule.copyMap(this.logArray[this.logPointer])
         this.mapList = Rule.add1000day(this.map, this.mapList)

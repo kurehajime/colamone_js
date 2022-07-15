@@ -1,4 +1,4 @@
-import GameState from "../model/GameState";
+import GameState from "../model/GameState"
 
 type actionType = 'initGame' 
     | 'panelSelect' 
@@ -12,11 +12,11 @@ type actionType = 'initGame'
     | 'ai'
     | 'demo'
 type Action = {
-    type: actionType;
-    value: number;
+    type: actionType,
+    value: number,
     };
 export default  (_gameState:GameState, action:Action):GameState=> {
-    const gameState =_gameState.clone();
+    const gameState =_gameState.clone()
       switch (action.type){
         case 'initGame':
             gameState.initGame()

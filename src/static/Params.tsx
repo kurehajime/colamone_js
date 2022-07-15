@@ -1,5 +1,5 @@
-const RATIO = 1;
-const CANV_SIZE = 500 * RATIO;
+const RATIO = 1
+const CANV_SIZE = 500 * RATIO
 export default {
     LIMIT_1000DAY: 3,
     COLOR_LINE: '#333333',

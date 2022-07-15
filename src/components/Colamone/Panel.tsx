@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 import { Mode } from "../../model/Mode"
 import './Panel.css'
 
@@ -20,7 +20,7 @@ type Props = {
 }
 
 export default function Panel(props: Props) {
-    const { t } = useTranslation();
+    const { t } = useTranslation()
 
 
     return (<div id="message">
@@ -30,7 +30,7 @@ export default function Panel(props: Props) {
                 id="wins"></span>
         </div>
         <div id="lvs">
-            <select id="level" value={props.level} onChange={e => { props.setLevel(parseInt(e.target.value)); }}>
+            <select id="level" value={props.level} onChange={e => { props.setLevel(parseInt(e.target.value)) }}>
                 <option value="1" className="lv">Lv.1</option>
                 <option value="2" className="lv">Lv.2</option>
                 <option value="3" className="lv">Lv.3</option>
