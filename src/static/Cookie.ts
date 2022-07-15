@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 interface IStorage {
     getItem:(key:string)=>any
     setItem:(key:string,value:any)=>void

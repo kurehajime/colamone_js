@@ -66,14 +66,18 @@ export class Util {
         wklogArray.push(wkMap)
         for (let i = 0; i < logArr.length; i++) {
             if (logArr[i] === '') { continue }
-            const arw = arrow[logArr[i].match(/[qweasdzxc]/)![0]]
-            const from = parseInt(logArr[i].match(/\d*/)![0])
-            const to = (Math.floor(from / 10) + Math.floor(arw % 3) - 1) * 10 +
-                (Math.floor(from % 10) + Math.floor(arw / 3) - 1)
-            wkMap = Rule.copyMap(wkMap)
-            wkMap[to] = wkMap[from]
-            wkMap[from] = 0
-            wklogArray.push(wkMap)
+            const ai = logArr[i].match(/[qweasdzxc]/)
+            const fi = logArr[i].match(/\d*/)
+            if(ai&&fi){
+                const arw = arrow[ai[0]]
+                const from = parseInt(fi[0])
+                const to = (Math.floor(from / 10) + Math.floor(arw % 3) - 1) * 10 +
+                    (Math.floor(from % 10) + Math.floor(arw / 3) - 1)
+                wkMap = Rule.copyMap(wkMap)
+                wkMap[to] = wkMap[from]
+                wkMap[from] = 0
+                wklogArray.push(wkMap)
+            }
         }
         return wklogArray
     }
@@ -95,6 +99,7 @@ export class Util {
      */
     static setTweet() {
         /*jshint -W030 */
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (function f(d: any, s: string, id: string) {
             // eslint-disable-next-line prefer-const
             let js, fjs = d.getElementsByTagName(s)[0]
