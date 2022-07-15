@@ -1,21 +1,23 @@
 import { useEffect, useRef } from "react"
 import Params from "../../../static/Params"
 import { DrawUtil } from "../../../static/DrawUtil"
+import './Cover.css'
 type Props = {
     show: boolean
     x: number
     y: number
     h: number
     w: number
-    demo_inc: number
 }
 export default function Cover(props: Props) {
     const bg1 = useRef<SVGImageElement>(null)
+    const bg2 = useRef<SVGImageElement>(null)
 
     /**
      * 盤面を描画してCANVASを返す。
      */
-    function drawCover(element: SVGImageElement, canvas: HTMLCanvasElement, demo_inc: number) {
+    function drawCover1(element: SVGImageElement) {
+        const canvas = document.createElement("canvas")
         // 背景
         const ctx_cover = canvas.getContext('2d')
         const canvSize = Params.CANV_SIZE * 3
@@ -27,6 +29,35 @@ export default function Cover(props: Props) {
             ctx_cover.globalAlpha = 0.50
             ctx_cover.fillStyle = '#000000'
             ctx_cover.fillRect(0, 0, canvSize, canvSize)
+
+            // 文字
+            const message = 'colamone'
+            const fontsize = Math.round(cellSize * 1)
+            ctx_cover.textBaseline = 'middle'
+            ctx_cover.textAlign = 'center'
+            ctx_cover.globalAlpha = 0.95
+            ctx_cover.font = 'bold ' + fontsize + 'px Play,sans-serif'
+            ctx_cover.fillStyle = Params.COLOR_WHITE
+            ctx_cover.shadowBlur = 0
+            ctx_cover.beginPath()
+            ctx_cover.fillText(message, cellSize * 3, cellSize * 2)
+        }
+        element.setAttribute("href", canvas.toDataURL())
+    }
+
+    /**
+     * 盤面を描画してCANVASを返す。
+     */
+     function drawCover2(element: SVGImageElement) {
+        const canvas = document.createElement("canvas")
+        // 背景
+        const ctx_cover = canvas.getContext('2d')
+        const canvSize = Params.CANV_SIZE * 3
+        const cellSize = Params.CANV_SIZE / 6 * 3
+        canvas.width = canvSize
+        canvas.height = canvSize
+        if (ctx_cover) {
+            ctx_cover.clearRect(0, 0, canvSize, canvSize)
 
             // 枠
             const x = cellSize * 2
@@ -45,9 +76,8 @@ export default function Cover(props: Props) {
             ctx_cover.shadowOffsetY = 0
 
             // 文字
-            let fontsize = Math.round(cellSize * 0.5)
-            let message = 'Play'
-            message += (demo_inc % 10 == 0) ? " " : ""
+            const fontsize = Math.round(cellSize * 0.5)
+            const message = 'Play'
             ctx_cover.shadowBlur = 0
             ctx_cover.shadowOffsetX = 0
             ctx_cover.shadowOffsetY = 0
@@ -59,26 +89,20 @@ export default function Cover(props: Props) {
             ctx_cover.textAlign = 'center'
             ctx_cover.beginPath()
             ctx_cover.fillText(message, cellSize * 3, cellSize * 4)
-            // 文字２
-            message = 'colamone'
-            fontsize = Math.round(cellSize * 1)
-            ctx_cover.font = 'bold ' + fontsize + 'px Play,sans-serif'
-            ctx_cover.fillStyle = Params.COLOR_WHITE
-            ctx_cover.shadowBlur = 0
-            ctx_cover.beginPath()
-            ctx_cover.fillText(message, cellSize * 3, cellSize * 2)
         }
         element.setAttribute("href", canvas.toDataURL())
     }
+
     useEffect(() => {
-        if (bg1.current) {
-            const canvas = document.createElement("canvas")
-            drawCover(bg1.current, canvas, props.demo_inc)
+        if (bg1.current&&bg2.current) {
+            drawCover1(bg1.current)
+            drawCover2(bg2.current)
         }
-    }, [props.demo_inc])
+    }, [])
 
     return (<g display={props.show ? "inline" : "none"}>
         <image ref={bg1} x={props.x} y={props.y} width={props.w} height={props.h} />
+        <image ref={bg2} className="start" x={props.x} y={props.y} width={props.w} height={props.h} />
     </g >)
 
 }

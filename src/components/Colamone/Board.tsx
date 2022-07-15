@@ -135,7 +135,6 @@ export default function Board(props: Props) {
             w={Params.CANV_SIZE}
             h={Params.CANV_SIZE}
             show={props.cover}
-            demo_inc={0}
         ></Cover>
     </svg >)
 }
