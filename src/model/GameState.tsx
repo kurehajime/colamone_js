@@ -27,7 +27,7 @@ export default class GameState {
     public thinktime: number | null = null
     public winner: number | null = null
     public mapList: { [index: string]: number; } = {}
-    public mode: Mode = Mode.game
+    public mode: Mode = 'game'
     public logArray: Array<MapArray> = []
     public logArray2: Array<Hand> = []
     public logPointer: number = 0
@@ -118,7 +118,7 @@ export default class GameState {
         }
 
         if (this.logArray.length !== 0) {
-            this.mode = Mode.log
+            this.mode = 'log'
         }
 
         this.mapList = Rule.add1000day(this.map, this.mapList)
@@ -203,7 +203,7 @@ export default class GameState {
         }
     }
     public endgame() {
-        this.mode = Mode.result
+        this.mode = 'result'
     }
 
     public ai() {
@@ -284,7 +284,7 @@ export default class GameState {
         this.map = this.startMap
         this.logArray2 = []
         this.winner = null
-        this.mode = Mode.game
+        this.mode = 'game'
         this.turnPlayer = 1
     }
 
@@ -423,6 +423,6 @@ export default class GameState {
         this.map = Rule.copyMap(this.startMap)
         this.demo = false
         this.auto_log = true
-        this.mode = Mode.log
+        this.mode = 'log'
     }
 }

@@ -40,7 +40,7 @@ export default function Panel(props: Props) {
             </select>
             <button type="button" id="newgame" onClick={() => props.newGame()}>New Game</button>
         </div>
-        {props.mode === Mode.log &&
+        {props.mode === 'log' &&
             <span id="log">
                 <button type="button" id="prevprev" onClick={props.prevprev}> |&lt; </button>
                 <button type="button" id="prev" onClick={props.prev}> &lt; </button>
@@ -48,12 +48,12 @@ export default function Panel(props: Props) {
                 <button type="button" id="nextnext" onClick={props.nextnext}> &gt;|</button>
             </span>
         }
-        {props.mode === Mode.result &&
+        {props.mode === 'result' &&
             <span id="span_replay">
                 <button type="button" id="replay" onClick={props.replay}> {t('replay')} </button>
             </span>
         }
-        {props.mode === Mode.result &&
+        {props.mode === 'result' &&
             <span id="span_tweetlog">
                 <button type="button" id="tweetlog" onClick={props.tweet}> {t('tweetlog')}</button>
             </span>

@@ -49,7 +49,7 @@ export default function Colamone() {
         if (!gameState.auto_log
             && !gameState.demo 
             && gameState.winner === null 
-            && gameState.mode === Mode.game 
+            && gameState.mode === 'game' 
             && gameState.turnPlayer === -1) {
                 window.setTimeout(() => {
                     dispatch({ type: 'ai', value: 0 });

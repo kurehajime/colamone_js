@@ -1,5 +1,1 @@
-export enum Mode {
-    game,
-    result,
-    log,
-}
+export type Mode = 'game' | 'result' | 'log'
