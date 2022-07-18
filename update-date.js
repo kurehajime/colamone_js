@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires, no-undef
 const fs = require("fs")
-const jst = new Date().toLocaleString({ timeZone: 'Asia/Tokyo' })
+const jst = new Date(Date.now() + ((new Date().getTimezoneOffset() + (9 * 60)) * 60 * 1000))
 fs.writeFile(".env", 'VITE_BUILD_DATE=' + date_to_yyyymmddhhmmss(new Date(jst)), (err) => {
   if (err) throw err
 })
