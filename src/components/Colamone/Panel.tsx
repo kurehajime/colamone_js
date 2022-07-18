@@ -22,11 +22,16 @@ type Props = {
 export default function Panel(props: Props) {
     const { t } = useTranslation()
 
-
+    const blue = () => {
+        return <span key={props.blueScore} className="point">{props.blueScore}</span>
+    }
+    const red = () => {
+        return <span key={-1 * props.redScore} className="point">{props.redScore}</span>
+    }
     return (<div id="message">
         <div id="head">
             <span id="gamename">{t('colamone')}</span> by <a href="https://twitter.com/kurehajime">@kurehajime</a><br />
-            <span id="blue" className="score">{`Blue: ${props.blueScore}/8`}</span> - <span id="red" className="score">{` Red: ${props.redScore}/8`}</span><span
+            <span id="blue" className="score">Blue: {blue()}/8</span> - <span id="red" className="score"> Red: {red()}/8</span><span
                 id="wins"></span>
         </div>
         <div id="lvs">

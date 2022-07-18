@@ -13,6 +13,20 @@
     font-size: 38px;
 }
 
+.point{
+    animation: pointburu .1s 3;
+}
+
+@keyframes pointburu {
+    0% {}
+    1% {color: #ff1493;}
+    25% {color: #ff1493;filter: invert();}
+    50% {color: #ff1493;}
+    75% {color: #ff1493;filter: invert();}
+    99% {color: #ff1493;}
+    100% {}
+}
+
 .score {
     font-size: 15px;
     letter-spacing: 3px;
