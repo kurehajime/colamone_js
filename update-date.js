@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires, no-undef
 const fs = require("fs")
-fs.writeFile(".env", 'VITE_BUILD_DATE=' + date_to_yyyymmddhhmmss(new Date()), (err) => {
+const jst = new Date().toLocaleString({ timeZone: 'Asia/Tokyo' })
+fs.writeFile(".env", 'VITE_BUILD_DATE=' + date_to_yyyymmddhhmmss(new Date(jst)), (err) => {
   if (err) throw err
 })
 
