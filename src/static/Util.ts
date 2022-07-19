@@ -22,10 +22,9 @@ export class Util {
     /** 
      * パタメータから初期配置を取得
      */
-    static getMapByParam(map: Int8Array, initString: string): MapArray {
-        let wkMap
+    static getMapByParam(initString: string): MapArray {
+        const wkMap = new Int8Array(56)
         if (initString) {
-            wkMap = Rule.copyMap(map)
             // クリア
             for (const num in wkMap) {
                 wkMap[num] = 0

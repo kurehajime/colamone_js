@@ -103,7 +103,7 @@ export default class GameState {
 
         // 盤面を初期化
         if (paramObj.init) {
-            this.startMap = Util.getMapByParam(this.map, paramObj.init)
+            this.startMap = Util.getMapByParam(paramObj.init)
             this.map = Rule.copyMap(this.startMap)
         } else {
             this.startMap = this.map
