@@ -41,19 +41,6 @@ export default function Colamone() {
         }
     }, [time,gameState.auto_log])
 
-     /** 
-     * デモを再生
-     */
-    useEffect(() => {
-        if (gameState.demo) {
-            if(time >=1){
-                dispatch({ type: 'move_next', value: 0 })
-            }
-        } else {
-            pause()
-        }
-    }, [time,gameState.demo])
-    
     /** 
      * AIのターン
      */
