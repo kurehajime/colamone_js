@@ -10,7 +10,7 @@ type actionType = 'initGame'
     | 'move_next'
     | 'move_end'
     | 'ai'
-    | 'demo'
+    | 'log'
 type Action = {
     type: actionType,
     value: number,
@@ -48,8 +48,8 @@ export default  (_gameState:GameState, action:Action):GameState=> {
         case 'ai':
             gameState.ai()
             break
-        case 'demo':
-            gameState.startDemo()
+        case 'log':
+            gameState.startLog()
             break
         default:
       }

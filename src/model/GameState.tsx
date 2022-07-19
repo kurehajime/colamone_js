@@ -418,7 +418,7 @@ export default class GameState {
         this.calcWinner()
     }
 
-    public startDemo() {
+    public startLog() {
         this.initGame()
         this.map = Rule.copyMap(this.startMap)
         this.demo = false

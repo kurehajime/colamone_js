@@ -62,7 +62,7 @@ export default function Colamone() {
     useEffect(() => {
         const paramObj = Util.getParam()
         if (paramObj.log) {
-            dispatch({ type: 'demo', value: 0 })
+            dispatch({ type: 'log', value: 0 })
             start()
         }else{
             dispatch({ type: 'initGame', value: 0 })
