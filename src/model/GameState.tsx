@@ -64,14 +64,13 @@ export default class GameState {
         return clone
     }
 
-    public initGame() {
+    public initGame(mode:Mode,_paramObj: { [index: string]: string; } | null = null) {
         this.turnPlayer = 1
         this.demo = true
 
 
-        const _map = Rule.shuffleBoard()
-        this.map = _map
-        this.startMap = _map
+        
+
 
         // 連勝記録初期化
         if (!Cookie.getItem('level_1')) {
@@ -100,16 +99,14 @@ export default class GameState {
 
         // パラメータを取得
         const paramObj = Util.getParam()
-
         // 盤面を初期化
-        if (paramObj.init) {
+        if (mode === 'game') {
+            this.startMap = paramObj.init ? Util.getMapByParam(paramObj.init) : Rule.shuffleBoard()
+            this.map = _paramObj ? Util.getMapByParam(_paramObj.init) : this.startMap
+            this.logArray = _paramObj ? Util.decodeLog(_paramObj.log, this.map) : []
+        } else {
             this.startMap = Util.getMapByParam(paramObj.init)
             this.map = Rule.copyMap(this.startMap)
-        } else {
-            this.startMap = this.map
-        }
-        // ログをデコード
-        if (paramObj.log) {
             this.logArray = Util.decodeLog(paramObj.log, this.startMap)
         }
         // レベル取得
@@ -117,9 +114,7 @@ export default class GameState {
             this.level = parseInt(paramObj.lv)
         }
 
-        if (this.logArray.length !== 0) {
-            this.mode = 'log'
-        }
+        this.mode = mode
 
         this.mapList = Rule.add1000day(this.map, this.mapList)
         Util.setTweet() // ツイートボタンを生成
@@ -178,7 +173,7 @@ export default class GameState {
      */
     public calcWinner() {
         this.calcScore()
-        if (this.logArray.length === 0) {
+        if (this.mode === 'game' && !this.demo) {
             if (this.winner == 1) {
                 this.message = 'You win!'
                 Cookie.setItem('level_' + this.level,
@@ -285,6 +280,8 @@ export default class GameState {
         this.logArray2 = []
         this.winner = null
         this.mode = 'game'
+        this.blueScore = 0
+        this.redScore = 0
         this.turnPlayer = 1
     }
 
@@ -311,7 +308,7 @@ export default class GameState {
 
     
     public panelSelect (target: number):boolean{
-        if (this.winner !== null || this.logArray.length !== 0) {
+        if (this.mode !== 'game') {
             this.reloadnew()
             return false
         }
@@ -419,7 +416,7 @@ export default class GameState {
     }
 
     public startLog() {
-        this.initGame()
+        this.initGame('log')
         this.map = Rule.copyMap(this.startMap)
         this.demo = false
         this.auto_log = true

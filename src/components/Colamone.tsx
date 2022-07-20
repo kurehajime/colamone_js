@@ -11,7 +11,8 @@ import './Colamone.css'
 
 export default function Colamone() {
     const [gameState, dispatch] = useReducer(GameStateManager, new GameState(null))
-    const { time, start, pause } = useTimer({endTime:99})
+    const { time:timeLog, start:startLog, pause:pauseLog } = useTimer({endTime:99})
+    const { time:timeDemo, start:startDemo, pause:pauseDemo } = useTimer({endTime:99,interval:700})
 
     /** 
      * マウスクリック時処理
@@ -33,13 +34,27 @@ export default function Colamone() {
      */
      useEffect(() => {
         if (gameState.auto_log) {
-            if(time >=1){
+            if(timeLog >=1){
                 dispatch({ type: 'move_next', value: 0 })
             }
         } else {
-            pause()
+            pauseLog()
         }
-    }, [time,gameState.auto_log])
+    }, [timeLog,gameState.auto_log])
+
+    
+    /** 
+     * 自動再生モードならログを再生
+     */
+     useEffect(() => {
+        if (gameState.demo) {
+            if(timeDemo >=1){
+                dispatch({ type: 'move_next', value: 0 })
+            }
+        } else {
+            pauseDemo()
+        }
+    }, [timeDemo,gameState.demo])
 
     /** 
      * AIのターン
@@ -63,9 +78,10 @@ export default function Colamone() {
         const paramObj = Util.getParam()
         if (paramObj.log) {
             dispatch({ type: 'log', value: 0 })
-            start()
+            startLog()
         }else{
             dispatch({ type: 'initGame', value: 0 })
+            startDemo()
         }
     }, [])
 

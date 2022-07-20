@@ -1,4 +1,5 @@
 import GameState from "../model/GameState"
+import { Util } from "../static/Util"
 
 type actionType = 'initGame' 
     | 'panelSelect' 
@@ -19,7 +20,7 @@ export default  (_gameState:GameState, action:Action):GameState=> {
     const gameState =_gameState.clone()
       switch (action.type){
         case 'initGame':
-            gameState.initGame()
+            gameState.initGame('game',Util.getDemoParam())
             break
         case 'panelSelect':
             gameState.panelSelect(action.value)

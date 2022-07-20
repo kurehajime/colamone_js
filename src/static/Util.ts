@@ -230,4 +230,14 @@ export class Util {
         const cellSize = width / 6
         return Math.floor(x / cellSize) * 10 + Math.floor(y / cellSize)
     }
+
+     /** 
+     * パラメータ取得
+     */
+         static getDemoParam():  { [name: string]: string } {
+            const obj: { [name: string]: string }  = {}
+            obj.init='6,8,4,1,3,5,7,2'
+            obj.log='25e11x35q41z15q10x44w32a55q20x44q40x33q21x34q30z45w21d4w31a24e22x14e41c23e21c33w52x32q12x21q11x3e13w5e0c14e12x23e11c43w53q44w13x43w14x42w50z32e22z41q'
+            return obj
+        }
 }
