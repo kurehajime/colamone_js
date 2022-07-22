@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react"
 import Params from "../../../static/Params"
-import { CanvasUtil } from "../../../static/CanvasUtil"
+import { CanvasUtil } from "../../../static/canvas/CanvasUtil"
 import './Cover.css'
 type Props = {
     show: boolean
