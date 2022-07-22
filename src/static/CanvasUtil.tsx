@@ -1,5 +1,5 @@
 
-export class DrawUtil {
+export class CanvasUtil {
     static fillRoundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: number, h: number, r: number) {
         ctx.beginPath()
         ctx.moveTo(x + r, y)

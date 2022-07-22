@@ -1,7 +1,7 @@
 import { useEffect, useRef} from "react"
 import Params from "../../../static/Params"
 import bg from '../../../assets/bk.gif'
-import { DrawUtil } from "../../../static/DrawUtil"
+import { CanvasUtil } from "../../../static/CanvasUtil"
 import './Piece.css'
 
 type Props = {
@@ -52,7 +52,7 @@ export default function Piece(props: Props) {
                 ctx.shadowOffsetY = 2
                 ctx.fillStyle = grad
                 ctx.beginPath()
-                DrawUtil.fillRoundRect(
+                CanvasUtil.fillRoundRect(
                     ctx,
                     x + cellSize / 10,
                     y + cellSize / 10,

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react"
 import Params from "../../../static/Params"
-import { DrawUtil } from "../../../static/DrawUtil"
+import { CanvasUtil } from "../../../static/CanvasUtil"
 type Props = {
     x: number
     y: number
@@ -38,7 +38,7 @@ export default function Message(props: Props) {
 
             ctx_overlay.globalAlpha = 0.9
             ctx_overlay.fillStyle = Params.COLOR_WHITE
-            DrawUtil.fillRoundRect(ctx_overlay as CanvasRenderingContext2D, x, y, cellSize * 3.4, cellSize * 1, cellSize / 7)
+            CanvasUtil.fillRoundRect(ctx_overlay as CanvasRenderingContext2D, x, y, cellSize * 3.4, cellSize * 1, cellSize / 7)
 
             const fontsize = Math.round(cellSize * 0.36)
             ctx_overlay.shadowBlur = 0

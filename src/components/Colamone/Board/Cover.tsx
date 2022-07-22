@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react"
 import Params from "../../../static/Params"
-import { DrawUtil } from "../../../static/DrawUtil"
+import { CanvasUtil } from "../../../static/CanvasUtil"
 import './Cover.css'
 type Props = {
     show: boolean
@@ -69,7 +69,7 @@ export default function Cover(props: Props) {
             ctx_cover.globalAlpha = 0.8
             ctx_cover.fillStyle = Params.COLOR_WHITE
             ctx_cover.beginPath()
-            DrawUtil.fillRoundRect(ctx_cover as CanvasRenderingContext2D, x, y, cellSize * 2, cellSize * 1, cellSize / 7)
+            CanvasUtil.fillRoundRect(ctx_cover as CanvasRenderingContext2D, x, y, cellSize * 2, cellSize * 1, cellSize / 7)
             ctx_cover.shadowColor = 'rgba(0, 0, 0, 0)'
             ctx_cover.shadowBlur = 0
             ctx_cover.shadowOffsetX = 0
