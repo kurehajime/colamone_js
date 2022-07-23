@@ -10,17 +10,17 @@ type Props = {
     y: number
     h: number
     w: number
-    map:number[]
-    clickedX:number
-    clickedY:number
-    touch:boolean
+    map: number[]
+    clickedX: number
+    clickedY: number
+    touch: boolean
     hover_piece: Piece[]
 }
 export default function Hover(props: Props) {
     const bg1 = useRef<SVGImageElement>(null)
     const [hoverX, setHoverX] = useState(0)
     const [hoverY, setHoverY] = useState(0)
-    const [cellNumber, setCellNumber] = useState<number|null>(null)
+    const [cellNumber, setCellNumber] = useState<number | null>(null)
 
     /**
      * 盤面を描画してCANVASを返す。
@@ -49,7 +49,7 @@ export default function Hover(props: Props) {
             props.clickedX,
             props.clickedY
         ))
-    }, [props.clickedX,props.clickedY])
+    }, [props.clickedX, props.clickedY])
 
     const mouseMove = (e: React.MouseEvent<SVGSVGElement>) => {
         const plus = (Params.CANV_SIZE / 6) / 2
@@ -63,31 +63,31 @@ export default function Hover(props: Props) {
         ))
     }
 
-    const canput = useCallback(():number[] =>{
+    const canput = useCallback((): number[] => {
         if (props.hover_piece.length === 0 && props.touch) {
             return []
         }
-        if(cellNumber){
-            if(props.map[cellNumber]>0){
+        if (cellNumber) {
+            if (props.map[cellNumber] > 0) {
                 return Rule.getCanMovePanelX(cellNumber, new Int8Array(props.map))
             }
         }
         return []
-    },[props.map,props.touch,props.hover_piece,cellNumber])
+    }, [props.map, props.touch, props.hover_piece, cellNumber])
 
-    const getSelectPiece = useCallback(():ReactElement[] =>{
-        const canvSize = Params.CANV_SIZE 
+    const getSelectPiece = useCallback((): ReactElement[] => {
+        const canvSize = Params.CANV_SIZE
         const cellSize = canvSize / 6
         const plus = (Params.CANV_SIZE / 6) / 2
         const hx = hoverX + plus
         const hy = hoverY + plus
         const x = hx - (hx % cellSize)
         const y = hy - (hy % cellSize)
-        if(hoverX + plus !==0 && hoverY + plus !==0){
-            return [<rect key ={10000}  x={x} y={y} width={cellSize} height={cellSize} fill="#7fed7f" fillOpacity="0.3" />]
+        if (hoverX + plus !== 0 && hoverY + plus !== 0) {
+            return [<rect key={10000} x={x} y={y} width={cellSize} height={cellSize} fill="#7fed7f" fillOpacity="0.3" />]
         }
         return []
-    },[cellNumber])
+    }, [cellNumber])
 
     const puts = canput()
     let cursor = ''
@@ -100,37 +100,40 @@ export default function Hover(props: Props) {
             break
         default:
             break
-    } 
-
-    const hover = useMemo(()=>{
+    }
+    // ちょっとでも再描画を減らす
+    const _hoverX = props.hover_piece.length !== 0 ? hoverX : 0
+    const _hoverY = props.hover_piece.length !== 0 ? hoverY : 0
+    const hover = useMemo(() => {
         const p = props.hover_piece[0]
+        console.log(props.hover_piece, hoverX, hoverY)
         return ([<PieceElement
             key={0}
-            x={hoverX}
-            y={hoverY}
-            number={props.hover_piece.length > 0 ? p.number:0}
+            x={_hoverX}
+            y={_hoverY}
+            number={props.hover_piece.length > 0 ? p.number : 0}
             goal={false}
-            display={props.hover_piece.length > 0 ? p.display:"none"}
+            display={props.hover_piece.length > 0 ? p.display : "none"}
             isHover={true}
         />])
-    },[props.hover_piece,hoverX,hoverY])
+    }, [props.hover_piece, _hoverX, _hoverY])
 
-    return (<g className={"hover " + cursor}  onMouseMove={mouseMove}> 
+    return (<g className={"hover " + cursor} onMouseMove={mouseMove}>
         <image ref={bg1} x={props.x} y={props.y} width={props.w} height={props.h} />
         {
             hover.concat(
-                puts.map(p => {        
-                    const canvSize = Params.CANV_SIZE 
+                puts.map(p => {
+                    const canvSize = Params.CANV_SIZE
                     const cellSize = canvSize / 6
                     const x = Math.floor(p / 10)
                     const y = Math.floor(p % 10)
                     const cx = x * cellSize + (cellSize / 2)
                     const cy = y * cellSize + (cellSize / 2)
                     const r = (cellSize / 5) - (cellSize / 10)
-                    return (   
-                        <circle 
-                        key={1000+p}
-                        className='canPut' cx={cx} cy={cy} r={r} fill="#7fed7f" fillOpacity="0.5"></circle>
+                    return (
+                        <circle
+                            key={1000 + p}
+                            className='canPut' cx={cx} cy={cy} r={r} fill="#7fed7f" fillOpacity="0.5"></circle>
                     )
                 }
                 )

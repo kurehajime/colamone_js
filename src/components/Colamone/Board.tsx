@@ -1,7 +1,7 @@
 import Params from "../../static/Params"
 import Background from './Board/Background'
 import PieceElement from './Board/Piece'
-import { useRef, useState } from "react"
+import { useMemo, useRef, useState } from "react"
 import { Piece } from "../../model/Piece"
 import Cover from "./Board/Cover"
 import Message from "./Board/Message"
@@ -78,7 +78,7 @@ export default function Board(props: Props) {
                 e.nativeEvent.offsetY
             )
 
-            setTouch((e.nativeEvent as PointerEvent)?.pointerType=== 'touch')
+            setTouch((e.nativeEvent as PointerEvent)?.pointerType === 'touch')
             setHoverX(e.nativeEvent.offsetX)
             setHoverY(e.nativeEvent.offsetY)
             props.clickCell(cellNumber)
@@ -87,12 +87,15 @@ export default function Board(props: Props) {
     }
 
     const pieces = mapToPieces(Params.CANV_SIZE, Params.CANV_SIZE, props.map)
-    const hover_piece: Piece[] = []
-    if (props.hover) {
-        const hp = makePiece(props.hover)
-        hp.display = 'inline'
-        hover_piece.push(hp)
-    }
+    // ちょっとでも再描画を減らす
+    const hover_piece: Piece[] = useMemo(() => {
+        if (props.hover) {
+            const hp = makePiece(props.hover)
+            hp.display = 'inline'
+            return [hp]
+        }
+        return []
+    }, [props.hover])
 
     return (<svg ref={svg} width={Params.CANV_SIZE} height={Params.CANV_SIZE} onPointerDown={mouseClick} >
         <Background x={0} y={0} w={Params.CANV_SIZE} h={Params.CANV_SIZE} />
@@ -106,12 +109,12 @@ export default function Board(props: Props) {
                         number={p.number}
                         goal={p.goal}
                         isHover={false}
-                        display={p.number !== props.hover ? p.display:"none"}
+                        display={p.number !== props.hover ? p.display : "none"}
                     />
                 )
             })
         }
-       <Hover
+        <Hover
             x={0}
             y={0}
             w={Params.CANV_SIZE}
@@ -121,7 +124,7 @@ export default function Board(props: Props) {
             touch={touch}
             hover_piece={hover_piece}
             map={props.map}
-       ></Hover>
+        ></Hover>
         <Message
             x={0}
             y={0}
