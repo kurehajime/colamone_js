@@ -106,7 +106,6 @@ export default function Hover(props: Props) {
     const _hoverY = props.hover_piece.length !== 0 ? hoverY : 0
     const hover = useMemo(() => {
         const p = props.hover_piece[0]
-        console.log(props.hover_piece, hoverX, hoverY)
         return ([<PieceElement
             key={0}
             x={_hoverX}
