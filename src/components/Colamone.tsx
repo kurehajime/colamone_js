@@ -141,6 +141,8 @@ export default function Colamone() {
                             cover={gameState.demo}
                             hand={gameState.hand}
                             message={gameState.message}
+                            turn_player={gameState.turnPlayer}
+                            demo={gameState.demo}
                             clickCell={(cellNumber: number) => {
                                 mouseClick(cellNumber)
                             }}

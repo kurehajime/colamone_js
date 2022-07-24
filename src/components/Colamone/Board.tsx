@@ -15,6 +15,8 @@ type Props = {
     message: string
     hand: Hand | null
     clickCell: (cellNumber: number) => void
+    turn_player: number
+    demo: boolean
 }
 export default function Board(props: Props) {
     const svg = useRef<SVGSVGElement>(null)
@@ -124,6 +126,8 @@ export default function Board(props: Props) {
             touch={touch}
             hover_piece={hover_piece}
             map={props.map}
+            turn_player={props.turn_player}
+            demo={props.demo}
         ></Hover>
         <Message
             x={0}

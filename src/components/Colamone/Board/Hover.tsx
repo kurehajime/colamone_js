@@ -15,6 +15,8 @@ type Props = {
     clickedY: number
     touch: boolean
     hover_piece: Piece[]
+    turn_player: number
+    demo: boolean
 }
 export default function Hover(props: Props) {
     const bg1 = useRef<SVGImageElement>(null)
@@ -67,13 +69,12 @@ export default function Hover(props: Props) {
         if (props.hover_piece.length === 0 && props.touch) {
             return []
         }
-        if (cellNumber) {
-            if (props.map[cellNumber] > 0) {
-                return Rule.getCanMovePanelX(cellNumber, new Int8Array(props.map))
-            }
+        const target = props.hover_piece.length > 0 ? props.map.indexOf(props.hover_piece[0].number) : cellNumber
+        if (target && props.map[target] > 0 && props.turn_player === 1 && !props.demo) {
+            return Rule.getCanMovePanelX(target, new Int8Array(props.map))
         }
         return []
-    }, [props.map, props.touch, props.hover_piece, cellNumber])
+    }, [props.map, props.touch, props.hover_piece, props.turn_player, props.demo, cellNumber])
 
     const getSelectPiece = useCallback((): ReactElement[] => {
         const canvSize = Params.CANV_SIZE
@@ -83,11 +84,11 @@ export default function Hover(props: Props) {
         const hy = hoverY + plus
         const x = hx - (hx % cellSize)
         const y = hy - (hy % cellSize)
-        if (hoverX + plus !== 0 && hoverY + plus !== 0) {
+        if (hoverX + plus !== 0 && hoverY + plus !== 0 && !props.demo) {
             return [<rect key={10000} x={x} y={y} width={cellSize} height={cellSize} fill="#7fed7f" fillOpacity="0.3" />]
         }
         return []
-    }, [cellNumber])
+    }, [cellNumber, props.demo])
 
     const puts = canput()
     let cursor = ''
