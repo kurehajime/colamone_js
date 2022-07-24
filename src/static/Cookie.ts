@@ -8,6 +8,12 @@ export default class Cookie {
     static storage: IStorage = Cookie.getCookie()
     static getCookie(): IStorage {
         let storage: any = null
+        if (!window) {
+            return {
+                getItem: () => null,
+                setItem: () => null
+            }
+        }
         try {
             if (window == parent && ('localStorage' in window) && window.localStorage !== null) {
                 storage = localStorage
