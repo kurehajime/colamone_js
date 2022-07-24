@@ -1,11 +1,12 @@
 import Params from "../Params"
 
-export class BackgroundDraw{
-    
+export class BackgroundDraw {
+
     /**
-     * 盤面を描画してCANVASを返す。
+     * 盤面を描画してDataURLを返す。
      */
-     static drawBoard(element: SVGImageElement, canvas: HTMLCanvasElement) {
+    static drawBoard(): string {
+        const canvas: HTMLCanvasElement = document.createElement("canvas")
         const canvSize = Params.CANV_SIZE * 3
         const cellSize = canvSize / 6
         canvas.width = canvSize
@@ -37,9 +38,10 @@ export class BackgroundDraw{
                 }
             }
         }
-        element.setAttribute("href", canvas.toDataURL())
+        return canvas.toDataURL()
     }
-    static drawBoard2(element: SVGImageElement, canvas: HTMLCanvasElement) {
+    static drawBoard2() {
+        const canvas: HTMLCanvasElement = document.createElement("canvas")
         const canvSize = Params.CANV_SIZE * 3
         const cellSize = canvSize / 6
         const ctx_board2 = canvas.getContext("2d")
@@ -58,6 +60,6 @@ export class BackgroundDraw{
             )
             ctx_board2.fill()
         }
-        element.setAttribute("href", canvas.toDataURL())
+        return canvas.toDataURL()
     }
 }

@@ -12,9 +12,8 @@ export default function Background(props: Props) {
 
     useEffect(() => {
         if (bg1.current && bg2.current) {
-            const canvas = document.createElement("canvas")
-            BackgroundDraw.drawBoard(bg1.current, canvas)
-            BackgroundDraw.drawBoard2(bg2.current, canvas)
+            bg1.current.setAttribute("href", BackgroundDraw.drawBoard())
+            bg2.current.setAttribute("href", BackgroundDraw.drawBoard2())
         }
     }, [])
 
