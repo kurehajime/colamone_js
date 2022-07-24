@@ -2,7 +2,8 @@ import Params from "../Params"
 import { CanvasUtil } from "./CanvasUtil"
 
 export class PieceDraw {
-    static drawPiece1(element: SVGImageElement, canvas: HTMLCanvasElement, number: number, goal: boolean, img_bk: HTMLImageElement | null = null) {
+    static drawPiece1(number: number, goal: boolean, img_bk: HTMLImageElement | null = null): string {
+        const canvas = document.createElement("canvas")
         const cellSize = (Params.CANV_SIZE / 6) * 3
         canvas.width = (Params.CANV_SIZE / 6) * 3
         canvas.height = (Params.CANV_SIZE / 6) * 3
@@ -12,7 +13,7 @@ export class PieceDraw {
         const y = 0
         // 外枠を描画
         if (number === 0) {
-            return ctx
+            return canvas.toDataURL()
         } else if (number > 0) {
             color = Params.COLOR_BLUE
         } else {
@@ -58,9 +59,10 @@ export class PieceDraw {
                 ctx.globalAlpha = 1
             }
         }
-        element.setAttribute("href", canvas.toDataURL())
+        return canvas.toDataURL()
     }
-    static drawPiece2(element: SVGImageElement, canvas: HTMLCanvasElement, number: number, goal: boolean) {
+    static drawPiece2(number: number, goal: boolean): string {
+        const canvas = document.createElement("canvas")
         const cellSize = (Params.CANV_SIZE / 6) * 3
         canvas.width = (Params.CANV_SIZE / 6) * 3
         canvas.height = (Params.CANV_SIZE / 6) * 3
@@ -114,9 +116,9 @@ export class PieceDraw {
             }
         }
 
-        element.setAttribute("href", canvas.toDataURL())
+        return canvas.toDataURL()
     }
-    static drawBk(img_bk: HTMLImageElement) {
+    static drawBk(img_bk: HTMLImageElement): HTMLCanvasElement {
         const canv_bk = document.createElement("canvas")
         const ctx_bk = canv_bk.getContext("2d")
         if (ctx_bk) {

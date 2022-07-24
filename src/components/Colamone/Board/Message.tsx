@@ -13,8 +13,7 @@ export default function Message(props: Props) {
 
     useEffect(() => {
         if (bg1.current && props.message !== '') {
-            const canvas = document.createElement("canvas")
-            MessageDraw.drawMessage(bg1.current, canvas, props.message)
+            bg1.current.setAttribute("href", MessageDraw.drawMessage(props.message))
         }
     }, [props.message])
 

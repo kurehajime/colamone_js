@@ -21,25 +21,24 @@ export default function Piece(props: Props) {
         if (props.display === "none") {
             return
         }
-        const canvas = document.createElement("canvas")
 
         if (piece1.current && piece2.current && img_bk.current) {
             // 背景画像の読み込みが完了したら再実行
             if (!img_bk.current.src) {
                 img_bk.current.onload = () => {
                     if (piece1.current) {
-                        PieceDraw.drawPiece1(piece1.current, canvas, props.number, props.goal, img_bk.current)
+                        piece1.current.setAttribute("href", PieceDraw.drawPiece1(props.number, props.goal, img_bk.current))
                     }
                 }
                 img_bk.current.src = bg
 
             } else {
-                PieceDraw.drawPiece1(piece1.current, canvas, props.number, props.goal)
+                piece1.current.setAttribute("href", PieceDraw.drawPiece1(props.number, props.goal))
             }
             if (img_bk.current.width !== 0) {
-                PieceDraw.drawPiece1(piece1.current, canvas, props.number, props.goal, img_bk.current)
+                piece1.current.setAttribute("href", PieceDraw.drawPiece1(props.number, props.goal, img_bk.current))
             }
-            PieceDraw.drawPiece2(piece2.current, canvas, props.number, props.goal)
+            piece2.current.setAttribute("href", PieceDraw.drawPiece2(props.number, props.goal))
         }
     }, [props.display, props.goal, props.number])
 

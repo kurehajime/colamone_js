@@ -5,7 +5,8 @@ export class MessageDraw {
     /**
      * 盤面を描画してCANVASを返す。
      */
-    static drawMessage(element: SVGImageElement, canvas: HTMLCanvasElement, message: string) {
+    static drawMessage(message: string): string {
+        const canvas = document.createElement("canvas")
         // 背景
         const canvSize = Params.CANV_SIZE * 3
         const cellSize = Params.CANV_SIZE / 6 * 3
@@ -19,8 +20,7 @@ export class MessageDraw {
             ctx_overlay.clearRect(0, 0, canvSize, canvSize)
 
             if (message === '') {
-                element.setAttribute("href", canvas.toDataURL())
-                return
+                return canvas.toDataURL()
             }
             ctx_overlay.shadowBlur = 10
             ctx_overlay.shadowColor = 'rgba(100, 100, 100, 0.5)'
@@ -44,6 +44,6 @@ export class MessageDraw {
             ctx_overlay.beginPath()
             ctx_overlay.fillText(message, cellSize * 3, cellSize * 3)
         }
-        element.setAttribute("href", canvas.toDataURL())
+        return canvas.toDataURL()
     }
 }

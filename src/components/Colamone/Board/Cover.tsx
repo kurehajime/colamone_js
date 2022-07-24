@@ -14,8 +14,8 @@ export default function Cover(props: Props) {
 
     useEffect(() => {
         if (bg1.current&&bg2.current) {
-            CoverDraw.drawCover1(bg1.current)
-            CoverDraw.drawCover2(bg2.current)
+            bg1.current.setAttribute("href", CoverDraw.drawCover1())
+            bg2.current.setAttribute("href", CoverDraw.drawCover2())
         }
     }, [])
 

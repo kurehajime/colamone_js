@@ -6,7 +6,7 @@ export class CoverDraw{
     /**
      * 盤面を描画してCANVASを返す。
      */
-     static drawCover1(element: SVGImageElement) {
+    static drawCover1(): string {
         const canvas = document.createElement("canvas")
         // 背景
         const ctx_cover = canvas.getContext('2d')
@@ -32,13 +32,13 @@ export class CoverDraw{
             ctx_cover.beginPath()
             ctx_cover.fillText(message, cellSize * 3, cellSize * 2)
         }
-        element.setAttribute("href", canvas.toDataURL())
+        return canvas.toDataURL()
     }
 
     /**
      * 盤面を描画してCANVASを返す。
      */
-     static drawCover2(element: SVGImageElement) {
+    static drawCover2(): string {
         const canvas = document.createElement("canvas")
         // 背景
         const ctx_cover = canvas.getContext('2d')
@@ -80,6 +80,6 @@ export class CoverDraw{
             ctx_cover.beginPath()
             ctx_cover.fillText(message, cellSize * 3, cellSize * 4)
         }
-        element.setAttribute("href", canvas.toDataURL())
+        return canvas.toDataURL()
     }
 }
