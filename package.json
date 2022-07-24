@@ -19,7 +19,7 @@
     "build": "node ./update-date.js && tsc --noEmit && vite build",
     "serve": "vite preview",
     "test": "vitest run",
-    "uplib":"npx npm-check-updates -u && npm i"
+    "uplib": "npx npm-check-updates -u && npm i"
   },
   "eslintConfig": {
     "extends": [
@@ -33,6 +33,7 @@
     "eslint": "^8.20.0",
     "eslint-plugin-react": "^7.30.1",
     "vite": "^3.0.0",
+    "vite-plugin-singlefile": "^0.11.0",
     "vitest": "^0.18.1"
   }
 }
