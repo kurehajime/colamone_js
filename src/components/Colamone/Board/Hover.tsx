@@ -1,7 +1,7 @@
 import { ReactElement, useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Piece } from "../../../model/Piece"
 import Params from "../../../static/Params"
-import { Rule } from "../../../static/Rule"
+import { Rule } from "../../../static/game/Rule"
 import { Util } from "../../../static/Util"
 import PieceElement from './Piece'
 import './Hover.css'

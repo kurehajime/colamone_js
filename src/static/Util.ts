@@ -1,4 +1,4 @@
-import { Hand, MapArray, Rule } from "./Rule"
+import { Hand, MapArray, Rule } from "./game/Rule"
 
 export class Util {
 

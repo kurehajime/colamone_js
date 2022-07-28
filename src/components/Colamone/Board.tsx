@@ -5,7 +5,7 @@ import { useMemo, useRef, useState } from "react"
 import { Piece } from "../../model/Piece"
 import Cover from "./Board/Cover"
 import Message from "./Board/Message"
-import { Hand } from "../../static/Rule"
+import { Hand } from "../../static/game/Rule"
 import Hover from "./Board/Hover"
 import { Util } from "../../static/Util"
 type Props = {

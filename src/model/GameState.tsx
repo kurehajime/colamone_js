@@ -1,7 +1,7 @@
 import { Mode } from "./Mode"
-import { Aijs } from "../static/Ai"
+import { Aijs } from "../static/game/Ai"
 import Cookie from "../static/Cookie"
-import { Hand, MapArray, Rule } from "../static/Rule"
+import { Hand, MapArray, Rule } from "../static/game/Rule"
 import { Util } from "../static/Util"
 
 export default class GameState {
