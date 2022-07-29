@@ -1,5 +1,5 @@
-import { MapArray, Rule } from "../src/static/Rule"
-import { Aijs } from "../src/static/Ai"
+import { MapArray, Rule } from "../src/static/game/Rule"
+import { Aijs } from "../src/static/game/Ai"
 import { beforeEach, expect, test } from 'vitest'
 
 let thisMap: { [name: number]: number } 
