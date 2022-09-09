@@ -3,16 +3,16 @@
   "version": "1.0.0",
   "homepage": "./",
   "dependencies": {
-    "@types/node": "^18.6.2",
-    "@types/react": "^18.0.15",
+    "@types/node": "^18.7.16",
+    "@types/react": "^18.0.18",
     "@types/react-dom": "^18.0.6",
-    "i18next": "^21.8.14",
+    "i18next": "^21.9.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-i18next": "^11.18.3",
-    "typescript": "^4.7.4",
+    "react-i18next": "^11.18.5",
+    "typescript": "^4.8.3",
     "use-timer": "^2.0.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^3.0.1"
   },
   "scripts": {
     "start": "vite",
@@ -27,13 +27,13 @@
     ]
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.31.0",
-    "@typescript-eslint/parser": "^5.31.0",
-    "@vitejs/plugin-react": "^2.0.0",
-    "eslint": "^8.20.0",
-    "eslint-plugin-react": "^7.30.1",
-    "vite": "^3.0.4",
-    "vite-plugin-singlefile": "^0.11.0",
-    "vitest": "^0.19.1"
+    "@typescript-eslint/eslint-plugin": "^5.36.2",
+    "@typescript-eslint/parser": "^5.36.2",
+    "@vitejs/plugin-react": "^2.1.0",
+    "eslint": "^8.23.0",
+    "eslint-plugin-react": "^7.31.8",
+    "vite": "^3.1.0",
+    "vite-plugin-singlefile": "^0.11.1",
+    "vitest": "^0.23.1"
   }
 }
