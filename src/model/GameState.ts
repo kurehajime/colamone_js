@@ -64,12 +64,12 @@ export default class GameState {
         return clone
     }
 
-    public initGame(mode:Mode,_paramObj: { [index: string]: string; } | null = null) {
+    public initGame(mode: Mode, _paramObj: { [index: string]: string; } | null = null) {
         this.turnPlayer = 1
         this.demo = true
 
 
-        
+
 
 
         // 連勝記録初期化
@@ -273,7 +273,7 @@ export default class GameState {
 
 
 
-    public resetMap () {
+    public resetMap() {
         this.demo = false
         this.hand = null
         this.map = this.startMap
@@ -306,8 +306,8 @@ export default class GameState {
         }
     }
 
-    
-    public panelSelect (target: number):boolean{
+
+    public panelSelect(target: number): boolean {
         if (this.mode !== 'game') {
             this.reloadnew()
             return false

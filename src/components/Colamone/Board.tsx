@@ -1,13 +1,13 @@
 import Params from "../../static/Params"
 import Background from './Board/Background'
 import PieceElement from './Board/Piece'
-import { useMemo, useRef, useState } from "react"
+import { useMemo, useRef } from "react"
 import { Piece } from "../../model/Piece"
 import Cover from "./Board/Cover"
 import Message from "./Board/Message"
 import { Hand } from "../../static/game/Rule"
 import Hover from "./Board/Hover"
-import { Util } from "../../static/Util"
+import Pointer from "./Board/Pointer"
 type Props = {
     map: number[]
     hover: number | null
@@ -20,10 +20,6 @@ type Props = {
 }
 export default function Board(props: Props) {
     const svg = useRef<SVGSVGElement>(null)
-    const [hoverX, setHoverX] = useState(0)
-    const [hoverY, setHoverY] = useState(0)
-    const [touch, setTouch] = useState(false)
-
 
     const makePiece = (number: number): Piece => {
         return {
@@ -71,22 +67,7 @@ export default function Board(props: Props) {
 
 
 
-    const mouseClick = (e: React.PointerEvent<SVGSVGElement>) => {
-        if (svg.current) {
-            const cellNumber = Util.pointToCellNumber(
-                svg.current.getBoundingClientRect().width,
-                svg.current.getBoundingClientRect().height,
-                e.nativeEvent.offsetX,
-                e.nativeEvent.offsetY
-            )
 
-            setTouch((e.nativeEvent as PointerEvent)?.pointerType === 'touch')
-            setHoverX(e.nativeEvent.offsetX)
-            setHoverY(e.nativeEvent.offsetY)
-            props.clickCell(cellNumber)
-        }
-        e.preventDefault()
-    }
 
     const pieces = mapToPieces(Params.CANV_SIZE, Params.CANV_SIZE, props.map)
     // ちょっとでも再描画を減らす
@@ -99,7 +80,7 @@ export default function Board(props: Props) {
         return []
     }, [props.hover])
 
-    return (<svg ref={svg} width={Params.CANV_SIZE} height={Params.CANV_SIZE} onPointerDown={mouseClick} >
+    return (<svg ref={svg} width={Params.CANV_SIZE} height={Params.CANV_SIZE} >
         <Background x={0} y={0} w={Params.CANV_SIZE} h={Params.CANV_SIZE} />
         {
             pieces.map(p => {
@@ -121,9 +102,6 @@ export default function Board(props: Props) {
             y={0}
             w={Params.CANV_SIZE}
             h={Params.CANV_SIZE}
-            clickedX={hoverX}
-            clickedY={hoverY}
-            touch={touch}
             hover_piece={hover_piece}
             map={props.map}
             turn_player={props.turn_player}
@@ -143,5 +121,12 @@ export default function Board(props: Props) {
             h={Params.CANV_SIZE}
             show={props.cover}
         ></Cover>
+        <Pointer
+            x={0}
+            y={0}
+            w={Params.CANV_SIZE}
+            h={Params.CANV_SIZE}
+            clickCell={props.clickCell}
+        ></Pointer>
     </svg >)
 }
