@@ -12,6 +12,7 @@
     box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.4);
     background-color: rgba(0, 0, 0, 0.85);
     user-select: none;
+    position: relative;
 }
 
 @media (orientation: landscape) {

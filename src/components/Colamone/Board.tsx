@@ -7,7 +7,7 @@ import Cover from "./Board/Cover"
 import Message from "./Board/Message"
 import { Hand } from "../../static/game/Rule"
 import Hover from "./Board/Hover"
-import Pointer from "./Board/Pointer"
+import "./Board.css"
 type Props = {
     map: number[]
     hover: number | null
@@ -80,7 +80,8 @@ export default function Board(props: Props) {
         return []
     }, [props.hover])
 
-    return (<svg ref={svg} width={Params.CANV_SIZE} height={Params.CANV_SIZE} >
+    return (<svg ref={svg} width={Params.CANV_SIZE} height={Params.CANV_SIZE}
+        className="board" >
         <Background x={0} y={0} w={Params.CANV_SIZE} h={Params.CANV_SIZE} />
         {
             pieces.map(p => {
@@ -121,12 +122,5 @@ export default function Board(props: Props) {
             h={Params.CANV_SIZE}
             show={props.cover}
         ></Cover>
-        <Pointer
-            x={0}
-            y={0}
-            w={Params.CANV_SIZE}
-            h={Params.CANV_SIZE}
-            clickCell={props.clickCell}
-        ></Pointer>
     </svg >)
 }

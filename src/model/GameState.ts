@@ -344,6 +344,8 @@ export default class GameState {
                 if (this.winner === null) {
                     return true
                 }
+            } else {
+                this.hover = null
             }
         }
         return false
