@@ -19,7 +19,6 @@ https://colamone.com
 * When all movable pieces of a player are lost, the one with the highest score is winning the game.
 * However, it will be the victory of the red player in the case of a tie.
 
-
 ### github.io
 
 https://kurehajime.github.io/colamone_js/
