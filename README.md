@@ -1,7 +1,6 @@
 Colamone - A two-player strategy board game
 ===========
 
-![Contributors](https://vanzuke.herokuapp.com/ranks?repo=kurehajime/colamone_js&count=5&years=5&month=0&days=0&title=%F0%9F%91%91Contributors%F0%9F%91%91)
 
 Colamone is a board game similar to chess.
 
