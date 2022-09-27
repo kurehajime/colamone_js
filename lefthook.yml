@@ -1,0 +1,4 @@
+post-merge:
+  commands:
+    packages-audit:
+      run: npm i
