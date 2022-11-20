@@ -1,0 +1,18 @@
+[package]
+name = "colamone"
+version = "0.1.0"
+edition = "2021"
+description = "colamone by wasm"
+repository = "https://github.com/kurehajime/colamone_js"
+license = "MIT"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+maplit = "1.0.2"
+serde_json = "1.0.87"
+serde = { version = "1.0", features = ["derive"] }
+wasm-bindgen = { version = "0.2", features = ["serde-serialize"] }
+
+[lib]
+crate-type = ["cdylib", "rlib"]
