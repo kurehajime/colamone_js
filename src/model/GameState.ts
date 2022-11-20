@@ -256,6 +256,7 @@ export default class GameState {
                 break
         }
         let _hand;
+        const start = performance.now();
         try {
             const result = think_ai(new Int32Array(this.map), this.turnPlayer, this.level + plus + 1)
             _hand = [result.from, result.to]
@@ -264,6 +265,8 @@ export default class GameState {
             console.log("wasm failed,fallback to js")
             _hand = Aijs.thinkAI(this.map, this.turnPlayer, this.level + plus + 1, undefined, undefined, undefined)[0]
         }
+        const end = performance.now();
+        console.log(`time:${end - start | 0}`);
         if (_hand) {
             const _map = this.map.slice()
             _map[_hand[1]] = this.map[_hand[0]]
