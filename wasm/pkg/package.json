@@ -1,0 +1,18 @@
+{
+  "name": "colamone",
+  "description": "colamone by wasm",
+  "version": "0.1.0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kurehajime/colamone_js"
+  },
+  "files": [
+    "colamone_bg.wasm",
+    "colamone.js",
+    "colamone.d.ts"
+  ],
+  "module": "colamone.js",
+  "types": "colamone.d.ts",
+  "sideEffects": false
+}

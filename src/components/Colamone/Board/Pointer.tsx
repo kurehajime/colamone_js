@@ -33,7 +33,6 @@ export default function Pointer(props: Props) {
             const d = Math.sqrt(dx * dx + dy * dy)
             setDistance(dd => dd + d)
         }
-        console.log(point)
         setPoint({ x: e.offsetX, y: e.offsetY })
         setHoverPoint({ x: e.offsetX - plus, y: e.offsetY - plus })
         setHoverNumber(Util.pointToCellNumber(

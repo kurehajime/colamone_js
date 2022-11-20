@@ -6,6 +6,13 @@ import "./i18n/configs"
 import { Util } from './static/Util'
 import Colamone from './components/Colamone'
 import { RecoilRoot } from 'recoil'
+import init from '../wasm/pkg'
+// wasm初期化
+try {
+  init()
+} catch (error) {
+  console.log(error)
+}
 
 Util.zoom() // 小さい端末でズーム
 window.addEventListener('orientationchange', Util.zoom)
@@ -13,6 +20,7 @@ window.addEventListener('orientationchange', Util.zoom)
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 )
+
 root.render(
   <RecoilRoot>
     <React.StrictMode>

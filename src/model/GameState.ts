@@ -3,6 +3,7 @@ import { Aijs } from "../static/game/Ai"
 import Cookie from "../static/Cookie"
 import { Hand, MapArray, Rule } from "../static/game/Rule"
 import { Util } from "../static/Util"
+import { think_ai } from '../../wasm/pkg'
 
 export default class GameState {
     public turnPlayer = 0
@@ -254,8 +255,15 @@ export default class GameState {
                 }
                 break
         }
+        let _hand;
+        try {
+            const result = think_ai(new Int32Array(this.map), this.turnPlayer, this.level + plus)
+            _hand = [result.from, result.to]
 
-        const _hand = Aijs.thinkAI(this.map, this.turnPlayer, this.level + plus + 1, undefined, undefined, undefined)[0]
+        } catch (error) {
+            console.log("wasm failed,fallback to js")
+            _hand = Aijs.thinkAI(this.map, this.turnPlayer, this.level + plus + 1, undefined, undefined, undefined)[0]
+        }
         if (_hand) {
             const _map = this.map.slice()
             _map[_hand[1]] = this.map[_hand[0]]
