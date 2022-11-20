@@ -257,7 +257,7 @@ export default class GameState {
         }
         let _hand;
         try {
-            const result = think_ai(new Int32Array(this.map), this.turnPlayer, this.level + plus)
+            const result = think_ai(new Int32Array(this.map), this.turnPlayer, this.level + plus + 1)
             _hand = [result.from, result.to]
 
         } catch (error) {
