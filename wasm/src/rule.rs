@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 pub static LIMIT_1000DAY: isize = 3;
 pub static PIECES: [[usize; 9]; 17] = [
     [
@@ -96,7 +94,7 @@ pub const NUMBERS: [usize; 36] = [
     40, 41, 42, 43, 44, 45, //
     50, 51, 52, 53, 54, 55,
 ];
-pub type MapArray = Vec<isize>;
+pub type MapArray = [isize; 56];
 pub type Hand = (usize, usize);
 pub type HandNode = (Hand, MapArray);
 
@@ -346,23 +344,6 @@ pub fn is_end_x(map: &MapArray, near_win: bool) -> isize {
         }
     }
     0
-}
-
-#[inline]
-pub fn is_1000_day(map: &MapArray, map_list: HashMap<String, isize>) -> bool {
-    let map_json = serde_json::to_string(map).unwrap();
-    if map_list.contains_key(&map_json) && *map_list.get(&map_json).unwrap() >= LIMIT_1000DAY {
-        return true;
-    }
-    false
-}
-
-#[inline]
-pub fn add_1000_day(map: &MapArray, map_list: HashMap<String, isize>) -> HashMap<String, isize> {
-    let mut map_list = map_list.clone();
-    let map_json = serde_json::to_string(map).unwrap();
-    *map_list.entry(map_json).or_insert(0) += 1;
-    map_list
 }
 
 #[inline]
