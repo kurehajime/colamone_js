@@ -11,6 +11,8 @@ pub static DEFAULT_EVALPARAM: [[isize; 6]; 9] = [
     [1250, 1360, 1470, 2300, 3350, 8250],  //7
     [1250, 1370, 1490, 2450, 4350, 11250], //8
 ];
+
+#[inline]
 pub fn eval_map(map: &MapArray, near_win: bool, eval_param: [[isize; 6]; 9]) -> isize {
     let mut ev = 0;
     // 引き分け判定

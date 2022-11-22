@@ -1,6 +1,7 @@
 use crate::eval::{self, DEFAULT_EVALPARAM};
 use crate::rule::{self, Hand, MapArray};
 
+#[inline]
 pub fn deep_think_all_ab(
     map: &MapArray,
     turn_player: isize,
@@ -70,6 +71,7 @@ pub fn deep_think_all_ab(
     }
     return (besthand, best_score);
 }
+
 pub fn think_ai(
     map: &MapArray,
     turn_player: isize,

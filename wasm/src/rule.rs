@@ -100,6 +100,7 @@ pub type MapArray = Vec<isize>;
 pub type Hand = (usize, usize);
 pub type HandNode = (Hand, MapArray);
 
+#[inline]
 pub fn get_can_move_panel_x(panel_num: usize, map: &MapArray) -> Vec<usize> {
     let mut can_move: Vec<usize> = vec![];
     let number: isize = map[panel_num];
@@ -136,6 +137,7 @@ pub fn get_can_move_panel_x(panel_num: usize, map: &MapArray) -> Vec<usize> {
     can_move
 }
 
+#[inline]
 pub fn get_node_map(map: &MapArray, turn_player: isize) -> Vec<HandNode> {
     let mut node_list: Vec<HandNode> = vec![];
     for i in 0..36 {
@@ -156,6 +158,7 @@ pub fn get_node_map(map: &MapArray, turn_player: isize) -> Vec<HandNode> {
     return node_list;
 }
 
+#[inline]
 pub fn has_can_move_panel_x(panel_num: usize, map: &MapArray) -> bool {
     let number = map[panel_num];
     let panel_num = panel_num as isize;
@@ -192,6 +195,7 @@ pub fn has_can_move_panel_x(panel_num: usize, map: &MapArray) -> bool {
     false
 }
 
+#[inline]
 pub fn is_none_node(map: &MapArray) -> bool {
     let mut flag1 = false;
     let mut flag2 = false;
@@ -214,6 +218,8 @@ pub fn is_none_node(map: &MapArray) -> bool {
     }
     true
 }
+
+#[inline]
 pub fn is_draw(map: &MapArray) -> bool {
     let mut sum1 = 0;
     let mut sum2 = 0;
@@ -263,6 +269,7 @@ pub fn is_draw(map: &MapArray) -> bool {
     false
 }
 
+#[inline]
 pub fn is_end_x(map: &MapArray, near_win: bool) -> isize {
     let mut sum1 = 0;
     let mut sum2 = 0;
@@ -341,6 +348,7 @@ pub fn is_end_x(map: &MapArray, near_win: bool) -> isize {
     0
 }
 
+#[inline]
 pub fn is_1000_day(map: &MapArray, map_list: HashMap<String, isize>) -> bool {
     let map_json = serde_json::to_string(map).unwrap();
     if map_list.contains_key(&map_json) && *map_list.get(&map_json).unwrap() >= LIMIT_1000DAY {
@@ -349,12 +357,15 @@ pub fn is_1000_day(map: &MapArray, map_list: HashMap<String, isize>) -> bool {
     false
 }
 
+#[inline]
 pub fn add_1000_day(map: &MapArray, map_list: HashMap<String, isize>) -> HashMap<String, isize> {
     let mut map_list = map_list.clone();
     let map_json = serde_json::to_string(map).unwrap();
     *map_list.entry(map_json).or_insert(0) += 1;
     map_list
 }
+
+#[inline]
 pub fn is_goaled(after_hand: isize, turn: isize) -> bool {
     if turn > 0 {
         if after_hand % 10 == 0 {
@@ -367,6 +378,8 @@ pub fn is_goaled(after_hand: isize, turn: isize) -> bool {
     }
     false
 }
+
+#[inline]
 pub fn get_node_count(map: &MapArray) -> usize {
     let mut count = 0;
     for panel_num in 0..map.len() {
