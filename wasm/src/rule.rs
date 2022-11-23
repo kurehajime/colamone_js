@@ -94,14 +94,14 @@ pub const NUMBERS: [usize; 36] = [
     40, 41, 42, 43, 44, 45, //
     50, 51, 52, 53, 54, 55,
 ];
-pub type MapArray = [isize; 56];
+pub type MapArray = [i8; 56];
 pub type Hand = (usize, usize);
 pub type HandNode = (Hand, MapArray);
 
 #[inline]
 pub fn get_can_move_panel_x(panel_num: usize, map: &MapArray) -> Vec<usize> {
     let mut can_move: Vec<usize> = vec![];
-    let number: isize = map[panel_num];
+    let number: i8 = map[panel_num];
     let panel_num = panel_num as isize;
     let x = panel_num / 10;
     let y = panel_num % 10;
@@ -140,7 +140,7 @@ pub fn get_node_map(map: &MapArray, turn_player: isize) -> Vec<HandNode> {
     let mut node_list: Vec<HandNode> = vec![];
     for i in 0..36 {
         let panel_num: usize = NUMBERS[i];
-        if map[panel_num] * turn_player <= 0 || map[panel_num] == 0 {
+        if (map[panel_num] as isize) * turn_player <= 0 || map[panel_num] == 0 {
             continue;
         }
         let can_move = get_can_move_panel_x(panel_num, map);

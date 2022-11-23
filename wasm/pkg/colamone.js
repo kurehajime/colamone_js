@@ -18,31 +18,22 @@ function getStringFromWasm0(ptr, len) {
     return cachedTextDecoder.decode(getUint8Memory0().subarray(ptr, ptr + len));
 }
 
-let cachedUint32Memory0 = new Uint32Array();
-
-function getUint32Memory0() {
-    if (cachedUint32Memory0.byteLength === 0) {
-        cachedUint32Memory0 = new Uint32Array(wasm.memory.buffer);
-    }
-    return cachedUint32Memory0;
-}
-
 let WASM_VECTOR_LEN = 0;
 
-function passArray32ToWasm0(arg, malloc) {
-    const ptr = malloc(arg.length * 4);
-    getUint32Memory0().set(arg, ptr / 4);
+function passArray8ToWasm0(arg, malloc) {
+    const ptr = malloc(arg.length * 1);
+    getUint8Memory0().set(arg, ptr / 1);
     WASM_VECTOR_LEN = arg.length;
     return ptr;
 }
 /**
-* @param {Int32Array} map
+* @param {Int8Array} map
 * @param {number} turn_player
 * @param {number} depth
 * @returns {Result}
 */
 export function think_ai(map, turn_player, depth) {
-    const ptr0 = passArray32ToWasm0(map, wasm.__wbindgen_malloc);
+    const ptr0 = passArray8ToWasm0(map, wasm.__wbindgen_malloc);
     const len0 = WASM_VECTOR_LEN;
     const ret = wasm.think_ai(ptr0, len0, turn_player, depth);
     return Result.__wrap(ret);
@@ -146,7 +137,6 @@ function initMemory(imports, maybe_memory) {
 function finalizeInit(instance, module) {
     wasm = instance.exports;
     init.__wbindgen_wasm_module = module;
-    cachedUint32Memory0 = new Uint32Array();
     cachedUint8Memory0 = new Uint8Array();
 
 

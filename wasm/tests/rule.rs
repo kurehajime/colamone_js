@@ -7,7 +7,7 @@ extern crate colamone;
 fn conv_map(map: &HashMap<isize, isize>) -> MapArray {
     let mut rtn: MapArray = [0; 56];
     for (key, value) in map {
-        rtn[*key as usize] = *value as isize;
+        rtn[*key as usize] = *value as i8;
     }
     return rtn;
 }

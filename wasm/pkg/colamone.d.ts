@@ -1,12 +1,12 @@
 /* tslint:disable */
 /* eslint-disable */
 /**
-* @param {Int32Array} map
+* @param {Int8Array} map
 * @param {number} turn_player
 * @param {number} depth
 * @returns {Result}
 */
-export function think_ai(map: Int32Array, turn_player: number, depth: number): Result;
+export function think_ai(map: Int8Array, turn_player: number, depth: number): Result;
 /**
 */
 export class Result {

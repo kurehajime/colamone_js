@@ -7,7 +7,7 @@ use colamone::{
 
 extern crate colamone;
 
-fn hash_to_map(hash: HashMap<usize, isize>) -> MapArray {
+fn hash_to_map(hash: HashMap<usize, i8>) -> MapArray {
     let mut map: MapArray = [0; 56];
     for (key, value) in hash.into_iter() {
         map[key] = value;

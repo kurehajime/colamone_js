@@ -11,8 +11,8 @@ pub struct Result {
 }
 
 #[wasm_bindgen]
-pub fn think_ai(map: &[isize], turn_player: isize, depth: isize) -> Result {
-    let mut _map: [isize; 56] = [0; 56];
+pub fn think_ai(map: &[i8], turn_player: isize, depth: isize) -> Result {
+    let mut _map: [i8; 56] = [0; 56];
     for i in 0..56 {
         _map[i] = map[i];
     }
