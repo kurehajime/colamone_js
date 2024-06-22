@@ -3,7 +3,7 @@ import { Aijs } from "../static/game/Ai"
 import Cookie from "../static/Cookie"
 import { Hand, MapArray, Rule } from "../static/game/Rule"
 import { Util } from "../static/Util"
-import { think_ai } from '../../wasm/pkg'
+import { think_ai } from '../../wasm/pkg/colamone'
 
 export default class GameState {
     public turnPlayer = 0

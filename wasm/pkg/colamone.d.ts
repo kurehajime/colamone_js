@@ -29,7 +29,7 @@ export interface InitOutput {
   readonly __wbg_get_result_to: (a: number) => number;
   readonly __wbg_set_result_to: (a: number, b: number) => void;
   readonly think_ai: (a: number, b: number, c: number, d: number) => number;
-  readonly __wbindgen_malloc: (a: number) => number;
+  readonly __wbindgen_malloc: (a: number, b: number) => number;
 }
 
 export type SyncInitInput = BufferSource | WebAssembly.Module;
@@ -51,4 +51,4 @@ export function initSync(module: SyncInitInput): InitOutput;
 *
 * @returns {Promise<InitOutput>}
 */
-export default function init (module_or_path?: InitInput | Promise<InitInput>): Promise<InitOutput>;
+export default function __wbg_init (module_or_path?: InitInput | Promise<InitInput>): Promise<InitOutput>;

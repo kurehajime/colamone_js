@@ -1,8 +1,9 @@
 version: '3'
 services:
   rust:
-    image: rust
+    build:
+      context: .
+      dockerfile: Dockerfile
     volumes:
       - .:/usr/src/myapp
-    build: ./
     command: bash -c "wasm-pack build --target web && rm ./pkg/.gitignore"

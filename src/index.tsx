@@ -6,10 +6,10 @@ import "./i18n/configs"
 import { Util } from './static/Util'
 import Colamone from './components/Colamone'
 import { RecoilRoot } from 'recoil'
-import init from '../wasm/pkg'
+import __wbg_init from '../wasm/pkg/colamone'
 // wasm初期化
 try {
-  init()
+  __wbg_init()
 } catch (error) {
   console.log(error)
 }
