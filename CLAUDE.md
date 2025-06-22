@@ -32,7 +32,7 @@ tsc --noEmit
 
 ### Core Structure
 - **React + TypeScript** frontend with Vite build system
-- **Recoil** for state management
+- **React Context API** for component-level state management
 - **Rust/WebAssembly** module for AI computation (fallback to JavaScript AI)
 - **i18next** for internationalization (8 languages supported)
 - **Canvas-based rendering** for game board and pieces
@@ -41,13 +41,14 @@ tsc --noEmit
 - `src/components/Colamone.tsx` - Main game component orchestrating all game logic
 - `src/model/GameState.ts` - Central game state class containing all game data and logic
 - `src/reducer/GameStateManager.ts` - Redux-style reducer for state updates
+- `src/contexts/HoverContext.tsx` - React Context for UI state management
 - `src/static/game/` - Core game logic (AI, evaluation, rules)
 - `wasm/` - Rust implementation of AI for better performance
 
 ### State Management Pattern
 The app uses a combination of:
 - **useReducer** with GameStateManager for game state transitions
-- **Recoil** for component-level state (hover states, touch handling)
+- **React Context API** with HoverContext for UI state (hover states, touch handling)
 - **GameState class** as the single source of truth for game logic
 
 ### AI System
@@ -55,6 +56,13 @@ The app uses a combination of:
 - JavaScript fallback AI in src/static/game/Ai.ts
 - Multiple difficulty levels with dynamic depth adjustment
 - Performance optimization for endgame positions
+
+### UI State Management (HoverContext)
+The `HoverContext` manages interactive UI states:
+- **Touch state**: Boolean indicating touch vs mouse interaction
+- **Hover pointer**: Current pointer coordinates for piece dragging
+- **Hover number**: Cell number currently being hovered over
+- Custom `useHover` hook provides clean access to state and setters
 
 ### Canvas Rendering
 Game board is rendered using HTML5 Canvas with separate layers for:
