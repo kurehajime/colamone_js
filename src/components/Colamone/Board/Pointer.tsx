@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState } from "react"
-import { useSetRecoilState } from "recoil"
 import { Point } from "../../../model/Point"
-import { HoverNumberState } from "../../../states/HoverNumberState"
-import { HoverPointerState } from "../../../states/HoverPointerState"
-import { TouchState } from "../../../states/TouchState"
+import { useHover } from "../../../contexts/HoverContext"
 import Params from "../../../static/Params"
 import { Util } from "../../../static/Util"
 import "./Pointer.css"
@@ -20,9 +17,7 @@ export default function Pointer(props: Props) {
     const svg = useRef<SVGSVGElement>(null)
     const [distance, setDistance] = useState(0)
     const [point, setPoint] = useState<Point | null>(null)
-    const setHoverPoint = useSetRecoilState(HoverPointerState)
-    const setHoverNumber = useSetRecoilState(HoverNumberState)
-    const setTouchState = useSetRecoilState(TouchState)
+    const { setHoverPoint, setHoverNumber, setTouch } = useHover()
 
     const mouseMove = (event: Event) => {
         const e = event as PointerEvent
@@ -52,7 +47,7 @@ export default function Pointer(props: Props) {
                 e.offsetX,
                 e.offsetY
             )
-            setTouchState((e as PointerEvent)?.pointerType === 'touch')
+            setTouch((e as PointerEvent)?.pointerType === 'touch')
             const plus = (Params.CANV_SIZE / 6) / 2
             setDistance(0)
             setPoint({ x: e.offsetX, y: e.offsetY })
@@ -73,7 +68,7 @@ export default function Pointer(props: Props) {
                 point.y
             )
             if (distance > 20) {
-                setTouchState((e as PointerEvent)?.pointerType === 'touch')
+                setTouch((e as PointerEvent)?.pointerType === 'touch')
                 props.clickCell(cellNumber)
             }
         }
