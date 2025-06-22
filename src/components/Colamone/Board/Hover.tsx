@@ -4,10 +4,7 @@ import Params from "../../../static/Params"
 import { Rule } from "../../../static/game/Rule"
 import PieceElement from './Piece'
 import './Hover.css'
-import { useRecoilValue } from "recoil"
-import { HoverNumberState } from "../../../states/HoverNumberState"
-import { HoverPointerState } from "../../../states/HoverPointerState"
-import { TouchState } from "../../../states/TouchState"
+import { useHover } from "../../../contexts/HoverContext"
 type Props = {
     x: number
     y: number
@@ -20,9 +17,7 @@ type Props = {
 }
 export default function Hover(props: Props) {
     const bg1 = useRef<SVGImageElement>(null)
-    const hoverPoint = useRecoilValue(HoverPointerState)
-    const hoverNumber = useRecoilValue(HoverNumberState)
-    const touch = useRecoilValue(TouchState)
+    const { hoverPoint, hoverNumber, touch } = useHover()
 
     /**
      * 盤面を描画してCANVASを返す。

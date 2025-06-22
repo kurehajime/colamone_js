@@ -5,7 +5,7 @@ import reportWebVitals from './reportWebVitals'
 import "./i18n/configs"
 import { Util } from './static/Util'
 import Colamone from './components/Colamone'
-import { RecoilRoot } from 'recoil'
+import { HoverProvider } from './contexts/HoverContext'
 import __wbg_init from '../wasm/pkg/colamone'
 // wasm初期化
 try {
@@ -22,10 +22,10 @@ const root = ReactDOM.createRoot(
 )
 
 root.render(
-  <RecoilRoot>
+  <HoverProvider>
     <React.StrictMode>
       <Colamone></Colamone>
     </React.StrictMode>
-  </RecoilRoot>
+  </HoverProvider>
 )
 reportWebVitals()
