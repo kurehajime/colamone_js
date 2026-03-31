@@ -40,8 +40,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: build
-        run: npm ci && npm run build
+      - name: Install safe-chain
+        run: curl -fsSL https://github.com/AikidoSec/safe-chain/releases/latest/download/install-safe-chain.sh | sh -s -- --ci
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
