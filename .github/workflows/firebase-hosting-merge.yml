@@ -22,6 +22,8 @@ jobs:
       - name: Build
         run: npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
+        env:
+          SAFE_CHAIN_LOGGING: silent
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_COLAMONE_26F99 }}'
