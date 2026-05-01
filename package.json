@@ -33,7 +33,7 @@
     "eslint": "^9.39.3",
     "eslint-plugin-react": "^7.37.5",
     "lefthook": "^2.1.4",
-    "vite": "^6.4.1",
+    "vite": "^6.4.2",
     "vite-plugin-singlefile": "^2.3.0",
     "vitest": "^4.1.5"
   }
