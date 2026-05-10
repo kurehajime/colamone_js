@@ -29,7 +29,7 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^8.59.1",
     "@typescript-eslint/parser": "^8.56.1",
-    "@vitejs/plugin-react": "^4.7.0",
+    "@vitejs/plugin-react": "^6.0.1",
     "eslint": "^9.39.3",
     "eslint-plugin-react": "^7.37.5",
     "lefthook": "^2.1.4",
