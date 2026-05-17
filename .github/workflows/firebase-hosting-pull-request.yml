@@ -24,6 +24,7 @@ jobs:
       - uses: FirebaseExtended/action-hosting-deploy@v0
         env:
           SAFE_CHAIN_LOGGING: silent
+          SAFE_CHAIN_MINIMUM_PACKAGE_AGE_HOURS: 0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_COLAMONE_26F99 }}'

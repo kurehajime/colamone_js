@@ -1,29 +1,54 @@
 version: 2
-multi-ecosystem-groups:
-  dependency-updates:
-    schedule:
-      interval: "weekly"
 updates:
   - package-ecosystem: "npm"
     directory: "/"
-    patterns:
-      - "*"
+    schedule:
+      interval: "weekly"
     cooldown:
       default-days: 2
     groups:
+      npm-minor-patch-updates:
+        applies-to: "version-updates"
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
       all-npm-security-updates:
         applies-to: "security-updates"
         patterns:
           - "*"
-    multi-ecosystem-group: "dependency-updates"
 
   - package-ecosystem: "github-actions"
     directory: "/"
-    patterns:
-      - "*"
+    schedule:
+      interval: "weekly"
     groups:
+      github-actions-minor-patch-updates:
+        applies-to: "version-updates"
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
       all-github-actions-security-updates:
         applies-to: "security-updates"
         patterns:
           - "*"
-    multi-ecosystem-group: "dependency-updates"
+
+  - package-ecosystem: "cargo"
+    directory: "/wasm"
+    schedule:
+      interval: "weekly"
+    groups:
+      cargo-minor-patch-updates:
+        applies-to: "version-updates"
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+      all-cargo-security-updates:
+        applies-to: "security-updates"
+        patterns:
+          - "*"
