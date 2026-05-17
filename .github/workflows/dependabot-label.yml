@@ -22,24 +22,39 @@ jobs:
 
       - name: Ensure labels exist
         run: |
-          gh label create "lib_minerpatch" --repo "$GH_REPO" --color "0E8A16" --description "Minor or patch dependency update" || true
-          gh label create "lib_major" --repo "$GH_REPO" --color "B60205" --description "Major dependency update" || true
+          gh api "repos/$GH_REPO/labels/lib_minerpatch" >/dev/null 2>&1 || \
+            gh api --method POST "repos/$GH_REPO/labels" \
+              -f name="lib_minerpatch" \
+              -f color="0E8A16" \
+              -f description="Minor or patch dependency update"
+          gh api "repos/$GH_REPO/labels/lib_major" >/dev/null 2>&1 || \
+            gh api --method POST "repos/$GH_REPO/labels" \
+              -f name="lib_major" \
+              -f color="B60205" \
+              -f description="Major dependency update"
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
 
-      - name: Add minor or patch label
-        if: steps.metadata.outputs.update-type == 'version-update:semver-minor' || steps.metadata.outputs.update-type == 'version-update:semver-patch'
-        run: gh pr edit "$PR_URL" --repo "$GH_REPO" --add-label "lib_minerpatch"
+      - name: Choose label
+        id: choose-label
+        run: |
+          case "${UPDATE_TYPE}" in
+            version-update:semver-major)
+              echo "label=lib_major" >> "$GITHUB_OUTPUT"
+              ;;
+            version-update:semver-minor|version-update:semver-patch)
+              echo "label=lib_minerpatch" >> "$GITHUB_OUTPUT"
+              ;;
+          esac
         env:
-          GH_TOKEN: ${{ github.token }}
-          GH_REPO: ${{ github.repository }}
-          PR_URL: ${{ github.event.pull_request.html_url }}
+          UPDATE_TYPE: ${{ steps.metadata.outputs.update-type }}
 
-      - name: Add major label
-        if: steps.metadata.outputs.update-type == 'version-update:semver-major'
-        run: gh pr edit "$PR_URL" --repo "$GH_REPO" --add-label "lib_major"
+      - name: Add label
+        if: steps.choose-label.outputs.label != ''
+        run: gh api --method POST "repos/$GH_REPO/issues/$PR_NUMBER/labels" -f labels[]="$LABEL"
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
-          PR_URL: ${{ github.event.pull_request.html_url }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          LABEL: ${{ steps.choose-label.outputs.label }}
