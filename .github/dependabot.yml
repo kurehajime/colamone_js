@@ -5,7 +5,8 @@ updates:
     schedule:
       interval: "weekly"
     cooldown:
-      default-days: 2
+      default-days: 7
+      semver-major-days: 60
     groups:
       npm-minor-patch-updates:
         applies-to: "version-updates"
@@ -40,6 +41,9 @@ updates:
     directory: "/wasm"
     schedule:
       interval: "weekly"
+    cooldown:
+      default-days: 7
+      semver-major-days: 60
     groups:
       cargo-minor-patch-updates:
         applies-to: "version-updates"
