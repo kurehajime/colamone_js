@@ -22,21 +22,24 @@ jobs:
 
       - name: Ensure labels exist
         run: |
-          gh label create "lib_minerpatch" --color "0E8A16" --description "Minor or patch dependency update" || true
-          gh label create "lib_major" --color "B60205" --description "Major dependency update" || true
+          gh label create "lib_minerpatch" --repo "$GH_REPO" --color "0E8A16" --description "Minor or patch dependency update" || true
+          gh label create "lib_major" --repo "$GH_REPO" --color "B60205" --description "Major dependency update" || true
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
 
       - name: Add minor or patch label
         if: steps.metadata.outputs.update-type == 'version-update:semver-minor' || steps.metadata.outputs.update-type == 'version-update:semver-patch'
-        run: gh pr edit "$PR_URL" --add-label "lib_minerpatch"
+        run: gh pr edit "$PR_URL" --repo "$GH_REPO" --add-label "lib_minerpatch"
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
           PR_URL: ${{ github.event.pull_request.html_url }}
 
       - name: Add major label
         if: steps.metadata.outputs.update-type == 'version-update:semver-major'
-        run: gh pr edit "$PR_URL" --add-label "lib_major"
+        run: gh pr edit "$PR_URL" --repo "$GH_REPO" --add-label "lib_major"
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
           PR_URL: ${{ github.event.pull_request.html_url }}
