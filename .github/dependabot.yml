@@ -7,14 +7,12 @@ updates:
     cooldown:
       default-days: 7
       semver-major-days: 60
-    groups:
-      npm-minor-patch-updates:
-        applies-to: "version-updates"
-        patterns:
-          - "*"
+    ignore:
+      - dependency-name: "*"
         update-types:
-          - "minor"
-          - "patch"
+          - "version-update:semver-minor"
+          - "version-update:semver-patch"
+    groups:
       all-npm-security-updates:
         applies-to: "security-updates"
         patterns:
@@ -24,14 +22,12 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    groups:
-      github-actions-minor-patch-updates:
-        applies-to: "version-updates"
-        patterns:
-          - "*"
+    ignore:
+      - dependency-name: "*"
         update-types:
-          - "minor"
-          - "patch"
+          - "version-update:semver-minor"
+          - "version-update:semver-patch"
+    groups:
       all-github-actions-security-updates:
         applies-to: "security-updates"
         patterns:
@@ -44,14 +40,12 @@ updates:
     cooldown:
       default-days: 7
       semver-major-days: 60
-    groups:
-      cargo-minor-patch-updates:
-        applies-to: "version-updates"
-        patterns:
-          - "*"
+    ignore:
+      - dependency-name: "*"
         update-types:
-          - "minor"
-          - "patch"
+          - "version-update:semver-minor"
+          - "version-update:semver-patch"
+    groups:
       all-cargo-security-updates:
         applies-to: "security-updates"
         patterns:
