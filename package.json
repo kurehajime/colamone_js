@@ -17,6 +17,7 @@
   "scripts": {
     "start": "vite",
     "build": "node ./update-date.js && tsc --noEmit && vite build",
+    "build:wasm": "docker compose -f wasm/docker-compose.yml run --rm --build rust bash -c \"wasm-pack build --target web && rm -f ./pkg/.gitignore ./pkg/package.json\"",
     "serve": "vite preview",
     "test": "vitest run",
     "uplib": "npx npm-check-updates -u && npm i"

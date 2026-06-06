@@ -9,7 +9,7 @@ pub fn deep_think_all_ab(
     a: Option<isize>,
     b: Option<isize>,
     nearwin: bool,
-    evalparam: [[isize; 6]; 9],
+    evalparam: &[[isize; 6]; 9],
 ) -> (Option<Hand>, isize) {
     let mut best_score: isize = turn_player * 9999999 * -1;
     let mut besthand: Option<Hand> = None;
@@ -87,9 +87,9 @@ pub fn think_ai(
     if rule::is_end_x(map, false) != 0 {
         nearwin = true;
     }
-    hand = deep_think_all_ab(map, turn_player, depth, a, b, nearwin, evalparam);
+    hand = deep_think_all_ab(map, turn_player, depth, a, b, nearwin, &evalparam);
     if hand.1 * turn_player == -999999 {
-        hand = deep_think_all_ab(map, turn_player, 1, a, b, nearwin, evalparam);
+        hand = deep_think_all_ab(map, turn_player, 1, a, b, nearwin, &evalparam);
     }
     return hand;
 }

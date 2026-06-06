@@ -100,7 +100,7 @@ pub type HandNode = (Hand, MapArray);
 
 #[inline]
 pub fn get_can_move_panel_x(panel_num: usize, map: &MapArray) -> Vec<usize> {
-    let mut can_move: Vec<usize> = vec![];
+    let mut can_move: Vec<usize> = Vec::with_capacity(8);
     let number: i8 = map[panel_num];
     let panel_num = panel_num as isize;
     let x = panel_num / 10;
@@ -144,11 +144,11 @@ pub fn get_node_map(map: &MapArray, turn_player: isize) -> Vec<HandNode> {
             continue;
         }
         let can_move = get_can_move_panel_x(panel_num, map);
-        for num in 0..can_move.len() {
+        for &to in can_move.iter() {
             let mut node_map: MapArray = map.clone();
-            node_map[can_move[num]] = node_map[panel_num];
+            node_map[to] = node_map[panel_num];
             node_map[panel_num] = 0;
-            let hand = (panel_num, can_move[num]);
+            let hand = (panel_num, to);
             let map_array = node_map;
             node_list.push((hand, map_array));
         }

@@ -13,13 +13,12 @@ pub struct Result {
 #[wasm_bindgen]
 pub fn think_ai(map: &[i8], turn_player: isize, depth: isize) -> Result {
     let mut _map: [i8; 56] = [0; 56];
-    for i in 0..56 {
-        _map[i] = map[i];
-    }
+    _map.copy_from_slice(&map[..56]);
 
     let result = ai::think_ai(&_map, turn_player, depth, None, None, None);
+    let hand = result.0.unwrap();
     Result {
-        from: result.0.unwrap().0,
-        to: result.0.unwrap().1,
+        from: hand.0,
+        to: hand.1,
     }
 }

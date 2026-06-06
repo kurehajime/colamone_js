@@ -13,7 +13,7 @@ pub static DEFAULT_EVALPARAM: [[isize; 6]; 9] = [
 ];
 
 #[inline]
-pub fn eval_map(map: &MapArray, near_win: bool, eval_param: [[isize; 6]; 9]) -> isize {
+pub fn eval_map(map: &MapArray, near_win: bool, eval_param: &[[isize; 6]; 9]) -> isize {
     let mut ev = 0;
     // 引き分け判定
     if rule::is_draw(map) {
