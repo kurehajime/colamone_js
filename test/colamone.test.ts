@@ -181,3 +181,32 @@ test('終局時に同じ局面になるか確認する(レベル2)', () => {
 
     expect(map).toEqual(result)
 })
+
+test('思考ロジックの実行時間を計測する', () => {
+    const map = convMap(thisMap)
+    const metrics = [1, 2, 3, 4, 5, 6, 7, 8].map((depth) => {
+        const startedAt = performance.now()
+        const result = Aijs.thinkAI(map, 1, depth, undefined, undefined, undefined)
+        const elapsedMs = performance.now() - startedAt
+
+        return {
+            depth,
+            hand: result[0],
+            score: result[1],
+            elapsedMs,
+        }
+    })
+
+    process.stdout.write(
+        `\nthinkAI timing: ${metrics
+            .map(({ depth, elapsedMs }) => `depth ${depth}=${elapsedMs.toFixed(3)}ms`)
+            .join(", ")}\n`
+    )
+
+    expect(metrics).toHaveLength(8)
+    metrics.forEach(({ hand, score, elapsedMs }) => {
+        expect(hand).toBeDefined()
+        expect(Number.isFinite(score)).toBe(true)
+        expect(elapsedMs).toBeGreaterThanOrEqual(0)
+    })
+})
