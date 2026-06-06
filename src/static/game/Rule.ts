@@ -5,6 +5,8 @@ export type Hand = [number, number]
 ;export type HandNode = [Hand, MapArray]
 ;export class Rule {
     public static LIMIT_1000DAY = 3
+    static readonly MOVE_X = new Int8Array([-1, 0, 1, -1, 0, 1, -1, 0, 1])
+    static readonly MOVE_Y = new Int8Array([-1, -1, -1, 0, 0, 0, 1, 1, 1])
     /** 
  * 駒の進める方向 
  * @const 
@@ -219,12 +221,15 @@ export type Hand = [number, number]
         if ((number > 0 && y === 0) || (number < 0 && y === 5) || number === 0) {
             return false
         }
-        for (let i = 0; i < 9; i++) {
-            if (Rule.PIECES[number + 8][i] === 0) {
+        const pieceMove = Rule.PIECES[number + 8]
+        const moveX = Rule.MOVE_X
+        const moveY = Rule.MOVE_Y
+        for (let moveIndex = 0; moveIndex < 9; moveIndex++) {
+            if (pieceMove[moveIndex] === 0) {
                 continue
             }
-            const target_x: number = x + ~~(i % 3) - 1
-            const target_y: number = y + ~~(i / 3) - 1
+            const target_x: number = x + moveX[moveIndex]
+            const target_y: number = y + moveY[moveIndex]
             if (target_y < 0 || target_y > 5 || target_x > 5 || target_x < 0) {
                 continue
             }
@@ -256,12 +261,15 @@ export type Hand = [number, number]
         if ((number > 0 && y === 0) || (number < 0 && y === 5) || number === 0) {
             return canMove
         }
-        for (let i = 0; i < 9; i++) {
-            if (Rule.PIECES[number + 8][i] === 0) {
+        const pieceMove = Rule.PIECES[number + 8]
+        const moveX = Rule.MOVE_X
+        const moveY = Rule.MOVE_Y
+        for (let moveIndex = 0; moveIndex < 9; moveIndex++) {
+            if (pieceMove[moveIndex] === 0) {
                 continue
             }
-            const target_x: number = x + ~~(i % 3) - 1
-            const target_y: number = y + ~~(i / 3) - 1
+            const target_x: number = x + moveX[moveIndex]
+            const target_y: number = y + moveY[moveIndex]
             if (target_y < 0 || target_y > 5 || target_x > 5 || target_x < 0) {
                 continue
             }
@@ -286,17 +294,42 @@ export type Hand = [number, number]
      */
     static getNodeMap(wkMap: MapArray, turn_player: number): HandNode[] {
         const nodeList: HandNode[] = []
-        for (let i = 0; i <= 35; i++) {
-            const panel_num: number = Rule.NUMBERS[i] | 0
-            if (wkMap[panel_num] * turn_player <= 0 || wkMap[panel_num] === 0) {
+        const moveX = Rule.MOVE_X
+        const moveY = Rule.MOVE_Y
+        for (let numberIndex = 0; numberIndex <= 35; numberIndex++) {
+            const panel_num: number = Rule.NUMBERS[numberIndex] | 0
+            const number: number = wkMap[panel_num] | 0
+            if (number * turn_player <= 0) {
                 continue
             }
-            const canMove: number[] = Rule.getCanMovePanelX(panel_num, wkMap)
-            for (let num = 0; num < canMove.length; num++) {
+
+            const x: number = ~~(panel_num / 10)
+            const y: number = ~~(panel_num % 10)
+            if ((number > 0 && y === 0) || (number < 0 && y === 5)) {
+                continue
+            }
+
+            const pieceMove = Rule.PIECES[number + 8]
+            for (let moveIndex = 0; moveIndex < 9; moveIndex++) {
+                if (pieceMove[moveIndex] === 0) {
+                    continue
+                }
+                const target_x: number = x + moveX[moveIndex]
+                const target_y: number = y + moveY[moveIndex]
+                if (target_y < 0 || target_y > 5 || target_x > 5 || target_x < 0) {
+                    continue
+                }
+
+                const idx: number = target_x * 10 + target_y
+                const target_number: number = wkMap[idx] | 0
+                if ((target_number * number > 0) || (target_number > 0 && target_y === 0) || (target_number < 0 && target_y === 5)) {
+                    continue
+                }
+
                 const nodeMap: MapArray = new Int8Array(wkMap)
-                nodeMap[canMove[num]] = nodeMap[panel_num]
+                nodeMap[idx] = number
                 nodeMap[panel_num] = 0
-                nodeList.push([[panel_num, canMove[num]], nodeMap])
+                nodeList.push([[panel_num, idx], nodeMap])
             }
         }
         return nodeList
