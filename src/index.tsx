@@ -7,11 +7,14 @@ import { Util } from './static/Util'
 import Colamone from './components/Colamone'
 import { HoverProvider } from './contexts/HoverContext'
 import __wbg_init from '../wasm/pkg/colamone'
+import { ENABLE_WASM } from './static/WasmConfig'
 // wasm初期化
-try {
-  __wbg_init()
-} catch (error) {
-  console.log(error)
+if (ENABLE_WASM) {
+  try {
+    __wbg_init()
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 Util.zoom() // 小さい端末でズーム

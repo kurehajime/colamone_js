@@ -4,6 +4,7 @@ import Cookie from "../static/Cookie"
 import { Hand, MapArray, Rule } from "../static/game/Rule"
 import { Util } from "../static/Util"
 import { think_ai } from '../../wasm/pkg/colamone'
+import { ENABLE_WASM } from "../static/WasmConfig"
 
 export default class GameState {
     public turnPlayer = 0
@@ -257,12 +258,16 @@ export default class GameState {
         }
         let _hand;
         const start = performance.now();
-        try {
-            const result = think_ai(new Int8Array(this.map), this.turnPlayer, this.level + plus + 1)
-            _hand = [result.from, result.to]
+        if (ENABLE_WASM) {
+            try {
+                const result = think_ai(new Int8Array(this.map), this.turnPlayer, this.level + plus + 1)
+                _hand = [result.from, result.to]
 
-        } catch (error) {
-            console.log("wasm failed,fallback to js")
+            } catch (error) {
+                console.log("wasm failed,fallback to js")
+                _hand = Aijs.thinkAI(this.map, this.turnPlayer, this.level + plus + 1, undefined, undefined, undefined)[0]
+            }
+        } else {
             _hand = Aijs.thinkAI(this.map, this.turnPlayer, this.level + plus + 1, undefined, undefined, undefined)[0]
         }
         const end = performance.now();
