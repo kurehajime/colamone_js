@@ -7,6 +7,7 @@ export type Hand = [number, number]
     public static LIMIT_1000DAY = 3
     static readonly MOVE_X = new Int8Array([-1, 0, 1, -1, 0, 1, -1, 0, 1])
     static readonly MOVE_Y = new Int8Array([-1, -1, -1, 0, 0, 0, 1, 1, 1])
+    static readonly MOVE_OFFSET = new Int8Array([-11, -1, 9, -10, 0, 10, -9, 1, 11])
     /** 
  * 駒の進める方向 
  * @const 
@@ -66,6 +67,7 @@ export type Hand = [number, number]
             0, 0, 0,
             0, 0, 0]
     ]
+    static readonly PIECE_MOVES = new Int8Array(Rule.PIECES.flat())
 
     /** 
      * 盤の番号 
@@ -105,12 +107,12 @@ export type Hand = [number, number]
         if (wkMap[30] > 0) { sum1 += wkMap[30] }
         if (wkMap[40] > 0) { sum1 += wkMap[40] }
         if (wkMap[50] > 0) { sum1 += wkMap[50] }
-        if (wkMap[5] * -1 > 0) { sum2 += wkMap[5] }
-        if (wkMap[15] * -1 > 0) { sum2 += wkMap[15] }
-        if (wkMap[25] * -1 > 0) { sum2 += wkMap[25] }
-        if (wkMap[35] * -1 > 0) { sum2 += wkMap[35] }
-        if (wkMap[45] * -1 > 0) { sum2 += wkMap[45] }
-        if (wkMap[55] * -1 > 0) { sum2 += wkMap[55] }
+        if (wkMap[5] < 0) { sum2 += wkMap[5] }
+        if (wkMap[15] < 0) { sum2 += wkMap[15] }
+        if (wkMap[25] < 0) { sum2 += wkMap[25] }
+        if (wkMap[35] < 0) { sum2 += wkMap[35] }
+        if (wkMap[45] < 0) { sum2 += wkMap[45] }
+        if (wkMap[55] < 0) { sum2 += wkMap[55] }
 
         if (sum1 >= 8) {
             return 1
@@ -132,17 +134,18 @@ export type Hand = [number, number]
         if (nearwin === false && (sum1 !== 0 || sum2 !== 0)) {
             let live1 = 0
             let live2 = 0
+            const numbers = Rule.NUMBERS
             for (let i = 0; i <= 35; i++) {
-                const num = Rule.NUMBERS[i] | 0
+                const num = numbers[i] | 0
                 if (wkMap[num] > 0) {
                     live1 += wkMap[num]
                 } else if (wkMap[num] < 0) {
                     live2 += wkMap[num]
                 }
             }
-            if (sum1 > (-1 * (live2 + sum2))) {
+            if (sum1 > -(live2 + sum2)) {
                 return 1
-            } else if (-1 * sum2 > (live1 + sum1)) {
+            } else if (-sum2 > (live1 + sum1)) {
                 return -1
             }
         }
@@ -164,12 +167,12 @@ export type Hand = [number, number]
         if (wkMap[30] > 0) { sum1 += wkMap[30] }
         if (wkMap[40] > 0) { sum1 += wkMap[40] }
         if (wkMap[50] > 0) { sum1 += wkMap[50] }
-        if (wkMap[5] * -1 > 0) { sum2 -= wkMap[5] }
-        if (wkMap[15] * -1 > 0) { sum2 -= wkMap[15] }
-        if (wkMap[25] * -1 > 0) { sum2 -= wkMap[25] }
-        if (wkMap[35] * -1 > 0) { sum2 -= wkMap[35] }
-        if (wkMap[45] * -1 > 0) { sum2 -= wkMap[45] }
-        if (wkMap[55] * -1 > 0) { sum2 -= wkMap[55] }
+        if (wkMap[5] < 0) { sum2 -= wkMap[5] }
+        if (wkMap[15] < 0) { sum2 -= wkMap[15] }
+        if (wkMap[25] < 0) { sum2 -= wkMap[25] }
+        if (wkMap[35] < 0) { sum2 -= wkMap[35] }
+        if (wkMap[45] < 0) { sum2 -= wkMap[45] }
+        if (wkMap[55] < 0) { sum2 -= wkMap[55] }
         if (sum1 === sum2) {
             if (!Rule.isNoneNode(wkMap)) {
                 return false
@@ -187,8 +190,9 @@ export type Hand = [number, number]
     static isNoneNode(wkMap: MapArray): boolean {
         let flag1 = false
         let flag2 = false
+        const numbers = Rule.NUMBERS
         for (let i = 0; i <= 35; i++) {
-            const panel_num: number = Rule.NUMBERS[i] | 0
+            const panel_num: number = numbers[i] | 0
             if (wkMap[panel_num] === 0) {
                 continue
             }
@@ -221,11 +225,13 @@ export type Hand = [number, number]
         if ((number > 0 && y === 0) || (number < 0 && y === 5) || number === 0) {
             return false
         }
-        const pieceMove = Rule.PIECES[number + 8]
+        const pieceMoves = Rule.PIECE_MOVES
+        const pieceMoveIndex = (number + 8) * 9
         const moveX = Rule.MOVE_X
         const moveY = Rule.MOVE_Y
+        const moveOffset = Rule.MOVE_OFFSET
         for (let moveIndex = 0; moveIndex < 9; moveIndex++) {
-            if (pieceMove[moveIndex] === 0) {
+            if (pieceMoves[pieceMoveIndex + moveIndex] === 0) {
                 continue
             }
             const target_x: number = x + moveX[moveIndex]
@@ -234,12 +240,18 @@ export type Hand = [number, number]
                 continue
             }
 
-            const idx: number = target_x * 10 + target_y
-            const target_number: number = wkMap[idx]
+            const idx: number = panel_num + moveOffset[moveIndex]
+            const target_number: number = wkMap[idx] | 0
 
             // 自コマとアガリのコマはとったらダメ。
-            if ((target_number * number > 0) || (target_number > 0 && target_y === 0) || (target_number < 0 && target_y === 5)) {
-                continue
+            if (target_number > 0) {
+                if (number > 0 || target_y === 0) {
+                    continue
+                }
+            } else if (target_number < 0) {
+                if (number < 0 || target_y === 5) {
+                    continue
+                }
             }
             return true
         }
@@ -261,11 +273,13 @@ export type Hand = [number, number]
         if ((number > 0 && y === 0) || (number < 0 && y === 5) || number === 0) {
             return canMove
         }
-        const pieceMove = Rule.PIECES[number + 8]
+        const pieceMoves = Rule.PIECE_MOVES
+        const pieceMoveIndex = (number + 8) * 9
         const moveX = Rule.MOVE_X
         const moveY = Rule.MOVE_Y
+        const moveOffset = Rule.MOVE_OFFSET
         for (let moveIndex = 0; moveIndex < 9; moveIndex++) {
-            if (pieceMove[moveIndex] === 0) {
+            if (pieceMoves[pieceMoveIndex + moveIndex] === 0) {
                 continue
             }
             const target_x: number = x + moveX[moveIndex]
@@ -274,12 +288,18 @@ export type Hand = [number, number]
                 continue
             }
 
-            const idx: number = target_x * 10 + target_y
+            const idx: number = panel_num + moveOffset[moveIndex]
             const target_number: number = wkMap[idx] | 0
 
             // 自コマとアガリのコマはとったらダメ。
-            if ((target_number * number > 0) || (target_number > 0 && target_y === 0) || (target_number < 0 && target_y === 5)) {
-                continue
+            if (target_number > 0) {
+                if (number > 0 || target_y === 0) {
+                    continue
+                }
+            } else if (target_number < 0) {
+                if (number < 0 || target_y === 5) {
+                    continue
+                }
             }
             canMove.push(idx)
         }
@@ -294,10 +314,13 @@ export type Hand = [number, number]
      */
     static getNodeMap(wkMap: MapArray, turn_player: number): HandNode[] {
         const nodeList: HandNode[] = []
+        const numbers = Rule.NUMBERS
+        const pieceMoves = Rule.PIECE_MOVES
         const moveX = Rule.MOVE_X
         const moveY = Rule.MOVE_Y
+        const moveOffset = Rule.MOVE_OFFSET
         for (let numberIndex = 0; numberIndex <= 35; numberIndex++) {
-            const panel_num: number = Rule.NUMBERS[numberIndex] | 0
+            const panel_num: number = numbers[numberIndex] | 0
             const number: number = wkMap[panel_num] | 0
             if (number * turn_player <= 0) {
                 continue
@@ -309,9 +332,9 @@ export type Hand = [number, number]
                 continue
             }
 
-            const pieceMove = Rule.PIECES[number + 8]
+            const pieceMoveIndex = (number + 8) * 9
             for (let moveIndex = 0; moveIndex < 9; moveIndex++) {
-                if (pieceMove[moveIndex] === 0) {
+                if (pieceMoves[pieceMoveIndex + moveIndex] === 0) {
                     continue
                 }
                 const target_x: number = x + moveX[moveIndex]
@@ -320,10 +343,16 @@ export type Hand = [number, number]
                     continue
                 }
 
-                const idx: number = target_x * 10 + target_y
+                const idx: number = panel_num + moveOffset[moveIndex]
                 const target_number: number = wkMap[idx] | 0
-                if ((target_number * number > 0) || (target_number > 0 && target_y === 0) || (target_number < 0 && target_y === 5)) {
-                    continue
+                if (target_number > 0) {
+                    if (number > 0 || target_y === 0) {
+                        continue
+                    }
+                } else if (target_number < 0) {
+                    if (number < 0 || target_y === 5) {
+                        continue
+                    }
                 }
 
                 const nodeMap: MapArray = new Int8Array(wkMap)

@@ -43,8 +43,9 @@ export class Eval {
             return -9999999
         }
         // 評価
+        const numbers = Rule.NUMBERS
         for (let i = 0; i <= 35; i++) {
-            const panel_num = Rule.NUMBERS[i] | 0
+            const panel_num = numbers[i] | 0
             const p = wkMap[panel_num]
             let cell_p = 0
             let line: number
