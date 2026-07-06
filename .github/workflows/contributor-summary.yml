@@ -1,0 +1,53 @@
+name: Contributor Summary
+
+on:
+  pull_request_target:
+    types: [opened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    steps:
+      - name: Skip repository owner and public org members
+        id: internal
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+          REPO_OWNER: ${{ github.repository_owner }}
+        run: |
+          if [ "$PR_AUTHOR" = "$REPO_OWNER" ]; then
+            echo "value=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          if gh api "/orgs/$REPO_OWNER/public_members/$PR_AUTHOR" >/dev/null 2>&1; then
+            echo "value=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Summarize contributor activity
+        id: contributor-summary
+        if: steps.internal.outputs.value != 'true'
+        uses: kurehajime/contributor-summary@v1
+        with:
+          github-user: ${{ github.event.pull_request.user.login }}
+          months: "12"
+          github-token: ${{ github.token }}
+
+      - name: Comment audit summary
+        if: steps.internal.outputs.value != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          SUMMARY_MARKDOWN: ${{ steps.contributor-summary.outputs.summary-markdown }}
+        run: |
+          body_file="$(mktemp)"
+          printf '%s\n' "$SUMMARY_MARKDOWN" > "$body_file"
+          gh pr comment "$PR_URL" --body-file "$body_file"
